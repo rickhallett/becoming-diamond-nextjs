@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { cn } from "@/lib/utils";
 import {
@@ -11,21 +11,17 @@ import {
     IconUser,
     IconSettings,
     IconHelp,
-    IconLogout,
     IconMenu2,
     IconX,
     IconSparkles
 } from "@tabler/icons-react";
-import { useUser } from "@/contexts/UserContext";
 import { SignOutButton } from "@/components/auth/SignOutButton";
 import { UserAvatar } from "@/components/auth/UserAvatar";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
-    const router = useRouter();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    const { logout } = useUser();
-    const { data: session, status } = useSession();
+    const { data: session } = useSession();
 
     const navItems = [
         { name: "Dashboard", href: "/app", icon: IconHome },
@@ -41,11 +37,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             return pathname === "/app";
         }
         return pathname.startsWith(href);
-    };
-
-    const handleLogout = () => {
-        logout();
-        router.push("/");
     };
 
     return (

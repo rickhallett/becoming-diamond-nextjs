@@ -59,7 +59,7 @@ export default function VerifyRequestPage() {
             <div className="flex items-start gap-3">
               <IconMail className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
               <div className="text-sm text-gray-300">
-                <p className="font-medium text-white mb-1">Didn't receive the email?</p>
+                <p className="font-medium text-white mb-1">Didn&apos;t receive the email?</p>
                 <ul className="list-disc list-inside space-y-1 text-gray-400">
                   <li>Check your spam folder</li>
                   <li>Make sure you entered the correct email</li>
