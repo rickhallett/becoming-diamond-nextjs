@@ -22,6 +22,7 @@
 Becoming Diamond is a modern web application built with Next.js 15 that combines a high-converting marketing website with a feature-rich member portal. The platform enables identity transformation coaching through interactive courses, AI-powered chat, and premium content delivery.
 
 **Core Value Propositions:**
+
 - Transform pressure into power through structured learning
 - AI-powered coaching available 24/7
 - Track progress through courses and transformations
@@ -36,28 +37,34 @@ Becoming Diamond is a modern web application built with Next.js 15 that combines
 **Purpose:** Convert visitors into leads and members
 
 **Implemented Components:**
+
 - **Hero Section** with spotlight effect and gradient text
+
   - Compelling headline: "Turn Pressure Into Power"
   - Subheadline explaining the transformation
   - Primary CTA: "Get the Free Diamond Sprint Guide"
   - Secondary CTA: "Join the Community"
 
 - **Problem/Pain Points Grid** (Bento Grid)
+
   - Visual showcase of transformation journey
   - Animated cards with hover effects
   - Pain points: Overwhelm, Uncertainty, Burnout, Self-Doubt
 
 - **Program Timeline**
+
   - 3-phase transformation roadmap visualization
   - Interactive timeline with animations
   - Gateway 1, Gateway 2, Gateway 3 progression
 
 - **Testimonials Carousel**
+
   - Animated testimonials slider
   - Social proof from transformed members
   - Real photos and success stories
 
 - **3D Globe Visualization**
+
   - Interactive world map showing global reach
   - Animated connection arcs between locations
   - WebGL-powered graphics
@@ -68,6 +75,7 @@ Becoming Diamond is a modern web application built with Next.js 15 that combines
   - Privacy-compliant with consent tracking
 
 **Technical Highlights:**
+
 - Aceternity UI components for premium feel
 - Framer Motion animations throughout
 - Fully responsive mobile-first design
@@ -81,6 +89,7 @@ Becoming Diamond is a modern web application built with Next.js 15 that combines
 **Purpose:** Content marketing and SEO
 
 **Features:**
+
 - Blog post listing with thumbnails and excerpts
 - Individual blog post pages (`/blog/[slug]`)
 - Markdown-based content from Git repository
@@ -89,14 +98,16 @@ Becoming Diamond is a modern web application built with Next.js 15 that combines
 - Static site generation for performance
 
 **Sample Posts:**
+
 - "Mastering Pressure: From Snowflake to Diamond"
 - "The AI Anxiety Epidemic"
 - "Burnout and Identity Crisis"
 
 **Content API:**
+
 ```typescript
-const posts = await getContentByType('blog');
-const post = await getContentBySlug('blog', slug);
+const posts = await getContentByType("blog");
+const post = await getContentBySlug("blog", slug);
 ```
 
 ---
@@ -106,6 +117,7 @@ const post = await getContentBySlug('blog', slug);
 **Purpose:** Updates and announcements
 
 **Features:**
+
 - News article listing
 - Individual article pages (`/news/[slug]`)
 - Date-stamped updates
@@ -117,6 +129,7 @@ const post = await getContentBySlug('blog', slug);
 ### Navigation & Layout
 
 **Public Header:**
+
 - Logo and brand identity
 - Desktop navigation menu
 - Mobile responsive drawer
@@ -124,6 +137,7 @@ const post = await getContentBySlug('blog', slug);
 - Active route highlighting
 
 **Footer:**
+
 - Social media links
 - Copyright and legal info
 - Newsletter signup (planned)
@@ -135,6 +149,7 @@ const post = await getContentBySlug('blog', slug);
 ### Protected Area (`/app/*`)
 
 **Access Control:**
+
 - Authentication wall (GitHub OAuth ready)
 - Session management
 - Protected routes
@@ -147,6 +162,7 @@ const post = await getContentBySlug('blog', slug);
 **Purpose:** Member home base and progress overview
 
 **Features:**
+
 - Welcome message with user name
 - Course enrollment status
 - Progress statistics
@@ -160,6 +176,7 @@ const post = await getContentBySlug('blog', slug);
 - Upcoming sessions (planned)
 
 **Layout:**
+
 - Fixed sidebar navigation (desktop)
 - Mobile drawer navigation
 - Active route indicators
@@ -176,6 +193,7 @@ const post = await getContentBySlug('blog', slug);
 **Core Features:**
 
 1. **Slide Navigation**
+
    - One slide at a time for focused learning
    - Next/Previous buttons
    - Keyboard shortcuts (Arrow keys, Space)
@@ -183,6 +201,7 @@ const post = await getContentBySlug('blog', slug);
    - Progress indicator
 
 2. **Chapter Sidebar**
+
    - Hierarchical chapter/slide organization
    - Grouped by course parts (Part 1, Part 2, etc.)
    - Expandable/collapsible chapters
@@ -190,6 +209,7 @@ const post = await getContentBySlug('blog', slug);
    - Click to jump to any slide
 
 3. **Progress Tracking** (Phase 3)
+
    - localStorage-based persistence
    - Per-slide completion tracking
    - Chapter completion percentages
@@ -199,11 +219,13 @@ const post = await getContentBySlug('blog', slug);
    - Completion celebration on course finish
 
 4. **Mark Complete Button**
+
    - Manual slide completion
    - Updates progress in real-time
    - Visual feedback on completion
 
 5. **Content Display**
+
    - Markdown rendered to HTML
    - Typography optimization with Tailwind Prose
    - Proper paragraph spacing and formatting
@@ -217,6 +239,7 @@ const post = await getContentBySlug('blog', slug);
    - Keyboard shortcut (N key)
 
 **Course Structure:**
+
 ```
 Gateway 1: Turning Snowflakes into Diamonds
 ├── Part 1: The Snowflake Crisis (3 chapters, 23 slides)
@@ -225,6 +248,7 @@ Gateway 1: Turning Snowflakes into Diamonds
 ```
 
 **Technical Implementation:**
+
 - `CourseViewer.tsx` - Main container component
 - `ChapterNav.tsx` - Sidebar navigation
 - `SlideContent.tsx` - Content renderer
@@ -233,6 +257,7 @@ Gateway 1: Turning Snowflakes into Diamonds
 - `progress.ts` - Progress management functions
 
 **Mobile Experience:**
+
 - Responsive layout
 - Touch-friendly navigation
 - Mobile drawer for chapter navigation
@@ -245,6 +270,7 @@ Gateway 1: Turning Snowflakes into Diamonds
 **Purpose:** Browse and enroll in courses
 
 **Features:**
+
 - Course cards with thumbnails
 - Enrollment status badges
   - "Not Started" → "Start Course"
@@ -255,6 +281,7 @@ Gateway 1: Turning Snowflakes into Diamonds
 - Filtering by gateway level (planned)
 
 **Available Courses:**
+
 - Gateway 1: Turning Snowflakes into Diamonds
 - Gateway 2: Advanced Diamond Techniques (planned)
 - Gateway 3: Mastery & Leadership (planned)
@@ -270,18 +297,21 @@ Gateway 1: Turning Snowflakes into Diamonds
 **Features:**
 
 1. **Conversational Interface**
+
    - Chat bubble UI with message history
    - User/assistant message distinction
    - Real-time response generation
    - Markdown formatting in responses
 
 2. **RAG System** (Retrieval-Augmented Generation)
+
    - Entire "Turning Snowflakes into Diamonds" book loaded
    - Claude Sonnet 4.5 with 200K context window
    - Prompt caching for 90% cost reduction
    - Automatic citations from book chapters
 
 3. **Suggested Prompts**
+
    - Quick-start conversation topics
    - Pre-built questions about the book
    - One-click prompt insertion
@@ -292,11 +322,13 @@ Gateway 1: Turning Snowflakes into Diamonds
    - Monthly estimate (100 queries/day): ~$15
 
 **Sample Questions:**
+
 - "What is the Diamond Transformation Roadmap?"
 - "How do I stabilize under pressure?"
 - "Explain the difference between snowflakes and diamonds"
 
 **Technical Stack:**
+
 - `/api/ask` endpoint for Claude integration
 - `claude-simple.ts` RAG implementation
 - Streaming responses (backend ready)
@@ -309,6 +341,7 @@ Gateway 1: Turning Snowflakes into Diamonds
 **Purpose:** User account management
 
 **Features:**
+
 - Profile information display
 - Edit profile form (planned)
 - Progress history
@@ -322,6 +355,7 @@ Gateway 1: Turning Snowflakes into Diamonds
 **Purpose:** Account preferences
 
 **Features:**
+
 - Email preferences
 - Notification settings
 - Privacy controls
@@ -335,6 +369,7 @@ Gateway 1: Turning Snowflakes into Diamonds
 **Purpose:** Help resources
 
 **Features:**
+
 - FAQ section
 - Contact form
 - Help articles
@@ -354,24 +389,28 @@ Gateway 1: Turning Snowflakes into Diamonds
 **Features:**
 
 1. **Visual Editor**
+
    - WYSIWYG markdown editing
    - Live preview
    - Rich text toolbar
    - Image uploads to `/public/uploads/`
 
 2. **Content Collections**
+
    - **News Updates** - Date-stamped announcements
    - **Blog Posts** - Long-form articles with authors
    - **Pages** - Static pages (About, Contact)
    - **Site Settings** - Global configuration
 
 3. **Media Library**
+
    - Upload images and files
    - Organize in folders
    - Insert into content
    - Automatic optimization (planned)
 
 4. **Workflow**
+
    - Draft/Published status
    - Git commits on save
    - Editorial workflow (planned)
@@ -384,6 +423,7 @@ Gateway 1: Turning Snowflakes into Diamonds
    - Version history via Git
 
 **Setup:**
+
 ```yaml
 # /public/admin/config.yml
 backend:
@@ -393,6 +433,7 @@ backend:
 ```
 
 **Environment Variables:**
+
 ```env
 GITHUB_CLIENT_ID=your_client_id
 GITHUB_CLIENT_SECRET=your_client_secret
@@ -405,21 +446,22 @@ GITHUB_CLIENT_SECRET=your_client_secret
 **Server-Side Functions:**
 
 ```typescript
-import { getContentByType, getContentBySlug } from '@/lib/content';
+import { getContentByType, getContentBySlug } from "@/lib/content";
 
 // Get all published news articles
-const news = await getContentByType('news');
+const news = await getContentByType("news");
 
 // Get specific article by slug
-const article = await getContentBySlug('news', 'welcome-2024');
+const article = await getContentBySlug("news", "welcome-2024");
 
 // Access frontmatter and content
-article.frontmatter.title
-article.frontmatter.date
-article.content // HTML string
+article.frontmatter.title;
+article.frontmatter.date;
+article.content; // HTML string
 ```
 
 **Features:**
+
 - Automatic markdown to HTML conversion
 - Frontmatter parsing with gray-matter
 - Published/draft filtering
@@ -435,6 +477,7 @@ article.content // HTML string
 **Purpose:** Answer questions about book content
 
 **Architecture:**
+
 - Simple approach leveraging Claude's 200K context
 - Entire book loaded into system prompt
 - Prompt caching for cost efficiency
@@ -443,12 +486,14 @@ article.content // HTML string
 **Implementation:**
 
 **Backend (`/src/lib/rag/claude-simple.ts`):**
+
 ```typescript
-export async function askBook(question: string): Promise<AskBookResult>
-export async function askBookStreaming(question: string)
+export async function askBook(question: string): Promise<AskBookResult>;
+export async function askBookStreaming(question: string);
 ```
 
 **API Route (`/src/app/api/ask/route.ts`):**
+
 ```typescript
 POST /api/ask
 Body: { question: string }
@@ -456,24 +501,28 @@ Response: { answer: string, usage: {...} }
 ```
 
 **Frontend Integration:**
+
 - Chat interface at `/app/chat`
 - Suggested prompts
 - Message history
 - Markdown rendering
 
 **Book Content:**
+
 - Located at `docs/content/turning-snowflakes-into-diamonds.md`
 - 2,078 lines, ~40K tokens
 - Loaded at module initialization
 - Cached in memory
 
 **Cost Analysis:**
+
 - Cache creation: $0.012 first query
 - Cache read: $0.0012 subsequent queries
 - 5-minute cache TTL
 - ~$15/month for 100 queries/day
 
 **System Prompt:**
+
 ```
 You are an expert on the book "Turning Snowflakes into Diamonds" by Michael Dugan.
 Answer questions based ONLY on the book content provided.
@@ -494,6 +543,7 @@ Focus on identity transformation, nervous system regulation, and high-performanc
 **Planned Features:**
 
 1. **Lead Capture**
+
    - Email collection from landing page
    - UTM parameter tracking
    - Referrer source tracking
@@ -507,6 +557,7 @@ Focus on identity transformation, nervous system regulation, and high-performanc
    - Preferences and settings
 
 **Schema (Planned):**
+
 ```sql
 CREATE TABLE leads (
   id INTEGER PRIMARY KEY,
@@ -522,17 +573,19 @@ CREATE TABLE leads (
 ```
 
 **Integration:**
+
 ```typescript
-import { turso } from '@/lib/turso';
+import { turso } from "@/lib/turso";
 
 // Insert lead
 await turso.execute({
-  sql: 'INSERT INTO leads (email, source) VALUES (?, ?)',
-  args: [email, 'landing_page']
+  sql: "INSERT INTO leads (email, source) VALUES (?, ?)",
+  args: [email, "landing_page"],
 });
 ```
 
 **Environment Variables:**
+
 ```env
 TURSO_DATABASE_URL=libsql://your-db.turso.io
 TURSO_AUTH_TOKEN=your-token
@@ -545,12 +598,14 @@ TURSO_AUTH_TOKEN=your-token
 **Current Status:** Infrastructure Ready
 
 **OAuth Implementation:**
+
 - GitHub OAuth for CMS access
 - `/api/auth` endpoint
 - `/api/callback` handler
 - Token exchange flow
 
 **Planned Member Auth:**
+
 - Email/password login
 - Magic link authentication
 - Social OAuth (Google, GitHub)
@@ -564,6 +619,7 @@ TURSO_AUTH_TOKEN=your-token
 **Platform:** Vercel (Production)
 
 **Features:**
+
 - Automatic deployments from Git
 - Preview deployments for PRs
 - Environment variable management
@@ -571,6 +627,7 @@ TURSO_AUTH_TOKEN=your-token
 - Analytics and monitoring
 
 **Build Configuration:**
+
 ```json
 {
   "scripts": {
@@ -582,6 +639,7 @@ TURSO_AUTH_TOKEN=your-token
 ```
 
 **Production Optimizations:**
+
 - Static page generation (SSG)
 - Server-side rendering (SSR) for dynamic content
 - Image optimization
@@ -593,6 +651,7 @@ TURSO_AUTH_TOKEN=your-token
 ## Technology Stack Summary
 
 ### Frontend
+
 - **Next.js 15.5.3** - React framework with App Router
 - **React 19.1** - UI library
 - **TypeScript 5** - Type safety
@@ -602,6 +661,7 @@ TURSO_AUTH_TOKEN=your-token
 - **React Three Fiber** - 3D graphics
 
 ### Backend & Data
+
 - **Next.js API Routes** - Serverless functions
 - **Turso SQLite** - Database (planned)
 - **Decap CMS** - Git-based CMS
@@ -609,11 +669,13 @@ TURSO_AUTH_TOKEN=your-token
 - **Remark** - Markdown processing
 
 ### AI & ML
+
 - **Anthropic Claude Sonnet 4.5** - Language model
 - **Prompt Caching** - Cost optimization
 - **RAG System** - Book-based Q&A
 
 ### DevOps & Tools
+
 - **Vercel** - Hosting and deployment
 - **GitHub** - Version control
 - **ESLint** - Code linting
@@ -621,16 +683,18 @@ TURSO_AUTH_TOKEN=your-token
 
 ---
 
-## Future Roadmap
+## Future Roadmap (phase 8 onwards is for illustration purposes.)
 
-### Phase 4: Member Authentication (Q1 2025)
+### Phase 4: Member Authentication
+
 - Email/password login system
 - Session management
 - Protected route middleware
 - User profile database
 - Password reset flow
 
-### Phase 5: Advanced Course Features (Q1 2025)
+### Phase 5: Advanced Course Features
+
 - Video/audio embedding
   - Secure non-downloadable playback
   - Custom video player
@@ -644,35 +708,40 @@ TURSO_AUTH_TOKEN=your-token
   - Community Q&A
   - Upvoting/downvoting
 
-### Phase 6: Progress Sync (Q2 2025)
+### Phase 6: Progress Sync
+
 - Move from localStorage to database
 - Multi-device synchronization
 - Progress analytics dashboard
 - Learning time tracking
 - Streak tracking and gamification
 
-### Phase 7: Lead Nurture Automation (Q2 2025)
+### Phase 7: Lead Nurture Automation
+
 - Turso database integration (PRD complete)
 - Email automation triggers
 - Drip campaign sequences
 - Lead scoring
 - CRM integration (HubSpot/Mailchimp)
 
-### Phase 8: Community Features (Q2 2025)
+### Phase 8: Community Features
+
 - Member directory
 - Group cohorts
 - Live Q&A sessions
 - Peer accountability partnerships
 - Private messaging
 
-### Phase 9: Advanced Analytics (Q3 2025)
+### Phase 9: Advanced Analytics
+
 - Course completion funnels
 - Engagement heatmaps
 - Drop-off analysis
 - A/B testing infrastructure
 - Conversion tracking
 
-### Phase 10: Mobile App (Q4 2025)
+### Phase 10: Mobile App
+
 - React Native application
 - Offline course access
 - Push notifications
@@ -689,6 +758,7 @@ TURSO_AUTH_TOKEN=your-token
 - **Main README:** [README.md](/README.md)
 
 **PRDs (Product Requirements Documents):**
+
 - Course Viewer: [docs/specs/course-viewer-prd.md](/docs/specs/course-viewer-prd.md)
 - Lead Capture: [docs/specs/lead-capture-turso-prd.md](/docs/specs/lead-capture-turso-prd.md)
 - RAG System: [docs/specs/diamond-rag.md](/docs/specs/diamond-rag.md)
@@ -698,6 +768,7 @@ TURSO_AUTH_TOKEN=your-token
 ## Quick Start Guide
 
 ### For Developers
+
 ```bash
 # Install dependencies
 npm install
@@ -713,12 +784,14 @@ npm run dev
 ```
 
 ### For Content Editors
+
 1. Navigate to `/admin`
 2. Log in with GitHub
 3. Create/edit content using visual editor
 4. Publish to deploy changes
 
 ### For Members
+
 1. Visit landing page at `/`
 2. Sign up for account (planned)
 3. Access member portal at `/app`
