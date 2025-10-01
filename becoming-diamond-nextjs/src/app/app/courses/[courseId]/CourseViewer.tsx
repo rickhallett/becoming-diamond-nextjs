@@ -57,14 +57,15 @@ export default function CourseViewer({ course }: CourseViewerProps) {
     (ch) => ch.id === currentSlide?.chapterId
   );
 
-  // Navigation functions
   // Update progress when slide changes
   useEffect(() => {
-    if (currentSlide && progressData) {
-      const updated = updateCurrentSlide(progressData, currentSlide.id);
-      setProgressData(updated);
+    if (currentSlide) {
+      setProgressData(prev => {
+        if (!prev) return prev;
+        return updateCurrentSlide(prev, currentSlide.id);
+      });
     }
-  }, [currentSlideIndex, currentSlide, progressData]);
+  }, [currentSlideIndex, currentSlide]);
 
   const goToNextSlide = useCallback(() => {
     if (currentSlideIndex < allSlides.length - 1) {
