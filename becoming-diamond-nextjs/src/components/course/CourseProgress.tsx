@@ -1,7 +1,7 @@
 "use client";
 
 import type { ParsedCourse } from "@/types/course";
-import { IconMenu2, IconX } from "@tabler/icons-react";
+import { IconMenu2 } from "@tabler/icons-react";
 import Link from "next/link";
 
 interface CourseProgressProps {

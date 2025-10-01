@@ -3,7 +3,7 @@
  * Handles localStorage persistence and progress calculations
  */
 
-import type { CourseProgress, ChapterProgress, SlideProgress } from "@/types/progress";
+import type { CourseProgress, ChapterProgress } from "@/types/progress";
 import type { ParsedCourse } from "@/types/course";
 
 const PROGRESS_KEY_PREFIX = "course-progress-";

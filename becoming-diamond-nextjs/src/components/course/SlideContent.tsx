@@ -11,7 +11,7 @@ interface SlideContentProps {
   onToggleNotes: () => void;
 }
 
-export default function SlideContent({ slide, chapterTitle, showNotes, onToggleNotes }: SlideContentProps) {
+export default function SlideContent({ slide, chapterTitle, showNotes }: SlideContentProps) {
   const [notes, setNotes] = useState("");
 
   // Load notes from localStorage
