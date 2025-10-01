@@ -21,7 +21,7 @@ export interface Course {
   id: string;
   title: string;
   description: string;
-  gateway: number;
+  pressureRoom: number;
   thumbnail?: string;
   duration: string; // e.g., "4 weeks"
   lessons: string[];
@@ -33,7 +33,7 @@ export interface Course {
 export interface ActivityLog {
   id: string;
   userId: string;
-  type: 'course_enrolled' | 'lesson_completed' | 'gateway_completed' | 'achievement_earned' | 'profile_updated' | 'login';
+  type: 'course_enrolled' | 'lesson_completed' | 'pr_completed' | 'achievement_earned' | 'profile_updated' | 'login';
   timestamp: string;
   metadata: Record<string, unknown>;
   description: string;
@@ -59,30 +59,30 @@ const CourseContext = createContext<CourseContextValue | undefined>(undefined);
 // Sample course data (would eventually come from API or CMS)
 export const SAMPLE_COURSES: Course[] = [
   {
-    id: 'gateway-1-snowflakes-to-diamonds',
-    title: 'Gateway 1: Turning Snowflakes into Diamonds',
+    id: 'pr1-stabilize-snowflakes-to-diamonds',
+    title: 'PR1: Stabilize - Turning Snowflakes into Diamonds',
     description: 'Learn to transform pressure into power and develop unshakeable resilience in the face of challenges.',
-    gateway: 1,
+    pressureRoom: 1,
     duration: '8 weeks',
     lessons: ['Lesson 1: Introduction to Presence', 'Lesson 2: Breath Awareness', 'Lesson 3: Body Scan Meditation', 'Lesson 4: Present Moment Practice'],
     difficulty: 'Beginner',
     instructor: 'Michael Dugan'
   },
   {
-    id: 'gateway-2',
-    title: 'Gateway 2: Emotional Intelligence',
-    description: 'Develop deep understanding and mastery of your emotional landscape.',
-    gateway: 2,
+    id: 'pr2-shift',
+    title: 'PR2: Shift - Emotional Intelligence',
+    description: 'Where your ego meets the mirror, and your identity upgrades.',
+    pressureRoom: 2,
     duration: '4 weeks',
     lessons: ['Lesson 1: Understanding Emotions', 'Lesson 2: Emotional Regulation', 'Lesson 3: Empathy Development', 'Lesson 4: Emotional Mastery'],
     difficulty: 'Intermediate',
     instructor: 'Master Diamond'
   },
   {
-    id: 'gateway-3',
-    title: 'Gateway 3: Mental Clarity',
+    id: 'pr3-strengthen',
+    title: 'PR3: Strengthen - Mental Clarity',
     description: 'Sharpen your mind and develop unshakeable focus and clarity.',
-    gateway: 3,
+    pressureRoom: 3,
     duration: '5 weeks',
     lessons: ['Lesson 1: Cognitive Awareness', 'Lesson 2: Focus Training', 'Lesson 3: Mental Models', 'Lesson 4: Decision Making', 'Lesson 5: Clarity Mastery'],
     difficulty: 'Intermediate',

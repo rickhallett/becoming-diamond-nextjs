@@ -1,7 +1,7 @@
 ---
-id: gateway-1-snowflakes-to-diamonds
-title: "Turning Snowflakes into Diamonds"
-gateway: 1
+id: pr1-stabilize-snowflakes-to-diamonds
+title: "PR1: Stabilize - Turning Snowflakes into Diamonds"
+pressureRoom: 1
 duration: "8 weeks"
 difficulty: "Beginner"
 instructor: "Michael Dugan"

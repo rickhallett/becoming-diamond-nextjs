@@ -14,8 +14,8 @@ export interface UserProfile {
   location?: string;
   website?: string;
   joinedDate: string;
-  currentGateway: number;
-  completedGateways: number[];
+  currentPR: number;
+  completedPRs: number[];
   level: string;
   xp: number;
   streak: number;
@@ -53,8 +53,8 @@ const createDefaultProfile = (userId: string): UserProfile => ({
   location: '',
   website: '',
   joinedDate: new Date().toISOString(),
-  currentGateway: 1,
-  completedGateways: [],
+  currentPR: 1,
+  completedPRs: [],
   level: 'Initiate',
   xp: 0,
   streak: 0,

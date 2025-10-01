@@ -27,7 +27,7 @@ export default function CoursesPage() {
         );
     }
 
-    // Course images by gateway
+    // Course images by pressure room
     const courseImages = [
         "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800&h=600&fit=crop",
         "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?q=80&w=800&h=600&fit=crop",
@@ -43,15 +43,15 @@ export default function CoursesPage() {
             return {
                 ...course,
                 enrollment,
-                src: courseImages[course.gateway - 1],
+                src: courseImages[course.pressureRoom - 1],
             };
         });
 
     const availableCourses = SAMPLE_COURSES.filter(course => !isEnrolled(course.id))
         .map(course => ({
             ...course,
-            src: courseImages[course.gateway - 1],
-            isLocked: course.gateway > user.currentGateway,
+            src: courseImages[course.pressureRoom - 1],
+            isLocked: course.pressureRoom > user.currentPR,
         }));
 
     const handleEnroll = (courseId: string) => {
@@ -239,7 +239,7 @@ export default function CoursesPage() {
                                         {isLocked ? (
                                             <div className="pt-4 border-t border-white/10">
                                                 <p className="text-xs text-gray-500">
-                                                    Complete Gateway {course.gateway - 1} to unlock
+                                                    Complete PR{course.pressureRoom - 1} to unlock
                                                 </p>
                                             </div>
                                         ) : (
