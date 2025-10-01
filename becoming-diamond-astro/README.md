@@ -97,6 +97,8 @@ The build process will:
 | `npm run build` | Build production site to `./dist/` |
 | `npm run preview` | Preview build locally |
 | `npm run check` | Run TypeScript check |
+| `npm run type-check` | Run TypeScript compiler check (no emit) |
+| `npm run clean` | Clean build artifacts |
 
 ## Project Structure
 
@@ -149,16 +151,82 @@ Upload images through the CMS interface - they'll be saved to `public/uploads/`
 
 ## Deployment
 
-### Vercel
+### Prerequisites
+1. Vercel account
+2. GitHub repository
+3. Production GitHub OAuth App configured
 
-1. Push your code to GitHub
-2. Import project in Vercel
-3. Add environment variables:
+### Deploy to Vercel
+
+#### Option 1: Vercel CLI
+```bash
+# Install Vercel CLI
+npm i -g vercel
+
+# Login to Vercel
+vercel login
+
+# Deploy
+vercel --prod
+```
+
+#### Option 2: Vercel Dashboard
+1. Import your GitHub repository in Vercel
+2. Configure environment variables:
    - `OAUTH_GITHUB_CLIENT_ID`
    - `OAUTH_GITHUB_CLIENT_SECRET`
    - `OAUTH_TOKEN_SECRET`
-4. Update GitHub OAuth App callback URL to your Vercel domain
-5. Deploy
+3. Click "Deploy"
+
+### Environment Variables Setup
+
+In Vercel dashboard:
+1. Go to Project Settings → Environment Variables
+2. Add the following variables:
+   - `OAUTH_GITHUB_CLIENT_ID`: Your production GitHub OAuth Client ID
+   - `OAUTH_GITHUB_CLIENT_SECRET`: Your production GitHub OAuth Client Secret
+   - `OAUTH_TOKEN_SECRET`: Generate with `openssl rand -base64 32`
+3. Set environment to "Production"
+4. Save changes
+
+### Production OAuth App Setup
+
+Create separate production GitHub OAuth App:
+
+1. Go to GitHub Settings → Developer settings → OAuth Apps → New OAuth App
+2. Fill in the form:
+   - **Application name**: `Becoming Diamond Astro CMS (Production)`
+   - **Homepage URL**: `https://your-production-domain.vercel.app`
+   - **Authorization callback URL**: `https://your-production-domain.vercel.app/oauth/callback`
+3. Click "Register application"
+4. Copy Client ID and generate Client Secret
+5. Add to Vercel environment variables
+
+### Post-Deployment
+
+1. Update GitHub OAuth App:
+   - Homepage URL: `https://your-domain.vercel.app`
+   - Callback URL: `https://your-domain.vercel.app/oauth/callback`
+
+2. Test deployment:
+   - Visit your production URL
+   - Test landing page loads
+   - Test CMS authentication at `/admin`
+   - Verify animations work
+   - Check mobile responsiveness
+
+### Continuous Deployment
+
+Vercel automatically deploys:
+- **Production**: Pushes to `main` branch
+- **Preview**: Pull requests and other branches
+
+### Rollback
+
+If needed, rollback in Vercel dashboard:
+1. Go to Deployments
+2. Find previous successful deployment
+3. Click "..." → "Promote to Production"
 
 ## Troubleshooting
 

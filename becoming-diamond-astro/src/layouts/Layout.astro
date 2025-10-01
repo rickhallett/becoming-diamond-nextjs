@@ -2,9 +2,18 @@
 interface Props {
   title: string;
   description?: string;
+  image?: string;
+  url?: string;
 }
 
-const { title, description = "Aceternity AI - Modern Web Experience" } = Astro.props;
+const {
+  title,
+  description = "Aceternity AI - Modern web experiences with elegant design",
+  image = "/og-image.png",
+  url = Astro.site || "https://becoming-diamond-astro.vercel.app"
+} = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, url).toString();
 ---
 
 <!doctype html>
@@ -13,7 +22,29 @@ const { title, description = "Aceternity AI - Modern Web Experience" } = Astro.p
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- SEO -->
+    <link rel="canonical" href={canonicalUrl} />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalUrl} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={image} />
+
+    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
     <title>{title}</title>
   </head>
   <body>

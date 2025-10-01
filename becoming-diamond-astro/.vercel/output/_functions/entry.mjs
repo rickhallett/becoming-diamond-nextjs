@@ -1,24 +1,28 @@
 import { renderers } from './renderers.mjs';
-import { c as createExports, s as serverEntrypointModule } from './chunks/_@astrojs-ssr-adapter_DHU94od4.mjs';
-import { manifest } from './manifest_B4z5GYqi.mjs';
+import { c as createExports, s as serverEntrypointModule } from './chunks/_@astrojs-ssr-adapter_E8sumjZ_.mjs';
+import { manifest } from './manifest_Bt_zwzm0.mjs';
 
 const serverIslandMap = new Map();;
 
 const _page0 = () => import('./pages/_image.astro.mjs');
-const _page1 = () => import('./pages/admin.astro.mjs');
-const _page2 = () => import('./pages/app.astro.mjs');
-const _page3 = () => import('./pages/landing.astro.mjs');
-const _page4 = () => import('./pages/oauth/callback.astro.mjs');
-const _page5 = () => import('./pages/oauth.astro.mjs');
-const _page6 = () => import('./pages/index.astro.mjs');
+const _page1 = () => import('./pages/404.astro.mjs');
+const _page2 = () => import('./pages/500.astro.mjs');
+const _page3 = () => import('./pages/admin.astro.mjs');
+const _page4 = () => import('./pages/app.astro.mjs');
+const _page5 = () => import('./pages/landing.astro.mjs');
+const _page6 = () => import('./pages/oauth/callback.astro.mjs');
+const _page7 = () => import('./pages/oauth.astro.mjs');
+const _page8 = () => import('./pages/index.astro.mjs');
 const pageMap = new Map([
     ["node_modules/astro/dist/assets/endpoint/generic.js", _page0],
-    ["node_modules/astro-decap-cms-oauth/src/admin.astro", _page1],
-    ["src/pages/app.astro", _page2],
-    ["src/pages/landing.astro", _page3],
-    ["node_modules/astro-decap-cms-oauth/src/oauth/callback.ts", _page4],
-    ["node_modules/astro-decap-cms-oauth/src/oauth/index.ts", _page5],
-    ["src/pages/index.astro", _page6]
+    ["src/pages/404.astro", _page1],
+    ["src/pages/500.astro", _page2],
+    ["node_modules/astro-decap-cms-oauth/src/admin.astro", _page3],
+    ["src/pages/app.astro", _page4],
+    ["src/pages/landing.astro", _page5],
+    ["node_modules/astro-decap-cms-oauth/src/oauth/callback.ts", _page6],
+    ["node_modules/astro-decap-cms-oauth/src/oauth/index.ts", _page7],
+    ["src/pages/index.astro", _page8]
 ]);
 
 const _manifest = Object.assign(manifest, {
@@ -29,7 +33,7 @@ const _manifest = Object.assign(manifest, {
     middleware: () => import('./_noop-middleware.mjs')
 });
 const _args = {
-    "middlewareSecret": "2f9e6864-de60-4be9-ac23-9d5f7cf513e7",
+    "middlewareSecret": "572d2205-761a-4709-b57b-a7278a18fee4",
     "skewProtection": false
 };
 const _exports = createExports(_manifest, _args);
