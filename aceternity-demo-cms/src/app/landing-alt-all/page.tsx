@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -10,6 +11,8 @@ import { BackgroundBeams } from "@/components/ui/background-beams";
 import { LampContainer } from "@/components/ui/lamp";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { Timeline } from "@/components/ui/timeline";
+import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input";
+import { EvervaultCard } from "@/components/ui/evervault-card";
 
 const World = dynamic(() => import("@/components/ui/globe").then((m) => m.World), {
     ssr: false,
@@ -118,7 +121,7 @@ export default function LandingAltAll() {
                     </Link>
 
                     {/* Desktop Navigation */}
-                    <div className="hidden md:flex gap-8">
+                    <div className="hidden md:flex gap-8 items-center">
                         <Link href="#problem" className="hover:text-primary transition-colors">
                             The Problem
                         </Link>
@@ -127,6 +130,9 @@ export default function LandingAltAll() {
                         </Link>
                         <Link href="#offers" className="hover:text-primary transition-colors">
                             Transform
+                        </Link>
+                        <Link href="/auth" className="hover:text-primary transition-colors">
+                            Members Area
                         </Link>
                     </div>
 
@@ -174,6 +180,13 @@ export default function LandingAltAll() {
                         >
                             Transform
                         </Link>
+                        <Link
+                            href="/auth"
+                            className="text-lg hover:text-primary transition-colors py-2"
+                            onClick={() => setMobileMenuOpen(false)}
+                        >
+                            Members Area
+                        </Link>
                     </div>
                 </motion.div>
             </nav>
@@ -199,8 +212,8 @@ export default function LandingAltAll() {
                     </motion.div>
 
                     <h1 className="mb-8 leading-none">
-                        While Everyone's Panicking About <span className="text-primary">AI</span>,<br />
-                        We're Training the <span className="text-primary">One Thing</span><br />
+                        While Everyone&apos;s Panicking About <span className="text-primary">AI</span>,<br />
+                        We&apos;re Training the <span className="text-primary">One Thing</span><br />
                         Machines Will Never Replace
                     </h1>
 
@@ -238,7 +251,7 @@ export default function LandingAltAll() {
                         transition={{ delay: 0.6 }}
                     >
                         <p className="text-lg">Over 2,000 professionals increased their income by an average of <span className="text-primary font-semibold">2x in just 5 days</span></p>
-                        <p className="italic">"I'm not the same person I was a week ago." - Misty R.</p>
+                        <p className="italic">"I&apos;m not the same person I was a week ago.&rdquo; - Misty R.</p>
                     </motion.div>
                 </motion.div>
             </section>
@@ -284,9 +297,9 @@ export default function LandingAltAll() {
                         viewport={{ once: true, margin: "-100px" }}
                         className="text-center mb-16"
                     >
-                        <h2 className="mb-6">The <span className="text-primary">Pressure</span> You're Under<br />Isn't the Problem</h2>
+                        <h2 className="mb-6">The <span className="text-primary">Pressure</span> You&apos;re Under<br />Isn&apos;t the Problem</h2>
                         <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                            It's that your <span className="text-primary">nervous system</span> isn't trained for it
+                            It&apos;s that your <span className="text-primary">nervous system</span> isn&apos;t trained for it
                         </p>
                     </motion.div>
 
@@ -294,11 +307,11 @@ export default function LandingAltAll() {
                         {[
                             {
                                 title: "Burned Out by Hustle Culture",
-                                description: "You're high-functioning but emotionally exhausted. Something is 'off' but you can't name it."
+                                description: "You&apos;re high-functioning but emotionally exhausted. Something is &lsquo;off &rsquo; but you can&apos;t name it."
                             },
                             {
                                 title: "Identity Crisis",
-                                description: "After a major life change—divorce, layoff, or transition—you're trying to find your purpose again."
+                                description: "After a major life change—divorce, layoff, or transition—you&apos;re trying to find your purpose again."
                             },
                             {
                                 title: "AI Anxiety",
@@ -310,11 +323,11 @@ export default function LandingAltAll() {
                             },
                             {
                                 title: "Emotional Dysregulation",
-                                description: "Your emotions spike and crash. You're triggered easily and can't get back to center."
+                                description: "Your emotions spike and crash. You&apos;re triggered easily and can&apos;t get back to center."
                             },
                             {
                                 title: "Living Small",
-                                description: "You're terrified of living a small life—of not being able to protect or provide for your family."
+                                description: "You&apos;re terrified of living a small life—of not being able to protect or provide for your family."
                             }
                         ].map((item, index) => (
                             <motion.div
@@ -325,7 +338,7 @@ export default function LandingAltAll() {
                                 viewport={{ once: true }}
                                 className="bg-secondary/50 backdrop-blur-sm border border-white/10 rounded-lg p-6 hover:border-primary/50 transition-all"
                             >
-                                <h3 className="text-xl mb-3 font-normal text-red-500">{item.title}</h3>
+                                <h3 className="text-xl mb-3 font-normal">{item.title}</h3>
                                 <p className="text-gray-400 text-base">{item.description}</p>
                             </motion.div>
                         ))}
@@ -339,9 +352,9 @@ export default function LandingAltAll() {
                         className="text-center"
                     >
                         <blockquote className="text-2xl md:text-3xl font-light italic text-gray-300 max-w-4xl mx-auto">
-                            "You can't <span className="text-primary not-italic">think</span> your way into a new identity.<br />
+                            &ldquo;You can&apos;t <span className="text-primary not-italic">think</span> your way into a new identity.<br />
                             Your nervous system is running the show.<br />
-                            That's why willpower fails."<span className="text-gray-600"> ~ Michael T Dugan</span>
+                            That&apos;s why willpower fails.&rdquo;<span className="text-gray-600"> ~ Michael T Dugan</span>
                         </blockquote>
                     </motion.div>
                 </div>
@@ -618,8 +631,8 @@ export default function LandingAltAll() {
                         >
                             <h3 className="text-xl mb-4 font-bold">The Problem</h3>
                             <div className="space-y-3 text-gray-300 leading-relaxed">
-                                <p className="text-base">You feel <span className="text-red-400">stuck</span>—not because you're lazy, but because you've outgrown your current identity.</p>
-                                <p className="text-base"><span className="text-red-400">Your nervous system is dysregulated.</span> Your emotions spike and crash. Your confidence wavers.</p>
+                                <p className="text-base">You feel <span className="text-primary">stuck</span>—not because you're lazy, but because you've outgrown your current identity.</p>
+                                <p className="text-base"><span className="text-primary">Your nervous system is dysregulated.</span> Your emotions spike and crash. Your confidence wavers.</p>
                                 <p className="text-base">And no amount of positive thinking, productivity hacks, or hustle is fixing it.</p>
                                 <p className="text-base font-normal text-white pt-4">Because the problem isn't your mindset. It's your <span className="text-primary">operating system</span>.</p>
                             </div>
@@ -651,7 +664,7 @@ export default function LandingAltAll() {
                                 </p>
                                 <p className="flex items-start text-base">
                                     <span className="text-primary mr-2">→</span>
-                                    How to lead with <span className="text-primary">&nbsp;magnetic presence</span>
+                                    How to lead with <span className="text-primary font-bold">&nbsp;magnetic presence</span>
                                 </p>
                             </div>
                         </motion.div>
@@ -734,14 +747,16 @@ export default function LandingAltAll() {
                                     ))}
                                 </ul>
 
-                                <button
-                                    className={`w-full py-3 rounded-lg font-medium transition-all ${tier.popular
-                                        ? 'bg-primary text-black hover:bg-primary/90'
-                                        : 'bg-white/10 text-white hover:bg-white/20'
-                                        }`}
-                                >
-                                    {tier.cta}
-                                </button>
+                                <Link href="/auth">
+                                    <button
+                                        className={`w-full py-3 rounded-lg font-medium transition-all ${tier.popular
+                                            ? 'bg-primary text-black hover:bg-primary/90'
+                                            : 'bg-white/10 text-white hover:bg-white/20'
+                                            }`}
+                                    >
+                                        {tier.cta}
+                                    </button>
+                                </Link>
                             </motion.div>
                         ))}
                     </div>
@@ -783,7 +798,7 @@ export default function LandingAltAll() {
                             Become the Leader Pressure Can't Break
                         </p>
 
-                        <div className="max-w-3xl mx-auto mb-16">
+                        <div className="max-w-3xl mx-auto mb-12">
                             <p className="text-lg text-gray-300 mb-6">
                                 A 12-month guided journey through <span className="text-primary font-normal">5 transformational gateways</span>—each one designed to train your body, mind, and identity to operate under pressure with grace, clarity, and conviction.
                             </p>
@@ -792,9 +807,13 @@ export default function LandingAltAll() {
                                 This is <span className="text-primary not-italic">soul-tempering, system-level transformation</span>.
                             </p>
                         </div>
+                    </motion.div>
+                </LampContainer>
+            </section>
 
-                        {/* The 5 Gateways */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 max-w-6xl mx-auto mb-8">
+            {/* The 5 Gateways */}
+            <section className="py-12 px-6 relative bg-black">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 max-w-6xl mx-auto">
                             {[
                                 {
                                     number: "1",
@@ -856,11 +875,58 @@ export default function LandingAltAll() {
                                 </div>
                             ))}
                         </div>
-                    </motion.div>
-                </LampContainer>
+            </section>
 
-                {/* Gateway Journey Timeline */}
-                <div className="max-w-6xl mx-auto px-6 relative z-10 pt-16 pb-24">
+            {/* DiamondMindAI */}
+            <section className="py-24 px-6 relative bg-black">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                    viewport={{ once: true }}
+                    className="flex flex-col items-center max-w-3xl mx-auto"
+                >
+                    <div className="w-full flex justify-center mb-16">
+                        <div className="relative w-[500px] h-[500px] max-w-full">
+                            <EvervaultCard text="" className="w-full h-full" />
+                            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                <div className="relative">
+                                    <div className="absolute inset-0 bg-primary/30 blur-[120px] rounded-full" style={{ width: '400px', height: '400px', left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }} />
+                                    <span className="relative z-20 text-4xl md:text-5xl font-bold tracking-wider drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]" style={{ whiteSpace: 'nowrap' }}>
+                                        Diamond<span className="text-primary">Mind</span>AI
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="w-full max-w-2xl">
+                        <h3 className="text-2xl md:text-3xl mb-3 text-center text-gray-300">
+                            Questions About the Collective?
+                        </h3>
+                        <p className="text-base md:text-lg mb-8 text-center text-gray-400">
+                            Ask <span className="text-primary">DiamondMindAI</span>, our flagship model
+                        </p>
+                        <PlaceholdersAndVanishInput
+                            placeholders={[
+                                "What makes the DiamondMind Collective different?",
+                                "How long is the transformation journey?",
+                                "What happens in the 5 gateways?",
+                                "Is this right for emerging leaders?",
+                                "What support do I get during the year?",
+                            ]}
+                            onChange={() => {}}
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                            }}
+                        />
+                    </div>
+                </motion.div>
+            </section>
+
+            {/* Gateway Journey Timeline */}
+            <section className="py-24 px-6 relative bg-black">
+                <div className="max-w-6xl mx-auto relative">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}

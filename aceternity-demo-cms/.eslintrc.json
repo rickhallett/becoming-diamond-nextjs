@@ -13,7 +13,8 @@
     "react-hooks/exhaustive-deps": "warn",
     "@next/next/no-img-element": "warn",
     "no-console": ["warn", { "allow": ["warn", "error"] }],
-    "prefer-const": "warn"
+    "prefer-const": "warn",
+    "react/no-unescaped-entities": "off"
   },
   "ignorePatterns": [
     ".next",

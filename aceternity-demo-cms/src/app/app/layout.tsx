@@ -1,192 +1,214 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
-import { IconHome, IconUser, IconSettings, IconLogout, IconMenu2, IconX } from "@tabler/icons-react";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import {
+    IconHome,
+    IconBooks,
+    IconBrain,
+    IconUser,
+    IconSettings,
+    IconHelp,
+    IconLogout,
+    IconMenu2,
+    IconX,
+    IconSparkles
+} from "@tabler/icons-react";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const pathname = usePathname();
+    const router = useRouter();
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const navItems = [
-    { name: "Dashboard", href: "/app", icon: IconHome },
-    { name: "Profile", href: "/app/profile", icon: IconUser },
-    { name: "Settings", href: "/app/settings", icon: IconSettings },
-  ];
+    const navItems = [
+        { name: "Dashboard", href: "/app", icon: IconHome },
+        { name: "Courses", href: "/app/courses", icon: IconBooks },
+        { name: "DiamondMindAI", href: "/app/chat", icon: IconBrain },
+        { name: "Profile", href: "/app/profile", icon: IconUser },
+        { name: "Settings", href: "/app/settings", icon: IconSettings },
+        { name: "Support", href: "/app/support", icon: IconHelp },
+    ];
 
-  const isActive = (href: string) => {
-    if (href === "/app") {
-      return pathname === "/app";
-    }
-    return pathname.startsWith(href);
-  };
+    const isActive = (href: string) => {
+        if (href === "/app") {
+            return pathname === "/app";
+        }
+        return pathname.startsWith(href);
+    };
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white flex flex-col">
-      {/* Header with Navigation */}
-      <motion.header
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        className="sticky top-0 z-50 bg-black/50 backdrop-blur-xl border-b border-white/10"
-      >
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-16">
-            {/* Logo */}
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center space-x-2"
-            >
-              <Link href="/app" className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg" />
-                <span className="text-xl font-bold">
-                  Aceternity <span className="text-purple-500">AI</span>
-                </span>
-              </Link>
-            </motion.div>
+    const handleLogout = () => {
+        router.push("/landing-alt-all");
+    };
 
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-1">
-              {navItems.map((item) => {
-                const Icon = item.icon;
-                const active = isActive(item.href);
-
-                return (
-                  <Link key={item.href} href={item.href}>
-                    <motion.div
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className={cn(
-                        "flex items-center space-x-2 px-4 py-2 rounded-lg transition-all",
-                        "hover:bg-white/10",
-                        active && "bg-white/10 text-purple-400"
-                      )}
-                    >
-                      <Icon className="w-5 h-5" />
-                      <span>{item.name}</span>
-                    </motion.div>
-                  </Link>
-                );
-              })}
-
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => window.location.href = "/landing"}
-                className="flex items-center space-x-2 px-4 py-2 rounded-lg text-red-400 hover:bg-red-400/10 transition-all ml-4"
-              >
-                <IconLogout className="w-5 h-5" />
-                <span>Logout</span>
-              </motion.button>
-            </nav>
-
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 rounded-lg hover:bg-white/10 transition-colors"
-            >
-              {isMobileMenuOpen ? (
-                <IconX className="w-6 h-6" />
-              ) : (
-                <IconMenu2 className="w-6 h-6" />
-              )}
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Navigation */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="md:hidden border-t border-white/10 overflow-hidden"
-            >
-              <nav className="container mx-auto px-4 py-4 space-y-2">
-                {navItems.map((item) => {
-                  const Icon = item.icon;
-                  const active = isActive(item.href);
-
-                  return (
-                    <Link key={item.href} href={item.href}>
-                      <motion.div
-                        whileHover={{ x: 10 }}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className={cn(
-                          "flex items-center space-x-3 px-4 py-3 rounded-lg transition-all",
-                          "hover:bg-white/10",
-                          active && "bg-white/10 text-purple-400"
-                        )}
-                      >
-                        <Icon className="w-5 h-5" />
-                        <span>{item.name}</span>
-                      </motion.div>
+    return (
+        <div className="min-h-screen bg-black text-white flex">
+            {/* Desktop Sidebar */}
+            <aside className="hidden lg:flex lg:flex-col w-72 bg-gradient-to-b from-secondary/50 to-black border-r border-white/10 fixed h-full z-40">
+                {/* Logo */}
+                <div className="p-6 border-b border-white/10">
+                    <Link href="/app" className="flex items-center gap-3">
+                        <div className="relative">
+                            <div className="w-10 h-10 bg-gradient-to-br from-primary/40 to-primary/10 rounded-lg flex items-center justify-center">
+                                <IconSparkles className="w-6 h-6 text-primary" />
+                            </div>
+                            <div className="absolute inset-0 bg-primary/20 rounded-lg blur-md"></div>
+                        </div>
+                        <div>
+                            <h1 className="text-lg font-light tracking-wide">
+                                BECOMING <span className="text-primary font-normal">DIAMOND</span>
+                            </h1>
+                            <p className="text-xs text-gray-500">Member Portal</p>
+                        </div>
                     </Link>
-                  );
-                })}
+                </div>
 
-                <motion.button
-                  whileHover={{ x: 10 }}
-                  onClick={() => window.location.href = "/landing"}
-                  className="flex items-center space-x-3 px-4 py-3 rounded-lg text-red-400 hover:bg-red-400/10 transition-all w-full"
-                >
-                  <IconLogout className="w-5 h-5" />
-                  <span>Logout</span>
-                </motion.button>
-              </nav>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.header>
+                {/* Navigation */}
+                <nav className="flex-1 p-4 space-y-1">
+                    {navItems.map((item) => {
+                        const Icon = item.icon;
+                        const active = isActive(item.href);
 
-      {/* Main Content Area */}
-      <main className="flex-1 container mx-auto px-4 py-8">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={pathname}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className="min-h-[calc(100vh-16rem)]"
-          >
-            {children}
-          </motion.div>
-        </AnimatePresence>
-      </main>
+                        return (
+                            <Link key={item.href} href={item.href}>
+                                <div
+                                    className={cn(
+                                        "flex items-center gap-3 px-4 py-3 rounded-lg transition-all relative group",
+                                        active
+                                            ? "bg-primary/10 text-primary"
+                                            : "text-gray-400 hover:text-white hover:bg-white/5"
+                                    )}
+                                >
+                                    {active && (
+                                        <div className="absolute left-0 w-1 h-8 bg-primary rounded-r-full" />
+                                    )}
+                                    <Icon className="w-5 h-5 flex-shrink-0" />
+                                    <span className="font-light">{item.name}</span>
+                                </div>
+                            </Link>
+                        );
+                    })}
+                </nav>
 
-      {/* Footer */}
-      <motion.footer
-        initial={{ y: 100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        className="bg-black/50 backdrop-blur-xl border-t border-white/10 mt-auto"
-      >
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
-            <div className="text-sm text-gray-400">
-              © 2024 Aceternity AI. All rights reserved.
+                {/* User Section & Logout */}
+                <div className="p-4 border-t border-white/10">
+                    <button
+                        onClick={handleLogout}
+                        className="flex items-center gap-3 px-4 py-3 rounded-lg text-red-400 hover:bg-red-400/10 transition-all w-full"
+                    >
+                        <IconLogout className="w-5 h-5" />
+                        <span className="font-light">Logout</span>
+                    </button>
+                </div>
+            </aside>
+
+            {/* Mobile Header */}
+            <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-sm border-b border-white/10">
+                <div className="flex items-center justify-between p-4">
+                    <Link href="/app" className="flex items-center gap-2">
+                        <div className="w-8 h-8 bg-gradient-to-br from-primary/40 to-primary/10 rounded-lg flex items-center justify-center">
+                            <IconSparkles className="w-5 h-5 text-primary" />
+                        </div>
+                        <span className="text-sm font-light">
+                            BECOMING <span className="text-primary">DIAMOND</span>
+                        </span>
+                    </Link>
+
+                    <button
+                        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                        className="p-2 rounded-lg hover:bg-white/10 transition-colors"
+                    >
+                        {isSidebarOpen ? (
+                            <IconX className="w-6 h-6" />
+                        ) : (
+                            <IconMenu2 className="w-6 h-6" />
+                        )}
+                    </button>
+                </div>
             </div>
 
-            <div className="flex items-center space-x-6">
-              <Link href="/app/privacy" className="text-sm text-gray-400 hover:text-white transition-colors">
-                Privacy Policy
-              </Link>
-              <Link href="/app/terms" className="text-sm text-gray-400 hover:text-white transition-colors">
-                Terms of Service
-              </Link>
-              <Link href="/app/help" className="text-sm text-gray-400 hover:text-white transition-colors">
-                Help & Support
-              </Link>
-            </div>
-          </div>
+            {/* Mobile Sidebar */}
+            {isSidebarOpen && (
+                <>
+                    {/* Backdrop */}
+                    <div
+                        onClick={() => setIsSidebarOpen(false)}
+                        className="lg:hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-40"
+                    />
+
+                    {/* Sidebar */}
+                    <aside className="lg:hidden fixed left-0 top-0 bottom-0 w-72 bg-gradient-to-b from-secondary/50 to-black border-r border-white/10 z-50 overflow-y-auto">
+                            {/* Logo */}
+                            <div className="p-6 border-b border-white/10">
+                                <Link href="/app" className="flex items-center gap-3" onClick={() => setIsSidebarOpen(false)}>
+                                    <div className="relative">
+                                        <div className="w-10 h-10 bg-gradient-to-br from-primary/40 to-primary/10 rounded-lg flex items-center justify-center">
+                                            <IconSparkles className="w-6 h-6 text-primary" />
+                                        </div>
+                                        <div className="absolute inset-0 bg-primary/20 rounded-lg blur-md"></div>
+                                    </div>
+                                    <div>
+                                        <h1 className="text-lg font-light tracking-wide">
+                                            BECOMING <span className="text-primary font-normal">DIAMOND</span>
+                                        </h1>
+                                        <p className="text-xs text-gray-500">Member Portal</p>
+                                    </div>
+                                </Link>
+                            </div>
+
+                            {/* Navigation */}
+                            <nav className="flex-1 p-4 space-y-1">
+                                {navItems.map((item) => {
+                                    const Icon = item.icon;
+                                    const active = isActive(item.href);
+
+                                    return (
+                                        <Link key={item.href} href={item.href} onClick={() => setIsSidebarOpen(false)}>
+                                            <div
+                                                className={cn(
+                                                    "flex items-center gap-3 px-4 py-3 rounded-lg transition-all relative",
+                                                    active
+                                                        ? "bg-primary/10 text-primary"
+                                                        : "text-gray-400 hover:text-white hover:bg-white/5"
+                                                )}
+                                            >
+                                                {active && (
+                                                    <div className="absolute left-0 w-1 h-8 bg-primary rounded-r-full" />
+                                                )}
+                                                <Icon className="w-5 h-5 flex-shrink-0" />
+                                                <span className="font-light">{item.name}</span>
+                                            </div>
+                                        </Link>
+                                    );
+                                })}
+                            </nav>
+
+                            {/* Logout */}
+                            <div className="p-4 border-t border-white/10">
+                                <button
+                                    onClick={handleLogout}
+                                    className="flex items-center gap-3 px-4 py-3 rounded-lg text-red-400 hover:bg-red-400/10 transition-all w-full"
+                                >
+                                    <IconLogout className="w-5 h-5" />
+                                    <span className="font-light">Logout</span>
+                                </button>
+                            </div>
+                        </aside>
+                    </>
+                )
+            }
+
+            {/* Main Content */}
+            <main className="flex-1 lg:ml-72">
+                {/* Mobile top spacing */}
+                <div className="lg:hidden h-16"></div>
+
+                <div className="min-h-screen">
+                    <div className="p-6 lg:p-8">
+                        {children}
+                    </div>
+                </div>
+            </main>
         </div>
-      </motion.footer>
-    </div>
-  );
+    );
 }

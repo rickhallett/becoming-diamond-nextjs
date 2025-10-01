@@ -6,7 +6,7 @@ const contentDirectory = path.join(process.cwd(), 'content');
 
 export interface ContentItem {
   slug: string;
-  frontmatter: Record<string, any>;
+  frontmatter: Record<string, unknown>;
   content: string;
 }
 

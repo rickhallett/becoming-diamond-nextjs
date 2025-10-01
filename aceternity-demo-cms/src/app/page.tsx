@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -167,7 +168,7 @@ export default function Home() {
                             {
                                 part: "Part 1",
                                 title: "Facing the Shift",
-                                description: "This is your <span class='text-primary'>wake-up call</span>. It's about seeing the disruption of the AI era clearly, naming it, and understanding that the real threat isn't just losing your job, but <span class='text-primary'>losing your identity</span> with it.",
+                                description: "This is your <span class='text-primary'>wake-up call</span>. It&apos;s about seeing the disruption of the AI era clearly, naming it, and understanding that the real threat isn't just losing your job, but <span class='text-primary'>losing your identity</span> with it.",
                                 quote: "Most people think the robots are coming. I'm here to tell you — they're already here."
                             },
                             {
@@ -224,7 +225,7 @@ export default function Home() {
                         viewport={{ once: true, margin: "-100px" }}
                     >
                         {[
-                            { text: "The truth is, we're standing at the edge of the ", highlight: "fastest wave of change", rest: " in human history. It's not just the headlines about AI, robotics, or quantum computing. It's the way these technologies are weaving into daily life—changing how we work, connect, and even define ourselves." },
+                            { text: "The truth is, we're standing at the edge of the ", highlight: "fastest wave of change", rest: " in human history. It&apos;s not just the headlines about AI, robotics, or quantum computing. It&apos;s the way these technologies are weaving into daily life—changing how we work, connect, and even define ourselves." },
                             { text: "Diamonds don't resist pressure; ", highlight: "they're formed by it", rest: ". They emerge clearer, stronger, and more valuable than before. This book is about building that response—not in theory, but in the wiring of your nervous system, the structure of your identity, and the way you meet every challenge from this day forward." },
                             { text: "In the AI era, your voice still matters—but it's not enough to just be heard. ", highlight: "You have to be understood", rest: ", across every channel, by both humans and machines." }
                         ].map((quote, index) => (
@@ -279,7 +280,7 @@ export default function Home() {
                             </p>
 
                             <p className="text-lg leading-relaxed">
-                                For Michael, pressure isn't the enemy. It's the test that reveals strength. And in that test, <span className="text-primary font-medium">anyone can become a Diamond</span>.
+                                For Michael, pressure isn't the enemy. It&apos;s the test that reveals strength. And in that test, <span className="text-primary font-medium">anyone can become a Diamond</span>.
                             </p>
                         </div>
                     </motion.div>

@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import { motion } from "framer-motion";
 
 export default function AppDashboard() {
   const [activeMetric, setActiveMetric] = useState(0);
@@ -25,12 +24,9 @@ export default function AppDashboard() {
       {/* Metrics Grid - Inventive layout */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-1 mb-8">
         {metrics.map((metric, index) => (
-          <motion.div
+          <div
             key={index}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: index * 0.05 }}
-            onHoverStart={() => setActiveMetric(index)}
+            onMouseEnter={() => setActiveMetric(index)}
             className="relative group cursor-pointer"
           >
             <div className="aspect-square bg-white/[0.02] border border-white/[0.05] p-6 flex flex-col justify-between hover:bg-white/[0.04] transition-colors">
@@ -39,17 +35,13 @@ export default function AppDashboard() {
                 <p className={`text-3xl font-light mt-2 ${metric.color}`}>{metric.value}</p>
               </div>
               <p className="text-xs text-gray-600">{metric.trend}</p>
-              
+
               {/* Active indicator */}
               {activeMetric === index && (
-                <motion.div
-                  layoutId="activeIndicator"
-                  className="absolute inset-0 border border-purple-500/30 pointer-events-none"
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                />
+                <div className="absolute inset-0 border border-purple-500/30 pointer-events-none" />
               )}
             </div>
-          </motion.div>
+          </div>
         ))}
       </div>
 
@@ -60,11 +52,8 @@ export default function AppDashboard() {
           <h2 className="text-sm uppercase tracking-wider text-gray-500 mb-4">Activity Stream</h2>
           <div className="space-y-[1px]">
             {activities.map((activity, index) => (
-              <motion.div
+              <div
                 key={index}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.05 }}
                 className="bg-white/[0.02] border border-white/[0.05] p-4 hover:bg-white/[0.04] transition-colors group"
               >
                 <div className="flex items-center justify-between">
@@ -81,7 +70,7 @@ export default function AppDashboard() {
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -93,18 +82,7 @@ export default function AppDashboard() {
             {/* Visual Status Indicator */}
             <div className="relative h-32 mb-6">
               <div className="absolute inset-0 flex items-center justify-center">
-                <motion.div
-                  animate={{ 
-                    scale: [1, 1.2, 1],
-                    opacity: [0.3, 0.6, 0.3]
-                  }}
-                  transition={{ 
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                  className="w-24 h-24 rounded-full bg-green-500/20"
-                />
+                <div className="w-24 h-24 rounded-full bg-green-500/20" />
                 <div className="absolute w-12 h-12 rounded-full bg-green-500/40" />
                 <div className="absolute w-4 h-4 rounded-full bg-green-500" />
               </div>
@@ -149,11 +127,9 @@ export default function AppDashboard() {
       <div className="mt-8 h-24 bg-white/[0.02] border border-white/[0.05] p-4">
         <div className="flex items-end justify-between h-full">
           {Array.from({ length: 24 }, (_, i) => (
-            <motion.div
+            <div
               key={i}
-              initial={{ height: 0 }}
-              animate={{ height: `${Math.random() * 100}%` }}
-              transition={{ delay: i * 0.02, duration: 0.5 }}
+              style={{ height: `${Math.random() * 100}%` }}
               className="w-full mx-[1px] bg-gradient-to-t from-purple-500/50 to-transparent"
             />
           ))}
