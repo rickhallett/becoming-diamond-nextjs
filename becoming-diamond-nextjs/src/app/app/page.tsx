@@ -39,13 +39,13 @@ function AppDashboardContent() {
     return total + enrollment.lessonsCompleted.length;
   }, 0);
 
-  const totalLessons = SAMPLE_COURSES.slice(0, user?.currentGateway || 1).reduce((total, course) => {
+  const totalLessons = SAMPLE_COURSES.slice(0, user?.currentPR || 1).reduce((total, course) => {
     return total + course.lessons.length;
   }, 0);
 
   // User progress data
   const userStats = {
-    currentGateway: user?.currentGateway || 1,
+    currentPR: user?.currentPR || 1,
     daysInProgram,
     currentStreak: user?.streak || 0,
     completedSessions: completedLessons,
@@ -68,11 +68,11 @@ function AppDashboardContent() {
     );
   }
 
-  const gatewayNames = ["Foundation", "Emotional Intelligence", "Mental Clarity", "Physical Mastery", "Integration"];
-  const gateways = gatewayNames.map((name, index) => {
-    const gatewayNumber = index + 1;
-    const isCompleted = user.completedGateways.includes(gatewayNumber);
-    const isInProgress = gatewayNumber === user.currentGateway;
+  const prNames = ["Stabilize", "Shift", "Strengthen", "Shine", "Synthesize"];
+  const prRooms = prNames.map((name, index) => {
+    const prNumber = index + 1;
+    const isCompleted = user.completedPRs.includes(prNumber);
+    const isInProgress = prNumber === user.currentPR;
 
     return {
       name,
@@ -83,7 +83,7 @@ function AppDashboardContent() {
   });
 
   const upcomingSessions = [
-    { title: `Gateway ${user.currentGateway}: ${gatewayNames[user.currentGateway - 1]}`, date: "Oct 5, 2025", time: "10:00 AM PST", type: "Live Session" },
+    { title: `PR${user.currentPR}: ${prNames[user.currentPR - 1]}`, date: "Oct 5, 2025", time: "10:00 AM PST", type: "Live Session" },
     { title: "Integration Lab", date: "Oct 8, 2025", time: "2:00 PM PST", type: "Group Coaching" },
     { title: "Swiss Army Knife Workshop", date: "Oct 12, 2025", time: "11:00 AM PST", type: "Workshop" },
   ];
@@ -114,7 +114,7 @@ function AppDashboardContent() {
   }
 
   // Find current course for quick action
-  const currentCourse = SAMPLE_COURSES.find(c => c.gateway === user.currentGateway);
+  const currentCourse = SAMPLE_COURSES.find(c => c.pressureRoom === user.currentPR);
   const currentEnrollment = currentCourse ? enrollments.find(e => e.courseId === currentCourse.id) : null;
 
   return (
@@ -263,9 +263,9 @@ function AppDashboardContent() {
         <div className="bg-secondary/50 border border-white/10 rounded-xl p-4">
           <div className="flex items-center gap-2 mb-2">
             <IconDiamond className="w-5 h-5 text-primary" />
-            <span className="text-sm text-gray-400">Gateway</span>
+            <span className="text-sm text-gray-400">Pressure Room</span>
           </div>
-          <div className="text-3xl font-light">{userStats.currentGateway}/5</div>
+          <div className="text-3xl font-light">{userStats.currentPR}/5</div>
           <div className="text-xs text-gray-500 mt-1">current</div>
         </div>
       </motion.div>
@@ -362,7 +362,7 @@ function AppDashboardContent() {
                     <span className="text-sm text-gray-300">1,247 Active Members</span>
                   </div>
                   <div className="space-y-2">
-                    <div className="text-xs text-gray-400">Recent: &quot;Gateway 3 Integration Lab&quot;</div>
+                    <div className="text-xs text-gray-400">Recent: &quot;PR3: Strengthen Integration Lab&quot;</div>
                     <div className="text-xs text-gray-400">34 members online now</div>
                   </div>
                 </div>
@@ -439,10 +439,10 @@ function AppDashboardContent() {
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-white font-medium mb-1">
-                    {currentEnrollment ? 'Continue' : 'Start'} Gateway {user.currentGateway}
+                    {currentEnrollment ? 'Continue' : 'Start'} PR{user.currentPR}
                   </div>
                   <div className="text-xs text-gray-400">
-                    {currentCourse?.title.split(': ')[1] || gatewayNames[user.currentGateway - 1]}
+                    {currentCourse?.title.split(': ')[1] || prNames[user.currentPR - 1]}
                     {currentEnrollment && ` - ${currentEnrollment.progress}% complete`}
                   </div>
                 </div>

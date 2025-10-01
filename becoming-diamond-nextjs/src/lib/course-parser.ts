@@ -31,7 +31,7 @@ export async function parseCourseMarkdown(
   const metadata: CourseMetadata = {
     id: frontmatter.id || 'unknown-course',
     title: frontmatter.title || 'Untitled Course',
-    gateway: frontmatter.gateway || 1,
+    pressureRoom: frontmatter.pressureRoom || frontmatter.gateway || 1,
     duration: frontmatter.duration || '8 weeks',
     difficulty: frontmatter.difficulty || 'Beginner',
     instructor: frontmatter.instructor || 'Michael Dugan',

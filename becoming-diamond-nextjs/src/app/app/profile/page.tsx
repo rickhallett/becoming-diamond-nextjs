@@ -50,19 +50,19 @@ export default function ProfilePage() {
     }
 
     const stats = [
-        { label: "Courses Completed", value: user.completedGateways.length.toString(), color: "text-green-400" },
-        { label: "Active Gateway", value: user.currentGateway.toString(), color: "text-primary" },
+        { label: "Courses Completed", value: user.completedPRs.length.toString(), color: "text-green-400" },
+        { label: "Active Pressure Room", value: `PR${user.currentPR}`, color: "text-primary" },
         { label: "Current Level", value: user.level, color: "text-purple-400" },
         { label: "XP Points", value: user.xp.toString(), color: "text-yellow-400" }
     ];
 
     const achievements = [
-        { name: "First Gateway Complete", earned: user.completedGateways.length >= 1 },
+        { name: "First PR Complete", earned: user.completedPRs.length >= 1 },
         { name: "30-Day Streak", earned: user.streak >= 30 },
         { name: "Community Contributor", earned: user.xp >= 100 },
-        { name: "Transformation Leader", earned: user.completedGateways.length >= 3 },
+        { name: "Transformation Leader", earned: user.completedPRs.length >= 3 },
         { name: "Master of Presence", earned: user.level === "Master" },
-        { name: "Gateway Champion", earned: user.completedGateways.length >= 7 }
+        { name: "PR Champion", earned: user.completedPRs.length >= 5 }
     ];
 
     const handleSave = () => {
@@ -140,8 +140,8 @@ export default function ProfilePage() {
                         {/* Quick Stats */}
                         <div className="space-y-3 pt-4 border-t border-white/10">
                             <div className="flex items-center justify-between text-sm">
-                                <span className="text-gray-400">Current Gateway</span>
-                                <span className="text-primary font-medium">Gateway {user.currentGateway}</span>
+                                <span className="text-gray-400">Current Pressure Room</span>
+                                <span className="text-primary font-medium">PR{user.currentPR}</span>
                             </div>
                             <div className="flex items-center justify-between text-sm">
                                 <span className="text-gray-400">Member Since</span>

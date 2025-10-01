@@ -6,7 +6,7 @@
 export interface CourseMetadata {
   id: string;
   title: string;
-  gateway: number;
+  pressureRoom: number;
   duration: string;
   difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
   instructor: string;
