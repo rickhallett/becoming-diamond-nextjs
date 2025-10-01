@@ -1,15 +1,16 @@
 import { getContentBySlug, getContentByType } from '@/lib/content';
 import { notFound } from 'next/navigation';
 
-export async function generateStaticParams() {
+export async function generateStaticParams(): Promise<{ slug: string }[]> {
   const news = await getContentByType('news');
   return news.map((item) => ({
     slug: item.slug,
   }));
 }
 
-export default async function NewsItemPage({ params }: { params: { slug: string } }) {
-  const item = await getContentBySlug('news', params.slug);
+export default async function NewsItemPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const item = await getContentBySlug('news', slug);
 
   if (!item) {
     notFound();
