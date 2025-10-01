@@ -11,11 +11,14 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/react": "^4.4.0",
     "@astrojs/vercel": "^8.2.8",
     "astro": "^5.14.1",
     "astro-decap-cms-oauth": "^0.5.1",
     "clsx": "^2.1.1",
     "decap-cms": "^3.8.4",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
     "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {

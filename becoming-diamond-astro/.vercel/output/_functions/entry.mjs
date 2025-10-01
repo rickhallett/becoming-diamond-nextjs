@@ -1,22 +1,24 @@
 import { renderers } from './renderers.mjs';
-import { c as createExports, s as serverEntrypointModule } from './chunks/_@astrojs-ssr-adapter_DiSfuWqp.mjs';
-import { manifest } from './manifest_B91wpSCM.mjs';
+import { c as createExports, s as serverEntrypointModule } from './chunks/_@astrojs-ssr-adapter_Bth_XpAy.mjs';
+import { manifest } from './manifest_Cg9OhyAx.mjs';
 
 const serverIslandMap = new Map();;
 
 const _page0 = () => import('./pages/_image.astro.mjs');
 const _page1 = () => import('./pages/admin.astro.mjs');
-const _page2 = () => import('./pages/landing.astro.mjs');
-const _page3 = () => import('./pages/oauth/callback.astro.mjs');
-const _page4 = () => import('./pages/oauth.astro.mjs');
-const _page5 = () => import('./pages/index.astro.mjs');
+const _page2 = () => import('./pages/app.astro.mjs');
+const _page3 = () => import('./pages/landing.astro.mjs');
+const _page4 = () => import('./pages/oauth/callback.astro.mjs');
+const _page5 = () => import('./pages/oauth.astro.mjs');
+const _page6 = () => import('./pages/index.astro.mjs');
 const pageMap = new Map([
     ["node_modules/astro/dist/assets/endpoint/generic.js", _page0],
     ["node_modules/astro-decap-cms-oauth/src/admin.astro", _page1],
-    ["src/pages/landing.astro", _page2],
-    ["node_modules/astro-decap-cms-oauth/src/oauth/callback.ts", _page3],
-    ["node_modules/astro-decap-cms-oauth/src/oauth/index.ts", _page4],
-    ["src/pages/index.astro", _page5]
+    ["src/pages/app.astro", _page2],
+    ["src/pages/landing.astro", _page3],
+    ["node_modules/astro-decap-cms-oauth/src/oauth/callback.ts", _page4],
+    ["node_modules/astro-decap-cms-oauth/src/oauth/index.ts", _page5],
+    ["src/pages/index.astro", _page6]
 ]);
 
 const _manifest = Object.assign(manifest, {
@@ -27,7 +29,7 @@ const _manifest = Object.assign(manifest, {
     middleware: () => import('./_noop-middleware.mjs')
 });
 const _args = {
-    "middlewareSecret": "9f422f99-8375-4d34-8290-b886a7f7b444",
+    "middlewareSecret": "e1c7bbc0-1038-4a76-a5d0-62d0c7deee5d",
     "skewProtection": false
 };
 const _exports = createExports(_manifest, _args);
