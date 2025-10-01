@@ -1,4 +1,4 @@
-import { A as AstroError, am as EnvInvalidVariables } from './astro/server_CK61d8bl.mjs';
+import { A as AstroError, am as EnvInvalidVariables } from './astro/server_DNBQcFRE.mjs';
 
 function invalidVariablesToError(invalid) {
   const _errors = [];
