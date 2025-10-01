@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { ReactNode, FormEvent } from "react";
+import { ReactNode, FormEvent, useState } from "react";
 
 interface LeadMagnetItem {
     text: string;
@@ -27,12 +27,56 @@ export function LeadMagnetSection({
     onSubmit,
     disclaimer,
 }: LeadMagnetSectionProps) {
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const [email, setEmail] = useState('');
+    const [consent, setConsent] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
+    const [message, setMessage] = useState('');
+
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const formData = new FormData(e.currentTarget);
-        const email = formData.get("email") as string;
-        if (onSubmit && email) {
-            onSubmit(email);
+
+        if (!consent) {
+            setStatus('error');
+            setMessage('Please agree to receive emails to continue.');
+            return;
+        }
+
+        setLoading(true);
+        setStatus('idle');
+        setMessage('');
+
+        try {
+            const response = await fetch('/api/leads', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email,
+                    consentGiven: consent
+                }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setStatus('success');
+                setMessage(data.message);
+                setEmail('');
+                setConsent(false);
+
+                // Call optional onSubmit callback
+                if (onSubmit) {
+                    onSubmit(email);
+                }
+            } else {
+                setStatus('error');
+                setMessage(data.error || 'Something went wrong. Please try again.');
+            }
+        } catch {
+            setStatus('error');
+            setMessage('Network error. Please check your connection.');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -77,17 +121,46 @@ export function LeadMagnetSection({
                         <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-4 mb-6">
                             <input
                                 type="email"
-                                name="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                                 placeholder="Enter your email"
                                 required
-                                className="w-full px-6 py-4 bg-black/50 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:border-primary focus:outline-none transition-colors"
+                                disabled={loading}
+                                className="w-full px-6 py-4 bg-black/50 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:border-primary focus:outline-none transition-colors disabled:opacity-50"
                             />
+
+                            <label className="flex items-start gap-3 text-left text-sm text-gray-300 cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    checked={consent}
+                                    onChange={(e) => setConsent(e.target.checked)}
+                                    disabled={loading}
+                                    className="mt-1 w-4 h-4 rounded border-white/20 bg-black/50 text-primary focus:ring-primary focus:ring-offset-0 cursor-pointer disabled:opacity-50"
+                                />
+                                <span>
+                                    I agree to receive the free Diamond Sprint materials and occasional updates via email.
+                                </span>
+                            </label>
+
                             <button
                                 type="submit"
-                                className="w-full bg-primary text-black px-8 py-4 text-lg font-medium rounded-lg hover:bg-primary/90 transition-all"
+                                disabled={loading || !consent}
+                                className="w-full bg-primary text-black px-8 py-4 text-lg font-medium rounded-lg hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                {ctaText}
+                                {loading ? 'Submitting...' : ctaText}
                             </button>
+
+                            {status === 'success' && (
+                                <div className="text-green-400 text-sm text-center bg-green-400/10 border border-green-400/20 rounded-lg p-3">
+                                    {message}
+                                </div>
+                            )}
+
+                            {status === 'error' && (
+                                <div className="text-red-400 text-sm text-center bg-red-400/10 border border-red-400/20 rounded-lg p-3">
+                                    {message}
+                                </div>
+                            )}
                         </form>
 
                         {disclaimer && (
