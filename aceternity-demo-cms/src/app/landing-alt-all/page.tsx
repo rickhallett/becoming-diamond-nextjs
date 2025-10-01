@@ -17,6 +17,7 @@ const World = dynamic(() => import("@/components/ui/globe").then((m) => m.World)
 
 export default function LandingAltAll() {
     const [scrolled, setScrolled] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -115,7 +116,9 @@ export default function LandingAltAll() {
                     <Link href="/" className="text-xl font-thin tracking-wider">
                         BECOMING DIAMOND
                     </Link>
-                    <div className="flex gap-8">
+
+                    {/* Desktop Navigation */}
+                    <div className="hidden md:flex gap-8">
                         <Link href="#problem" className="hover:text-primary transition-colors">
                             The Problem
                         </Link>
@@ -126,7 +129,53 @@ export default function LandingAltAll() {
                             Transform
                         </Link>
                     </div>
+
+                    {/* Mobile Menu Button */}
+                    <button
+                        className="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5"
+                        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                        aria-label="Toggle menu"
+                    >
+                        <span className={`w-6 h-0.5 bg-white transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
+                        <span className={`w-6 h-0.5 bg-white transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : ''}`} />
+                        <span className={`w-6 h-0.5 bg-white transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+                    </button>
                 </div>
+
+                {/* Mobile Menu */}
+                <motion.div
+                    initial={false}
+                    animate={{
+                        height: mobileMenuOpen ? 'auto' : 0,
+                        opacity: mobileMenuOpen ? 1 : 0
+                    }}
+                    transition={{ duration: 0.3 }}
+                    className="md:hidden overflow-hidden bg-black/95 backdrop-blur-sm"
+                >
+                    <div className="px-6 py-6 flex flex-col gap-4">
+                        <Link
+                            href="#problem"
+                            className="text-lg hover:text-primary transition-colors py-2"
+                            onClick={() => setMobileMenuOpen(false)}
+                        >
+                            The Problem
+                        </Link>
+                        <Link
+                            href="#solution"
+                            className="text-lg hover:text-primary transition-colors py-2"
+                            onClick={() => setMobileMenuOpen(false)}
+                        >
+                            Solution
+                        </Link>
+                        <Link
+                            href="#offers"
+                            className="text-lg hover:text-primary transition-colors py-2"
+                            onClick={() => setMobileMenuOpen(false)}
+                        >
+                            Transform
+                        </Link>
+                    </div>
+                </motion.div>
             </nav>
 
             {/* Hero Section - Shark Tank Pitch Energy */}
@@ -156,8 +205,9 @@ export default function LandingAltAll() {
                     </h1>
 
                     <p className="text-xl md:text-2xl font-light text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
-                        Master <span className="text-primary font-normal">human presence under pressure</span>.
-                        Regulate your nervous system. Rewire your identity.
+                        Master <span className="text-primary font-normal">human presence under pressure</span>.&nbsp;
+                        Regulate your nervous system.&nbsp;
+                        Rewire your identity.&nbsp;
                         Lead with <span className="text-primary font-normal">unshakable clarity</span>—even when everything around you is chaos.
                     </p>
 
@@ -212,7 +262,7 @@ export default function LandingAltAll() {
                     </motion.div>
 
                     <div className="flex justify-center w-full">
-                        <div className="relative overflow-hidden" style={{ width: '768px', height: '640px', maxWidth: '100%' }}>
+                        <div className="relative overflow-hidden" style={{ width: '500px', height: '500px', maxWidth: '100%' }}>
                             <div className="absolute w-full bottom-0 inset-x-0 h-40 bg-gradient-to-b pointer-events-none select-none from-transparent to-black z-40" />
                             <div className="w-full h-full z-10">
                                 <World data={sampleArcs} globeConfig={globeConfig} />
@@ -275,7 +325,7 @@ export default function LandingAltAll() {
                                 viewport={{ once: true }}
                                 className="bg-secondary/50 backdrop-blur-sm border border-white/10 rounded-lg p-6 hover:border-primary/50 transition-all"
                             >
-                                <h3 className="text-xl mb-3 font-normal">{item.title}</h3>
+                                <h3 className="text-xl mb-3 font-normal text-red-500">{item.title}</h3>
                                 <p className="text-gray-400 text-base">{item.description}</p>
                             </motion.div>
                         ))}
@@ -322,7 +372,13 @@ export default function LandingAltAll() {
                             title="The Diamond Operating System"
                             description="Converts pressure into clarity, chaos into calm. You don't just react better—you lead better. You become the person people trust in crisis."
                             header={
-                                <div className="flex h-full min-h-[6rem] w-full flex-1 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/5" />
+                                <div className="flex h-full min-h-[6rem] w-full flex-1 items-center justify-center rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5">
+                                    <img
+                                        src="https://images.unsplash.com/photo-1534224039826-c7a0eda0e6b3?q=80&w=800&h=400&fit=crop"
+                                        alt="Meditation and consciousness"
+                                        className="w-full h-full object-cover opacity-60"
+                                    />
+                                </div>
                             }
                             className="md:col-span-2"
                         />
@@ -330,21 +386,39 @@ export default function LandingAltAll() {
                             title="Swiss Army Knife"
                             description="Real-time emotional regulation. Get back to center instantly, no matter what's happening. Body, Breath, Brain tools."
                             header={
-                                <div className="flex h-full min-h-[6rem] w-full flex-1 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/5" />
+                                <div className="flex h-full min-h-[6rem] w-full flex-1 items-center justify-center rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5">
+                                    <img
+                                        src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800&h=400&fit=crop"
+                                        alt="Centered presence"
+                                        className="w-full h-full object-cover opacity-60"
+                                    />
+                                </div>
                             }
                         />
                         <BentoGridItem
                             title="ART & ART² Protocols"
                             description="Clears emotional static and reclaims your power. Transform fear, anger, and doubt into intentional action."
                             header={
-                                <div className="flex h-full min-h-[6rem] w-full flex-1 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/5" />
+                                <div className="flex h-full min-h-[6rem] w-full flex-1 items-center justify-center rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5">
+                                    <img
+                                        src="https://images.unsplash.com/photo-1499209974431-9dddcece7f88?q=80&w=800&h=400&fit=crop"
+                                        alt="Energy and transformation"
+                                        className="w-full h-full object-cover opacity-60"
+                                    />
+                                </div>
                             }
                         />
                         <BentoGridItem
                             title="The Diamond Sprint"
                             description="30-Day Practice that installs new habits and baseline identity. Build unshakable confidence through consistent action."
                             header={
-                                <div className="flex h-full min-h-[6rem] w-full flex-1 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/5" />
+                                <div className="flex h-full min-h-[6rem] w-full flex-1 items-center justify-center rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5">
+                                    <img
+                                        src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=800&h=400&fit=crop"
+                                        alt="Journey and elevation"
+                                        className="w-full h-full object-cover opacity-60"
+                                    />
+                                </div>
                             }
                             className="md:col-span-2"
                         />
@@ -680,9 +754,9 @@ export default function LandingAltAll() {
                         className="text-center"
                     >
                         <div className="bg-secondary/50 backdrop-blur-sm border border-white/10 rounded-2xl p-8 max-w-3xl mx-auto">
-                            <h3 className="text-2xl mb-4">14-Day Unshakable Guarantee</h3>
-                            <p className="text-gray-300">
-                                If you don't feel more grounded, clear, and emotionally steady within 2 weeks—we'll refund every penny. No questions asked.
+                            <h3 className="text-2xl mb-4 text-yellow-400 font-bold">14-Day Unshakable Guarantee</h3>
+                            <p className="text-gray-300 text-base">
+                                If you don't feel more grounded, clear, and emotionally steady within 2 weeks—we'll refund every penny. <span className="font-bold">No questions asked.</span>
                             </p>
                         </div>
                     </motion.div>
@@ -753,16 +827,8 @@ export default function LandingAltAll() {
                                     intensity: "60"
                                 }
                             ].map((gateway, index) => (
-                                <motion.div
+                                <div
                                     key={index}
-                                    initial={{ opacity: 0, x: -100 }}
-                                    whileInView={{ opacity: 1, x: 0 }}
-                                    transition={{
-                                        duration: 0.5,
-                                        delay: index * 0.08,
-                                        ease: [0.25, 0.46, 0.45, 0.94]
-                                    }}
-                                    viewport={{ once: true }}
                                     className={`group relative bg-gradient-to-b from-primary/${gateway.intensity} to-primary/10 rounded-xl p-6 text-center cursor-pointer overflow-hidden transition-all duration-300 border-2 border-primary/20 hover:border-primary`}
                                     style={{
                                         boxShadow: '0 0 0px rgba(79,195,247,0.3)',
@@ -776,13 +842,18 @@ export default function LandingAltAll() {
                                     }}
                                 >
                                     <div className="relative z-10">
-                                        <div className={`text-4xl font-thin text-primary mb-3 transition-all duration-300`}>
+                                        <div
+                                            className="text-4xl font-thin text-primary mb-3 transition-all duration-300"
+                                            style={{
+                                                textShadow: `0 0 ${8 + index * 4}px rgba(79,195,247,${0.4 + index * 0.15})`
+                                            }}
+                                        >
                                             Gateway {gateway.number}
                                         </div>
                                         <h3 className="text-xl mb-3 transition-all duration-300">{gateway.name}</h3>
                                         <p className="text-sm text-gray-400 transition-all duration-300">{gateway.description}</p>
                                     </div>
-                                </motion.div>
+                                </div>
                             ))}
                         </div>
                     </motion.div>
@@ -1057,9 +1128,9 @@ export default function LandingAltAll() {
                         </h2>
 
                         <p className="text-xl text-gray-300 mb-12">
-                            You're standing at a crossroads. One path: Keep doing what you've been doing.
+                            You're standing at a crossroads.<br /> <br /><span className="text-yellow-500">The snowflake path:</span> Keep doing what you've been doing.
                             Hope it works out. Try harder.<br /><br />
-                            The other path: Step into the pressure room with tools, support, and a proven system.
+                            <span className="text-primary font-bold drop-shadow-[0_0_12px_rgba(79,195,247,0.6)]">The diamond path:</span> Step into the pressure room. Tools, support, and a <span className="text-primary font-bold drop-shadow-[0_0_12px_rgba(79,195,247,0.6)]">proven system</span>.
                         </p>
 
                         <div className="space-y-6 mb-12">
@@ -1107,9 +1178,9 @@ export default function LandingAltAll() {
                         viewport={{ once: true }}
                         className="text-center mb-16"
                     >
-                        <h2 className="mb-6">Contact Us</h2>
+                        <h2 className="mb-6 text-primary">Contact Us</h2>
                         <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                            Ready to begin your transformation? Reach out to learn more about how Becoming Diamond can help you master pressure and lead with clarity.
+                            Ready to begin your transformation? Reach out to learn more about how <span className="text-primary font-bold drop-shadow-[0_0_12px_rgba(79,195,247,0.6)]">Becoming Diamond</span> can help you master pressure and lead with clarity.
                         </p>
                     </motion.div>
 
@@ -1132,7 +1203,7 @@ export default function LandingAltAll() {
                                     <div>
                                         <div className="text-gray-400 text-sm mb-1">Email</div>
                                         <a href="mailto:hello@becomingdiamond.com" className="text-white hover:text-primary transition-colors">
-                                            hello@becomingdiamond.com
+                                            transform@becomingdiamond.com
                                         </a>
                                     </div>
                                 </div>
@@ -1195,7 +1266,7 @@ export default function LandingAltAll() {
                                     <input
                                         type="email"
                                         id="email"
-                                        placeholder="awaken@higherconsciousness.com"
+                                        placeholder="you@youravatar.com"
                                         className="w-full px-4 py-3 bg-black/50 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:border-primary focus:outline-none transition-colors"
                                     />
                                 </div>
@@ -1243,17 +1314,39 @@ export default function LandingAltAll() {
             <footer className="py-12 px-6 border-t border-gray-800 relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/5 via-transparent to-transparent pointer-events-none" />
 
-                <div className="max-w-7xl mx-auto text-center relative z-10">
-                    <p className="text-lg md:text-xl text-gray-300 font-light relative inline-block">
-                        <span className="relative">
-                            You weren't born to melt under pressure. You were born to become a{" "}
-                            <span className="text-primary font-normal drop-shadow-[0_0_15px_rgba(79,195,247,0.5)]">Diamond</span>.
-                        </span>
+                <div className="max-w-7xl mx-auto relative z-10">
+                    <div className="text-center">
+                        <p className="text-base md:text-lg lg:text-xl text-gray-300 font-light relative inline-block px-4">
+                            <span className="relative">
+                                You weren't born to melt under pressure. You were born to become a{" "}
+                                <span className="text-primary font-normal drop-shadow-[0_0_15px_rgba(79,195,247,0.5)]">Diamond</span>.
+                            </span>
+                        </p>
+                        <p className="mt-3 md:mt-4 text-sm text-gray-400 italic">
+                            — Michael T Dugan
+                        </p>
+                        <p className="mt-4 md:mt-6 text-xs text-gray-600">&copy; 2025 Becoming Diamond. All rights reserved.</p>
+                    </div>
+                </div>
+
+                {/* Oceanheart Badge - Bottom Right Corner */}
+                <div className="absolute bottom-6 right-6 flex flex-col items-center gap-1 z-20">
+                    <img
+                        src="/0.png"
+                        alt="Oceanheart AI"
+                        className="w-10 h-10 opacity-60"
+                    />
+                    <p className="text-xs text-gray-600 text-center">
+                        Built with love by
                     </p>
-                    <p className="mt-4 text-sm text-gray-400 italic">
-                        — Michael T Dugan
-                    </p>
-                    <p className="mt-6 text-xs text-gray-600">&copy; 2025 Becoming Diamond. All rights reserved.</p>
+                    <a
+                        href="https://www.oceanheart.ai"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs text-gray-600 hover:text-primary transition-all hover:drop-shadow-[0_0_8px_rgba(79,195,247,0.6)]"
+                    >
+                        www.oceanheart.ai
+                    </a>
                 </div>
             </footer>
         </main>
