@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { cn } from "@/lib/utils";
 import {
     IconHome,
@@ -16,12 +17,15 @@ import {
     IconSparkles
 } from "@tabler/icons-react";
 import { useUser } from "@/contexts/UserContext";
+import { SignOutButton } from "@/components/auth/SignOutButton";
+import { UserAvatar } from "@/components/auth/UserAvatar";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
     const router = useRouter();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const { logout } = useUser();
+    const { data: session, status } = useSession();
 
     const navItems = [
         { name: "Dashboard", href: "/app", icon: IconHome },
@@ -94,14 +98,24 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 </nav>
 
                 {/* User Section & Logout */}
-                <div className="p-4 border-t border-white/10">
-                    <button
-                        onClick={handleLogout}
-                        className="flex items-center gap-3 px-4 py-3 rounded-lg text-red-400 hover:bg-red-400/10 transition-all w-full"
-                    >
-                        <IconLogout className="w-5 h-5" />
-                        <span className="font-light">Logout</span>
-                    </button>
+                <div className="p-4 border-t border-white/10 space-y-3">
+                    {/* User Info */}
+                    {session?.user && (
+                        <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-white/5">
+                            <UserAvatar size={40} />
+                            <div className="flex-1 min-w-0">
+                                <p className="text-sm font-medium text-white truncate">
+                                    {session.user.name || "Member"}
+                                </p>
+                                <p className="text-xs text-gray-500 truncate">
+                                    {session.user.email}
+                                </p>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Logout Button */}
+                    <SignOutButton className="w-full justify-start text-red-400 hover:bg-red-400/10" />
                 </div>
             </aside>
 
@@ -186,15 +200,25 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                             })}
                         </nav>
 
-                        {/* Logout */}
-                        <div className="p-4 border-t border-white/10">
-                            <button
-                                onClick={handleLogout}
-                                className="flex items-center gap-3 px-4 py-3 rounded-lg text-red-400 hover:bg-red-400/10 transition-all w-full"
-                            >
-                                <IconLogout className="w-5 h-5" />
-                                <span className="font-light">Logout</span>
-                            </button>
+                        {/* User Section & Logout */}
+                        <div className="p-4 border-t border-white/10 space-y-3">
+                            {/* User Info */}
+                            {session?.user && (
+                                <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-white/5">
+                                    <UserAvatar size={40} />
+                                    <div className="flex-1 min-w-0">
+                                        <p className="text-sm font-medium text-white truncate">
+                                            {session.user.name || "Member"}
+                                        </p>
+                                        <p className="text-xs text-gray-500 truncate">
+                                            {session.user.email}
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Logout Button */}
+                            <SignOutButton className="w-full justify-start text-red-400 hover:bg-red-400/10" />
                         </div>
                     </aside>
                 </>

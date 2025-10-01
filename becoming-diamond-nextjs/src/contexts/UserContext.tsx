@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { useSession } from 'next-auth/react';
 import { storage, STORAGE_KEYS } from '@/lib/storage';
 
 // User profile interface
@@ -75,36 +76,73 @@ export function UserProvider({ children }: UserProviderProps) {
     userId: null,
   });
   const [isLoading, setIsLoading] = useState(true);
+  const { data: session, status } = useSession();
 
-  // Load user data from localStorage on mount
+  // Sync NextAuth session with UserContext
   useEffect(() => {
-    const loadUserData = () => {
-      try {
-        // Load auth state
-        const savedAuth = storage.getItem<AuthState>(STORAGE_KEYS.USER_AUTH);
-        if (savedAuth && savedAuth.isAuthenticated) {
-          setAuth(savedAuth);
+    if (status === 'loading') {
+      setIsLoading(true);
+      return;
+    }
 
-          // Load user profile
-          const savedProfile = storage.getItem<UserProfile>(STORAGE_KEYS.USER_PROFILE);
-          if (savedProfile) {
-            setUser(savedProfile);
-          } else if (savedAuth.userId) {
-            // Create default profile if auth exists but no profile
-            const defaultProfile = createDefaultProfile(savedAuth.userId);
-            setUser(defaultProfile);
-            storage.setItem(STORAGE_KEYS.USER_PROFILE, defaultProfile);
-          }
-        }
-      } catch (error) {
-        console.error('Error loading user data:', error);
-      } finally {
-        setIsLoading(false);
+    if (session?.user) {
+      // User is authenticated with NextAuth
+      const userId = session.user.id || session.user.email || 'unknown';
+
+      // Update auth state
+      const authState: AuthState = {
+        isAuthenticated: true,
+        userId,
+        loginMethod: 'email', // Could be determined from session
+        loginTimestamp: Date.now(),
+      };
+      setAuth(authState);
+      storage.setItem(STORAGE_KEYS.USER_AUTH, authState);
+
+      // Load or create user profile
+      const savedProfile = storage.getItem<UserProfile>(STORAGE_KEYS.USER_PROFILE);
+      if (savedProfile && savedProfile.id === userId) {
+        // Update profile with latest session data
+        const updatedProfile = {
+          ...savedProfile,
+          name: session.user.name || savedProfile.name,
+          email: session.user.email || savedProfile.email,
+          avatar: session.user.image || savedProfile.avatar,
+        };
+        setUser(updatedProfile);
+        storage.setItem(STORAGE_KEYS.USER_PROFILE, updatedProfile);
+      } else {
+        // Create new profile from session
+        const newProfile: UserProfile = {
+          ...createDefaultProfile(userId),
+          name: session.user.name || 'Diamond Member',
+          email: session.user.email || '',
+          avatar: session.user.image || '/kai_profile.jpeg',
+        };
+        setUser(newProfile);
+        storage.setItem(STORAGE_KEYS.USER_PROFILE, newProfile);
       }
-    };
 
-    loadUserData();
-  }, []);
+      setIsLoading(false);
+    } else {
+      // No NextAuth session - fall back to localStorage
+      const savedAuth = storage.getItem<AuthState>(STORAGE_KEYS.USER_AUTH);
+      if (savedAuth && savedAuth.isAuthenticated) {
+        setAuth(savedAuth);
+
+        const savedProfile = storage.getItem<UserProfile>(STORAGE_KEYS.USER_PROFILE);
+        if (savedProfile) {
+          setUser(savedProfile);
+        } else if (savedAuth.userId) {
+          const defaultProfile = createDefaultProfile(savedAuth.userId);
+          setUser(defaultProfile);
+          storage.setItem(STORAGE_KEYS.USER_PROFILE, defaultProfile);
+        }
+      }
+
+      setIsLoading(false);
+    }
+  }, [session, status]);
 
   // Update user profile
   const updateProfile = (updates: Partial<UserProfile>) => {
