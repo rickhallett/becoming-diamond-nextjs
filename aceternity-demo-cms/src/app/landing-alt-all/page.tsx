@@ -3,15 +3,13 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
-import { HeroHighlight, Highlight } from "@/components/ui/hero-highlight";
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 import { AnimatedTestimonials } from "@/components/ui/animated-testimonials";
-import { SparklesBackground } from "@/components/ui/sparkles-background";
 import { Spotlight } from "@/components/ui/spotlight";
 import { BackgroundBeams } from "@/components/ui/background-beams";
-import { MovingBorder } from "@/components/ui/moving-border";
 import { LampContainer } from "@/components/ui/lamp";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
+import { Timeline } from "@/components/ui/timeline";
 
 const World = dynamic(() => import("@/components/ui/globe").then((m) => m.World), {
     ssr: false,
@@ -293,7 +291,7 @@ export default function LandingAltAll() {
                         <blockquote className="text-2xl md:text-3xl font-light italic text-gray-300 max-w-4xl mx-auto">
                             "You can't <span className="text-primary not-italic">think</span> your way into a new identity.<br />
                             Your nervous system is running the show.<br />
-                            That's why willpower fails."
+                            That's why willpower fails."<span className="text-gray-600"> ~ Michael T Dugan</span>
                         </blockquote>
                     </motion.div>
                 </div>
@@ -391,21 +389,57 @@ export default function LandingAltAll() {
                         testimonials={[
                             {
                                 quote: "I'm not the same person I was a week ago. The Diamond Operating System gave me tools that actually work under real pressure.",
-                                name: "Misty R.",
+                                name: "Misty Rodriguez",
                                 designation: "Sales Executive",
-                                src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=150&h=150&fit=crop"
+                                src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=600&h=600&fit=crop"
                             },
                             {
                                 quote: "Michael gave me tools that actually work under real pressure. My entire nervous system feels upgraded.",
-                                name: "Mark T.",
+                                name: "Mark Thompson",
                                 designation: "Corporate Leader",
-                                src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=150&h=150&fit=crop"
+                                src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&h=600&fit=crop"
                             },
                             {
                                 quote: "My entire nervous system feels upgraded. I show up stronger in every meeting and relationship—without losing myself.",
-                                name: "Fernando G.",
+                                name: "Fernando Garcia",
                                 designation: "Entrepreneur",
-                                src: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=150&h=150&fit=crop"
+                                src: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=600&h=600&fit=crop"
+                            },
+                            {
+                                quote: "After Gateway 1, I stopped reacting to every trigger. I finally feel in control of my nervous system and my life.",
+                                name: "Sarah Chen",
+                                designation: "Tech VP",
+                                src: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=600&h=600&fit=crop"
+                            },
+                            {
+                                quote: "The identity work in Gateway 2 was profound. I've cleared patterns I've carried for decades. This isn't just coaching—it's transformation.",
+                                name: "David Martinez",
+                                designation: "Founder & CEO",
+                                src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=600&h=600&fit=crop"
+                            },
+                            {
+                                quote: "I used to crash after high-pressure weeks. Now I recover in hours, not days. The resilience training changed everything.",
+                                name: "Jennifer Williams",
+                                designation: "Executive Coach",
+                                src: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=600&h=600&fit=crop"
+                            },
+                            {
+                                quote: "People now look to me for leadership in ways they never did before. Gateway 4 gave me the presence I didn't know I was missing.",
+                                name: "James Anderson",
+                                designation: "Director of Operations",
+                                src: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=600&h=600&fit=crop"
+                            },
+                            {
+                                quote: "Gateway 5 gave me clarity on my life's work. I'm not just reacting to pressure anymore—I'm designing my future with intention.",
+                                name: "Lisa Patel",
+                                designation: "Strategic Consultant",
+                                src: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&h=600&fit=crop"
+                            },
+                            {
+                                quote: "Michael is a product of a lifetime in the forge. Becoming Diamond is now part of my daily practice.",
+                                name: "Richard Hallett",
+                                designation: "Psychologist & AI Engineer",
+                                src: "/greece_profile2.jpeg"
                             }
                         ]}
                         autoplay={true}
@@ -429,10 +463,10 @@ export default function LandingAltAll() {
                             FREE DOWNLOAD
                         </div>
 
-                        <h2 className="mb-6">
+                        <h2 className="text-4xl md:text-5xl mb-3">
                             Turning <span className="text-primary">Pressure</span> Into Power
                         </h2>
-                        <p className="text-xl text-gray-300 mb-12">
+                        <p className="text-xl md:text-2xl text-gray-300 mb-12">
                             Get the Free Diamond Sprint + Manifesto
                         </p>
 
@@ -508,12 +542,12 @@ export default function LandingAltAll() {
                             viewport={{ once: true }}
                             className="bg-secondary/50 backdrop-blur-sm border border-white/10 rounded-2xl p-8"
                         >
-                            <h3 className="text-2xl mb-6">The Problem</h3>
-                            <div className="space-y-4 text-gray-300">
-                                <p>You feel <span className="text-primary">stuck</span>—not because you're lazy, but because you've outgrown your current identity.</p>
-                                <p>Your nervous system is dysregulated. Your emotions spike and crash. Your confidence wavers.</p>
-                                <p>And no amount of positive thinking, productivity hacks, or hustle is fixing it.</p>
-                                <p className="text-lg font-normal text-white">Because the problem isn't your mindset. It's your <span className="text-primary">operating system</span>.</p>
+                            <h3 className="text-xl mb-4 font-bold">The Problem</h3>
+                            <div className="space-y-3 text-gray-300 leading-relaxed">
+                                <p className="text-base">You feel <span className="text-red-400">stuck</span>—not because you're lazy, but because you've outgrown your current identity.</p>
+                                <p className="text-base"><span className="text-red-400">Your nervous system is dysregulated.</span> Your emotions spike and crash. Your confidence wavers.</p>
+                                <p className="text-base">And no amount of positive thinking, productivity hacks, or hustle is fixing it.</p>
+                                <p className="text-base font-normal text-white pt-4">Because the problem isn't your mindset. It's your <span className="text-primary">operating system</span>.</p>
                             </div>
                         </motion.div>
 
@@ -524,26 +558,26 @@ export default function LandingAltAll() {
                             viewport={{ once: true }}
                             className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-2xl p-8"
                         >
-                            <h3 className="text-2xl mb-6">The Solution</h3>
-                            <p className="text-gray-300 mb-6">
+                            <h3 className="text-xl mb-4 font-bold">The Solution</h3>
+                            <p className="text-sm text-gray-300 mb-5 leading-relaxed">
                                 The Diamond Activation Experience is a complete transformation system that rewires how you think, feel, and show up under pressure.
                             </p>
-                            <div className="space-y-3 text-gray-300">
-                                <p className="flex items-start">
+                            <div className="space-y-2.5 text-sm text-gray-300">
+                                <p className="flex items-start text-base">
                                     <span className="text-primary mr-2">→</span>
                                     How to regulate your nervous system in real-time
                                 </p>
-                                <p className="flex items-start">
+                                <p className="flex items-start text-base">
                                     <span className="text-primary mr-2">→</span>
                                     How to clear emotional blocks instantly
                                 </p>
-                                <p className="flex items-start">
+                                <p className="flex items-start text-base">
                                     <span className="text-primary mr-2">→</span>
                                     How to install a new identity that doesn't collapse under stress
                                 </p>
-                                <p className="flex items-start">
+                                <p className="flex items-start text-base">
                                     <span className="text-primary mr-2">→</span>
-                                    How to lead with magnetic presence
+                                    How to lead with <span className="text-primary">&nbsp;magnetic presence</span>
                                 </p>
                             </div>
                         </motion.div>
@@ -602,11 +636,10 @@ export default function LandingAltAll() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.6, delay: index * 0.1 }}
                                 viewport={{ once: true }}
-                                className={`relative rounded-2xl p-8 ${
-                                    tier.popular
-                                        ? 'bg-gradient-to-b from-primary/20 to-primary/5 border-2 border-primary'
-                                        : 'bg-secondary/50 border border-white/10'
-                                }`}
+                                className={`relative rounded-2xl p-8 ${tier.popular
+                                    ? 'bg-gradient-to-b from-primary/20 to-primary/5 border-2 border-primary'
+                                    : 'bg-secondary/50 border border-white/10'
+                                    }`}
                             >
                                 {tier.popular && (
                                     <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-black px-4 py-1 rounded-full text-sm font-medium">
@@ -628,11 +661,10 @@ export default function LandingAltAll() {
                                 </ul>
 
                                 <button
-                                    className={`w-full py-3 rounded-lg font-medium transition-all ${
-                                        tier.popular
-                                            ? 'bg-primary text-black hover:bg-primary/90'
-                                            : 'bg-white/10 text-white hover:bg-white/20'
-                                    }`}
+                                    className={`w-full py-3 rounded-lg font-medium transition-all ${tier.popular
+                                        ? 'bg-primary text-black hover:bg-primary/90'
+                                        : 'bg-white/10 text-white hover:bg-white/20'
+                                        }`}
                                 >
                                     {tier.cta}
                                 </button>
@@ -673,11 +705,11 @@ export default function LandingAltAll() {
                         <p className="text-xl text-gray-300 mb-8">
                             A Yearlong Transformation Journey for Emerging Leaders
                         </p>
-                        <p className="text-2xl font-light mb-8">
+                        <p className="text-2xl font-light mb-16">
                             Become the Leader Pressure Can't Break
                         </p>
 
-                        <div className="max-w-3xl mx-auto mb-8">
+                        <div className="max-w-3xl mx-auto mb-16">
                             <p className="text-lg text-gray-300 mb-6">
                                 A 12-month guided journey through <span className="text-primary font-normal">5 transformational gateways</span>—each one designed to train your body, mind, and identity to operate under pressure with grace, clarity, and conviction.
                             </p>
@@ -756,7 +788,188 @@ export default function LandingAltAll() {
                     </motion.div>
                 </LampContainer>
 
-                <div className="max-w-6xl mx-auto px-6 relative z-10 pt-32">
+                {/* Gateway Journey Timeline */}
+                <div className="max-w-6xl mx-auto px-6 relative z-10 pt-16 pb-24">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8 }}
+                        viewport={{ once: true }}
+                        className="text-center mb-4"
+                    >
+                        <h3 className="text-4xl md:text-5xl mb-3">Your <span className="text-primary">Transformation</span> Journey</h3>
+                        <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
+                            Follow the path that transforms pressure into power, one gateway at a time
+                        </p>
+                    </motion.div>
+
+                    <Timeline
+                        data={[
+                            {
+                                title: "Gateway 1",
+                                content: (
+                                    <div>
+                                        <h4 className="text-2xl font-normal text-primary mb-4" style={{ filter: 'drop-shadow(0 0 8px rgba(79,195,247,0.4))' }}>Stabilize</h4>
+                                        <p className="mb-4 text-sm md:text-base text-gray-300">
+                                            Your nervous system is the foundation of everything. In Gateway 1, you learn to regulate
+                                            your internal state in real-time—no matter what's happening around you.
+                                        </p>
+                                        <p className="mb-6 text-sm md:text-base text-gray-300">
+                                            Master presence, self-regulation, and somatic awareness. Build the ability to stay grounded
+                                            when pressure hits.
+                                        </p>
+                                        <div className="space-y-2 mb-6">
+                                            <div className="flex items-center gap-2 text-xs md:text-sm text-gray-400">
+                                                <span className="text-primary">→</span> Swiss Army Knife Protocols
+                                            </div>
+                                            <div className="flex items-center gap-2 text-xs md:text-sm text-gray-400">
+                                                <span className="text-primary">→</span> Breath & Body Regulation
+                                            </div>
+                                            <div className="flex items-center gap-2 text-xs md:text-sm text-gray-400">
+                                                <span className="text-primary">→</span> Presence Under Pressure Training
+                                            </div>
+                                        </div>
+                                        <div className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 rounded-lg p-4">
+                                            <p className="text-sm text-gray-300 italic">
+                                                "After Gateway 1, I stopped reacting to every trigger. I finally feel in control of my nervous system."
+                                            </p>
+                                        </div>
+                                    </div>
+                                ),
+                            },
+                            {
+                                title: "Gateway 2",
+                                content: (
+                                    <div>
+                                        <h4 className="text-2xl font-normal text-primary mb-4" style={{ filter: 'drop-shadow(0 0 12px rgba(79,195,247,0.5))' }}>Shift</h4>
+                                        <p className="mb-4 text-sm md:text-base text-gray-300">
+                                            Your identity is the lens through which you see the world. Gateway 2 rewires limiting beliefs
+                                            and integrates the parts of yourself you've been running from.
+                                        </p>
+                                        <p className="mb-6 text-sm md:text-base text-gray-300">
+                                            Clear emotional static, master the ART protocols, and integrate your shadow. This is where
+                                            transformation becomes permanent.
+                                        </p>
+                                        <div className="space-y-2 mb-6">
+                                            <div className="flex items-center gap-2 text-xs md:text-sm text-gray-400">
+                                                <span className="text-primary">→</span> Identity Rewiring Techniques
+                                            </div>
+                                            <div className="flex items-center gap-2 text-xs md:text-sm text-gray-400">
+                                                <span className="text-primary">→</span> ART & ART² Protocols
+                                            </div>
+                                            <div className="flex items-center gap-2 text-xs md:text-sm text-gray-400">
+                                                <span className="text-primary">→</span> Ego Integration Work
+                                            </div>
+                                        </div>
+                                        <div className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 rounded-lg p-4">
+                                            <p className="text-sm text-gray-300 italic">
+                                                "Gateway 2 helped me see patterns I've carried for decades. The identity shift was profound."
+                                            </p>
+                                        </div>
+                                    </div>
+                                ),
+                            },
+                            {
+                                title: "Gateway 3",
+                                content: (
+                                    <div>
+                                        <h4 className="text-2xl font-normal text-primary mb-4" style={{ filter: 'drop-shadow(0 0 16px rgba(79,195,247,0.6))' }}>Strengthen</h4>
+                                        <p className="mb-4 text-sm md:text-base text-gray-300">
+                                            Resilience isn't about toughness—it's about coherence. Gateway 3 builds your energetic stamina
+                                            and emotional endurance so you can sustain peak performance.
+                                        </p>
+                                        <p className="mb-6 text-sm md:text-base text-gray-300">
+                                            Train your system to bounce back faster, maintain clarity under extended pressure, and build
+                                            unshakable coherence between mind, body, and spirit.
+                                        </p>
+                                        <div className="space-y-2 mb-6">
+                                            <div className="flex items-center gap-2 text-xs md:text-sm text-gray-400">
+                                                <span className="text-primary">→</span> Resilience Training
+                                            </div>
+                                            <div className="flex items-center gap-2 text-xs md:text-sm text-gray-400">
+                                                <span className="text-primary">→</span> Energetic Stamina Building
+                                            </div>
+                                            <div className="flex items-center gap-2 text-xs md:text-sm text-gray-400">
+                                                <span className="text-primary">→</span> Coherence Protocols
+                                            </div>
+                                        </div>
+                                        <div className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 rounded-lg p-4">
+                                            <p className="text-sm text-gray-300 italic">
+                                                "I used to crash after high-pressure weeks. Now I recover in hours, not days."
+                                            </p>
+                                        </div>
+                                    </div>
+                                ),
+                            },
+                            {
+                                title: "Gateway 4",
+                                content: (
+                                    <div>
+                                        <h4 className="text-2xl font-normal text-primary mb-4" style={{ filter: 'drop-shadow(0 0 20px rgba(79,195,247,0.75))' }}>Shine</h4>
+                                        <p className="mb-4 text-sm md:text-base text-gray-300">
+                                            True leadership isn't about authority—it's about presence. Gateway 4 develops your magnetic
+                                            influence and embodied leadership capacity.
+                                        </p>
+                                        <p className="mb-6 text-sm md:text-base text-gray-300">
+                                            Learn to command a room without saying a word. Develop the kind of presence that makes people
+                                            trust you instinctively, even in crisis.
+                                        </p>
+                                        <div className="space-y-2 mb-6">
+                                            <div className="flex items-center gap-2 text-xs md:text-sm text-gray-400">
+                                                <span className="text-primary">→</span> Embodied Leadership Training
+                                            </div>
+                                            <div className="flex items-center gap-2 text-xs md:text-sm text-gray-400">
+                                                <span className="text-primary">→</span> Magnetic Influence Development
+                                            </div>
+                                            <div className="flex items-center gap-2 text-xs md:text-sm text-gray-400">
+                                                <span className="text-primary">→</span> Authentic Presence Mastery
+                                            </div>
+                                        </div>
+                                        <div className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 rounded-lg p-4">
+                                            <p className="text-sm text-gray-300 italic">
+                                                "People now look to me for leadership in ways they never did before. Gateway 4 changed how I show up."
+                                            </p>
+                                        </div>
+                                    </div>
+                                ),
+                            },
+                            {
+                                title: "Gateway 5",
+                                content: (
+                                    <div>
+                                        <h4 className="text-2xl font-normal text-primary mb-4" style={{ filter: 'drop-shadow(0 0 24px rgba(79,195,247,0.9)) drop-shadow(0 0 12px rgba(79,195,247,0.6))' }}>Synthesize</h4>
+                                        <p className="mb-4 text-sm md:text-base text-gray-300">
+                                            This is where everything comes together. Gateway 5 connects your transformation to your purpose,
+                                            legacy, and lifelong adaptability.
+                                        </p>
+                                        <p className="mb-6 text-sm md:text-base text-gray-300">
+                                            Integrate all five gateways into a coherent operating system. Define your legacy. Build the
+                                            capacity for continuous evolution.
+                                        </p>
+                                        <div className="space-y-2 mb-6">
+                                            <div className="flex items-center gap-2 text-xs md:text-sm text-gray-400">
+                                                <span className="text-primary">→</span> Purpose Integration
+                                            </div>
+                                            <div className="flex items-center gap-2 text-xs md:text-sm text-gray-400">
+                                                <span className="text-primary">→</span> Legacy Design
+                                            </div>
+                                            <div className="flex items-center gap-2 text-xs md:text-sm text-gray-400">
+                                                <span className="text-primary">→</span> Lifelong Adaptability Systems
+                                            </div>
+                                        </div>
+                                        <div className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 rounded-lg p-4">
+                                            <p className="text-sm text-gray-300 italic">
+                                                "Gateway 5 gave me clarity on my life's work. I'm not just reacting to pressure anymore—I'm designing my future."
+                                            </p>
+                                        </div>
+                                    </div>
+                                ),
+                            },
+                        ]}
+                    />
+                </div>
+
+                <div className="max-w-6xl mx-auto px-6 relative z-10">
 
                     <motion.div
                         initial={{ opacity: 0, y: 40 }}
@@ -970,7 +1183,7 @@ export default function LandingAltAll() {
                                     <input
                                         type="text"
                                         id="name"
-                                        placeholder="John Doe"
+                                        placeholder="Silver Surfer"
                                         className="w-full px-4 py-3 bg-black/50 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:border-primary focus:outline-none transition-colors"
                                     />
                                 </div>
@@ -982,7 +1195,7 @@ export default function LandingAltAll() {
                                     <input
                                         type="email"
                                         id="email"
-                                        placeholder="john@company.com"
+                                        placeholder="awaken@higherconsciousness.com"
                                         className="w-full px-4 py-3 bg-black/50 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:border-primary focus:outline-none transition-colors"
                                     />
                                 </div>
@@ -994,7 +1207,7 @@ export default function LandingAltAll() {
                                     <input
                                         type="text"
                                         id="company"
-                                        placeholder="Acme Inc."
+                                        placeholder="World Inc."
                                         className="w-full px-4 py-3 bg-black/50 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:border-primary focus:outline-none transition-colors"
                                     />
                                 </div>
@@ -1006,7 +1219,7 @@ export default function LandingAltAll() {
                                     <textarea
                                         id="message"
                                         rows={4}
-                                        placeholder="Tell us about your transformation goals..."
+                                        placeholder="Are you ready to wake up?"
                                         className="w-full px-4 py-3 bg-black/50 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:border-primary focus:outline-none transition-colors resize-none"
                                     />
                                 </div>
@@ -1027,10 +1240,20 @@ export default function LandingAltAll() {
             </section>
 
             {/* Footer */}
-            <footer className="py-12 px-6 border-t border-gray-800">
-                <div className="max-w-7xl mx-auto text-center text-gray-500">
-                    <p>&copy; 2025 Becoming Diamond. All rights reserved.</p>
-                    <p className="mt-2">You weren't born to melt under pressure. You were born to become a Diamond.</p>
+            <footer className="py-12 px-6 border-t border-gray-800 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/5 via-transparent to-transparent pointer-events-none" />
+
+                <div className="max-w-7xl mx-auto text-center relative z-10">
+                    <p className="text-lg md:text-xl text-gray-300 font-light relative inline-block">
+                        <span className="relative">
+                            You weren't born to melt under pressure. You were born to become a{" "}
+                            <span className="text-primary font-normal drop-shadow-[0_0_15px_rgba(79,195,247,0.5)]">Diamond</span>.
+                        </span>
+                    </p>
+                    <p className="mt-4 text-sm text-gray-400 italic">
+                        — Michael T Dugan
+                    </p>
+                    <p className="mt-6 text-xs text-gray-600">&copy; 2025 Becoming Diamond. All rights reserved.</p>
                 </div>
             </footer>
         </main>
