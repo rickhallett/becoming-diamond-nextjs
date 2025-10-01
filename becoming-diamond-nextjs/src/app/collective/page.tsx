@@ -36,7 +36,7 @@ export default function CollectivePage() {
 
             <div className="max-w-3xl mx-auto mb-12">
               <p className="text-lg text-gray-300 mb-6">
-                A 12-month guided journey through <span className="text-primary font-normal">5 transformational gateways</span>—each one designed to train your body, mind, and identity to operate under pressure with grace, clarity, and conviction.
+                A 12-month guided journey through <span className="text-primary font-normal">5 transformational Pressure Rooms</span>—each one designed to train your body, mind, and identity to operate under pressure with grace, clarity, and conviction.
               </p>
               <p className="text-base text-gray-400 italic">
                 This is not a course. This is not a seminar.<br />
@@ -47,44 +47,44 @@ export default function CollectivePage() {
         </LampContainer>
       </section>
 
-      {/* The 5 Gateways */}
+      {/* The 5 Pressure Rooms */}
       <section className="py-12 px-6 relative bg-black">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 max-w-6xl mx-auto">
           {[
             {
-              number: "1",
+              number: "I",
               name: "Stabilize",
               description: "Nervous system mastery, presence, self-regulation",
               intensity: "20"
             },
             {
-              number: "2",
+              number: "II",
               name: "Shift",
               description: "Identity rewiring, emotional mastery, ego integration",
               intensity: "30"
             },
             {
-              number: "3",
+              number: "III",
               name: "Strengthen",
               description: "Resilience, coherence, energetic stamina",
               intensity: "40"
             },
             {
-              number: "4",
+              number: "IV",
               name: "Shine",
               description: "Embodied leadership, influence, magnetic presence",
               intensity: "50"
             },
             {
-              number: "5",
+              number: "V",
               name: "Synthesize",
               description: "Purpose, legacy, lifelong adaptability",
               intensity: "60"
             }
-          ].map((gateway, index) => (
+          ].map((pr, index) => (
             <div
               key={index}
-              className={`group relative bg-gradient-to-b from-primary/${gateway.intensity} to-primary/10 rounded-xl p-6 text-center cursor-pointer overflow-hidden transition-all duration-300 border-2 border-primary/20 hover:border-primary`}
+              className={`group relative bg-gradient-to-b from-primary/${pr.intensity} to-primary/10 rounded-xl p-6 text-center cursor-pointer overflow-hidden transition-all duration-300 border-2 border-primary/20 hover:border-primary`}
               style={{
                 boxShadow: '0 0 0px rgba(79,195,247,0.3)',
                 transition: 'all 0.3s ease-in-out'
@@ -103,10 +103,10 @@ export default function CollectivePage() {
                     textShadow: `0 0 ${8 + index * 4}px rgba(79,195,247,${0.4 + index * 0.15})`
                   }}
                 >
-                  Gateway {gateway.number}
+                  PR{pr.number}
                 </div>
-                <h3 className="text-xl mb-3 transition-all duration-300">{gateway.name}</h3>
-                <p className="text-sm text-gray-400 transition-all duration-300">{gateway.description}</p>
+                <h3 className="text-xl mb-3 transition-all duration-300">{pr.name}</h3>
+                <p className="text-sm text-gray-400 transition-all duration-300">{pr.description}</p>
               </div>
             </div>
           ))}
@@ -150,7 +150,7 @@ export default function CollectivePage() {
               placeholders={[
                 "What makes the DiamondMind Collective different?",
                 "How long is the transformation journey?",
-                "What happens in the 5 gateways?",
+                "What happens in the 5 Pressure Rooms?",
                 "Is this right for emerging leaders?",
                 "What support do I get during the year?",
               ]}
@@ -163,7 +163,7 @@ export default function CollectivePage() {
         </motion.div>
       </section>
 
-      {/* Gateway Journey Timeline */}
+      {/* Pressure Room Journey Timeline */}
       <section className="py-24 px-6 relative bg-black">
         <div className="max-w-6xl mx-auto relative">
           <motion.div
@@ -175,19 +175,19 @@ export default function CollectivePage() {
           >
             <h2 className="text-4xl md:text-5xl mb-3">Your <span className="text-primary">Transformation</span> Journey</h2>
             <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
-              Follow the path that transforms pressure into power, one gateway at a time
+              Follow the path that transforms pressure into power, one Pressure Room at a time
             </p>
           </motion.div>
 
           <Timeline
             data={[
               {
-                title: "Gateway 1",
+                title: "PR I",
                 content: (
                   <div>
                     <h4 className="text-2xl font-normal text-primary mb-4" style={{ filter: 'drop-shadow(0 0 8px rgba(79,195,247,0.4))' }}>Stabilize</h4>
                     <p className="mb-4 text-sm md:text-base text-gray-300">
-                      Your nervous system is the foundation of everything. In Gateway 1, you learn to regulate
+                      Your nervous system is the foundation of everything. In Pressure Room I, you learn to regulate
                       your internal state in real-time—no matter what's happening around you.
                     </p>
                     <p className="mb-6 text-sm md:text-base text-gray-300">
@@ -207,19 +207,19 @@ export default function CollectivePage() {
                     </div>
                     <div className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 rounded-lg p-4">
                       <p className="text-sm text-gray-300 italic">
-                        "After Gateway 1, I stopped reacting to every trigger. I finally feel in control of my nervous system."
+                        "After PR1, I stopped reacting to every trigger. I finally feel in control of my nervous system."
                       </p>
                     </div>
                   </div>
                 ),
               },
               {
-                title: "Gateway 2",
+                title: "PR II",
                 content: (
                   <div>
                     <h4 className="text-2xl font-normal text-primary mb-4" style={{ filter: 'drop-shadow(0 0 12px rgba(79,195,247,0.5))' }}>Shift</h4>
                     <p className="mb-4 text-sm md:text-base text-gray-300">
-                      Your identity is the lens through which you see the world. Gateway 2 rewires limiting beliefs
+                      Your identity is the lens through which you see the world. Pressure Room II rewires limiting beliefs
                       and integrates the parts of yourself you've been running from.
                     </p>
                     <p className="mb-6 text-sm md:text-base text-gray-300">
@@ -239,19 +239,19 @@ export default function CollectivePage() {
                     </div>
                     <div className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 rounded-lg p-4">
                       <p className="text-sm text-gray-300 italic">
-                        "Gateway 2 helped me see patterns I've carried for decades. The identity shift was profound."
+                        "PR2 helped me see patterns I've carried for decades. The identity shift was profound."
                       </p>
                     </div>
                   </div>
                 ),
               },
               {
-                title: "Gateway 3",
+                title: "PR III",
                 content: (
                   <div>
                     <h4 className="text-2xl font-normal text-primary mb-4" style={{ filter: 'drop-shadow(0 0 16px rgba(79,195,247,0.6))' }}>Strengthen</h4>
                     <p className="mb-4 text-sm md:text-base text-gray-300">
-                      Resilience isn't about enduring stress—it's about recovering quickly. Gateway 3 builds
+                      Resilience isn't about enduring stress—it's about recovering quickly. Pressure Room III builds
                       energetic stamina and coherence so you can perform at your peak, sustainably.
                     </p>
                     <p className="mb-6 text-sm md:text-base text-gray-300">
@@ -277,12 +277,12 @@ export default function CollectivePage() {
                 ),
               },
               {
-                title: "Gateway 4",
+                title: "PR IV",
                 content: (
                   <div>
                     <h4 className="text-2xl font-normal text-primary mb-4" style={{ filter: 'drop-shadow(0 0 20px rgba(79,195,247,0.7))' }}>Shine</h4>
                     <p className="mb-4 text-sm md:text-base text-gray-300">
-                      Leadership isn't about authority—it's about presence. Gateway 4 trains you to embody the
+                      Leadership isn't about authority—it's about presence. Pressure Room IV trains you to embody the
                       kind of magnetic presence that naturally commands rooms and inspires action.
                     </p>
                     <p className="mb-6 text-sm md:text-base text-gray-300">
@@ -301,19 +301,19 @@ export default function CollectivePage() {
                     </div>
                     <div className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 rounded-lg p-4">
                       <p className="text-sm text-gray-300 italic">
-                        "People now look to me for leadership in ways they never did before. Gateway 4 gave me presence."
+                        "People now look to me for leadership in ways they never did before. PR4 gave me presence."
                       </p>
                     </div>
                   </div>
                 ),
               },
               {
-                title: "Gateway 5",
+                title: "PR V",
                 content: (
                   <div>
                     <h4 className="text-2xl font-normal text-primary mb-4" style={{ filter: 'drop-shadow(0 0 24px rgba(79,195,247,0.8))' }}>Synthesize</h4>
                     <p className="mb-4 text-sm md:text-base text-gray-300">
-                      Integration is where everything comes together. Gateway 5 helps you synthesize your
+                      Integration is where everything comes together. Pressure Room V helps you synthesize your
                       transformation into a coherent life purpose and legacy.
                     </p>
                     <p className="mb-6 text-sm md:text-base text-gray-300">
@@ -332,7 +332,7 @@ export default function CollectivePage() {
                     </div>
                     <div className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 rounded-lg p-4">
                       <p className="text-sm text-gray-300 italic">
-                        "Gateway 5 gave me clarity on my life's work. I'm designing my future with intention now."
+                        "PR5 gave me clarity on my life's work. I'm designing my future with intention now."
                       </p>
                     </div>
                   </div>

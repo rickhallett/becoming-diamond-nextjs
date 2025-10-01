@@ -384,7 +384,7 @@ export default function LandingPage() {
                             </div>
                             <h3 className="text-2xl mb-4 font-bold">DiamondMind Collective</h3>
                             <p className="text-gray-300 mb-6">
-                                Yearlong transformation journey through 5 gateways for emerging leaders. Limited to 50 members per cohort.
+                                Yearlong transformation journey through 5 Pressure Rooms for emerging leaders. Limited to 50 members per cohort.
                             </p>
                             <ul className="space-y-3 mb-8">
                                 <li className="flex items-start text-sm text-gray-300">
@@ -393,7 +393,7 @@ export default function LandingPage() {
                                 </li>
                                 <li className="flex items-start text-sm text-gray-300">
                                     <span className="text-primary mr-2">✓</span>
-                                    5 transformational gateways
+                                    5 transformational Pressure Rooms
                                 </li>
                                 <li className="flex items-start text-sm text-gray-300">
                                     <span className="text-primary mr-2">✓</span>

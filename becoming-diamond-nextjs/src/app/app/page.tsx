@@ -175,7 +175,7 @@ function AppDashboardContent() {
         <p className="text-gray-400">Day {userStats.daysInProgram} of your transformation journey</p>
       </motion.div>
 
-      {/* Gateway Progress */}
+      {/* Pressure Room Progress */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -184,19 +184,19 @@ function AppDashboardContent() {
       >
         <h2 className="text-xl mb-4 flex items-center gap-2">
           <IconTarget className="w-5 h-5 text-primary" />
-          Your Gateway Journey
+          Your Pressure Room Journey
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3">
-          {gateways.map((gateway, index) => (
+          {prRooms.map((pr, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.4, delay: index * 0.1 }}
-              className={`relative group cursor-pointer bg-gradient-to-b ${gateway.color} rounded-xl p-4 border transition-all ${
-                gateway.inProgress
+              className={`relative group cursor-pointer bg-gradient-to-b ${pr.color} rounded-xl p-4 border transition-all ${
+                pr.inProgress
                   ? "border-primary shadow-lg shadow-primary/30"
-                  : gateway.completed
+                  : pr.completed
                   ? "border-primary/40"
                   : "border-white/10"
               }`}
@@ -205,13 +205,13 @@ function AppDashboardContent() {
                 <div className="text-2xl font-light mb-2 text-primary" style={{
                   filter: `drop-shadow(0 0 ${8 + index * 2}px rgba(79,195,247,${0.3 + index * 0.1}))`
                 }}>
-                  Gateway {index + 1}
+                  PR{['I', 'II', 'III', 'IV', 'V'][index]}
                 </div>
-                <div className="text-sm mb-2">{gateway.name}</div>
-                {gateway.completed && (
+                <div className="text-sm mb-2">{pr.name}</div>
+                {pr.completed && (
                   <div className="text-xs text-primary">Completed</div>
                 )}
-                {gateway.inProgress && (
+                {pr.inProgress && (
                   <motion.div
                     animate={{ opacity: [0.5, 1, 0.5] }}
                     transition={{ duration: 2, repeat: Infinity }}
@@ -373,7 +373,7 @@ function AppDashboardContent() {
           {/* Course Library */}
           <BentoGridItem
             title="Course Library"
-            description="Access your gateway content and resources"
+            description="Access your Pressure Room content and resources"
             header={
               <div className="flex h-full min-h-[8rem] w-full flex-1 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500/20 to-red-500/20">
                 <div className="text-center">
