@@ -1,0 +1,14 @@
+# Add patterns to ignore here, one per line
+# Example:
+# *.log
+# tmp/
+public/digitalmind.avif
+src/data/globe.json
+content/courses/turning-snowflakes-into-diamonds.md
+docs/content/turning-snowflakes-into-diamonds.md
+docs/archive/landing-alt-all/page.tsx
+src/app/page.tsx.backup
+public/admin/decap-cms.js
+repomix-output.*
+src/components/ui
+.claude/*

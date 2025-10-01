@@ -23,7 +23,7 @@ async function testParser() {
 
     // Test getting specific course
     console.log('\n2. Testing getCourseContent()...');
-    const course = await getCourseContent('gateway-1-snowflakes-to-diamonds');
+    const course = await getCourseContent('pr1-stabilize-snowflakes-to-diamonds');
 
     if (!course) {
       console.error('❌ Course not found!');
@@ -32,7 +32,7 @@ async function testParser() {
 
     console.log('✅ Course loaded successfully!');
     console.log(`\nCourse: ${course.title}`);
-    console.log(`Gateway: ${course.metadata.gateway}`);
+    console.log(`Pressure Room: ${course.metadata.pressureRoom}`);
     console.log(`Instructor: ${course.metadata.instructor}`);
     console.log(`Duration: ${course.metadata.duration}`);
     console.log(`Total Chapters: ${course.totalChapters}`);

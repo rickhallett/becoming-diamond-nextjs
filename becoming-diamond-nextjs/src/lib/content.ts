@@ -83,7 +83,7 @@ export async function getContentBySlug(type: string, slug: string): Promise<Cont
 
 /**
  * Gets a course by its ID and parses it into structured format
- * @param courseId - Course identifier (e.g., "gateway-1-snowflakes-to-diamonds")
+ * @param courseId - Course identifier (e.g., "pr1-stabilize-snowflakes-to-diamonds")
  * @returns Parsed course with chapters and slides, or null if not found
  */
 export async function getCourseContent(courseId: string): Promise<ParsedCourse | null> {
@@ -159,5 +159,5 @@ export async function getAllCourses(): Promise<ParsedCourse[]> {
   // Filter out failed parses and unpublished courses
   return courses
     .filter((course): course is ParsedCourse => course !== null && course.metadata.published)
-    .sort((a, b) => a.metadata.gateway - b.metadata.gateway);
+    .sort((a, b) => a.metadata.pressureRoom - b.metadata.pressureRoom);
 }

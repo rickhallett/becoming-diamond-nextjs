@@ -235,7 +235,7 @@ export function CourseProvider({ children }: CourseProviderProps) {
       progress: 100,
     });
 
-    logActivity('gateway_completed', `Completed ${course.title}`, { courseId, gateway: course.gateway });
+    logActivity('pr_completed', `Completed ${course.title}`, { courseId, pressureRoom: course.pressureRoom });
   };
 
   // Get enrollment for a course

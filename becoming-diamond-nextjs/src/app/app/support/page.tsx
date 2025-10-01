@@ -27,8 +27,8 @@ export default function SupportPage() {
             answer: "The Diamond Operating System is our comprehensive methodology for nervous system regulation and identity transformation. It teaches you to convert pressure into clarity and build unshakable presence."
         },
         {
-            question: "How do the 5 Gateways work?",
-            answer: "The 5 Gateways are progressive transformational stages: Stabilize, Shift, Strengthen, Shine, and Synthesize. Each gateway builds upon the previous one to create lasting change."
+            question: "How do the 5 Pressure Rooms work?",
+            answer: "The 5 Pressure Rooms are progressive transformational stages: PR I (Stabilize), PR II (Shift), PR III (Strengthen), PR IV (Shine), and PR V (Synthesize). Each Pressure Room builds upon the previous one to create lasting change."
         },
         {
             question: "Can I change my subscription plan?",
