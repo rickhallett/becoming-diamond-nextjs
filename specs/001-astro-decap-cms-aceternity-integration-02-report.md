@@ -15,10 +15,11 @@
 - [x] Test build process
 
 ## Commits
-- `[pending]` - feat: add React integration and core UI components (PRD 001-02)
-  - Files: React dependencies, UI components, AuthForm, landing page restructure
+- `4ca0794` - feat: add React integration and core UI components (PRD 001-02)
+  - Files: 41 files changed, 15,176 insertions
   - Components: input.astro, label.astro, AuthForm.tsx, HeroSection.astro, AuthSection.astro
   - Pages: Updated landing.astro, new app.astro
+  - Build artifacts: React client bundles in .vercel/output/
 
 ## Dependencies Installed
 - **@astrojs/react@4.4.0**: React integration for Astro (got 4.4.0 instead of 4.3.0)
