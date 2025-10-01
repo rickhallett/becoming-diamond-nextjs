@@ -4,6 +4,7 @@ import { IconClock, IconUsers, IconStar, IconProgress, IconLock, IconCheck } fro
 import { useUser } from "@/contexts/UserContext";
 import { useCourses, SAMPLE_COURSES } from "@/contexts/CourseContext";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function CoursesPage() {
     const { user, isLoading: userLoading } = useUser();
@@ -104,9 +105,10 @@ export default function CoursesPage() {
                             const progress = course.enrollment?.progress || 0;
 
                             return (
-                                <div
+                                <Link
                                     key={course.id}
-                                    className="group relative bg-secondary/30 border border-white/10 rounded-xl overflow-hidden hover:border-primary/30 transition-all cursor-pointer"
+                                    href={`/app/courses/${course.id}`}
+                                    className="group relative bg-secondary/30 border border-white/10 rounded-xl overflow-hidden hover:border-primary/30 transition-all cursor-pointer block"
                                 >
                                     {/* Course Image */}
                                     <div className="relative h-48 overflow-hidden">
@@ -167,7 +169,7 @@ export default function CoursesPage() {
                                             </div>
                                         )}
                                     </div>
-                                </div>
+                                </Link>
                             );
                         })}
                     </div>

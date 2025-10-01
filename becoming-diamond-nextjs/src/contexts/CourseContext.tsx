@@ -59,14 +59,14 @@ const CourseContext = createContext<CourseContextValue | undefined>(undefined);
 // Sample course data (would eventually come from API or CMS)
 export const SAMPLE_COURSES: Course[] = [
   {
-    id: 'gateway-1',
-    title: 'Gateway 1: Foundation of Presence',
-    description: 'Begin your transformation journey with fundamental practices in mindfulness and self-awareness.',
+    id: 'gateway-1-snowflakes-to-diamonds',
+    title: 'Gateway 1: Turning Snowflakes into Diamonds',
+    description: 'Learn to transform pressure into power and develop unshakeable resilience in the face of challenges.',
     gateway: 1,
-    duration: '4 weeks',
+    duration: '8 weeks',
     lessons: ['Lesson 1: Introduction to Presence', 'Lesson 2: Breath Awareness', 'Lesson 3: Body Scan Meditation', 'Lesson 4: Present Moment Practice'],
     difficulty: 'Beginner',
-    instructor: 'Master Diamond'
+    instructor: 'Michael Dugan'
   },
   {
     id: 'gateway-2',
