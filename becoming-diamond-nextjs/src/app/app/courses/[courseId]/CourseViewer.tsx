@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import type { ParsedCourse, CourseChapter, CourseSlide } from "@/types/course";
+import { useState, useEffect, useCallback, useMemo } from "react";
+import type { ParsedCourse, CourseSlide } from "@/types/course";
 import type { CourseProgress as CourseProgressType } from "@/types/progress";
 import ChapterNav from "@/components/course/ChapterNav";
 import SlideContent from "@/components/course/SlideContent";
@@ -24,6 +24,20 @@ export default function CourseViewer({ course }: CourseViewerProps) {
   const [showNotes, setShowNotes] = useState(false);
   const [progressData, setProgressData] = useState<CourseProgressType | null>(null);
 
+  // Flatten all slides for easy navigation
+  const allSlides = useMemo(() => {
+    const slides: (CourseSlide & { chapterTitle: string })[] = [];
+    course.chapters.forEach((chapter) => {
+      chapter.slides.forEach((slide) => {
+        slides.push({
+          ...slide,
+          chapterTitle: chapter.title,
+        });
+      });
+    });
+    return slides;
+  }, [course]);
+
   // Initialize progress on mount
   useEffect(() => {
     const progress = getCourseProgress(course);
@@ -36,18 +50,7 @@ export default function CourseViewer({ course }: CourseViewerProps) {
         setCurrentSlideIndex(slideIndex);
       }
     }
-  }, [course]);
-
-  // Flatten all slides for easy navigation
-  const allSlides: (CourseSlide & { chapterTitle: string })[] = [];
-  course.chapters.forEach((chapter) => {
-    chapter.slides.forEach((slide) => {
-      allSlides.push({
-        ...slide,
-        chapterTitle: chapter.title,
-      });
-    });
-  });
+  }, [course, allSlides]);
 
   const currentSlide = allSlides[currentSlideIndex];
   const currentChapter = course.chapters.find(
@@ -61,7 +64,7 @@ export default function CourseViewer({ course }: CourseViewerProps) {
       const updated = updateCurrentSlide(progressData, currentSlide.id);
       setProgressData(updated);
     }
-  }, [currentSlideIndex]);
+  }, [currentSlideIndex, currentSlide, progressData]);
 
   const goToNextSlide = useCallback(() => {
     if (currentSlideIndex < allSlides.length - 1) {

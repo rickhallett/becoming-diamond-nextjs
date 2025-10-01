@@ -226,7 +226,7 @@ export default function ChatPage() {
                             <h1 className="text-3xl md:text-4xl font-light">
                                 Diamond<span className="text-primary">Mind</span>AI
                             </h1>
-                            <p className="text-gray-400 text-sm">Ask me anything about "Turning Snowflakes into Diamonds"</p>
+                            <p className="text-gray-400 text-sm">Ask me anything about &ldquo;Turning Snowflakes into Diamonds&rdquo;</p>
                         </div>
                     </div>
                 </div>
