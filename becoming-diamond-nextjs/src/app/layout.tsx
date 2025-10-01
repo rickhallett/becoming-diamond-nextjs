@@ -1,9 +1,8 @@
 "use client";
 import { Geist, Geist_Mono } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next"
-import { UserProvider } from "@/contexts/UserContext";
-import { CourseProvider } from "@/contexts/CourseContext";
 import { ChatProvider } from "@/contexts/ChatContext";
+import { Providers } from "./providers";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -26,14 +25,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <UserProvider>
-          <CourseProvider>
-            <ChatProvider>
-              <SpeedInsights />
-              {children}
-            </ChatProvider>
-          </CourseProvider>
-        </UserProvider>
+        <Providers>
+          <ChatProvider>
+            <SpeedInsights />
+            {children}
+          </ChatProvider>
+        </Providers>
       </body>
     </html>
   );
