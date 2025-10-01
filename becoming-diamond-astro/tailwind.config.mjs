@@ -4,6 +4,8 @@ export default {
   theme: {
     extend: {
       colors: {
+        primary: '#4fc3f7',
+        secondary: '#1a1a2e',
         purple: {
           400: '#c084fc',
           600: '#9333ea',
