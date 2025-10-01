@@ -25,3 +25,10 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
+
+# CMS uploads (optional - depends on workflow)
+public/uploads/*
+!public/uploads/.gitkeep
+
+# Decap CMS admin build artifact
+public/admin/decap-cms.js
