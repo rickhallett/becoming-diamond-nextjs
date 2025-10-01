@@ -197,24 +197,24 @@ export default function LandingAltAll() {
 
             {/* Globe Section - Global Community */}
             <section className="py-24 px-6 bg-black relative">
-                <div className="max-w-7xl mx-auto w-full relative overflow-hidden h-[40rem]">
+                <div className="max-w-7xl mx-auto w-full relative h-[40rem] md:h-[50rem]">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
                         viewport={{ once: true }}
-                        className="relative z-10"
+                        className="relative z-10 mb-8"
                     >
                         <h2 className="text-center mb-4">
                             Join a Global <span className="text-primary">Revolution</span>
                         </h2>
-                        <p className="text-center text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-8">
+                        <p className="text-center text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
                             Thousands of leaders, entrepreneurs, and change-makers across six continents are transforming pressure into clarity. The collective is growing. Your place is waiting.
                         </p>
                     </motion.div>
 
                     <div className="absolute w-full bottom-0 inset-x-0 h-40 bg-gradient-to-b pointer-events-none select-none from-transparent to-black z-40" />
-                    <div className="absolute w-full -bottom-20 h-72 md:h-full z-10">
+                    <div className="absolute inset-0 top-32 md:top-40 z-10">
                         <World data={sampleArcs} globeConfig={globeConfig} />
                     </div>
                 </div>
