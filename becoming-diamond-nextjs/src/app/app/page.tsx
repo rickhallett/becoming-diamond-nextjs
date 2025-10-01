@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
@@ -7,7 +7,7 @@ import { IconTrendingUp, IconFlame, IconTarget, IconCalendar, IconUsers, IconBoo
 import { useUser } from "@/contexts/UserContext";
 import { useCourses, SAMPLE_COURSES } from "@/contexts/CourseContext";
 
-export default function AppDashboard() {
+function AppDashboardContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { user, isLoading } = useUser();
@@ -498,5 +498,17 @@ export default function AppDashboard() {
         </div>
       </motion.div>
     </div>
+  );
+}
+
+export default function AppDashboard() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="text-gray-400">Loading dashboard...</div>
+      </div>
+    }>
+      <AppDashboardContent />
+    </Suspense>
   );
 }
