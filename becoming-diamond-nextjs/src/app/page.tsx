@@ -15,7 +15,9 @@ import { HeroSection } from "@/components/HeroSection";
 import { ProblemPainPointsGrid } from "@/components/ProblemPainPointsGrid";
 import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { LeadMagnetSection } from "@/components/LeadMagnetSection";
+import { BookSalesSection } from "@/components/BookSalesSection";
 import { SectionHeader } from "@/components/SectionHeader";
+import { MemberAreaTransition } from "@/components/MemberAreaTransition";
 
 const World = dynamic(() => import("@/components/ui/globe").then((m) => m.World), {
     ssr: false,
@@ -104,11 +106,13 @@ export default function LandingAltAll() {
     ];
 
     return (
-        <main className="bg-black min-h-screen text-white overflow-hidden">
-            <Navigation />
+        <MemberAreaTransition>
+            {({ startTransition }) => (
+                <main className="bg-black min-h-screen text-white overflow-hidden">
+                    <Navigation />
 
-            {/* Hero Section - Shark Tank Pitch Energy */}
-            <HeroSection
+                    {/* Hero Section - Shark Tank Pitch Energy */}
+                    <HeroSection
                 badge="The Antidote to the AI Anxiety Epidemic"
                 title={
                     <>
@@ -384,6 +388,9 @@ export default function LandingAltAll() {
                 ctaText="Yes, I Want the Free Diamond Sprint"
                 disclaimer="Discover the 3 tools that helped thousands regulate stress, rewire identity, and lead through chaos—in just 15 minutes a day."
             />
+
+            {/* Book Sales Section */}
+            <BookSalesSection />
 
             {/* Core Offer - Diamond Activation Experience */}
             <section id="offers" className="py-24 px-6 bg-gradient-to-b from-black via-secondary/30 to-black relative">
@@ -1154,5 +1161,7 @@ export default function LandingAltAll() {
 
             <Footer />
         </main>
+            )}
+        </MemberAreaTransition>
     );
 }
