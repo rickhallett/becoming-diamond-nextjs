@@ -66,8 +66,8 @@ The book focuses on identity transformation, nervous system regulation, and high
     usage: {
       input_tokens: message.usage.input_tokens,
       output_tokens: message.usage.output_tokens,
-      cache_creation_input_tokens: message.usage.cache_creation_input_tokens,
-      cache_read_input_tokens: message.usage.cache_read_input_tokens,
+      cache_creation_input_tokens: message.usage.cache_creation_input_tokens ?? undefined,
+      cache_read_input_tokens: message.usage.cache_read_input_tokens ?? undefined,
     },
   };
 }
