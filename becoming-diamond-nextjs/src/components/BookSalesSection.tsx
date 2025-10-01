@@ -103,7 +103,7 @@ export function BookSalesSection({ className }: BookSalesSectionProps) {
     >
       {/* Spotlight Effect */}
       <Spotlight
-        className="-top-40 left-0 md:left-60 md:-top-20"
+        className="top-0 left-0 md:left-1/4 md:-top-10"
         fill="#4fc3f7"
       />
 
