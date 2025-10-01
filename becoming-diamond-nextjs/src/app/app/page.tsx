@@ -1,16 +1,33 @@
 "use client";
-import React from "react";
-import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
-import { IconTrendingUp, IconFlame, IconTarget, IconCalendar, IconUsers, IconBook, IconSparkles, IconBolt, IconChevronRight, IconDiamond } from "@tabler/icons-react";
+import { IconTrendingUp, IconFlame, IconTarget, IconCalendar, IconUsers, IconBook, IconSparkles, IconBolt, IconChevronRight, IconDiamond, IconCheck } from "@tabler/icons-react";
 import { useUser } from "@/contexts/UserContext";
 import { useCourses, SAMPLE_COURSES } from "@/contexts/CourseContext";
 
 export default function AppDashboard() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { user, isLoading } = useUser();
   const { enrollments, getRecentActivities } = useCourses();
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
+  // Check for success parameter from Stripe redirect
+  useEffect(() => {
+    const success = searchParams.get('success');
+    if (success === 'true') {
+      console.log('[Dashboard] Payment success detected, user:', user ? 'logged in' : 'not logged in');
+      console.log('[Dashboard] Auth loading state:', isLoading);
+      setShowSuccessMessage(true);
+      // Clear the success parameter from URL after 5 seconds
+      setTimeout(() => {
+        setShowSuccessMessage(false);
+        router.replace('/app', { scroll: false });
+      }, 5000);
+    }
+  }, [searchParams, router, user, isLoading]);
 
   // Calculate days in program
   const daysInProgram = user ? Math.floor(
@@ -102,6 +119,34 @@ export default function AppDashboard() {
 
   return (
     <div className="min-h-full relative">
+      {/* Success Message */}
+      {showSuccessMessage && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          className="mb-6 bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-500/50 rounded-xl p-4 flex items-center gap-3"
+        >
+          <div className="flex-shrink-0 w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
+            <IconCheck className="w-6 h-6 text-green-400" />
+          </div>
+          <div className="flex-1">
+            <h3 className="text-white font-medium mb-1">Payment Successful!</h3>
+            <p className="text-sm text-gray-300">
+              Thank you for your purchase. Your book will be delivered to your email shortly.
+            </p>
+          </div>
+          <button
+            onClick={() => setShowSuccessMessage(false)}
+            className="flex-shrink-0 text-gray-400 hover:text-white transition-colors"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </motion.div>
+      )}
+
       {/* Welcome Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
