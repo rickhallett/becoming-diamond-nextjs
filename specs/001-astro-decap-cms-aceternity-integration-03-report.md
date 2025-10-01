@@ -14,10 +14,11 @@
 - [x] Test build process
 
 ## Commits
-- `[pending]` - feat: add animations and particle effects (PRD 001-03)
-  - Files: Animation dependencies, SparklesCore, animated AuthForm, parallax HeroSection
+- `330c4d2` - feat: add animations and particle effects (PRD 001-03)
+  - Files: 34 files changed, 1,972 insertions
   - Components: SparklesCore.tsx, sparkles.astro, updated HeroSection.astro, updated AuthForm.tsx
   - Bundle sizes: AuthForm (123.43 kB, 40.06 kB gzip), SparklesCore (147.97 kB, 42.67 kB gzip)
+  - Build artifacts: Updated Vercel serverless functions and client bundles
 
 ## Dependencies Installed
 - **framer-motion@12.23.22**: Animation library for React
