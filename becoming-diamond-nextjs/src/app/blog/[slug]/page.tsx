@@ -288,7 +288,7 @@ export default async function BlogPostPage({ params }: PageProps) {
             <p className="text-gray-300 mb-8 text-lg">
               Ready to master your nervous system and lead with clarity?
             </p>
-            <Link href="/auth">
+            <Link href="/auth/signin">
               <HoverBorderGradient
                 containerClassName="rounded-full inline-block"
                 as="button"

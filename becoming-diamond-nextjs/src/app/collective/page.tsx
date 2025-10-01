@@ -358,7 +358,7 @@ export default function CollectivePage() {
             <p className="text-xl text-gray-300 mb-8">
               Applications are now open for the next cohort of the DiamondMind Collective
             </p>
-            <Link href="/auth">
+            <Link href="/auth/signin">
               <button className="bg-primary text-black px-10 py-5 rounded-full text-xl font-medium hover:bg-primary/90 transition-all shadow-lg shadow-primary/30">
                 Apply to Join the Collective
               </button>

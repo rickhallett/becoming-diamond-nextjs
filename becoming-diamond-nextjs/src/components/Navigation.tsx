@@ -36,7 +36,7 @@ export function Navigation() {
                     <Link href="/blog" className="hover:text-primary transition-colors">
                         Blog
                     </Link>
-                    <Link href="/auth" className="hover:text-primary transition-colors drop-shadow-[0_0_8px_rgba(255,255,255,0.6)] hover:drop-shadow-[0_0_12px_rgba(79,195,247,0.8)]">
+                    <Link href="/auth/signin" className="hover:text-primary transition-colors drop-shadow-[0_0_8px_rgba(255,255,255,0.6)] hover:drop-shadow-[0_0_12px_rgba(79,195,247,0.8)]">
                         Members Area
                     </Link>
                 </div>
@@ -93,7 +93,7 @@ export function Navigation() {
                         Blog
                     </Link>
                     <Link
-                        href="/auth"
+                        href="/auth/signin"
                         className="text-lg hover:text-primary transition-colors py-2 drop-shadow-[0_0_8px_rgba(255,255,255,0.6)] hover:drop-shadow-[0_0_12px_rgba(79,195,247,0.8)]"
                         onClick={() => setMobileMenuOpen(false)}
                     >
