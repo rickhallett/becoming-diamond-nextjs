@@ -53,7 +53,7 @@ export default function SettingsPage() {
                             ].map((setting, index) => (
                                 <div
                                     key={index}
-                                    className="flex items-center justify-between p-4 bg-secondary/30 border border-white/10 rounded-lg"
+                                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 bg-secondary/30 border border-white/10 rounded-lg"
                                 >
                                     <div className="flex-1">
                                         <p className="text-white font-light">{setting.label}</p>
@@ -61,7 +61,7 @@ export default function SettingsPage() {
                                     </div>
                                     <button
                                         onClick={() => setting.onChange(!setting.value)}
-                                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors flex-shrink-0 ${
                                             setting.value ? "bg-primary" : "bg-gray-600"
                                         }`}
                                     >
@@ -90,7 +90,7 @@ export default function SettingsPage() {
                         </h3>
 
                         <div className="space-y-6">
-                            <div className="bg-secondary/30 border border-white/10 rounded-lg p-6">
+                            <div className="bg-secondary/30 border border-white/10 rounded-lg p-4 sm:p-6">
                                 <h4 className="text-lg font-light mb-4">Change Password</h4>
                                 <div className="space-y-4">
                                     <div>
@@ -105,13 +105,13 @@ export default function SettingsPage() {
                                         <Label htmlFor="confirm-password" className="text-gray-300">Confirm New Password</Label>
                                         <Input id="confirm-password" type="password" className="mt-2" />
                                     </div>
-                                    <button className="bg-primary text-black px-6 py-2 rounded-lg hover:bg-primary/90 transition-all">
+                                    <button className="bg-primary text-black px-6 py-2 rounded-lg hover:bg-primary/90 transition-all w-full sm:w-auto">
                                         Update Password
                                     </button>
                                 </div>
                             </div>
 
-                            <div className="bg-secondary/30 border border-white/10 rounded-lg p-6">
+                            <div className="bg-secondary/30 border border-white/10 rounded-lg p-4 sm:p-6">
                                 <h4 className="text-lg font-light mb-2 flex items-center gap-2">
                                     <IconShield className="w-5 h-5 text-green-400" />
                                     Two-Factor Authentication
@@ -119,16 +119,16 @@ export default function SettingsPage() {
                                 <p className="text-sm text-gray-400 mb-4">
                                     Add an extra layer of security to your account
                                 </p>
-                                <button className="bg-green-500/20 border border-green-500/30 text-green-400 px-6 py-2 rounded-lg hover:bg-green-500/30 transition-all">
+                                <button className="bg-green-500/20 border border-green-500/30 text-green-400 px-6 py-2 rounded-lg hover:bg-green-500/30 transition-all w-full sm:w-auto">
                                     Enable 2FA
                                 </button>
                             </div>
 
-                            <div className="bg-secondary/30 border border-white/10 rounded-lg p-6">
+                            <div className="bg-secondary/30 border border-white/10 rounded-lg p-4 sm:p-6">
                                 <h4 className="text-lg font-light mb-2">Active Sessions</h4>
                                 <p className="text-sm text-gray-400 mb-4">Manage your active login sessions</p>
                                 <div className="space-y-2">
-                                    <div className="flex items-center justify-between p-3 bg-black/30 rounded-lg">
+                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 bg-black/30 rounded-lg">
                                         <div>
                                             <p className="text-sm text-white">Chrome on MacOS</p>
                                             <p className="text-xs text-gray-500">Los Angeles, CA - Current session</p>
@@ -153,9 +153,9 @@ export default function SettingsPage() {
                             Appearance Settings
                         </h3>
 
-                        <div className="bg-secondary/30 border border-white/10 rounded-lg p-6">
-                            <div className="flex items-center justify-between mb-6">
-                                <div>
+                        <div className="bg-secondary/30 border border-white/10 rounded-lg p-4 sm:p-6">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+                                <div className="flex-1">
                                     <h4 className="text-lg font-light">Dark Mode</h4>
                                     <p className="text-sm text-gray-400 mt-1">
                                         Use dark theme across the application
@@ -163,7 +163,7 @@ export default function SettingsPage() {
                                 </div>
                                 <button
                                     onClick={() => setDarkMode(!darkMode)}
-                                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors flex-shrink-0 ${
                                         darkMode ? "bg-primary" : "bg-gray-600"
                                     }`}
                                 >
@@ -177,7 +177,7 @@ export default function SettingsPage() {
 
                             <div className="pt-6 border-t border-white/10">
                                 <h4 className="text-lg font-light mb-4">Theme Color</h4>
-                                <div className="grid grid-cols-4 gap-3">
+                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                                     {[
                                         { name: "Cyan", color: "#4fc3f7" },
                                         { name: "Purple", color: "#9333ea" },
@@ -214,13 +214,13 @@ export default function SettingsPage() {
                         </h3>
 
                         <div className="space-y-6">
-                            <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-lg p-6">
-                                <div className="flex items-start justify-between mb-4">
+                            <div className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-lg p-4 sm:p-6">
+                                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-4">
                                     <div>
                                         <h4 className="text-lg font-light">Full Program</h4>
                                         <p className="text-sm text-gray-400 mt-1">Active subscription</p>
                                     </div>
-                                    <span className="px-3 py-1 bg-green-500/20 border border-green-500/30 text-green-400 rounded-full text-xs">
+                                    <span className="px-3 py-1 bg-green-500/20 border border-green-500/30 text-green-400 rounded-full text-xs inline-block w-fit">
                                         Active
                                     </span>
                                 </div>
@@ -234,11 +234,11 @@ export default function SettingsPage() {
                                 </div>
                             </div>
 
-                            <div className="bg-secondary/30 border border-white/10 rounded-lg p-6">
+                            <div className="bg-secondary/30 border border-white/10 rounded-lg p-4 sm:p-6">
                                 <h4 className="text-lg font-light mb-4">Payment Method</h4>
-                                <div className="flex items-center justify-between p-4 bg-black/30 border border-white/10 rounded-lg">
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 bg-black/30 border border-white/10 rounded-lg">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-10 h-7 bg-gradient-to-r from-blue-600 to-blue-400 rounded flex items-center justify-center text-white text-xs font-bold">
+                                        <div className="w-10 h-7 bg-gradient-to-r from-blue-600 to-blue-400 rounded flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
                                             VISA
                                         </div>
                                         <div>
@@ -250,7 +250,7 @@ export default function SettingsPage() {
                                 </div>
                             </div>
 
-                            <div className="bg-secondary/30 border border-white/10 rounded-lg p-6">
+                            <div className="bg-secondary/30 border border-white/10 rounded-lg p-4 sm:p-6">
                                 <h4 className="text-lg font-light mb-4">Billing History</h4>
                                 <div className="space-y-2">
                                     {[
@@ -259,7 +259,7 @@ export default function SettingsPage() {
                                     ].map((invoice, index) => (
                                         <div
                                             key={index}
-                                            className="flex items-center justify-between p-3 bg-black/30 rounded-lg"
+                                            className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 p-3 bg-black/30 rounded-lg"
                                         >
                                             <span className="text-sm text-gray-400">{invoice.date}</span>
                                             <div className="flex items-center gap-4">

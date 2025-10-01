@@ -32,6 +32,19 @@ export default function CoursesPage() {
         },
     ];
 
+    const bonusCourses = [
+        {
+            title: "Diamond Breath",
+            instructor: "Kai from oceanheart.ai",
+            description: "Specialist breathwork training for opening consciousness",
+            src: "https://images.unsplash.com/photo-1545389336-cf090694435e?q=80&w=800&h=600&fit=crop",
+            duration: "3 weeks",
+            students: "1,567",
+            rating: 5.0,
+            status: "bonus"
+        },
+    ];
+
     const availableCourses = [
         {
             title: "Gateway 3: Strengthen",
@@ -162,6 +175,62 @@ export default function CoursesPage() {
                                         </div>
                                     </div>
                                 )}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* Bonus Courses */}
+            <div className="mb-16">
+                <h2 className="text-2xl font-light mb-6">
+                    <span className="text-primary">Bonus</span> Content
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {bonusCourses.map((course, index) => (
+                        <div
+                            key={index}
+                            className="group relative bg-secondary/30 border border-primary/30 rounded-xl overflow-hidden hover:border-primary/50 transition-all cursor-pointer"
+                        >
+                            {/* Course Image */}
+                            <div className="relative h-48 overflow-hidden">
+                                <img
+                                    src={course.src}
+                                    alt={course.title}
+                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+
+                                {/* Bonus Badge */}
+                                <div className="absolute top-4 right-4">
+                                    <div className="bg-primary/20 border border-primary text-primary px-3 py-1 rounded-full text-xs font-medium">
+                                        Bonus Course
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Course Info */}
+                            <div className="p-6">
+                                <h3 className="text-xl font-light mb-2 group-hover:text-primary transition-colors">
+                                    {course.title}
+                                </h3>
+                                <p className="text-sm text-gray-400 mb-3">{course.description}</p>
+                                <p className="text-xs text-primary mb-4">by {course.instructor}</p>
+
+                                <div className="flex items-center gap-4 text-xs text-gray-400">
+                                    <div className="flex items-center gap-1">
+                                        <IconClock className="w-4 h-4" />
+                                        <span>{course.duration}</span>
+                                    </div>
+                                    <div className="flex items-center gap-1">
+                                        <IconUsers className="w-4 h-4" />
+                                        <span>{course.students}</span>
+                                    </div>
+                                    <div className="flex items-center gap-1">
+                                        <IconStar className="w-4 h-4 text-yellow-400" />
+                                        <span>{course.rating}</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     ))}
