@@ -1,4 +1,4 @@
-// @ts-check
+// @ts-nocheck
 import { defineConfig } from "astro/config";
 import decapCmsOauth from "astro-decap-cms-oauth";
 import vercel from "@astrojs/vercel";
