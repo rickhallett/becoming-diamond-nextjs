@@ -197,7 +197,7 @@ export default function LandingAltAll() {
 
             {/* Globe Section - Global Community */}
             <section className="py-24 px-6 bg-black relative">
-                <div className="max-w-7xl mx-auto w-full relative h-[40rem] md:h-[50rem]">
+                <div className="max-w-7xl mx-auto w-full relative">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -213,9 +213,13 @@ export default function LandingAltAll() {
                         </p>
                     </motion.div>
 
-                    <div className="absolute w-full bottom-0 inset-x-0 h-40 bg-gradient-to-b pointer-events-none select-none from-transparent to-black z-40" />
-                    <div className="absolute inset-0 top-32 md:top-40 z-10">
-                        <World data={sampleArcs} globeConfig={globeConfig} />
+                    <div className="flex justify-center w-full">
+                        <div className="relative overflow-hidden" style={{ width: '768px', height: '640px', maxWidth: '100%' }}>
+                            <div className="absolute w-full bottom-0 inset-x-0 h-40 bg-gradient-to-b pointer-events-none select-none from-transparent to-black z-40" />
+                            <div className="w-full h-full z-10">
+                                <World data={sampleArcs} globeConfig={globeConfig} />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -684,7 +688,7 @@ export default function LandingAltAll() {
                         </div>
 
                         {/* The 5 Gateways */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 max-w-6xl mx-auto">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 max-w-6xl mx-auto mb-8">
                             {[
                                 {
                                     number: "1",
@@ -719,28 +723,33 @@ export default function LandingAltAll() {
                             ].map((gateway, index) => (
                                 <motion.div
                                     key={index}
-                                    initial={{ opacity: 0, y: 30 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                                    viewport={{ once: true }}
-                                    whileHover={{
-                                        y: -8,
-                                        scale: 1.05,
-                                        transition: { duration: 0.3 }
+                                    initial={{ opacity: 0, x: -100 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    transition={{
+                                        duration: 0.5,
+                                        delay: index * 0.08,
+                                        ease: [0.25, 0.46, 0.45, 0.94]
                                     }}
-                                    className={`group relative bg-gradient-to-b from-primary/${gateway.intensity} to-primary/10 border border-primary/30 rounded-xl p-6 text-center cursor-pointer overflow-hidden transition-all duration-300 hover:border-primary/60 hover:shadow-[0_0_30px_rgba(79,195,247,0.${gateway.intensity})]`}
+                                    viewport={{ once: true }}
+                                    className={`group relative bg-gradient-to-b from-primary/${gateway.intensity} to-primary/10 rounded-xl p-6 text-center cursor-pointer overflow-hidden transition-all duration-300 border-2 border-primary/20 hover:border-primary`}
+                                    style={{
+                                        boxShadow: '0 0 0px rgba(79,195,247,0.3)',
+                                        transition: 'all 0.3s ease-in-out'
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.boxShadow = `0 0 20px rgba(79,195,247,0.6), 0 0 40px rgba(79,195,247,0.4)`;
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.boxShadow = '0 0 0px rgba(79,195,247,0.3)';
+                                    }}
                                 >
-                                    <div className={`absolute inset-0 bg-gradient-to-t from-primary/0 to-primary/${gateway.intensity} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
-
                                     <div className="relative z-10">
-                                        <div className={`text-4xl font-thin text-primary mb-3 transition-all duration-300 group-hover:text-white group-hover:scale-110 group-hover:drop-shadow-[0_0_10px_rgba(79,195,247,0.8)]`}>
+                                        <div className={`text-4xl font-thin text-primary mb-3 transition-all duration-300`}>
                                             Gateway {gateway.number}
                                         </div>
-                                        <h3 className="text-xl mb-3 transition-all duration-300 group-hover:text-white group-hover:font-medium">{gateway.name}</h3>
-                                        <p className="text-sm text-gray-400 transition-all duration-300 group-hover:text-gray-200">{gateway.description}</p>
+                                        <h3 className="text-xl mb-3 transition-all duration-300">{gateway.name}</h3>
+                                        <p className="text-sm text-gray-400 transition-all duration-300">{gateway.description}</p>
                                     </div>
-
-                                    <div className={`absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500 bg-gradient-radial from-white via-primary to-transparent blur-xl`} />
                                 </motion.div>
                             ))}
                         </div>

@@ -1,7 +1,7 @@
 /* empty css                                 */
-import { e as createComponent, f as createAstro, l as renderComponent, r as renderTemplate, m as maybeRenderHead, n as renderScript } from '../chunks/astro/server_BSQb0W_H.mjs';
+import { e as createComponent, f as createAstro, k as renderComponent, r as renderTemplate, m as maybeRenderHead, n as renderScript } from '../chunks/astro/server_C1911K9M.mjs';
 import 'kleur/colors';
-import { $ as $$Layout } from '../chunks/Layout_BgSpVSV8.mjs';
+import { $ as $$Layout } from '../chunks/Layout_Cq7s04YD.mjs';
 import { jsx, jsxs, Fragment } from 'react/jsx-runtime';
 import { useState, useEffect, useMemo } from 'react';
 import Particles, { initParticlesEngine } from '@tsparticles/react';
