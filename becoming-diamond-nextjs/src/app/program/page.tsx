@@ -174,7 +174,7 @@ export default function ProgramPage() {
                   ))}
                 </ul>
 
-                <Link href="/auth">
+                <Link href="/auth/signin">
                   <button
                     className={`w-full py-3 rounded-lg font-medium transition-all ${tier.popular
                       ? 'bg-primary text-black hover:bg-primary/90'

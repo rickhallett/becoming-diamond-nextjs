@@ -140,7 +140,7 @@ export default async function BlogPage() {
               <p className="text-gray-300 mb-8">
                 Join thousands who are mastering pressure and leading with clarity
               </p>
-              <Link href="/auth">
+              <Link href="/auth/signin">
                 <HoverBorderGradient
                   containerClassName="rounded-full inline-block"
                   as="button"
