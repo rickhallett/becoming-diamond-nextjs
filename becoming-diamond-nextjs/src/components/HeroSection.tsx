@@ -22,6 +22,7 @@ interface HeroSectionProps {
     primaryCta?: CTAButton;
     secondaryCta?: CTAButton;
     socialProof?: SocialProof;
+    microTestimonials?: string[];
 }
 
 export function HeroSection({
@@ -31,6 +32,7 @@ export function HeroSection({
     primaryCta,
     secondaryCta,
     socialProof,
+    microTestimonials,
 }: HeroSectionProps) {
     return (
         <section className="min-h-screen flex items-center justify-center relative">
@@ -67,7 +69,7 @@ export function HeroSection({
                                 containerClassName="rounded-full"
                                 as="button"
                                 onClick={primaryCta.onClick}
-                                className="bg-black text-white px-8 py-4 text-lg font-medium"
+                                className="bg-black text-white px-10 py-5 text-xl font-semibold shadow-2xl shadow-primary/20"
                             >
                                 {primaryCta.text}
                             </HoverBorderGradient>
@@ -75,9 +77,9 @@ export function HeroSection({
 
                         {secondaryCta && (
                             <motion.button
-                                className="border border-primary/50 text-primary px-8 py-4 text-lg font-medium rounded-full hover:bg-primary/10 transition-all"
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
+                                className="border border-white/20 text-white/80 px-8 py-4 text-base font-normal rounded-full hover:bg-white/5 hover:border-white/30 transition-all"
+                                whileHover={{ scale: 1.03 }}
+                                whileTap={{ scale: 0.97 }}
                                 onClick={secondaryCta.onClick}
                             >
                                 {secondaryCta.text}
@@ -88,13 +90,33 @@ export function HeroSection({
 
                 {socialProof && (
                     <motion.div
-                        className="text-gray-400 space-y-2"
+                        className="text-gray-400 space-y-4"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.6 }}
                     >
-                        <p className="text-lg">{socialProof.stat}</p>
-                        <p className="italic">&ldquo;{socialProof.testimonial}&rdquo; - {socialProof.author}</p>
+                        <p className="text-lg max-w-3xl mx-auto">{socialProof.stat}</p>
+                        <p className="italic text-base">&ldquo;{socialProof.testimonial}&rdquo; - {socialProof.author}</p>
+                    </motion.div>
+                )}
+
+                {microTestimonials && microTestimonials.length > 0 && (
+                    <motion.div
+                        className="mt-12 max-w-4xl mx-auto grid md:grid-cols-3 gap-6"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.8 }}
+                    >
+                        {microTestimonials.map((testimonial, index) => (
+                            <motion.div
+                                key={index}
+                                className="bg-white/5 border border-white/10 rounded-lg p-4 text-sm text-gray-300 italic"
+                                whileHover={{ scale: 1.02, borderColor: "rgba(79, 195, 247, 0.3)" }}
+                                transition={{ duration: 0.2 }}
+                            >
+                                &ldquo;{testimonial}&rdquo;
+                            </motion.div>
+                        ))}
                     </motion.div>
                 )}
             </motion.div>

@@ -24,14 +24,14 @@ export function Navigation() {
 
                 {/* Desktop Navigation */}
                 <div className="hidden md:flex gap-8 items-center">
-                    <Link href="/#problem" className="hover:text-primary transition-colors">
-                        The Problem
+                    <Link href="/book" className="hover:text-primary transition-colors">
+                        Book
                     </Link>
-                    <Link href="/#solution" className="hover:text-primary transition-colors">
-                        Solution
+                    <Link href="/program" className="hover:text-primary transition-colors">
+                        Program
                     </Link>
-                    <Link href="/#offers" className="hover:text-primary transition-colors">
-                        Transform
+                    <Link href="/collective" className="hover:text-primary transition-colors">
+                        Collective
                     </Link>
                     <Link href="/blog" className="hover:text-primary transition-colors">
                         Blog
@@ -65,25 +65,25 @@ export function Navigation() {
             >
                 <div className="px-6 py-6 flex flex-col gap-4">
                     <Link
-                        href="/#problem"
+                        href="/book"
                         className="text-lg hover:text-primary transition-colors py-2"
                         onClick={() => setMobileMenuOpen(false)}
                     >
-                        The Problem
+                        Book
                     </Link>
                     <Link
-                        href="/#solution"
+                        href="/program"
                         className="text-lg hover:text-primary transition-colors py-2"
                         onClick={() => setMobileMenuOpen(false)}
                     >
-                        Solution
+                        Program
                     </Link>
                     <Link
-                        href="/#offers"
+                        href="/collective"
                         className="text-lg hover:text-primary transition-colors py-2"
                         onClick={() => setMobileMenuOpen(false)}
                     >
-                        Transform
+                        Collective
                     </Link>
                     <Link
                         href="/blog"

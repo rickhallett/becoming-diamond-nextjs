@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { ReactNode, FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface LeadMagnetItem {
     text: string;
@@ -27,6 +28,7 @@ export function LeadMagnetSection({
     onSubmit,
     disclaimer,
 }: LeadMagnetSectionProps) {
+    const router = useRouter();
     const [email, setEmail] = useState('');
     const [consent, setConsent] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -68,6 +70,11 @@ export function LeadMagnetSection({
                 if (onSubmit) {
                     onSubmit(email);
                 }
+
+                // Redirect to book page after 2 seconds
+                setTimeout(() => {
+                    router.push('/book?from=lead-capture');
+                }, 2000);
             } else {
                 setStatus('error');
                 setMessage(data.error || 'Something went wrong. Please try again.');
