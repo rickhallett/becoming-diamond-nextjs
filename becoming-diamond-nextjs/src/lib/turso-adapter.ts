@@ -152,7 +152,7 @@ export function TursoAdapter(client: Client): Adapter {
           account.token_type ?? null,
           account.scope ?? null,
           account.id_token ?? null,
-          account.session_state ?? null,
+          account.session_state ? JSON.stringify(account.session_state) : null,
           now,
           now,
         ],
@@ -230,6 +230,10 @@ export function TursoAdapter(client: Client): Adapter {
      * Updates an existing session (extends expiration)
      */
     async updateSession(session) {
+      if (!session.expires) {
+        return session as AdapterSession;
+      }
+
       await client.execute({
         sql: `UPDATE sessions SET expires = ? WHERE session_token = ?`,
         args: [Math.floor(session.expires.getTime() / 1000), session.sessionToken],

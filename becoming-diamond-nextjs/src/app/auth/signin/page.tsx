@@ -3,8 +3,8 @@
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { motion } from "framer-motion";
-import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { Spotlight } from "@/components/ui/spotlight";
 import { IconBrandGoogle, IconBrandGithub, IconMail, IconFlask } from "@tabler/icons-react";
 import { useUser } from "@/contexts/UserContext";
@@ -196,9 +196,9 @@ export default function SignInPage() {
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-500">
               New to Becoming Diamond?{" "}
-              <a href="/#book" className="text-primary hover:underline">
+              <Link href="/#book" className="text-primary hover:underline">
                 Purchase Access
-              </a>
+              </Link>
             </p>
           </div>
         </div>
