@@ -3,12 +3,14 @@ import { useState, useRef, useEffect } from "react";
 import { IconSend, IconBrain, IconUser, IconSparkles, IconPlus, IconTrash, IconMenu2, IconX } from "@tabler/icons-react";
 import { useChat } from "@/contexts/ChatContext";
 import { motion, AnimatePresence } from "framer-motion";
+import { MarkdownMessage } from "@/components/MarkdownMessage";
 
 export default function ChatPage() {
     const { currentSession, sessions, addMessage, createSession, loadSession, deleteSession, isLoading } = useChat();
     const [inputValue, setInputValue] = useState("");
     const [isTyping, setIsTyping] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [streamingMessage, setStreamingMessage] = useState("");
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const scrollToBottom = () => {
@@ -26,39 +28,59 @@ export default function ChatPage() {
         }
     }, [isLoading, currentSession, sessions.length, createSession]);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!inputValue.trim() || !currentSession) return;
 
+        const question = inputValue;
+
         // Add user message
-        addMessage(inputValue, 'user');
+        addMessage(question, 'user');
         setInputValue("");
         setIsTyping(true);
+        setStreamingMessage("");
 
-        // Simulate AI response
-        setTimeout(() => {
-            const response = generateResponse(inputValue);
-            addMessage(response, 'assistant');
+        try {
+            // Call the RAG API endpoint
+            const response = await fetch('/api/ask', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ question }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to get response');
+            }
+
+            // Read the streaming response and update incrementally
+            const reader = response.body?.getReader();
+            const decoder = new TextDecoder();
+            let fullResponse = '';
+
+            if (reader) {
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+
+                    const chunk = decoder.decode(value, { stream: true });
+                    fullResponse += chunk;
+                    setStreamingMessage(fullResponse);
+                }
+            }
+
+            // Save the complete message
+            addMessage(fullResponse, 'assistant');
+            setStreamingMessage("");
             setIsTyping(false);
-        }, 1500);
-    };
-
-    const generateResponse = (query: string): string => {
-        const lowerQuery = query.toLowerCase();
-
-        if (lowerQuery.includes("gateway") || lowerQuery.includes("program")) {
-            return "The Diamond Collective features 5 transformational gateways: Stabilize, Shift, Strengthen, Shine, and Synthesize. Each gateway builds upon the previous, creating a comprehensive system for nervous system mastery and identity transformation. Would you like to learn more about a specific gateway?";
+        } catch (error) {
+            console.error('Error getting response:', error);
+            const errorMsg = "I apologize, but I'm having trouble accessing the book content right now. Please make sure your ANTHROPIC_API_KEY is set in the environment variables.";
+            addMessage(errorMsg, 'assistant');
+            setStreamingMessage("");
+            setIsTyping(false);
         }
-
-        if (lowerQuery.includes("nervous system") || lowerQuery.includes("regulation")) {
-            return "Nervous system regulation is the foundation of the Diamond Operating System. We teach you real-time techniques to move from dysregulation to coherence, using the Swiss Army Knife protocols: Body, Breath, and Brain tools. These aren't theory—they're embodied practices you can use in high-pressure moments.";
-        }
-
-        if (lowerQuery.includes("pressure") || lowerQuery.includes("stress")) {
-            return "Pressure isn't the problem—it's how your nervous system responds to it. The Diamond methodology trains you to convert pressure into clarity and chaos into calm. You learn to stay grounded when everything around you is unstable. This is what separates leaders who thrive from those who merely survive.";
-        }
-
-        return "That's a great question. The Diamond Operating System is designed to help you master presence under pressure, rewire limiting identities, and build unshakable resilience. What specific aspect of your transformation would you like to explore?";
     };
 
     const handleNewChat = () => {
@@ -107,7 +129,7 @@ export default function ChatPage() {
         {
             id: 'welcome',
             role: 'assistant' as const,
-            content: "Welcome! I'm DiamondMindAI, your transformation companion. I'm here to help you navigate your journey through the Diamond Operating System. How can I support you today?",
+            content: "Welcome! I'm DiamondMindAI, your guide to 'Turning Snowflakes into Diamonds' by Michael Dugan. I can answer questions about identity transformation, nervous system regulation, high-performance under pressure, and the methodologies taught in the book. What would you like to explore?",
             timestamp: new Date().toISOString()
         }
     ] : currentSession?.messages || [];
@@ -204,7 +226,7 @@ export default function ChatPage() {
                             <h1 className="text-3xl md:text-4xl font-light">
                                 Diamond<span className="text-primary">Mind</span>AI
                             </h1>
-                            <p className="text-gray-400 text-sm">Your transformation companion</p>
+                            <p className="text-gray-400 text-sm">Ask me anything about "Turning Snowflakes into Diamonds"</p>
                         </div>
                     </div>
                 </div>
@@ -238,7 +260,13 @@ export default function ChatPage() {
                                             : "bg-primary/20 border border-primary/30"
                                     }`}
                                 >
-                                    <p className="text-sm md:text-base leading-relaxed whitespace-pre-wrap">{message.content}</p>
+                                    {message.role === "assistant" ? (
+                                        <div className="text-sm md:text-base prose prose-invert max-w-none">
+                                            <MarkdownMessage content={message.content} />
+                                        </div>
+                                    ) : (
+                                        <p className="text-sm md:text-base leading-relaxed whitespace-pre-wrap">{message.content}</p>
+                                    )}
                                 </div>
                                 <p className="text-xs text-gray-500 mt-1">
                                     {new Date(message.timestamp).toLocaleTimeString([], {
@@ -250,8 +278,26 @@ export default function ChatPage() {
                         </div>
                     ))}
 
-                    {/* Typing Indicator */}
-                    {isTyping && (
+                    {/* Streaming Message */}
+                    {isTyping && streamingMessage && (
+                        <div className="flex gap-4">
+                            <div className="flex-shrink-0">
+                                <div className="w-10 h-10 bg-gradient-to-br from-primary/40 to-primary/10 rounded-lg flex items-center justify-center">
+                                    <IconSparkles className="w-5 h-5 text-primary" />
+                                </div>
+                            </div>
+                            <div className="flex-1 max-w-2xl">
+                                <div className="inline-block px-4 py-3 rounded-lg bg-secondary/50 border border-white/10">
+                                    <div className="text-sm md:text-base prose prose-invert max-w-none">
+                                        <MarkdownMessage content={streamingMessage} />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Typing Indicator (when no content yet) */}
+                    {isTyping && !streamingMessage && (
                         <div className="flex gap-4">
                             <div className="w-10 h-10 bg-gradient-to-br from-primary/40 to-primary/10 rounded-lg flex items-center justify-center">
                                 <IconSparkles className="w-5 h-5 text-primary" />
@@ -288,7 +334,7 @@ export default function ChatPage() {
                             type="text"
                             value={inputValue}
                             onChange={(e) => setInputValue(e.target.value)}
-                            placeholder="Ask about your transformation journey..."
+                            placeholder="Ask a question about the book..."
                             className="flex-1 bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:border-primary focus:outline-none transition-colors"
                         />
                         <button
@@ -305,10 +351,10 @@ export default function ChatPage() {
                     {displayMessages.length <= 1 && (
                         <div className="mt-4 flex flex-wrap gap-2">
                             {[
-                                "What are the 5 Gateways?",
-                                "How do I regulate my nervous system?",
-                                "Tell me about Gateway 1",
-                                "What is the Swiss Army Knife?"
+                                "What is the Diamond Transformation Roadmap?",
+                                "Explain snowflakes vs diamonds",
+                                "How do I stabilize under pressure?",
+                                "What makes humans irreplaceable in the AI age?"
                             ].map((prompt, index) => (
                                 <button
                                     key={index}
