@@ -1,4 +1,4 @@
-import { b as OAUTH_GITHUB_CLIENT_ID } from '../chunks/server_CuL9sfG3.mjs';
+import { b as OAUTH_GITHUB_CLIENT_ID } from '../chunks/server_CIXpdt_7.mjs';
 export { renderers } from '../renderers.mjs';
 
 const prerender = false;
