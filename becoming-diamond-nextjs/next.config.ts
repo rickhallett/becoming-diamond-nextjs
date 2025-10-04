@@ -2,6 +2,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
+    formats: ['image/avif', 'image/webp'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    minimumCacheTTL: 31536000,
     remotePatterns: [
       {
         protocol: 'https',
@@ -13,8 +17,22 @@ const nextConfig: NextConfig = {
         hostname: 'avatars.githubusercontent.com',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        pathname: '/**',
+      },
     ],
   },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+  experimental: {
+    optimizeCss: true,
+    optimizePackageImports: ['@tabler/icons-react', 'framer-motion'],
+  },
+  swcMinify: true,
+  reactStrictMode: true,
   webpack: (config) => {
     // Ignore LICENSE files to prevent parsing errors
     config.module.rules.push({

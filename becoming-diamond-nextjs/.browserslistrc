@@ -1,0 +1,10 @@
+# Modern browsers only - no IE11, no legacy Edge
+# This targets browsers from the last 2 years
+last 2 Chrome versions
+last 2 Firefox versions
+last 2 Safari versions
+last 2 Edge versions
+iOS >= 14
+ChromeAndroid >= 90
+not IE 11
+not dead
