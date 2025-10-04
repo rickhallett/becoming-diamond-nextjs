@@ -28,10 +28,9 @@ const nextConfig: NextConfig = {
     removeConsole: process.env.NODE_ENV === 'production',
   },
   experimental: {
-    optimizeCss: true,
+    // optimizeCss: true, // Disabled - causes build errors with document manipulation
     optimizePackageImports: ['@tabler/icons-react', 'framer-motion'],
   },
-  swcMinify: true,
   reactStrictMode: true,
   webpack: (config) => {
     // Ignore LICENSE files to prevent parsing errors
