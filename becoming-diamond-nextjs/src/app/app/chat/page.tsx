@@ -11,7 +11,11 @@ export default function ChatPage() {
     const [isTyping, setIsTyping] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [streamingMessage, setStreamingMessage] = useState("");
+    const [displayedMessage, setDisplayedMessage] = useState("");
     const messagesEndRef = useRef<HTMLDivElement>(null);
+    const bufferRef = useRef<string>("");
+    const animationFrameRef = useRef<number | null>(null);
+    const lastUpdateRef = useRef<number>(0);
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -19,7 +23,61 @@ export default function ChatPage() {
 
     useEffect(() => {
         scrollToBottom();
-    }, [currentSession?.messages]);
+    }, [currentSession?.messages, displayedMessage]);
+
+    // Smooth typewriter effect with optimized rendering
+    useEffect(() => {
+        if (!streamingMessage) {
+            setDisplayedMessage("");
+            bufferRef.current = "";
+            if (animationFrameRef.current) {
+                cancelAnimationFrame(animationFrameRef.current);
+                animationFrameRef.current = null;
+            }
+            return;
+        }
+
+        // Update buffer with new content
+        bufferRef.current = streamingMessage;
+
+        // Typewriter animation using requestAnimationFrame
+        const CHARS_PER_FRAME = 2; // Show 2 characters per frame for smooth appearance
+        const MIN_FRAME_DELAY = 16; // ~60fps cap
+
+        const animate = (timestamp: number) => {
+            const elapsed = timestamp - lastUpdateRef.current;
+
+            if (elapsed >= MIN_FRAME_DELAY) {
+                setDisplayedMessage((prev) => {
+                    if (prev.length >= bufferRef.current.length) {
+                        return bufferRef.current;
+                    }
+
+                    // Add characters smoothly
+                    const nextLength = Math.min(
+                        prev.length + CHARS_PER_FRAME,
+                        bufferRef.current.length
+                    );
+                    return bufferRef.current.slice(0, nextLength);
+                });
+
+                lastUpdateRef.current = timestamp;
+            }
+
+            // Continue animation if there's more content to show
+            if (displayedMessage.length < bufferRef.current.length) {
+                animationFrameRef.current = requestAnimationFrame(animate);
+            }
+        };
+
+        animationFrameRef.current = requestAnimationFrame(animate);
+
+        return () => {
+            if (animationFrameRef.current) {
+                cancelAnimationFrame(animationFrameRef.current);
+            }
+        };
+    }, [streamingMessage, displayedMessage.length]);
 
     // Create a session if none exists
     useEffect(() => {
@@ -27,6 +85,15 @@ export default function ChatPage() {
             createSession();
         }
     }, [isLoading, currentSession, sessions.length, createSession]);
+
+    // Cleanup on unmount
+    useEffect(() => {
+        return () => {
+            if (animationFrameRef.current) {
+                cancelAnimationFrame(animationFrameRef.current);
+            }
+        };
+    }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -279,7 +346,7 @@ export default function ChatPage() {
                     ))}
 
                     {/* Streaming Message */}
-                    {isTyping && streamingMessage && (
+                    {isTyping && displayedMessage && (
                         <div className="flex gap-4">
                             <div className="flex-shrink-0">
                                 <div className="w-10 h-10 bg-gradient-to-br from-primary/40 to-primary/10 rounded-lg flex items-center justify-center">
@@ -289,7 +356,11 @@ export default function ChatPage() {
                             <div className="flex-1 max-w-2xl">
                                 <div className="inline-block px-4 py-3 rounded-lg bg-secondary/50 border border-white/10">
                                     <div className="text-sm md:text-base prose prose-invert max-w-none">
-                                        <MarkdownMessage content={streamingMessage} />
+                                        <MarkdownMessage content={displayedMessage} />
+                                        {/* Blinking cursor while typing */}
+                                        {displayedMessage.length < bufferRef.current.length && (
+                                            <span className="inline-block w-[2px] h-4 bg-primary ml-0.5 animate-pulse" />
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -297,7 +368,7 @@ export default function ChatPage() {
                     )}
 
                     {/* Typing Indicator (when no content yet) */}
-                    {isTyping && !streamingMessage && (
+                    {isTyping && !displayedMessage && (
                         <div className="flex gap-4">
                             <div className="w-10 h-10 bg-gradient-to-br from-primary/40 to-primary/10 rounded-lg flex items-center justify-center">
                                 <IconSparkles className="w-5 h-5 text-primary" />
