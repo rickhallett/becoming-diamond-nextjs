@@ -36,7 +36,7 @@ export default function ProgramPage() {
       </section>
 
       {/* Core Offer Section */}
-      <section id="offers" className="py-24 px-6 bg-gradient-to-b from-black via-secondary/30 to-black relative">
+      <section id="offers" className="py-6 px-6 bg-gradient-to-b from-black via-secondary/30 to-black relative">
         <div className="max-w-6xl mx-auto">
           <SectionHeader
             title={
@@ -45,15 +45,14 @@ export default function ProgramPage() {
                 You Were Made to <span className="text-primary">Become Something</span> Under It.
               </>
             }
-            subtitle="The Diamond Activation Experience"
           />
 
           <div className="grid md:grid-cols-2 gap-8 mb-16">
+            {/* Note: Use `animate` for above-fold content - whileInView doesn't trigger for initially-visible elements */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
               className="bg-secondary/50 backdrop-blur-sm border border-white/10 rounded-2xl p-8"
             >
               <h3 className="text-xl mb-4 font-bold">The Problem</h3>
@@ -65,11 +64,11 @@ export default function ProgramPage() {
               </div>
             </motion.div>
 
+            {/* Note: Use `animate` for above-fold content - whileInView doesn't trigger for initially-visible elements */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
               className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 rounded-2xl p-8"
             >
               <h3 className="text-xl mb-4 font-bold">The Solution</h3>
@@ -101,46 +100,52 @@ export default function ProgramPage() {
           <div className="grid md:grid-cols-3 gap-8 mb-12">
             {[
               {
-                name: "Recorded Version",
+                name: "Diamond Advantage",
                 price: "$97",
-                description: "Self-paced transformation",
+                description: "Feel Calm, Clear, and Centered—Even in Chaos",
+                tagline: "Regain control of your emotions and your focus, no matter what life throws at you.",
                 features: [
-                  "Full Diamond Operating System Course",
-                  "Swiss Army Knife Toolkit",
-                  "ART & ART² Protocols",
-                  "30-Day Diamond Sprint Tracker",
-                  "Lifetime Access"
+                  "Master one simple practice to stay calm under pressure",
+                  "Build daily habits that create unshakable peace",
+                  "Reclaim your mental clarity—even in the middle of stress",
+                  "30-day tracker to measure your progress",
+                  "Practice prompts to keep you consistent",
+                  "Lifetime access to tools that keep you grounded"
                 ],
-                cta: "Get Started",
+                ideal: "Perfect for anyone who feels overwhelmed and needs to reset fast.",
+                cta: "Access the Diamond Advantage",
                 popular: false
               },
               {
-                name: "Full Program",
+                name: "Diamond Edge Mastery",
                 price: "$497",
-                description: "Complete with live coaching",
+                description: "Own the Room. Command Respect. Rise with Confidence.",
+                tagline: "Step into your power and become magnetic in any situation.",
                 features: [
-                  "Everything in Recorded Version",
-                  "3 Live Coaching Calls with Michael",
-                  "Emotional Mastery Mini-Course ($497 value)",
-                  "Influence Masterclass ($297 value)",
-                  "Private Diamond Forum (Priceless)",
-                  "Total Value: $2,488"
+                  "Everything in Diamond Advantage",
+                  "2 live experiential sessions to integrate your new skills",
+                  "1 immersive 5-hour Diamond Seminar for a deep, lasting shift",
+                  "Access to a private community of high-achievers",
+                  "Ongoing exercises to keep you sharp and growing"
                 ],
-                cta: "Start Your Transformation",
+                ideal: "Perfect for those ready to feel strong, clear, and unstoppable in real time.",
+                cta: "Step Into Diamond Edge Mastery",
                 popular: true
               },
               {
-                name: "Premium",
-                price: "$3,000",
-                description: "Includes 1-on-1 mentoring",
+                name: "Pressure Room One",
+                price: "$1,997",
+                description: "Step Into the Fire. Walk Out Unshakable.",
+                tagline: "Transform how you handle stress and pressure—forever.",
                 features: [
-                  "Everything in Full Program",
-                  "Private 1-on-1 Sessions",
-                  "Priority Support",
-                  "Custom Action Plan",
-                  "Personalized Accountability"
+                  "Everything in Diamond Edge Mastery",
+                  "Full access to the 3-day Pressure Room One experience",
+                  "Train under real-world tension and rewire your nervous system",
+                  "Master control over your emotions in any situation",
+                  "Step into your new presence—strong, clear, undeniable"
                 ],
-                cta: "Apply Now",
+                ideal: "Perfect for those ready to experience the shift—not just think about it.",
+                cta: "Enter Pressure Room One",
                 popular: false
               }
             ].map((tier, index) => (
@@ -150,7 +155,7 @@ export default function ProgramPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className={`relative rounded-2xl p-8 ${tier.popular
+                className={`relative rounded-2xl p-8 flex flex-col ${tier.popular
                   ? 'bg-gradient-to-b from-primary/20 to-primary/5 border-2 border-primary'
                   : 'bg-secondary/50 border border-white/10'
                   }`}
@@ -161,20 +166,23 @@ export default function ProgramPage() {
                   </div>
                 )}
 
-                <h3 className="text-2xl mb-2">{tier.name}</h3>
-                <p className="text-gray-400 mb-4">{tier.description}</p>
-                <div className="text-4xl font-light mb-6">{tier.price}</div>
+                <h3 className="text-2xl mb-3 font-bold">{tier.name}</h3>
+                <div className="text-4xl font-light mb-4">{tier.price}</div>
+                <p className="text-white font-medium mb-2 text-lg">{tier.description}</p>
+                <p className="text-gray-400 mb-6 text-base">{tier.tagline}</p>
 
-                <ul className="space-y-3 mb-8">
+                <ul className="space-y-3 mb-6 flex-1">
                   {tier.features.map((feature, idx) => (
                     <li key={idx} className="flex items-start text-sm text-gray-300">
-                      <span className="text-primary mr-2">✓</span>
+                      <span className="text-primary mr-2 flex-shrink-0">✓</span>
                       <span>{feature}</span>
                     </li>
                   ))}
                 </ul>
 
-                <Link href="/auth/signin">
+                <p className="text-sm text-gray-500 italic mb-6">{tier.ideal}</p>
+
+                <Link href="/auth/signin" className="mt-auto">
                   <button
                     className={`w-full py-3 rounded-lg font-medium transition-all ${tier.popular
                       ? 'bg-primary text-black hover:bg-primary/90'
