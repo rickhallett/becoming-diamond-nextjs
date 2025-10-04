@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { FeatureGuard } from "@/components/FeatureGuard";
 import {
     IconQuestionMark,
     IconBook,
@@ -13,7 +14,7 @@ import {
     IconHeadset
 } from "@tabler/icons-react";
 
-export default function SupportPage() {
+function SupportPageContent() {
     const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
     const [searchQuery, setSearchQuery] = useState("");
 
@@ -214,5 +215,13 @@ export default function SupportPage() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function SupportPage() {
+    return (
+        <FeatureGuard>
+            <SupportPageContent />
+        </FeatureGuard>
     );
 }

@@ -6,6 +6,8 @@ import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 import { IconTrendingUp, IconFlame, IconTarget, IconCalendar, IconUsers, IconBook, IconSparkles, IconBolt, IconChevronRight, IconDiamond, IconCheck } from "@tabler/icons-react";
 import { useUser } from "@/contexts/UserContext";
 import { useCourses, SAMPLE_COURSES } from "@/contexts/CourseContext";
+import { FEATURES } from "@/config/features";
+import { FeatureGuard } from "@/components/FeatureGuard";
 
 function AppDashboardContent() {
   const router = useRouter();
@@ -430,25 +432,28 @@ function AppDashboardContent() {
             Quick Actions
           </h2>
           <div className="space-y-3">
-            <motion.button
-              whileHover={{ scale: 1.02, boxShadow: "0 0 20px rgba(79,195,247,0.3)" }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => router.push('/app/courses')}
-              className="w-full bg-gradient-to-r from-primary/30 to-primary/10 border border-primary/50 rounded-lg p-4 text-left hover:border-primary transition-all group"
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-white font-medium mb-1">
-                    {currentEnrollment ? 'Continue' : 'Start'} PR{user.currentPR}
+            {/* Continue PR - Only show if courses feature is enabled */}
+            {FEATURES.courses && (
+              <motion.button
+                whileHover={{ scale: 1.02, boxShadow: "0 0 20px rgba(79,195,247,0.3)" }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => router.push('/app/courses')}
+                className="w-full bg-gradient-to-r from-primary/30 to-primary/10 border border-primary/50 rounded-lg p-4 text-left hover:border-primary transition-all group"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-white font-medium mb-1">
+                      {currentEnrollment ? 'Continue' : 'Start'} PR{user.currentPR}
+                    </div>
+                    <div className="text-xs text-gray-400">
+                      {currentCourse?.title.split(': ')[1] || prNames[user.currentPR - 1]}
+                      {currentEnrollment && ` - ${currentEnrollment.progress}% complete`}
+                    </div>
                   </div>
-                  <div className="text-xs text-gray-400">
-                    {currentCourse?.title.split(': ')[1] || prNames[user.currentPR - 1]}
-                    {currentEnrollment && ` - ${currentEnrollment.progress}% complete`}
-                  </div>
+                  <IconChevronRight className="w-5 h-5 text-primary group-hover:translate-x-1 transition-transform" />
                 </div>
-                <IconChevronRight className="w-5 h-5 text-primary group-hover:translate-x-1 transition-transform" />
-              </div>
-            </motion.button>
+              </motion.button>
+            )}
 
             <motion.button
               whileHover={{ scale: 1.02 }}
@@ -459,26 +464,29 @@ function AppDashboardContent() {
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-white font-medium mb-1">Update Profile</div>
-                  <div className="text-xs text-gray-400">Manage your progress and achievements</div>
+                  <div className="text-xs text-gray-400">Manage your personal information</div>
                 </div>
                 <IconChevronRight className="w-5 h-5 text-gray-500 group-hover:text-primary group-hover:translate-x-1 transition-all" />
               </div>
             </motion.button>
 
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => router.push('/app/chat')}
-              className="w-full bg-secondary/50 border border-white/10 rounded-lg p-4 text-left hover:border-primary/30 transition-all group"
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-white font-medium mb-1">Chat with DiamondMindAI</div>
-                  <div className="text-xs text-gray-400">Get personalized guidance</div>
+            {/* DiamondMindAI - Only show if feature is enabled */}
+            {FEATURES.diamondMindAI && (
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => router.push('/app/chat')}
+                className="w-full bg-secondary/50 border border-white/10 rounded-lg p-4 text-left hover:border-primary/30 transition-all group"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-white font-medium mb-1">Chat with DiamondMindAI</div>
+                    <div className="text-xs text-gray-400">Get personalized guidance</div>
+                  </div>
+                  <IconChevronRight className="w-5 h-5 text-gray-500 group-hover:text-primary group-hover:translate-x-1 transition-all" />
                 </div>
-                <IconChevronRight className="w-5 h-5 text-gray-500 group-hover:text-primary group-hover:translate-x-1 transition-all" />
-              </div>
-            </motion.button>
+              </motion.button>
+            )}
 
             <motion.button
               whileHover={{ scale: 1.02 }}
@@ -503,12 +511,14 @@ function AppDashboardContent() {
 
 export default function AppDashboard() {
   return (
-    <Suspense fallback={
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="text-gray-400">Loading dashboard...</div>
-      </div>
-    }>
-      <AppDashboardContent />
-    </Suspense>
+    <FeatureGuard>
+      <Suspense fallback={
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-gray-400">Loading dashboard...</div>
+        </div>
+      }>
+        <AppDashboardContent />
+      </Suspense>
+    </FeatureGuard>
   );
 }

@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { IconEdit, IconCheck, IconX, IconCamera, IconMail, IconMapPin, IconBriefcase } from "@tabler/icons-react";
 import { useUser } from "@/contexts/UserContext";
+import { FEATURES } from "@/config/features";
 
 export default function ProfilePage() {
     const { user, updateProfile, isLoading } = useUser();
@@ -49,21 +50,24 @@ export default function ProfilePage() {
         );
     }
 
-    const stats = [
-        { label: "Courses Completed", value: user.completedPRs.length.toString(), color: "text-green-400" },
+    // Build stats array based on feature flags
+    type StatItem = { label: string; value: string; color: string };
+    const stats: StatItem[] = [
+        FEATURES.coursesCompleted ? { label: "Courses Completed", value: user.completedPRs.length.toString(), color: "text-green-400" } : null,
         { label: "Active Pressure Room", value: `PR${user.currentPR}`, color: "text-primary" },
         { label: "Current Level", value: user.level, color: "text-purple-400" },
-        { label: "XP Points", value: user.xp.toString(), color: "text-yellow-400" }
-    ];
+        FEATURES.xpPoints ? { label: "XP Points", value: user.xp.toString(), color: "text-yellow-400" } : null
+    ].filter((stat): stat is StatItem => stat !== null); // Remove disabled features
 
-    const achievements = [
+    // Build achievements array based on feature flags
+    const achievements = FEATURES.achievements ? [
         { name: "First PR Complete", earned: user.completedPRs.length >= 1 },
         { name: "30-Day Streak", earned: user.streak >= 30 },
         { name: "Community Contributor", earned: user.xp >= 100 },
         { name: "Transformation Leader", earned: user.completedPRs.length >= 3 },
         { name: "Master of Presence", earned: user.level === "Master" },
         { name: "PR Champion", earned: user.completedPRs.length >= 5 }
-    ];
+    ] : [];
 
     const handleSave = () => {
         // Update user profile with form data
@@ -154,18 +158,20 @@ export default function ProfilePage() {
                         </div>
                     </div>
 
-                    {/* Stats Grid */}
-                    <div className="mt-6 grid grid-cols-2 gap-3">
-                        {stats.map((stat, index) => (
-                            <div
-                                key={index}
-                                className="bg-secondary/30 border border-white/10 rounded-lg p-4"
-                            >
-                                <p className={`text-2xl font-light ${stat.color}`}>{stat.value}</p>
-                                <p className="text-xs text-gray-400 mt-1">{stat.label}</p>
-                            </div>
-                        ))}
-                    </div>
+                    {/* Stats Grid - Only show if there are stats to display */}
+                    {stats.length > 0 && (
+                        <div className="mt-6 grid grid-cols-2 gap-3">
+                            {stats.map((stat, index) => (
+                                <div
+                                    key={index}
+                                    className="bg-secondary/30 border border-white/10 rounded-lg p-4"
+                                >
+                                    <p className={`text-2xl font-light ${stat.color}`}>{stat.value}</p>
+                                    <p className="text-xs text-gray-400 mt-1">{stat.label}</p>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
                 {/* Profile Details */}
@@ -288,28 +294,30 @@ export default function ProfilePage() {
                         </div>
                     </div>
 
-                    {/* Achievements */}
-                    <div className="bg-secondary/30 border border-white/10 rounded-xl p-6">
-                        <h3 className="text-xl font-light mb-6">Achievements</h3>
+                    {/* Achievements - Only show if feature is enabled */}
+                    {FEATURES.achievements && achievements.length > 0 && (
+                        <div className="bg-secondary/30 border border-white/10 rounded-xl p-6">
+                            <h3 className="text-xl font-light mb-6">Achievements</h3>
 
-                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                            {achievements.map((achievement, index) => (
-                                <div
-                                    key={index}
-                                    className={`text-center p-4 rounded-lg border transition-all ${
-                                        achievement.earned
-                                            ? "bg-primary/10 border-primary/30"
-                                            : "bg-black/20 border-white/10 opacity-40"
-                                    }`}
-                                >
-                                    <div className="text-3xl mb-2">
-                                        {achievement.earned ? "★" : "☆"}
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                {achievements.map((achievement, index) => (
+                                    <div
+                                        key={index}
+                                        className={`text-center p-4 rounded-lg border transition-all ${
+                                            achievement.earned
+                                                ? "bg-primary/10 border-primary/30"
+                                                : "bg-black/20 border-white/10 opacity-40"
+                                        }`}
+                                    >
+                                        <div className="text-3xl mb-2">
+                                            {achievement.earned ? "★" : "☆"}
+                                        </div>
+                                        <p className="text-xs text-gray-300">{achievement.name}</p>
                                     </div>
-                                    <p className="text-xs text-gray-300">{achievement.name}</p>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
             </div>
         </div>

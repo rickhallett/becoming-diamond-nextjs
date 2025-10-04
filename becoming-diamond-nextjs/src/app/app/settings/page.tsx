@@ -4,8 +4,17 @@ import { Tabs } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { IconBell, IconLock, IconPalette, IconShield, IconCreditCard } from "@tabler/icons-react";
+import { FeatureGuard } from "@/components/FeatureGuard";
 
 export default function SettingsPage() {
+    return (
+        <FeatureGuard>
+            <SettingsPageContent />
+        </FeatureGuard>
+    );
+}
+
+function SettingsPageContent() {
     const [emailNotifications, setEmailNotifications] = useState(true);
     const [pushNotifications, setPushNotifications] = useState(true);
     const [courseReminders, setCourseReminders] = useState(true);

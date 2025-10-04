@@ -34,7 +34,8 @@ interface UserContextValue {
   user: UserProfile | null;
   auth: AuthState;
   isLoading: boolean;
-  updateProfile: (updates: Partial<UserProfile>) => void;
+  updateProfile: (updates: Partial<UserProfile>) => Promise<void>;
+  refreshProfile: () => Promise<void>;
   login: (userId: string, method: AuthState['loginMethod']) => void;
   logout: () => void;
   isLoggedIn: boolean;
@@ -67,7 +68,7 @@ interface UserProviderProps {
 
 /**
  * UserProvider component
- * Manages user profile and authentication state with localStorage persistence
+ * Manages user profile and authentication state with database persistence
  */
 export function UserProvider({ children }: UserProviderProps) {
   const [user, setUser] = useState<UserProfile | null>(null);
@@ -78,79 +79,86 @@ export function UserProvider({ children }: UserProviderProps) {
   const [isLoading, setIsLoading] = useState(true);
   const { data: session, status } = useSession();
 
-  // Sync NextAuth session with UserContext
+  // Fetch profile from database
+  const fetchProfile = React.useCallback(async () => {
+    if (!session?.user?.id) {
+      setUser(null);
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/profile');
+      if (!response.ok) {
+        throw new Error('Failed to fetch profile');
+      }
+
+      const data = await response.json();
+      setUser(data.profile);
+
+      // Update auth state
+      const authState: AuthState = {
+        isAuthenticated: true,
+        userId: data.profile.id,
+        loginMethod: 'email', // Could be determined from session
+        loginTimestamp: Date.now(),
+      };
+      setAuth(authState);
+    } catch (error) {
+      console.error('Error fetching profile:', error);
+      setUser(null);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [session?.user?.id]);
+
+  // Sync NextAuth session with UserContext and fetch profile from database
   useEffect(() => {
     if (status === 'loading') {
       setIsLoading(true);
       return;
     }
 
-    if (session?.user) {
-      // User is authenticated with NextAuth
-      const userId = session.user.id || session.user.email || 'unknown';
-
-      // Update auth state
-      const authState: AuthState = {
-        isAuthenticated: true,
-        userId,
-        loginMethod: 'email', // Could be determined from session
-        loginTimestamp: Date.now(),
-      };
-      setAuth(authState);
-      storage.setItem(STORAGE_KEYS.USER_AUTH, authState);
-
-      // Load or create user profile
-      const savedProfile = storage.getItem<UserProfile>(STORAGE_KEYS.USER_PROFILE);
-      if (savedProfile && savedProfile.id === userId) {
-        // Update profile with latest session data
-        const updatedProfile = {
-          ...savedProfile,
-          name: session.user.name || savedProfile.name,
-          email: session.user.email || savedProfile.email,
-          avatar: session.user.image || savedProfile.avatar,
-        };
-        setUser(updatedProfile);
-        storage.setItem(STORAGE_KEYS.USER_PROFILE, updatedProfile);
-      } else {
-        // Create new profile from session
-        const newProfile: UserProfile = {
-          ...createDefaultProfile(userId),
-          name: session.user.name || 'Diamond Member',
-          email: session.user.email || '',
-          avatar: session.user.image || '/kai_profile.jpeg',
-        };
-        setUser(newProfile);
-        storage.setItem(STORAGE_KEYS.USER_PROFILE, newProfile);
-      }
-
+    if (status === 'unauthenticated') {
+      setUser(null);
+      setAuth({
+        isAuthenticated: false,
+        userId: null,
+      });
       setIsLoading(false);
-    } else {
-      // No NextAuth session - fall back to localStorage
-      const savedAuth = storage.getItem<AuthState>(STORAGE_KEYS.USER_AUTH);
-      if (savedAuth && savedAuth.isAuthenticated) {
-        setAuth(savedAuth);
-
-        const savedProfile = storage.getItem<UserProfile>(STORAGE_KEYS.USER_PROFILE);
-        if (savedProfile) {
-          setUser(savedProfile);
-        } else if (savedAuth.userId) {
-          const defaultProfile = createDefaultProfile(savedAuth.userId);
-          setUser(defaultProfile);
-          storage.setItem(STORAGE_KEYS.USER_PROFILE, defaultProfile);
-        }
-      }
-
-      setIsLoading(false);
+      return;
     }
-  }, [session, status]);
 
-  // Update user profile
-  const updateProfile = (updates: Partial<UserProfile>) => {
+    // Fetch profile from database when session is ready
+    fetchProfile();
+  }, [status, fetchProfile]);
+
+  // Update user profile with database persistence
+  const updateProfile = async (updates: Partial<UserProfile>) => {
     if (!user) return;
 
+    // Optimistic update
     const updatedProfile = { ...user, ...updates };
     setUser(updatedProfile);
-    storage.setItem(STORAGE_KEYS.USER_PROFILE, updatedProfile);
+
+    try {
+      const response = await fetch('/api/profile', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updates),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update profile');
+      }
+
+      // Refresh from server to ensure consistency
+      await fetchProfile();
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      // Revert optimistic update
+      await fetchProfile();
+    }
   };
 
   // Login user
@@ -196,6 +204,7 @@ export function UserProvider({ children }: UserProviderProps) {
     auth,
     isLoading,
     updateProfile,
+    refreshProfile: fetchProfile,
     login,
     logout,
     isLoggedIn: auth.isAuthenticated,
