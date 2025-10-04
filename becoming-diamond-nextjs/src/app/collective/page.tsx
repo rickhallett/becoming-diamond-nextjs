@@ -17,11 +17,11 @@ export default function CollectivePage() {
       {/* Hero - DiamondMind Collective */}
       <section className="py-24 px-6 relative overflow-hidden pt-32">
         <LampContainer>
+          {/* Note: Use `animate` for above-fold content - whileInView doesn't trigger for initially-visible elements */}
           <motion.div
             initial={{ opacity: 0, y: 100 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
             className="text-center max-w-4xl mx-auto"
           >
             <div className="inline-block bg-primary/10 border border-primary/30 px-6 py-2 rounded-full mb-6">
