@@ -25,6 +25,6 @@ export const config = {
      * - favicon.ico, sitemap.xml, robots.txt (public files)
      * - admin (Decap CMS)
      */
-    "/((?!api/(?!auth)|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|admin|book_cover.jpg).*)",
+    "/((?!api/(?!auth)|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|admin|book_cover.webp).*)",
   ],
 };

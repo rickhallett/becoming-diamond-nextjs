@@ -165,7 +165,7 @@ export function BookSalesSection({ className }: BookSalesSectionProps) {
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent rounded-lg" />
                 <Image
-                  src="/book_cover.jpg"
+                  src="/book_cover.webp"
                   alt="Turning Snowflakes into Diamonds by Michael Dugan"
                   fill
                   className="object-cover rounded-lg shadow-2xl"
