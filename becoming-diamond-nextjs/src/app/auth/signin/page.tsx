@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import { Spotlight } from "@/components/ui/spotlight";
 import { IconBrandGoogle, IconBrandGithub, IconMail, IconFlask } from "@tabler/icons-react";
 import { useUser } from "@/contexts/UserContext";
+import { AUTH_CONFIG } from "@/config/features";
 
 export default function SignInPage() {
   const [email, setEmail] = useState("");
@@ -24,7 +25,7 @@ export default function SignInPage() {
       const result = await signIn("resend", {
         email,
         redirect: false,
-        callbackUrl: "/app",
+        callbackUrl: AUTH_CONFIG.successRedirectUri,
       });
 
       if (result?.ok) {
@@ -38,12 +39,12 @@ export default function SignInPage() {
   };
 
   const handleOAuthSignIn = (provider: "google" | "github") => {
-    signIn(provider, { callbackUrl: "/app" });
+    signIn(provider, { callbackUrl: AUTH_CONFIG.successRedirectUri });
   };
 
   const handleTestLogin = () => {
     login("test-user-" + Date.now(), "test");
-    router.push("/app");
+    router.push(AUTH_CONFIG.successRedirectUri);
   };
 
   if (emailSent) {
