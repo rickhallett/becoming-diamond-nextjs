@@ -4,14 +4,20 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useState } from "react";
-import { loadStripe } from "@stripe/stripe-js";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { Spotlight } from "@/components/ui/spotlight";
 import { cn } from "@/lib/utils";
 import { FEATURES } from "@/config/features";
 
-// Initialize Stripe
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "");
+// Lazy load Stripe only when needed (code splitting optimization)
+let stripePromise: Promise<any> | null = null;
+const getStripe = async () => {
+  if (!stripePromise) {
+    const { loadStripe } = await import("@stripe/stripe-js");
+    stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "");
+  }
+  return stripePromise;
+};
 
 interface BookSalesSectionProps {
   className?: string;
