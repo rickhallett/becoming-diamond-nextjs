@@ -8,6 +8,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { Spotlight } from "@/components/ui/spotlight";
 import { cn } from "@/lib/utils";
+import { FEATURES } from "@/config/features";
 
 // Initialize Stripe
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "");
@@ -128,7 +129,7 @@ export function BookSalesSection({ className }: BookSalesSectionProps) {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-yellow-500" />
             </span>
             <span className="text-yellow-300 text-sm font-medium">
-              Limited Time: Save $30
+              <a href="https://www.amazon.co.uk/dp/B0FQPVFMVS" target="_blank" rel="noopener noreferrer">Limited Time: Save $14.99</a>
             </span>
           </div>
         </motion.div>
@@ -258,11 +259,11 @@ export function BookSalesSection({ className }: BookSalesSectionProps) {
               className="flex items-baseline gap-4"
             >
               <div className="text-5xl md:text-6xl font-light text-primary">
-                $47
+                $14.99
               </div>
               <div className="flex flex-col">
                 <span className="text-2xl text-gray-500 line-through">$77</span>
-                <span className="text-sm text-yellow-400 font-medium">Save $30</span>
+                <span className="text-sm text-yellow-400 line-through">Save $30</span>
               </div>
             </motion.div>
 
@@ -349,7 +350,7 @@ export function BookSalesSection({ className }: BookSalesSectionProps) {
                       </>
                     ) : (
                       <>
-                        Buy Now - $47
+                        Buy Now - $14.99
                         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                         </svg>
@@ -359,16 +360,18 @@ export function BookSalesSection({ className }: BookSalesSectionProps) {
                 </HoverBorderGradient>
               </div>
 
-              {/* Secondary CTA */}
-              <button
-                onClick={handleFreeSample}
-                className="w-full border border-primary/50 text-primary px-8 py-4 text-lg font-medium rounded-full hover:bg-primary/10 transition-all flex items-center justify-center gap-2"
-              >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                </svg>
-                Read Free Sample
-              </button>
+              {/* Secondary CTA - Conditionally rendered based on feature flag */}
+              {FEATURES.readFreeSample && (
+                <button
+                  onClick={handleFreeSample}
+                  className="w-full border border-primary/50 text-primary px-8 py-4 text-lg font-medium rounded-full hover:bg-primary/10 transition-all flex items-center justify-center gap-2"
+                >
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                  </svg>
+                  Read Free Sample
+                </button>
+              )}
             </motion.div>
 
             {/* Social Proof */}
@@ -414,19 +417,19 @@ export function BookSalesSection({ className }: BookSalesSectionProps) {
           <div className="grid md:grid-cols-3 gap-8 text-center">
             {[
               {
-                quote: "This book gave me the roadmap I needed to thrive under pressure. Worth 10x the price.",
-                author: "Sarah M.",
-                role: "Tech Executive"
+                quote: "Michael is the single most impactful person I have ever met. The way I think, process, and approach life is different because of him. He’s inspirational on every level.",
+                author: "Matthew E Reno Nevada",
+                role: ""
               },
               {
-                quote: "Michael's protocols literally rewired my nervous system. I'm not the same person I was.",
-                author: "James R.",
+                quote: "Out of every training I’ve had in 25 years, Michael’s was the best. It didn’t just improve my numbers—it changed how I show up in every part of life.",
+                author: "Kevin C, Wesley Chapel, Florida",
                 role: "Entrepreneur"
               },
               {
-                quote: "The Diamond Operating System is the antidote to AI anxiety. This is essential reading.",
+                quote: "I expected a process class. What I got was a blueprint for identity, emotional mastery, and becoming the leader I was meant to be.",
                 author: "Lisa K.",
-                role: "Leadership Coach"
+                role: "Aaron F, Wasilla Chevrolet"
               }
             ].map((testimonial, index) => (
               <motion.div

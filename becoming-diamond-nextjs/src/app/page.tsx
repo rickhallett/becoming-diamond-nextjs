@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
+import { CardSpotlight } from "@/components/ui/card-spotlight";
+import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { HeroSection } from "@/components/HeroSection";
@@ -12,6 +14,7 @@ import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { LeadMagnetSection } from "@/components/LeadMagnetSection";
 import { BookSalesSection } from "@/components/BookSalesSection";
 import { SectionHeader } from "@/components/SectionHeader";
+import { IconCheck } from "@tabler/icons-react";
 
 const World = dynamic(() => import("@/components/ui/globe").then((m) => m.World), {
     ssr: false,
@@ -103,14 +106,14 @@ export default function LandingPage() {
                     onClick: () => document.getElementById('problem')?.scrollIntoView({ behavior: 'smooth' })
                 }}
                 socialProof={{
-                    stat: "Used by over 2,000 professionals—including Fortune 500 teams—who doubled their income, impact, and inner clarity in just 5 days.",
-                    testimonial: "I'm not the same person I was a week ago.",
-                    author: "Misty R."
+                    stat: "Professionals trained in this system earned 23% more revenue than those who weren’t. The difference? Presence under pressure.",
+                    testimonial: "I'm not the same person I was a week ago. This wasn’t just motivation. It was a transformation from the inside out",
+                    author: "Misty U."
                 }}
                 microTestimonials={[
-                    "I walked into my next meeting and the whole room followed my energy.",
-                    "My nervous system finally feels like an asset, not a liability.",
-                    "This rewired how I respond under pressure—in life and in business."
+                    "Michael didn’t just teach us how to perform—he showed us how to become.” — Connor, Training Attendee",
+                    "Since Michael’s class, my averages jumped from $900 to $1,800. More importantly, I love who I’ve become.”— Mark, Finance Manager",
+                    "This was bigger than sales. This was soul work.” — Fabian, Sales Professional"
                 ]}
             />
 
@@ -120,10 +123,10 @@ export default function LandingPage() {
                     <SectionHeader
                         title={
                             <>
-                                Join a Global <span className="text-primary">Revolution</span>
+                                Join a Diamond Mind <span className="text-primary">Global Movement</span>
                             </>
                         }
-                        subtitle="Thousands of leaders, entrepreneurs, and change-makers across six continents are transforming pressure into clarity. The collective is growing. Your place is waiting."
+                        subtitle="Thousands of leaders, entrepreneurs, and change-makers across six continents are turning pressure into clarity. The movement is growing. Your place is waiting."
                     />
                     <div className="relative w-full h-[600px]">
                         <World data={sampleArcs} globeConfig={globeConfig} />
@@ -172,9 +175,7 @@ export default function LandingPage() {
                 quote={{
                     text: (
                         <>
-                            &ldquo;You can&apos;t <span className="text-primary not-italic">think</span> your way into a new identity.<br />
-                            Your nervous system is running the show.<br />
-                            That&apos;s why willpower fails.&rdquo;
+                            When you choose and embody your identity, you stop living by default—and start living by design.
                         </>
                     ),
                     author: "Michael T Dugan"
@@ -196,60 +197,88 @@ export default function LandingPage() {
                     />
 
                     <BentoGrid className="mb-16">
-                        <BentoGridItem
-                            title="The Diamond Operating System"
-                            description="Converts pressure into clarity, chaos into calm. You don't just react better—you lead better. You become the person people trust in crisis."
-                            header={
-                                <div className="flex h-full min-h-[6rem] w-full flex-1 items-center justify-center rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5">
-                                    <img
-                                        src="https://images.unsplash.com/photo-1534224039826-c7a0eda0e6b3?q=80&w=800&h=400&fit=crop"
-                                        alt="Meditation and consciousness"
-                                        className="w-full h-full object-cover opacity-60"
-                                    />
-                                </div>
-                            }
-                            className="md:col-span-2"
-                        />
-                        <BentoGridItem
-                            title="Swiss Army Knife"
-                            description="Real-time emotional regulation. Get back to center instantly, no matter what's happening. Body, Breath, Brain tools."
-                            header={
-                                <div className="flex h-full min-h-[6rem] w-full flex-1 items-center justify-center rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5">
-                                    <img
-                                        src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800&h=400&fit=crop"
-                                        alt="Centered presence"
-                                        className="w-full h-full object-cover opacity-60"
-                                    />
-                                </div>
-                            }
-                        />
-                        <BentoGridItem
-                            title="ART & ART² Protocols"
-                            description="Clears emotional static and reclaims your power. Transform fear, anger, and doubt into intentional action."
-                            header={
-                                <div className="flex h-full min-h-[6rem] w-full flex-1 items-center justify-center rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5">
-                                    <img
-                                        src="https://images.unsplash.com/photo-1499209974431-9dddcece7f88?q=80&w=800&h=400&fit=crop"
-                                        alt="Energy and transformation"
-                                        className="w-full h-full object-cover opacity-60"
-                                    />
-                                </div>
-                            }
-                        />
-                        <BentoGridItem
-                            title="The Diamond Sprint"
-                            description="30-Day Practice that installs new habits and baseline identity. Build unshakable confidence through consistent action."
-                            header={
-                                <div className="flex h-full min-h-[6rem] w-full flex-1 items-center justify-center rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5">
-                                    <img
-                                        src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=800&h=400&fit=crop"
-                                        alt="Journey and elevation"
-                                        className="w-full h-full object-cover opacity-60"
-                                    />
-                                </div>
-                            }
-                            className="md:col-span-2"
-                        />
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0 }}
+                            viewport={{ once: true, amount: 0.2 }}
+                        >
+                            <BentoGridItem
+                                title="The Diamond Operating System"
+                                description="Converts pressure into clarity, chaos into calm. You don't just react better—you lead better. You become the person people trust in crisis."
+                                header={
+                                    <div className="flex h-full min-h-[6rem] w-full flex-1 items-center justify-center rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5">
+                                        <img
+                                            src="https://images.unsplash.com/photo-1534224039826-c7a0eda0e6b3?q=80&w=800&h=400&fit=crop"
+                                            alt="Meditation and consciousness"
+                                            className="w-full h-full object-cover opacity-60"
+                                        />
+                                    </div>
+                                }
+                                className="md:col-span-2"
+                            />
+                        </motion.div>
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.1 }}
+                            viewport={{ once: true, amount: 0.2 }}
+                        >
+                            <BentoGridItem
+                                title="Swiss Army Knife"
+                                description="Real-time emotional regulation. Get back to center instantly, no matter what's happening. Body, Breath, Brain tools."
+                                header={
+                                    <div className="flex h-full min-h-[6rem] w-full flex-1 items-center justify-center rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5">
+                                        <img
+                                            src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800&h=400&fit=crop"
+                                            alt="Centered presence"
+                                            className="w-full h-full object-cover opacity-60"
+                                        />
+                                    </div>
+                                }
+                            />
+                        </motion.div>
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.2 }}
+                            viewport={{ once: true, amount: 0.2 }}
+                        >
+                            <BentoGridItem
+                                title="ART & ART² Protocols"
+                                description="Clears emotional static and reclaims your power. Transform fear, anger, and doubt into intentional action."
+                                header={
+                                    <div className="flex h-full min-h-[6rem] w-full flex-1 items-center justify-center rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5">
+                                        <img
+                                            src="https://images.unsplash.com/photo-1499209974431-9dddcece7f88?q=80&w=800&h=400&fit=crop"
+                                            alt="Energy and transformation"
+                                            className="w-full h-full object-cover opacity-60"
+                                        />
+                                    </div>
+                                }
+                            />
+                        </motion.div>
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.3 }}
+                            viewport={{ once: true, amount: 0.2 }}
+                        >
+                            <BentoGridItem
+                                title="The Diamond Sprint"
+                                description="30-Day Practice that installs new habits and baseline identity. Build unshakable confidence through consistent action."
+                                header={
+                                    <div className="flex h-full min-h-[6rem] w-full flex-1 items-center justify-center rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5">
+                                        <img
+                                            src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=800&h=400&fit=crop"
+                                            alt="Journey and elevation"
+                                            className="w-full h-full object-cover opacity-60"
+                                        />
+                                    </div>
+                                }
+                                className="md:col-span-2"
+                            />
+                        </motion.div>
                     </BentoGrid>
 
                     <motion.div
@@ -277,25 +306,25 @@ export default function LandingPage() {
                 subtitle="Real transformations from real people"
                 testimonials={[
                     {
-                        quote: "I'm not the same person I was a week ago. The Diamond Operating System gave me tools that actually work under real pressure.",
-                        name: "Misty Rodriguez",
-                        designation: "Sales Executive",
+                        quote: "This isn’t about products. It’s about presence. The clarity, the energy, the tools—they stay with you long after the class ends.",
+                        name: "James M.",
+                        designation: "Entrepreneur",
                         src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=600&h=600&fit=crop"
                     },
                     {
-                        quote: "Michael gave me tools that actually work under real pressure. My entire nervous system feels upgraded.",
-                        name: "Mark Thompson",
-                        designation: "Corporate Leader",
+                        quote: "This wasn’t just motivation. It was a transformation from the inside out.",
+                        name: "Misty U.",
+                        designation: "Finance Professional",
                         src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&h=600&fit=crop"
                     },
                     {
-                        quote: "My entire nervous system feels upgraded. I show up stronger in every meeting and relationship—without losing myself.",
+                        quote: "Michael’s training gave me my confidence back—not just at work, but in life. This was bigger than sales. This was soul work.",
                         name: "Fernando Garcia",
                         designation: "Entrepreneur",
                         src: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=600&h=600&fit=crop"
                     },
                     {
-                        quote: "Michael is a product of a lifetime in the forge. Becoming Diamond is now part of my daily practice.",
+                        quote: "Michael is a product of a lifetime in the forge. The essence of Becoming Diamond is part of my daily practice.",
                         name: "Richard Hallett",
                         designation: "Psychologist & AI Engineer",
                         src: "/greece_profile2.jpeg"
@@ -326,184 +355,152 @@ export default function LandingPage() {
             <BookSalesSection />
 
             {/* Programs Overview */}
-            <section id="programs" className="py-24 px-6 bg-gradient-to-b from-black via-secondary/20 to-black">
+            <section id="programs" className="py-24 px-6 bg-gradient-to-b from-black via-primary/5 to-black">
                 <div className="max-w-7xl mx-auto">
                     <SectionHeader
                         title={
                             <>
-                                Choose Your Transformation Path
+                                Choose Your <span className="text-primary">Transformation Path</span>
                             </>
                         }
-                        subtitle="From a quick clarity reset to full-body reinvention—this is your pressure-proof path forward."
+                        subtitle="From self-paced courses to yearlong coaching—find the right fit for your journey"
                     />
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {/* Tier 1: Diamond Advantage - $97 */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                        {/* Diamond Activation Experience Card */}
                         <motion.div
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0 }}
                             viewport={{ once: true }}
-                            className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/30 rounded-2xl p-6 flex flex-col"
                         >
-                            <div className="mb-4">
-                                <div className="text-primary text-sm font-bold mb-2">TIER 1</div>
-                                <h3 className="text-xl mb-2 font-bold">Diamond Advantage</h3>
-                                <div className="text-2xl font-light mb-3 text-primary">$97</div>
-                            </div>
-                            <p className="text-sm text-gray-300 mb-4 flex-grow">
-                                Feel Calm, Clear, and Centered—Even in Chaos
-                            </p>
-                            <ul className="space-y-2 mb-6 text-xs text-gray-400">
-                                <li className="flex items-start">
-                                    <span className="text-primary mr-2">→</span>
-                                    <span>Master one simple practice to stay calm under pressure</span>
-                                </li>
-                                <li className="flex items-start">
-                                    <span className="text-primary mr-2">→</span>
-                                    <span>Build daily habits that create unshakable peace</span>
-                                </li>
-                                <li className="flex items-start">
-                                    <span className="text-primary mr-2">→</span>
-                                    <span>30-day tracker + practice prompts</span>
-                                </li>
-                            </ul>
-                            <Link href="/offers/diamond-advantage" className="mt-auto">
-                                <button className="w-full bg-white/10 text-white py-2.5 rounded-lg text-sm font-medium hover:bg-white/20 transition-all">
-                                    Access the Diamond Advantage
-                                </button>
-                            </Link>
+                            <CardSpotlight
+                                className="h-full w-full"
+                                color="rgba(79, 195, 247, 0.15)"
+                            >
+                                <div className="relative z-20 h-full flex flex-col">
+                                    <div className="mb-6">
+                                        <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
+                                            Diamond Activation Experience
+                                        </h3>
+                                        <p className="text-lg text-primary font-light mb-4">
+                                            A three-tier transformational path to reset your nervous system, rewire your identity, and lead with presence under pressure.
+                                        </p>
+                                        <p className="text-sm text-gray-400 leading-relaxed">
+                                            Complete online transformation program with three tiers: self-paced ($97), full program with coaching ($497), and premium 1-on-1 mentoring $2997.
+                                        </p>
+                                    </div>
+
+                                    <div className="mb-8 flex-grow">
+                                        <h4 className="text-sm font-bold text-primary uppercase tracking-wide mb-4">
+                                            What&apos;s Included
+                                        </h4>
+                                        <ul className="space-y-3">
+                                            <li className="flex items-start">
+                                                <IconCheck className="w-5 h-5 text-primary mt-0.5 mr-3 flex-shrink-0" />
+                                                <span className="text-gray-300">Full Diamond Operating System Course</span>
+                                            </li>
+                                            <li className="flex items-start">
+                                                <IconCheck className="w-5 h-5 text-primary mt-0.5 mr-3 flex-shrink-0" />
+                                                <span className="text-gray-300">Swiss Army Knife Toolkit</span>
+                                            </li>
+                                            <li className="flex items-start">
+                                                <IconCheck className="w-5 h-5 text-primary mt-0.5 mr-3 flex-shrink-0" />
+                                                <span className="text-gray-300">Live Coaching & Community (Full/Premium tiers)</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div className="mt-auto">
+                                        <Link
+                                            href="/program"
+                                            className="block w-full text-center bg-black/50 backdrop-blur-sm hover:bg-black/70 transition-colors border border-white/20 rounded-lg px-6 py-3"
+                                        >
+                                            View Program Details
+                                        </Link>
+                                    </div>
+                                </div>
+                            </CardSpotlight>
                         </motion.div>
 
-                        {/* Tier 2: Diamond Edge Mastery - $497 */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.1 }}
-                            viewport={{ once: true }}
-                            className="bg-gradient-to-br from-primary/15 to-primary/5 border-2 border-primary/50 rounded-2xl p-6 flex flex-col relative"
-                        >
-                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-black px-3 py-1 rounded-full text-xs font-bold">
-                                MOST POPULAR
-                            </div>
-                            <div className="mb-4">
-                                <div className="text-primary text-sm font-bold mb-2">TIER 2</div>
-                                <h3 className="text-xl mb-2 font-bold">Diamond Edge Mastery</h3>
-                                <div className="text-2xl font-light mb-3 text-primary">$497</div>
-                            </div>
-                            <p className="text-sm text-gray-300 mb-4 flex-grow">
-                                Own the Room. Command Respect. Rise with Confidence.
-                            </p>
-                            <ul className="space-y-2 mb-6 text-xs text-gray-400">
-                                <li className="flex items-start">
-                                    <span className="text-primary mr-2">→</span>
-                                    <span>Everything in Diamond Advantage</span>
-                                </li>
-                                <li className="flex items-start">
-                                    <span className="text-primary mr-2">→</span>
-                                    <span>2 live experiential sessions</span>
-                                </li>
-                                <li className="flex items-start">
-                                    <span className="text-primary mr-2">→</span>
-                                    <span>1 immersive 5-hour Diamond Seminar</span>
-                                </li>
-                                <li className="flex items-start">
-                                    <span className="text-primary mr-2">→</span>
-                                    <span>Private community of high-achievers</span>
-                                </li>
-                            </ul>
-                            <Link href="/offers/diamond-edge-mastery" className="mt-auto">
-                                <button className="w-full bg-primary text-black py-2.5 rounded-lg text-sm font-medium hover:bg-primary/90 transition-all">
-                                    Step Into Diamond Edge Mastery
-                                </button>
-                            </Link>
-                        </motion.div>
-
-                        {/* Tier 3: Pressure Room One - $1,997 */}
+                        {/* DiamondMind Collective Card */}
                         <motion.div
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.2 }}
                             viewport={{ once: true }}
-                            className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/30 rounded-2xl p-6 flex flex-col"
                         >
-                            <div className="mb-4">
-                                <div className="text-primary text-sm font-bold mb-2">TIER 3</div>
-                                <h3 className="text-xl mb-2 font-bold">Pressure Room One</h3>
-                                <div className="text-2xl font-light mb-3 text-primary">$1,997</div>
-                            </div>
-                            <p className="text-sm text-gray-300 mb-4 flex-grow">
-                                Step Into the Fire. Walk Out Unshakable.
-                            </p>
-                            <ul className="space-y-2 mb-6 text-xs text-gray-400">
-                                <li className="flex items-start">
-                                    <span className="text-primary mr-2">→</span>
-                                    <span>Everything in Diamond Edge Mastery</span>
-                                </li>
-                                <li className="flex items-start">
-                                    <span className="text-primary mr-2">→</span>
-                                    <span>3-day Pressure Room One experience</span>
-                                </li>
-                                <li className="flex items-start">
-                                    <span className="text-primary mr-2">→</span>
-                                    <span>Train under real-world tension</span>
-                                </li>
-                                <li className="flex items-start">
-                                    <span className="text-primary mr-2">→</span>
-                                    <span>Rewire your nervous system</span>
-                                </li>
-                            </ul>
-                            <Link href="/offers/pressure-room-one" className="mt-auto">
-                                <button className="w-full bg-white/10 text-white py-2.5 rounded-lg text-sm font-medium hover:bg-white/20 transition-all">
-                                    Enter Pressure Room One
-                                </button>
-                            </Link>
-                        </motion.div>
+                            <CardSpotlight
+                                className="h-full w-full border-primary/40"
+                                color="rgba(79, 195, 247, 0.2)"
+                            >
+                                <div className="relative z-20 h-full flex flex-col">
+                                    {/* Premium Badge */}
+                                    <div className="absolute -top-4 -right-4 bg-gradient-to-br from-primary to-primary/70 text-black px-4 py-2 rounded-lg text-xs font-bold shadow-lg shadow-primary/50 uppercase tracking-wider">
+                                        Premium
+                                    </div>
 
-                        {/* Tier 4: DiamondMind Immersion - $7,995 */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.3 }}
-                            viewport={{ once: true }}
-                            className="bg-gradient-to-br from-primary/20 to-primary/10 border-2 border-primary rounded-2xl p-6 flex flex-col relative"
-                        >
-                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-white text-black px-3 py-1 rounded-full text-xs font-bold">
-                                ULTIMATE
-                            </div>
-                            <div className="mb-4">
-                                <div className="text-primary text-sm font-bold mb-2">TIER 4</div>
-                                <h3 className="text-xl mb-2 font-bold">DiamondMind Immersion</h3>
-                                <div className="text-2xl font-light mb-3 text-primary">$7,995</div>
-                            </div>
-                            <p className="text-sm text-gray-300 mb-4 flex-grow leading-snug">
-                                The Ultimate Transformation: Live Unshakable Every Day.
-                            </p>
-                            <ul className="space-y-2 mb-6 text-xs text-gray-400">
-                                <li className="flex items-start">
-                                    <span className="text-primary mr-2">→</span>
-                                    <span>Everything in Pressure Room One</span>
-                                </li>
-                                <li className="flex items-start">
-                                    <span className="text-primary mr-2">→</span>
-                                    <span>5x 3-day Pressure Room Intensives</span>
-                                </li>
-                                <li className="flex items-start">
-                                    <span className="text-primary mr-2">→</span>
-                                    <span>5x 2-hour Integration Labs</span>
-                                </li>
-                                <li className="flex items-start">
-                                    <span className="text-primary mr-2">→</span>
-                                    <span>Yearlong transformation journey</span>
-                                </li>
-                            </ul>
-                            <Link href="/collective" className="mt-auto">
-                                <button className="w-full bg-white text-black py-2.5 rounded-lg text-sm font-medium hover:bg-gray-200 transition-all">
-                                    Begin Your DiamondMind Immersion
-                                </button>
-                            </Link>
+                                    <div className="mb-6">
+                                        <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
+                                            DiamondMind Collective
+                                        </h3>
+                                        <p className="text-base text-gray-300 leading-relaxed">
+                                            A yearlong transformational journey through five high-intensity Pressure Rooms—for those ready to stop reacting and start leading from within. Enrollment is capped at 100 per immersive experience.
+                                        </p>
+                                    </div>
+
+                                    <div className="mb-8 flex-grow">
+                                        <h4 className="text-sm font-bold text-primary uppercase tracking-wide mb-4">
+                                            What&apos;s Included
+                                        </h4>
+                                        <ul className="space-y-3">
+                                            <li className="flex items-start">
+                                                <IconCheck className="w-5 h-5 text-primary mt-0.5 mr-3 flex-shrink-0" />
+                                                <span className="text-gray-300">12-month guided journey</span>
+                                            </li>
+                                            <li className="flex items-start">
+                                                <IconCheck className="w-5 h-5 text-primary mt-0.5 mr-3 flex-shrink-0" />
+                                                <span className="text-gray-300">5 transformational Pressure Rooms</span>
+                                            </li>
+                                            <li className="flex items-start">
+                                                <IconCheck className="w-5 h-5 text-primary mt-0.5 mr-3 flex-shrink-0" />
+                                                <span className="text-gray-300">DiamondMindAI support</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div className="mt-auto">
+                                        <Link
+                                            href="/collective"
+                                            className="block w-full text-center bg-primary/10 backdrop-blur-sm hover:bg-primary/20 transition-colors border border-primary/50 rounded-lg px-6 py-3"
+                                        >
+                                            Explore the Collective
+                                        </Link>
+                                    </div>
+                                </div>
+                            </CardSpotlight>
                         </motion.div>
                     </div>
+
+                    {/* Bottom Message */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.3 }}
+                        viewport={{ once: true }}
+                        className="text-center mt-12"
+                    >
+                        <p className="text-gray-400 text-sm md:text-base italic">
+                            Not sure which path is right for you?{" "}
+                            <button
+                                onClick={() => document.getElementById('lead-magnet')?.scrollIntoView({ behavior: 'smooth' })}
+                                className="text-primary hover:underline focus:outline-none"
+                            >
+                                Start with the free Diamond Sprint
+                            </button>
+                            {" "}to experience the foundation.
+                        </p>
+                    </motion.div>
                 </div>
             </section>
 

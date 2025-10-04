@@ -25,19 +25,19 @@ export function Navigation() {
                 {/* Desktop Navigation */}
                 <div className="hidden md:flex gap-8 items-center">
                     <Link href="/book" className="hover:text-primary transition-colors">
-                        Book
+                        The Book
                     </Link>
                     <Link href="/program" className="hover:text-primary transition-colors">
-                        Program
+                        Train with Michael
                     </Link>
                     <Link href="/collective" className="hover:text-primary transition-colors">
-                        Collective
+                        The DiamondMind Immersion
                     </Link>
                     <Link href="/blog" className="hover:text-primary transition-colors">
-                        Blog
+                        Insights
                     </Link>
                     <Link href="/auth/signin" className="hover:text-primary transition-colors drop-shadow-[0_0_8px_rgba(255,255,255,0.6)] hover:drop-shadow-[0_0_12px_rgba(79,195,247,0.8)]">
-                        Members Area
+                        Your Training Portal
                     </Link>
                 </div>
 
@@ -69,35 +69,35 @@ export function Navigation() {
                         className="text-lg hover:text-primary transition-colors py-2"
                         onClick={() => setMobileMenuOpen(false)}
                     >
-                        Book
+                        The Book
                     </Link>
                     <Link
                         href="/program"
                         className="text-lg hover:text-primary transition-colors py-2"
                         onClick={() => setMobileMenuOpen(false)}
                     >
-                        Program
+                        Train with Michael
                     </Link>
                     <Link
                         href="/collective"
                         className="text-lg hover:text-primary transition-colors py-2"
                         onClick={() => setMobileMenuOpen(false)}
                     >
-                        Collective
+                        The DiamondMind Immersion
                     </Link>
                     <Link
                         href="/blog"
                         className="text-lg hover:text-primary transition-colors py-2"
                         onClick={() => setMobileMenuOpen(false)}
                     >
-                        Blog
+                        Insights
                     </Link>
                     <Link
                         href="/auth/signin"
                         className="text-lg hover:text-primary transition-colors py-2 drop-shadow-[0_0_8px_rgba(255,255,255,0.6)] hover:drop-shadow-[0_0_12px_rgba(79,195,247,0.8)]"
                         onClick={() => setMobileMenuOpen(false)}
                     >
-                        Members Area
+                        Training Portal
                     </Link>
                 </div>
             </motion.div>
