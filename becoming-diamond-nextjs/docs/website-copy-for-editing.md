@@ -247,41 +247,113 @@
 ### Programs Overview Section
 
 **Section Title:**
-> Choose Your **Transformation** Path
+> Choose Your Transformation Path
 
 **Subtitle:**
-> From self-paced courses to yearlong coaching—find the right fit for your journey
+> From a quick clarity reset to full-body reinvention—this is your pressure-proof path forward.
 
-**Programs (2):**
+**Programs (4 Tiers):**
 
-#### 1. Diamond Activation Experience
+#### Tier 1: Diamond Advantage - $97
 
-**Description:**
-> Complete online transformation program with three tiers: self-paced ($97), full program with coaching ($497), and premium 1-on-1 mentoring ($3,000).
+**Headline:**
+> Feel Calm, Clear, and Centered—Even in Chaos
 
-**Features (3):**
-- Full Diamond Operating System Course
-- Swiss Army Knife Toolkit
-- Live Coaching & Community (Full/Premium tiers)
+**Subhead:**
+> Regain control of your emotions and your focus, no matter what life throws at you.
+
+**Features:**
+- Master one simple practice to stay calm under pressure
+- Build daily habits that create unshakable peace
+- Reclaim your mental clarity—even in the middle of stress
+
+**Includes:**
+- 30-day tracker to measure your progress
+- Practice prompts to keep you consistent
+- Lifetime access to tools that keep you grounded
+
+**Target:**
+> Perfect for anyone who feels overwhelmed and needs to reset fast.
 
 **CTA:**
-- View Program Details
+- Access the Diamond Advantage
 
-#### 2. DiamondMind Collective
+---
+
+#### Tier 2: Diamond Edge Mastery - $497
 
 **Badge:**
-> Premium
+> MOST POPULAR
 
-**Description:**
-> Yearlong transformation journey through 5 gateways for emerging leaders. Limited to 50 members per cohort.
+**Headline:**
+> Own the Room. Command Respect. Rise with Confidence.
 
-**Features (3):**
-- 12-month guided journey
-- 5 transformational gateways
-- DiamondMindAI support
+**Subhead:**
+> Step into your power and become magnetic in any situation.
+
+**Features:**
+- Everything in Diamond Advantage
+- 2 live experiential sessions to integrate your new skills
+- 1 immersive 5-hour Diamond Seminar for a deep, lasting shift
+- Access to a private community of high-achievers
+- Ongoing exercises to keep you sharp and growing
+
+**Target:**
+> Perfect for those ready to feel strong, clear, and unstoppable in real time.
 
 **CTA:**
-- Explore the Collective
+- Step Into Diamond Edge Mastery
+
+---
+
+#### Tier 3: Pressure Room One - $1,997
+
+**Headline:**
+> Step Into the Fire. Walk Out Unshakable.
+
+**Subhead:**
+> Transform how you handle stress and pressure—forever.
+
+**Features:**
+- Everything in Diamond Edge Mastery
+- Full access to the 3-day Pressure Room One experience
+- Train under real-world tension and rewire your nervous system
+- Master control over your emotions in any situation
+- Step into your new presence—strong, clear, undeniable
+
+**Target:**
+> Perfect for those ready to experience the shift—not just think about it.
+
+**CTA:**
+- Enter Pressure Room One
+
+---
+
+#### Tier 4: DiamondMind Immersion - $7,995
+
+**Badge:**
+> ULTIMATE
+
+**Headline:**
+> The Ultimate Transformation: Live Unshakable Every Day.
+
+**Subhead:**
+> A yearlong journey to become emotionally grounded, energetically powerful, and irreplaceable.
+
+**Features:**
+- Everything in Pressure Room One
+- 5x 3-day Pressure Room Intensives (22 hours each)
+- 5x 2-hour Integration Labs to refine and practice your skills
+- Digital platform access for ongoing learning
+- Surround yourself with others becoming their clearest, strongest selves
+- Build emotional precision, energetic strength, and inner steadiness
+- Create a personal legacy plan to reshape your role, relationships, and reality
+
+**Target:**
+> Perfect for those ready to live from the Diamond frequency—every single day.
+
+**CTA:**
+- Begin Your DiamondMind Immersion
 
 ---
 

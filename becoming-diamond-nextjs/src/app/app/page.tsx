@@ -352,7 +352,7 @@ function AppDashboardContent() {
 
           {/* Community Activity */}
           <BentoGridItem
-            title="DiamondMind Collective"
+            title="DiamondMind Immersion"
             description="Connect with your transformation community"
             header={
               <div className="flex h-full min-h-[8rem] w-full flex-1 rounded-xl bg-gradient-to-br from-green-500/20 to-emerald-500/20 p-4">

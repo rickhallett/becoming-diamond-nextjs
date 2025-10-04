@@ -25,9 +25,9 @@ export default function LandingPage() {
         atmosphereColor: "#4fc3f7",
         atmosphereAltitude: 0.1,
         emissive: "#062056",
-        emissiveIntensity: 0.1,
+        emissiveIntensity: 0.3,
         shininess: 0.9,
-        polygonColor: "rgba(79,195,247,0.7)",
+        polygonColor: "rgba(79,195,247,1)",
         ambientLight: "#4fc3f7",
         directionalLeftLight: "#ffffff",
         directionalTopLight: "#ffffff",
@@ -327,82 +327,179 @@ export default function LandingPage() {
 
             {/* Programs Overview */}
             <section id="programs" className="py-24 px-6 bg-gradient-to-b from-black via-secondary/20 to-black">
-                <div className="max-w-6xl mx-auto">
+                <div className="max-w-7xl mx-auto">
                     <SectionHeader
                         title={
                             <>
-                                Choose Your <span className="text-primary">Transformation</span> Path
+                                Choose Your Transformation Path
                             </>
                         }
-                        subtitle="From self-paced courses to yearlong coaching—find the right fit for your journey"
+                        subtitle="From a quick clarity reset to full-body reinvention—this is your pressure-proof path forward."
                     />
 
-                    <div className="grid md:grid-cols-2 gap-8">
-                        {/* Diamond Activation Program */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {/* Tier 1: Diamond Advantage - $97 */}
                         <motion.div
-                            initial={{ opacity: 0, x: -30 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.8 }}
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0 }}
                             viewport={{ once: true }}
-                            className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/30 rounded-2xl p-8"
+                            className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/30 rounded-2xl p-6 flex flex-col"
                         >
-                            <h3 className="text-2xl mb-4 font-bold">Diamond Activation Experience</h3>
-                            <p className="text-gray-300 mb-6">
-                                Complete online transformation program with three tiers: self-paced ($97), full program with coaching ($497), and premium 1-on-1 mentoring ($3,000).
+                            <div className="mb-4">
+                                <div className="text-primary text-sm font-bold mb-2">TIER 1</div>
+                                <h3 className="text-xl mb-2 font-bold">Diamond Advantage</h3>
+                                <div className="text-2xl font-light mb-3 text-primary">$97</div>
+                            </div>
+                            <p className="text-sm text-gray-300 mb-4 flex-grow">
+                                Feel Calm, Clear, and Centered—Even in Chaos
                             </p>
-                            <ul className="space-y-3 mb-8">
-                                <li className="flex items-start text-sm text-gray-300">
-                                    <span className="text-primary mr-2">✓</span>
-                                    Full Diamond Operating System Course
+                            <ul className="space-y-2 mb-6 text-xs text-gray-400">
+                                <li className="flex items-start">
+                                    <span className="text-primary mr-2">→</span>
+                                    <span>Master one simple practice to stay calm under pressure</span>
                                 </li>
-                                <li className="flex items-start text-sm text-gray-300">
-                                    <span className="text-primary mr-2">✓</span>
-                                    Swiss Army Knife Toolkit
+                                <li className="flex items-start">
+                                    <span className="text-primary mr-2">→</span>
+                                    <span>Build daily habits that create unshakable peace</span>
                                 </li>
-                                <li className="flex items-start text-sm text-gray-300">
-                                    <span className="text-primary mr-2">✓</span>
-                                    Live Coaching & Community (Full/Premium tiers)
+                                <li className="flex items-start">
+                                    <span className="text-primary mr-2">→</span>
+                                    <span>30-day tracker + practice prompts</span>
                                 </li>
                             </ul>
-                            <Link href="/program">
-                                <button className="w-full bg-primary text-black py-3 rounded-lg font-medium hover:bg-primary/90 transition-all">
-                                    View Program Details
+                            <Link href="/offers/diamond-advantage" className="mt-auto">
+                                <button className="w-full bg-white/10 text-white py-2.5 rounded-lg text-sm font-medium hover:bg-white/20 transition-all">
+                                    Access the Diamond Advantage
                                 </button>
                             </Link>
                         </motion.div>
 
-                        {/* DiamondMind Collective */}
+                        {/* Tier 2: Diamond Edge Mastery - $497 */}
                         <motion.div
-                            initial={{ opacity: 0, x: 30 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.8 }}
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.1 }}
                             viewport={{ once: true }}
-                            className="bg-gradient-to-br from-primary/20 to-primary/10 border-2 border-primary rounded-2xl p-8 relative"
+                            className="bg-gradient-to-br from-primary/15 to-primary/5 border-2 border-primary/50 rounded-2xl p-6 flex flex-col relative"
                         >
-                            <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-black px-4 py-1 rounded-full text-sm font-medium">
-                                Premium
+                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-black px-3 py-1 rounded-full text-xs font-bold">
+                                MOST POPULAR
                             </div>
-                            <h3 className="text-2xl mb-4 font-bold">DiamondMind Collective</h3>
-                            <p className="text-gray-300 mb-6">
-                                Yearlong transformation journey through 5 Pressure Rooms for emerging leaders. Limited to 50 members per cohort.
+                            <div className="mb-4">
+                                <div className="text-primary text-sm font-bold mb-2">TIER 2</div>
+                                <h3 className="text-xl mb-2 font-bold">Diamond Edge Mastery</h3>
+                                <div className="text-2xl font-light mb-3 text-primary">$497</div>
+                            </div>
+                            <p className="text-sm text-gray-300 mb-4 flex-grow">
+                                Own the Room. Command Respect. Rise with Confidence.
                             </p>
-                            <ul className="space-y-3 mb-8">
-                                <li className="flex items-start text-sm text-gray-300">
-                                    <span className="text-primary mr-2">✓</span>
-                                    12-month guided journey
+                            <ul className="space-y-2 mb-6 text-xs text-gray-400">
+                                <li className="flex items-start">
+                                    <span className="text-primary mr-2">→</span>
+                                    <span>Everything in Diamond Advantage</span>
                                 </li>
-                                <li className="flex items-start text-sm text-gray-300">
-                                    <span className="text-primary mr-2">✓</span>
-                                    5 transformational Pressure Rooms
+                                <li className="flex items-start">
+                                    <span className="text-primary mr-2">→</span>
+                                    <span>2 live experiential sessions</span>
                                 </li>
-                                <li className="flex items-start text-sm text-gray-300">
-                                    <span className="text-primary mr-2">✓</span>
-                                    DiamondMindAI support
+                                <li className="flex items-start">
+                                    <span className="text-primary mr-2">→</span>
+                                    <span>1 immersive 5-hour Diamond Seminar</span>
+                                </li>
+                                <li className="flex items-start">
+                                    <span className="text-primary mr-2">→</span>
+                                    <span>Private community of high-achievers</span>
                                 </li>
                             </ul>
-                            <Link href="/collective">
-                                <button className="w-full bg-white text-black py-3 rounded-lg font-medium hover:bg-gray-200 transition-all">
-                                    Explore the Collective
+                            <Link href="/offers/diamond-edge-mastery" className="mt-auto">
+                                <button className="w-full bg-primary text-black py-2.5 rounded-lg text-sm font-medium hover:bg-primary/90 transition-all">
+                                    Step Into Diamond Edge Mastery
+                                </button>
+                            </Link>
+                        </motion.div>
+
+                        {/* Tier 3: Pressure Room One - $1,997 */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.2 }}
+                            viewport={{ once: true }}
+                            className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/30 rounded-2xl p-6 flex flex-col"
+                        >
+                            <div className="mb-4">
+                                <div className="text-primary text-sm font-bold mb-2">TIER 3</div>
+                                <h3 className="text-xl mb-2 font-bold">Pressure Room One</h3>
+                                <div className="text-2xl font-light mb-3 text-primary">$1,997</div>
+                            </div>
+                            <p className="text-sm text-gray-300 mb-4 flex-grow">
+                                Step Into the Fire. Walk Out Unshakable.
+                            </p>
+                            <ul className="space-y-2 mb-6 text-xs text-gray-400">
+                                <li className="flex items-start">
+                                    <span className="text-primary mr-2">→</span>
+                                    <span>Everything in Diamond Edge Mastery</span>
+                                </li>
+                                <li className="flex items-start">
+                                    <span className="text-primary mr-2">→</span>
+                                    <span>3-day Pressure Room One experience</span>
+                                </li>
+                                <li className="flex items-start">
+                                    <span className="text-primary mr-2">→</span>
+                                    <span>Train under real-world tension</span>
+                                </li>
+                                <li className="flex items-start">
+                                    <span className="text-primary mr-2">→</span>
+                                    <span>Rewire your nervous system</span>
+                                </li>
+                            </ul>
+                            <Link href="/offers/pressure-room-one" className="mt-auto">
+                                <button className="w-full bg-white/10 text-white py-2.5 rounded-lg text-sm font-medium hover:bg-white/20 transition-all">
+                                    Enter Pressure Room One
+                                </button>
+                            </Link>
+                        </motion.div>
+
+                        {/* Tier 4: DiamondMind Immersion - $7,995 */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.3 }}
+                            viewport={{ once: true }}
+                            className="bg-gradient-to-br from-primary/20 to-primary/10 border-2 border-primary rounded-2xl p-6 flex flex-col relative"
+                        >
+                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-white text-black px-3 py-1 rounded-full text-xs font-bold">
+                                ULTIMATE
+                            </div>
+                            <div className="mb-4">
+                                <div className="text-primary text-sm font-bold mb-2">TIER 4</div>
+                                <h3 className="text-xl mb-2 font-bold">DiamondMind Immersion</h3>
+                                <div className="text-2xl font-light mb-3 text-primary">$7,995</div>
+                            </div>
+                            <p className="text-sm text-gray-300 mb-4 flex-grow leading-snug">
+                                The Ultimate Transformation: Live Unshakable Every Day.
+                            </p>
+                            <ul className="space-y-2 mb-6 text-xs text-gray-400">
+                                <li className="flex items-start">
+                                    <span className="text-primary mr-2">→</span>
+                                    <span>Everything in Pressure Room One</span>
+                                </li>
+                                <li className="flex items-start">
+                                    <span className="text-primary mr-2">→</span>
+                                    <span>5x 3-day Pressure Room Intensives</span>
+                                </li>
+                                <li className="flex items-start">
+                                    <span className="text-primary mr-2">→</span>
+                                    <span>5x 2-hour Integration Labs</span>
+                                </li>
+                                <li className="flex items-start">
+                                    <span className="text-primary mr-2">→</span>
+                                    <span>Yearlong transformation journey</span>
+                                </li>
+                            </ul>
+                            <Link href="/collective" className="mt-auto">
+                                <button className="w-full bg-white text-black py-2.5 rounded-lg text-sm font-medium hover:bg-gray-200 transition-all">
+                                    Begin Your DiamondMind Immersion
                                 </button>
                             </Link>
                         </motion.div>

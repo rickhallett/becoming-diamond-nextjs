@@ -24,11 +24,17 @@ export default function CollectivePage() {
             viewport={{ once: true }}
             className="text-center max-w-4xl mx-auto"
           >
+            <div className="inline-block bg-primary/10 border border-primary/30 px-6 py-2 rounded-full mb-6">
+              <span className="text-primary text-xl font-bold">$7,995</span>
+            </div>
             <h1 className="mb-6 text-4xl md:text-6xl">
-              The <span className="text-primary">DiamondMind</span> Collective
+              The <span className="text-primary">DiamondMind</span> Immersion
             </h1>
-            <p className="text-xl text-gray-300 mb-8">
-              A Yearlong Transformation Journey for Emerging Leaders
+            <p className="text-xl md:text-2xl text-gray-300 mb-4">
+              The Ultimate Transformation: Live Unshakable Every Day.
+            </p>
+            <p className="text-lg text-gray-400 mb-8">
+              A yearlong journey to become emotionally grounded, energetically powerful, and irreplaceable.
             </p>
             <p className="text-2xl font-light mb-16">
               Become the Leader Pressure Can't Break
@@ -36,8 +42,38 @@ export default function CollectivePage() {
 
             <div className="max-w-3xl mx-auto mb-12">
               <p className="text-lg text-gray-300 mb-6">
-                A 12-month guided journey through <span className="text-primary font-normal">5 transformational Pressure Rooms</span>—each one designed to train your body, mind, and identity to operate under pressure with grace, clarity, and conviction.
+                A yearlong journey featuring <span className="text-primary font-normal">5 x 3-day Pressure Room Intensives</span> (22 hours each) and <span className="text-primary font-normal">5 x 2-hour Integration Labs</span>—designed to train your body, mind, and identity to operate under pressure with grace, clarity, and conviction.
               </p>
+              <div className="space-y-3 mb-6">
+                <div className="flex items-start text-base text-gray-300">
+                  <span className="text-primary mr-2">→</span>
+                  <span>Everything in Pressure Room One</span>
+                </div>
+                <div className="flex items-start text-base text-gray-300">
+                  <span className="text-primary mr-2">→</span>
+                  <span>5x 3-day Pressure Room Intensives (22 hours each)</span>
+                </div>
+                <div className="flex items-start text-base text-gray-300">
+                  <span className="text-primary mr-2">→</span>
+                  <span>5x 2-hour Integration Labs to refine and practice your skills</span>
+                </div>
+                <div className="flex items-start text-base text-gray-300">
+                  <span className="text-primary mr-2">→</span>
+                  <span>Digital platform access for ongoing learning</span>
+                </div>
+                <div className="flex items-start text-base text-gray-300">
+                  <span className="text-primary mr-2">→</span>
+                  <span>Surround yourself with others becoming their clearest, strongest selves</span>
+                </div>
+                <div className="flex items-start text-base text-gray-300">
+                  <span className="text-primary mr-2">→</span>
+                  <span>Build emotional precision, energetic strength, and inner steadiness</span>
+                </div>
+                <div className="flex items-start text-base text-gray-300">
+                  <span className="text-primary mr-2">→</span>
+                  <span>Create a personal legacy plan to reshape your role, relationships, and reality</span>
+                </div>
+              </div>
               <p className="text-base text-gray-400 italic">
                 This is not a course. This is not a seminar.<br />
                 This is <span className="text-primary not-italic">soul-tempering, system-level transformation</span>.
@@ -141,16 +177,16 @@ export default function CollectivePage() {
 
           <div className="w-full max-w-2xl">
             <h3 className="text-2xl md:text-3xl mb-3 text-center text-gray-300">
-              Questions About the Collective?
+              Questions About DiamondMind Immersion?
             </h3>
             <p className="text-base md:text-lg mb-8 text-center text-gray-400">
               Ask <span className="text-primary">DiamondMindAI</span>, our flagship model
             </p>
             <PlaceholdersAndVanishInput
               placeholders={[
-                "What makes the DiamondMind Collective different?",
+                "What makes DiamondMind Immersion different?",
                 "How long is the transformation journey?",
-                "What happens in the 5 Pressure Rooms?",
+                "What happens in the 5 Pressure Room Intensives?",
                 "Is this right for emerging leaders?",
                 "What support do I get during the year?",
               ]}
@@ -356,14 +392,14 @@ export default function CollectivePage() {
               Ready to Begin Your <span className="text-primary">Transformation</span>?
             </h2>
             <p className="text-xl text-gray-300 mb-8">
-              Applications are now open for the next cohort of the DiamondMind Collective
+              Applications are now open for the next cohort of DiamondMind Immersion
             </p>
             <Link href="/auth/signin">
               <button className="bg-primary text-black px-10 py-5 rounded-full text-xl font-medium hover:bg-primary/90 transition-all shadow-lg shadow-primary/30">
-                Apply to Join the Collective
+                Begin Your DiamondMind Immersion
               </button>
             </Link>
-            <p className="text-sm text-gray-500 mt-6">Limited to 50 emerging leaders per cohort</p>
+            <p className="text-sm text-gray-500 mt-6">Perfect for those ready to live from the Diamond frequency—every single day.</p>
           </motion.div>
         </div>
       </section>
