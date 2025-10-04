@@ -8,6 +8,14 @@ import type { ParsedCourse } from '@/types/course';
 
 const contentDirectory = path.join(process.cwd(), 'content');
 
+// In-memory cache for parsed content
+const contentCache = new Map<string, ContentItem>();
+const sprintDaysCache: { data: ContentItem[] | null; timestamp: number } = {
+  data: null,
+  timestamp: 0,
+};
+const CACHE_TTL = 1000 * 60 * 60; // 1 hour in production, or infinite in build
+
 export interface ContentItem {
   slug: string;
   frontmatter: {
@@ -160,4 +168,101 @@ export async function getAllCourses(): Promise<ParsedCourse[]> {
   return courses
     .filter((course): course is ParsedCourse => course !== null && course.metadata.published)
     .sort((a, b) => a.metadata.pressureRoom - b.metadata.pressureRoom);
+}
+
+/**
+ * Gets all sprint days sorted by day number
+ * @returns Array of sprint day content items
+ */
+export async function getSprintDays(): Promise<ContentItem[]> {
+  // Check cache first
+  const now = Date.now();
+  const isBuildTime = process.env.NODE_ENV === 'production' && !process.env.VERCEL;
+
+  if (sprintDaysCache.data && (isBuildTime || now - sprintDaysCache.timestamp < CACHE_TTL)) {
+    return sprintDaysCache.data;
+  }
+
+  const sprintDirectory = path.join(contentDirectory, 'sprint');
+
+  if (!fs.existsSync(sprintDirectory)) {
+    return [];
+  }
+
+  const files = fs.readdirSync(sprintDirectory);
+  const days = await Promise.all(
+    files
+      .filter((file) => file.endsWith('.md'))
+      .map(async (file) => {
+        const slug = file.replace(/\.md$/, '');
+        const fullPath = path.join(sprintDirectory, file);
+        const fileContents = fs.readFileSync(fullPath, 'utf8');
+        const { data, content } = matter(fileContents);
+        const htmlContent = await markdownToHtml(content);
+
+        return {
+          slug,
+          frontmatter: data as ContentItem['frontmatter'],
+          content: htmlContent,
+        };
+      })
+  );
+
+  // Filter published and sort by day number
+  const result = days
+    .filter((item) => item.frontmatter.published !== false)
+    .sort((a, b) => {
+      const dayA = (a.frontmatter.day as number) || 0;
+      const dayB = (b.frontmatter.day as number) || 0;
+      return dayA - dayB;
+    });
+
+  // Update cache
+  sprintDaysCache.data = result;
+  sprintDaysCache.timestamp = now;
+
+  return result;
+}
+
+/**
+ * Gets a specific sprint day by day number
+ * @param dayNumber - Day number (1-30)
+ * @returns Sprint day content item or null if not found
+ */
+export async function getSprintDay(dayNumber: number): Promise<ContentItem | null> {
+  const cacheKey = `sprint-day-${dayNumber}`;
+
+  // Check cache first
+  if (contentCache.has(cacheKey)) {
+    return contentCache.get(cacheKey)!;
+  }
+
+  const sprintDirectory = path.join(contentDirectory, 'sprint');
+
+  if (!fs.existsSync(sprintDirectory)) {
+    return null;
+  }
+
+  // Try to find day-XX.md format
+  const fileName = `day-${String(dayNumber).padStart(2, '0')}.md`;
+  const fullPath = path.join(sprintDirectory, fileName);
+
+  if (!fs.existsSync(fullPath)) {
+    return null;
+  }
+
+  const fileContents = fs.readFileSync(fullPath, 'utf8');
+  const { data, content } = matter(fileContents);
+  const htmlContent = await markdownToHtml(content);
+
+  const result = {
+    slug: fileName.replace(/\.md$/, ''),
+    frontmatter: data as ContentItem['frontmatter'],
+    content: htmlContent,
+  };
+
+  // Cache the result indefinitely (content doesn't change at runtime)
+  contentCache.set(cacheKey, result);
+
+  return result;
 }

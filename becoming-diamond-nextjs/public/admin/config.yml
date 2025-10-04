@@ -62,6 +62,27 @@ collections:
           - {label: "Address", name: "address", widget: "text", required: false}
           - {label: "Body", name: "body", widget: "markdown"}
 
+  # 30 Day Sprint Collection
+  - name: "sprint"
+    label: "30 Day Sprint"
+    folder: "content/sprint"
+    create: true
+    slug: "day-{{day}}"
+    identifier_field: "day"
+    fields:
+      - {label: "Day Number", name: "day", widget: "number", min: 1, max: 30}
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Subtitle", name: "subtitle", widget: "string"}
+      - {label: "Published", name: "published", widget: "boolean", default: true}
+      - {label: "Duration (e.g., '15 minutes')", name: "duration", widget: "string"}
+      - {label: "Difficulty", name: "difficulty", widget: "select", options: ["Beginner", "Intermediate", "Advanced"]}
+      - {label: "Week", name: "week", widget: "number", min: 1, max: 5}
+      - {label: "Tags", name: "tags", widget: "list", required: false}
+      - {label: "Video URL", name: "video", widget: "string", required: false}
+      - {label: "Audio URL", name: "audio", widget: "string", required: false}
+      - {label: "Images", name: "images", widget: "list", required: false}
+      - {label: "Body", name: "body", widget: "markdown"}
+
   # Site Settings
   - name: "settings"
     label: "Site Settings"
