@@ -327,7 +327,7 @@ export default function LandingPage() {
                         quote: "Michael is a product of a lifetime in the forge. The essence of Becoming Diamond is part of my daily practice.",
                         name: "Richard Hallett",
                         designation: "Psychologist & AI Engineer",
-                        src: "/greece_profile2.jpeg"
+                        src: "/profile-placeholder.webp"
                     }
                 ]}
             />
