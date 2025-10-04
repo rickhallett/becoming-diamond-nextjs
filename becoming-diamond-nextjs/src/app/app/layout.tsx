@@ -13,7 +13,8 @@ import {
     IconHelp,
     IconMenu2,
     IconX,
-    IconSparkles
+    IconSparkles,
+    IconRocket
 } from "@tabler/icons-react";
 import { SignOutButton } from "@/components/auth/SignOutButton";
 import { UserAvatar } from "@/components/auth/UserAvatar";
@@ -25,6 +26,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
     const navItems = [
         { name: "Dashboard", href: "/app", icon: IconHome },
+        { name: "30 Day Sprint", href: "/app/sprint", icon: IconRocket },
         { name: "Courses", href: "/app/courses", icon: IconBooks },
         { name: "DiamondMindAI", href: "/app/chat", icon: IconBrain },
         { name: "Profile", href: "/app/profile", icon: IconUser },
