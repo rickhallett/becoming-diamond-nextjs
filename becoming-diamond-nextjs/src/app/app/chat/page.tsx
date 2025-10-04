@@ -4,8 +4,17 @@ import { IconSend, IconBrain, IconUser, IconSparkles, IconPlus, IconTrash, IconM
 import { useChat } from "@/contexts/ChatContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { MarkdownMessage } from "@/components/MarkdownMessage";
+import { FeatureGuard } from "@/components/FeatureGuard";
 
 export default function ChatPage() {
+    return (
+        <FeatureGuard>
+            <ChatPageContent />
+        </FeatureGuard>
+    );
+}
+
+function ChatPageContent() {
     const { currentSession, sessions, addMessage, createSession, loadSession, deleteSession, isLoading } = useChat();
     const [inputValue, setInputValue] = useState("");
     const [isTyping, setIsTyping] = useState(false);

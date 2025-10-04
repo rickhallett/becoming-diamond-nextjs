@@ -18,21 +18,31 @@ import {
 } from "@tabler/icons-react";
 import { SignOutButton } from "@/components/auth/SignOutButton";
 import { UserAvatar } from "@/components/auth/UserAvatar";
+import { FEATURES } from "@/config/features";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const { data: session } = useSession();
 
-    const navItems = [
-        { name: "Dashboard", href: "/app", icon: IconHome },
-        { name: "30 Day Sprint", href: "/app/sprint", icon: IconRocket },
-        { name: "Courses", href: "/app/courses", icon: IconBooks },
-        { name: "DiamondMindAI", href: "/app/chat", icon: IconBrain },
-        { name: "Profile", href: "/app/profile", icon: IconUser },
-        { name: "Settings", href: "/app/settings", icon: IconSettings },
-        { name: "Support", href: "/app/support", icon: IconHelp },
+    // Define all possible navigation items
+    const allNavItems = [
+        { name: "Dashboard", href: "/app", icon: IconHome, feature: 'dashboard' as const },
+        { name: "30 Day Sprint", href: "/app/sprint", icon: IconRocket, feature: null },
+        { name: "Courses", href: "/app/courses", icon: IconBooks, feature: 'courses' as const },
+        { name: "DiamondMindAI", href: "/app/chat", icon: IconBrain, feature: 'diamondMindAI' as const },
+        { name: "Profile", href: "/app/profile", icon: IconUser, feature: null },
+        { name: "Settings", href: "/app/settings", icon: IconSettings, feature: 'settings' as const },
+        { name: "Support", href: "/app/support", icon: IconHelp, feature: 'support' as const },
     ];
+
+    // Filter navigation items based on feature flags
+    const navItems = allNavItems.filter(item => {
+        // If no feature flag is set, always show the item
+        if (item.feature === null) return true;
+        // Otherwise, check if the feature is enabled
+        return FEATURES[item.feature];
+    });
 
     const isActive = (href: string) => {
         if (href === "/app") {

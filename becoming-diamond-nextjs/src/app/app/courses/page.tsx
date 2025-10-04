@@ -5,8 +5,17 @@ import { useUser } from "@/contexts/UserContext";
 import { useCourses, SAMPLE_COURSES } from "@/contexts/CourseContext";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { FeatureGuard } from "@/components/FeatureGuard";
 
 export default function CoursesPage() {
+    return (
+        <FeatureGuard>
+            <CoursesPageContent />
+        </FeatureGuard>
+    );
+}
+
+function CoursesPageContent() {
     const { user, isLoading: userLoading } = useUser();
     const { enrollments, enrollInCourse, isEnrolled } = useCourses();
     const [enrollingCourse, setEnrollingCourse] = useState<string | null>(null);
