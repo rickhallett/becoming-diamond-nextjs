@@ -6,6 +6,7 @@
  */
 
 import type { NextAuthConfig } from "next-auth";
+import { AUTH_CONFIG } from "@/config/features";
 
 export const authConfig = {
   pages: {
@@ -27,9 +28,9 @@ export const authConfig = {
         return false;
       }
 
-      // Redirect authenticated users away from auth pages
+      // Redirect authenticated users away from auth pages to configured success URI
       if (isOnAuthPage && isLoggedIn) {
-        return Response.redirect(new URL("/app", nextUrl));
+        return Response.redirect(new URL(AUTH_CONFIG.successRedirectUri, nextUrl));
       }
 
       return true;
