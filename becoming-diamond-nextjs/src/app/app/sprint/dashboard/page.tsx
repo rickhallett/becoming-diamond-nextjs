@@ -5,6 +5,7 @@ import { isDayAccessible, isDayCompleted, getProgressStats } from '@/lib/sprint-
 import ProgressBar from '@/components/sprint/ProgressBar';
 import DayCard from '@/components/sprint/DayCard';
 import { motion } from 'framer-motion';
+import { logSync as log } from '@/lib/logger';
 
 interface DayData {
   slug: string;
@@ -31,7 +32,7 @@ export default function SprintDashboardPage() {
         setDays(data.days || []);
         setStats(getProgressStats());
       } catch (error) {
-        console.error('Error loading sprint days:', error);
+        log.error('Error loading sprint days:', 'App', error);
       } finally {
         setLoading(false);
       }

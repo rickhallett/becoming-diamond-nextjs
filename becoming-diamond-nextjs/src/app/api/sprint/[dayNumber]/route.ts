@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSprintDay } from '@/lib/content';
+import { log } from '@/lib/logger';
 
 // Generate static params for all 30 days at build time
 export async function generateStaticParams() {
@@ -37,7 +38,7 @@ export async function GET(
 
     return NextResponse.json({ day });
   } catch (error) {
-    console.error('Error fetching sprint day:', error);
+    await log.error('Error fetching sprint day:', 'API', error);
     return NextResponse.json(
       { error: 'Failed to fetch sprint day' },
       { status: 500 }

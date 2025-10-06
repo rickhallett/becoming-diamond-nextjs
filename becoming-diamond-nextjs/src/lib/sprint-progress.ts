@@ -5,6 +5,8 @@
  * In Phase 2, this will be migrated to a database backend.
  */
 
+import { logSync as log } from '@/lib/logger';
+
 const STORAGE_KEY = 'sprint_progress_v1';
 
 export interface SprintProgress {
@@ -61,7 +63,7 @@ export function getProgress(): SprintProgress {
 
     return progress;
   } catch (error) {
-    console.error('Error reading sprint progress:', error);
+    log.error('Error reading sprint progress:', 'Lib', error);
     return initializeProgress();
   }
 }
@@ -76,7 +78,7 @@ export function saveProgress(progress: SprintProgress): void {
     progress.updatedAt = new Date().toISOString();
     localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
   } catch (error) {
-    console.error('Error saving sprint progress:', error);
+    log.error('Error saving sprint progress:', 'Lib', error);
   }
 }
 
@@ -150,7 +152,7 @@ export function resetProgress(): void {
   try {
     localStorage.removeItem(STORAGE_KEY);
   } catch (error) {
-    console.error('Error resetting sprint progress:', error);
+    log.error('Error resetting sprint progress:', 'Lib', error);
   }
 }
 
@@ -177,7 +179,7 @@ export function importProgress(jsonData: string): boolean {
     saveProgress(progress);
     return true;
   } catch (error) {
-    console.error('Error importing sprint progress:', error);
+    log.error('Error importing sprint progress:', 'Lib', error);
     return false;
   }
 }

@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { getDisabledRoutes, FEATURE_REDIRECT_PATH } from "@/config/features";
+import { logSync } from '@/lib/logger';
 
 /**
  * FeatureGuard Component
@@ -26,7 +27,7 @@ export function FeatureGuard({ children }: FeatureGuardProps) {
     const isDisabled = disabledRoutes.some(route => pathname.startsWith(route));
 
     if (isDisabled) {
-      console.log(`[FeatureGuard] Route ${pathname} is disabled, redirecting to ${FEATURE_REDIRECT_PATH}`);
+      logSync.debug(`[FeatureGuard] Route ${pathname} is disabled, redirecting to ${FEATURE_REDIRECT_PATH}`, 'Component');
       router.replace(FEATURE_REDIRECT_PATH);
     }
   }, [pathname, router, disabledRoutes]);

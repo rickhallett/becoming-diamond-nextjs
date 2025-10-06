@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
+import { log } from '@/lib/logger';
 
 // Initialize Stripe only if key is provided
 const getStripe = () => {
@@ -34,7 +35,7 @@ export async function POST(request: NextRequest) {
     // Return the URL to redirect to
     return NextResponse.json({ url: session.url });
   } catch (error) {
-    console.error("Error creating checkout session:", error);
+    await log.error("Error creating checkout session:", 'API', error);
     return NextResponse.json(
       { error: "Error creating checkout session" },
       { status: 500 }

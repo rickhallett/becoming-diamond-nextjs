@@ -5,6 +5,7 @@ import { useChat } from "@/contexts/ChatContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { MarkdownMessage } from "@/components/MarkdownMessage";
 import { FeatureGuard } from "@/components/FeatureGuard";
+import { logSync as log } from '@/lib/logger';
 
 export default function ChatPage() {
     return (
@@ -151,7 +152,7 @@ function ChatPageContent() {
             setStreamingMessage("");
             setIsTyping(false);
         } catch (error) {
-            console.error('Error getting response:', error);
+            log.error('Error getting response:', 'App', error);
             const errorMsg = "I apologize, but I'm having trouble accessing the book content right now. Please make sure your ANTHROPIC_API_KEY is set in the environment variables.";
             addMessage(errorMsg, 'assistant');
             setStreamingMessage("");

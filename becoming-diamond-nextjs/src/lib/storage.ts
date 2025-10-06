@@ -3,6 +3,8 @@
  * Handles serialization, deserialization, and graceful fallbacks
  */
 
+import { logSync as log } from '@/lib/logger';
+
 // Check if we're in a browser environment
 const isBrowser = typeof window !== 'undefined';
 
@@ -40,7 +42,7 @@ export const storage = {
 
       return parsed.value;
     } catch (error) {
-      console.error(`Error reading from localStorage (key: ${key}):`, error);
+      log.error(`Error reading from localStorage (key: ${key})`, 'Lib', error);
       return null;
     }
   },
@@ -63,7 +65,7 @@ export const storage = {
       window.localStorage.setItem(key, JSON.stringify(item));
       return true;
     } catch (error) {
-      console.error(`Error writing to localStorage (key: ${key}):`, error);
+      log.error(`Error writing to localStorage (key: ${key})`, 'Lib', error);
       return false;
     }
   },
@@ -77,7 +79,7 @@ export const storage = {
     try {
       window.localStorage.removeItem(key);
     } catch (error) {
-      console.error(`Error removing from localStorage (key: ${key}):`, error);
+      log.error(`Error removing from localStorage (key: ${key})`, 'Lib', error);
     }
   },
 
@@ -90,7 +92,7 @@ export const storage = {
     try {
       window.localStorage.clear();
     } catch (error) {
-      console.error('Error clearing localStorage:', error);
+      log.error('Error clearing localStorage:', 'Lib', error);
     }
   },
 
@@ -112,7 +114,7 @@ export const storage = {
     try {
       return Object.keys(window.localStorage);
     } catch (error) {
-      console.error('Error getting localStorage keys:', error);
+      log.error('Error getting localStorage keys:', 'Lib', error);
       return [];
     }
   },

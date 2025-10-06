@@ -3,6 +3,7 @@ import { execSync } from 'child_process';
 import { readFileSync, existsSync } from 'fs';
 import { join } from 'path';
 import Anthropic from '@anthropic-ai/sdk';
+import { log } from '@/lib/logger';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60; // Allow up to 60 seconds for AI processing
@@ -160,7 +161,7 @@ Be thorough - include EVERYTHING a user would see. Organize by page route, then 
     });
 
   } catch (error) {
-    console.error('Error in /api/dev/zip:', error);
+    await log.error('Error in /api/dev/zip:', 'API', error);
     return NextResponse.json(
       {
         error: 'Internal server error',

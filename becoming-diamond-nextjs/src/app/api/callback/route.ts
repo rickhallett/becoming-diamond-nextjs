@@ -51,10 +51,7 @@ export async function GET(request: NextRequest) {
         <script>
           (function() {
             function receiveMessage(e) {
-              console.log("receiveMessage", e);
-              
               if (e.origin !== window.location.origin) {
-                console.log("Invalid origin:", e.origin);
                 return;
               }
 
@@ -68,7 +65,7 @@ export async function GET(request: NextRequest) {
                 );
               }
             }
-            
+
             window.addEventListener("message", receiveMessage, false);
             window.opener?.postMessage("authorizing:github", window.location.origin);
           })();

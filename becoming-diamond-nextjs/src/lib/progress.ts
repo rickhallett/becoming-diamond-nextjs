@@ -5,6 +5,7 @@
 
 import type { CourseProgress, ChapterProgress } from "@/types/progress";
 import type { ParsedCourse } from "@/types/course";
+import { logSync as log } from '@/lib/logger';
 
 const PROGRESS_KEY_PREFIX = "course-progress-";
 
@@ -50,7 +51,7 @@ export function loadCourseProgress(courseId: string): CourseProgress | null {
     const progress = JSON.parse(stored) as CourseProgress;
     return progress;
   } catch (error) {
-    console.error("Error loading course progress:", error);
+    log.error("Error loading course progress:", 'Lib', error);
     return null;
   }
 }
@@ -67,7 +68,7 @@ export function saveCourseProgress(progress: CourseProgress): void {
       JSON.stringify(progress)
     );
   } catch (error) {
-    console.error("Error saving course progress:", error);
+    log.error("Error saving course progress:", 'Lib', error);
   }
 }
 

@@ -8,6 +8,7 @@ import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { Spotlight } from "@/components/ui/spotlight";
 import { cn } from "@/lib/utils";
 import { FEATURES } from "@/config/features";
+import { logSync } from '@/lib/logger';
 
 // Lazy load Stripe only when needed (code splitting optimization)
 let stripePromise: Promise<any> | null = null;
@@ -79,14 +80,14 @@ export function BookSalesSection({ className }: BookSalesSectionProps) {
         window.location.href = url;
       }
     } catch (error) {
-      console.error("Checkout error:", error);
+      logSync.error("Checkout error:", 'Component', error);
       setIsLoading(false);
     }
   };
 
   // TODO: Implement free sample download/preview
   const handleFreeSample = () => {
-    console.log("TODO: Implement free sample preview or download");
+    logSync.info("TODO: Implement free sample preview or download", 'Component');
     // Integration point for PDF preview or download
     // Option 1: Open PDF in new tab
     // window.open('/docs/content/turning-snowflakes-into-diamonds-sample.pdf', '_blank');

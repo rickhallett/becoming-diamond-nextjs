@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { log } from '@/lib/logger';
 
 const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID || '';
 const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET || '';
@@ -76,7 +77,7 @@ export async function POST(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error('OAuth error:', error);
+    await log.error('OAuth authentication failed', 'OAuth', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

@@ -2,6 +2,7 @@
 
 import React, { Component, ReactNode, ErrorInfo } from 'react';
 import { IconAlertTriangle, IconRefresh } from '@tabler/icons-react';
+import { logSync } from '@/lib/logger';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -38,7 +39,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // Log error to console in development
     if (process.env.NODE_ENV === 'development') {
-      console.error('Error caught by boundary:', error, errorInfo);
+      logSync.error('Error caught by boundary', 'Component', { error, errorInfo });
     }
 
     // Call optional error handler
@@ -107,7 +108,7 @@ export function ErrorBoundaryWrapper({ children }: { children: ReactNode }) {
     <ErrorBoundary
       onError={(error, errorInfo) => {
         // Could send to error tracking service here
-        console.error('Application error:', error, errorInfo);
+        logSync.error('Application error', 'Component', { error, errorInfo });
       }}
     >
       {children}

@@ -5,6 +5,7 @@ import { remark } from 'remark';
 import html from 'remark-html';
 import { parseCourseMarkdown } from './course-parser';
 import type { ParsedCourse } from '@/types/course';
+import { log } from '@/lib/logger';
 
 const contentDirectory = path.join(process.cwd(), 'content');
 
@@ -130,7 +131,7 @@ export async function getCourseContent(courseId: string): Promise<ParsedCourse |
     const parsedCourse = await parseCourseMarkdown(fileContents);
     return parsedCourse;
   } catch (error) {
-    console.error(`Error parsing course ${courseId}:`, error);
+    await log.error(`Error parsing course ${courseId}`, 'Lib', error);
     return null;
   }
 }
@@ -158,7 +159,7 @@ export async function getAllCourses(): Promise<ParsedCourse[]> {
           const parsedCourse = await parseCourseMarkdown(fileContents);
           return parsedCourse;
         } catch (error) {
-          console.error(`Error parsing course file ${file}:`, error);
+          await log.error(`Error parsing course file ${file}`, 'Lib', error);
           return null;
         }
       })

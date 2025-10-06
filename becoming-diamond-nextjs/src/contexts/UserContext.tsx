@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useSession } from 'next-auth/react';
 import { storage, STORAGE_KEYS } from '@/lib/storage';
+import { logSync as log } from '@/lib/logger';
 
 // User profile interface
 export interface UserProfile {
@@ -105,7 +106,7 @@ export function UserProvider({ children }: UserProviderProps) {
       };
       setAuth(authState);
     } catch (error) {
-      console.error('Error fetching profile:', error);
+      log.error('Error fetching profile:', 'Context', error);
       setUser(null);
     } finally {
       setIsLoading(false);
@@ -155,7 +156,7 @@ export function UserProvider({ children }: UserProviderProps) {
       // Refresh from server to ensure consistency
       await fetchProfile();
     } catch (error) {
-      console.error('Error updating profile:', error);
+      log.error('Error updating profile:', 'Context', error);
       // Revert optimistic update
       await fetchProfile();
     }

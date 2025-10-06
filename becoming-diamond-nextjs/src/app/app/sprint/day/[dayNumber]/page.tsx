@@ -9,6 +9,7 @@ import {
   isDayCompleted,
   markDayComplete,
 } from '@/lib/sprint-progress';
+import { logSync as log } from '@/lib/logger';
 import {
   IconArrowLeft,
   IconArrowRight,
@@ -65,7 +66,7 @@ export default function SprintDayPage() {
 
         setDay(data.day);
       } catch (error) {
-        console.error('Error loading day:', error);
+        log.error('Error loading day:', 'App', error);
       } finally {
         setLoading(false);
       }
@@ -87,7 +88,7 @@ export default function SprintDayPage() {
         setCompleting(false);
       }, 500);
     } catch (error) {
-      console.error('Error marking day complete:', error);
+      log.error('Error marking day complete:', 'App', error);
       setCompleting(false);
     }
   };

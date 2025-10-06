@@ -1,5 +1,6 @@
 import { askBookStreaming } from '@/lib/rag/claude-simple';
 import { NextRequest } from 'next/server';
+import { log } from '@/lib/logger';
 
 export const runtime = 'nodejs'; // Use Node.js runtime for streaming
 
@@ -50,7 +51,7 @@ export async function POST(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error('Error in /api/ask:', error);
+    await log.error('Error in /api/ask', 'API', error);
     return Response.json(
       {
         error:

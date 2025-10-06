@@ -9,6 +9,7 @@ import { Spotlight } from "@/components/ui/spotlight";
 import { IconBrandGoogle, IconBrandGithub, IconMail, IconFlask } from "@tabler/icons-react";
 import { useUser } from "@/contexts/UserContext";
 import { AUTH_CONFIG } from "@/config/features";
+import { logSync as log } from '@/lib/logger';
 
 export default function SignInPage() {
   const [email, setEmail] = useState("");
@@ -32,7 +33,7 @@ export default function SignInPage() {
         setEmailSent(true);
       }
     } catch (error) {
-      console.error("Sign-in error:", error);
+      log.error("Sign-in error:", 'App', error);
     } finally {
       setIsLoading(false);
     }

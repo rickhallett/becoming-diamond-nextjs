@@ -8,6 +8,7 @@ import { useUser } from "@/contexts/UserContext";
 import { useCourses, SAMPLE_COURSES } from "@/contexts/CourseContext";
 import { FEATURES } from "@/config/features";
 import { FeatureGuard } from "@/components/FeatureGuard";
+import { logSync as log } from '@/lib/logger';
 
 function AppDashboardContent() {
   const router = useRouter();
@@ -20,8 +21,8 @@ function AppDashboardContent() {
   useEffect(() => {
     const success = searchParams.get('success');
     if (success === 'true') {
-      console.log('[Dashboard] Payment success detected, user:', user ? 'logged in' : 'not logged in');
-      console.log('[Dashboard] Auth loading state:', isLoading);
+      log.debug(`[Dashboard] Payment success detected, user: ${user ? 'logged in' : 'not logged in'}`, 'App');
+      log.debug(`[Dashboard] Auth loading state: ${isLoading}`, 'App');
       setShowSuccessMessage(true);
       // Clear the success parameter from URL after 5 seconds
       setTimeout(() => {

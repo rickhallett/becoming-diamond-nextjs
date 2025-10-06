@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { nanoid } from 'nanoid';
+import { log } from '@/lib/logger';
 
 // Dynamic route config for Next.js 15
 export const dynamic = 'force-dynamic';
@@ -131,7 +132,7 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    console.error('Lead capture error:', error);
+    await log.error('Lead capture error:', 'API', error);
     return NextResponse.json(
       { success: false, error: 'An error occurred. Please try again.' },
       { status: 500 }
@@ -270,7 +271,7 @@ export async function GET(request: NextRequest) {
       pageSize,
     });
   } catch (error) {
-    console.error('Lead export error:', error);
+    await log.error('Lead export error:', 'API', error);
     return NextResponse.json(
       { success: false, error: 'An error occurred' },
       { status: 500 }

@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import { storage, STORAGE_KEYS } from '@/lib/storage';
 import { useUser } from './UserContext';
+import { logSync as log } from '@/lib/logger';
 
 // Course enrollment interface
 export interface CourseEnrollment {
@@ -115,7 +116,7 @@ export function CourseProvider({ children }: CourseProviderProps) {
       const savedActivities = storage.getItem<ActivityLog[]>(STORAGE_KEYS.ACTIVITY_LOG) || [];
       setActivities(savedActivities);
     } catch (error) {
-      console.error('Error loading course data:', error);
+      log.error('Error loading course data:', 'Context', error);
     }
   }, [user]);
 

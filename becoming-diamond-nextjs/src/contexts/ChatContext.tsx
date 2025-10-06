@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { storage, STORAGE_KEYS } from '@/lib/storage';
 import { useUser } from './UserContext';
+import { logSync as log } from '@/lib/logger';
 
 // Chat message interface
 export interface ChatMessage {
@@ -74,7 +75,7 @@ export function ChatProvider({ children }: ChatProviderProps) {
         setCurrentSession(mostRecent);
       }
     } catch (error) {
-      console.error('Error loading chat sessions:', error);
+      log.error('Error loading chat sessions:', 'Context', error);
     } finally {
       setIsLoading(false);
     }
