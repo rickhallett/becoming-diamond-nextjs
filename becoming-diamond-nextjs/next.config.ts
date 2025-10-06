@@ -30,6 +30,14 @@ const nextConfig: NextConfig = {
   experimental: {
     // optimizeCss: true, // Disabled - causes build errors with document manipulation
     optimizePackageImports: ['@tabler/icons-react', 'framer-motion'],
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
+      },
+    },
   },
   reactStrictMode: true,
   webpack: (config) => {

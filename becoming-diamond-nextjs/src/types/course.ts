@@ -16,6 +16,13 @@ export interface CourseMetadata {
   estimatedHours?: number;
 }
 
+export interface VideoReference {
+  videoId: string; // Bunny video GUID
+  autoplay?: boolean;
+  poster?: string;
+  quality?: string;
+}
+
 export interface CourseSlide {
   id: string;
   chapterId: string;
@@ -24,6 +31,7 @@ export interface CourseSlide {
   order: number;
   mediaUrl?: string;
   mediaType?: 'video' | 'audio';
+  videoReferences?: VideoReference[]; // New field for multiple videos per slide
   estimatedMinutes?: number;
 }
 
