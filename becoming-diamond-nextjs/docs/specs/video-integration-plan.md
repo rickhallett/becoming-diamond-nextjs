@@ -102,7 +102,7 @@ graph TD
 
 **Tasks:**
 1. ✅ Create Bunny Stream account (https://bunny.net/stream/)
-2. ✅ Install dependencies (`@bunny.net/stream`, `@bunny.net/edgescript`)
+2. ✅ Install dependencies (use bun, not npm) (`@bunny.net/stream`, `@bunny.net/edgescript`)
 3. ✅ Set up environment variables
 4. ✅ Create `VideoService` interface and Bunny implementation
 5. ✅ Create database migration for video metadata

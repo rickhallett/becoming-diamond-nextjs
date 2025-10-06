@@ -376,6 +376,7 @@ CMS Login → OAuth Popup → GitHub Authorization → Callback
 - `/api/courses` - Course data and enrollment
 - `/api/progress` - User progress tracking
 - `/api/chat` - AI chat endpoint (DiamondMindAI)
+- `/api/video/[videoId]/token` - Video streaming token generation (planned for Bunny Stream integration)
 
 ### Architectural Decisions and Trade-offs
 
@@ -503,6 +504,18 @@ CMS Login → OAuth Popup → GitHub Authorization → Callback
    - Add analytics (Plausible, Vercel Analytics)
    - Implement performance monitoring
    - Add logging for API routes
+
+8. **Video Hosting Integration (Planned)**
+   - **Platform**: Bunny Stream (selected after comprehensive analysis)
+   - **Cost**: $10-30/month for MVP (vs $158+/month for alternatives like Mux)
+   - **Architecture**: Simplified approach using Bunny's native dashboard
+   - **Implementation**: 1-2 days, ~200 lines of code
+   - **Key Components**:
+     - Token-based authentication API (`/api/video/[videoId]/token`)
+     - VideoPlayer component with HLS.js
+     - Markdown parser enhancement for `{{video:ID}}` syntax
+   - **Documentation**: See `/docs/specs/video-integration-simplified.md`
+   - **Alternative Docs**: Full comparison in `/docs/specs/video-hosting-analysis.md`
 
 ## Development Notes
 
@@ -694,3 +707,87 @@ article.frontmatter.thumbnail
    - Check `.next/analyze` output
    - Use webpack-bundle-analyzer
    - Split large pages into smaller components
+
+### Recent Performance Optimizations
+
+**Completed (2025-10)**:
+- 59% page weight reduction achieved
+- WebP/AVIF image format implementation
+- Code splitting for Stripe integration
+- See `/docs/specs/performance-optimization.prd.md` for details
+
+### Video Integration (Planned Feature)
+
+**Status**: Planning complete, implementation pending
+
+**Approach**: Simplified integration using Bunny Stream's native dashboard
+- **Platform Decision**: Bunny Stream selected after evaluating 7 platforms
+- **Cost**: $10-30/month for MVP (50+ hours of 1080p video)
+- **Security**: Token-based authentication (upgrade to DRM if piracy >5%)
+- **Scope**: 1-2 days implementation, ~200 lines of code
+
+**Content Creator Workflow**:
+1. Upload video via Bunny dashboard (drag & drop)
+2. Copy video GUID from Bunny
+3. Add to course markdown: `{{video:abc123-def456}}`
+4. Decap CMS saves content
+5. Video automatically renders in course slides
+
+**Technical Components to Build**:
+```typescript
+// API Route (30 lines)
+/api/video/[videoId]/token/route.ts
+  - Validates user authentication
+  - Generates signed token with 24h expiry
+  - Returns HLS stream URL
+
+// VideoPlayer Component (100 lines)
+src/components/VideoPlayer.tsx
+  - HLS.js integration for adaptive streaming
+  - Progress tracking
+  - Autoplay/poster image support
+
+// Markdown Parser Enhancement (70 lines)
+src/lib/course-parser.ts
+  - Regex to extract {{video:ID}} syntax
+  - Replace with VideoPlayer component
+  - Support optional parameters (autoplay, poster)
+```
+
+**Dependencies to Add**:
+- `hls.js` - HLS video playback (~50KB gzipped)
+- `@types/hls.js` - TypeScript definitions
+
+**Environment Variables Required**:
+```bash
+BUNNY_LIBRARY_ID=your-library-id
+BUNNY_API_KEY=your-api-key
+BUNNY_CDN_HOSTNAME=your-cdn-hostname
+```
+
+**Why This Approach**:
+- Avoids building complex admin UI (saves 5+ days development)
+- Leverages professional video platform (encoding, CDN, analytics)
+- Minimal maintenance burden (no custom video infrastructure)
+- Easy platform migration (abstracted video service layer)
+- Low training overhead for content creators
+
+**Alternative Approaches Considered**:
+- Custom admin UI with upload widget (rejected: high complexity)
+- Self-hosted with AWS S3 + CloudFront (rejected: high DevOps burden)
+- YouTube embedded (rejected: ads, privacy concerns, no control)
+- Mux (rejected: 5x higher cost)
+
+**Documentation**:
+- `/docs/specs/video-integration-simplified.md` - Implementation guide (80% scope reduction)
+- `/docs/specs/video-integration-plan.md` - Full admin UI approach (for reference)
+- `/docs/specs/video-hosting-analysis.md` - Platform comparison (7 platforms evaluated)
+
+**Next Steps** (when approved):
+1. Create Bunny Stream account
+2. Install `hls.js` dependency
+3. Implement token API route
+4. Build VideoPlayer component
+5. Enhance markdown parser
+6. Test with sample video
+7. Deploy to production

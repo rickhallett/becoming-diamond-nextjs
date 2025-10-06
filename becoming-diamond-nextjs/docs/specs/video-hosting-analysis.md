@@ -47,7 +47,7 @@ This document provides a comprehensive analysis of video hosting solutions for t
 - **Quality**: Professional quality expected
 - **Volume**: Currently greenfield (no videos uploaded yet)
 - **Use Cases**:
-  - Course lectures
+  - Course lectures 
   - Instructor presentations
   - Student testimonials
   - Program demonstrations
