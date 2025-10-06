@@ -7,6 +7,7 @@ import matter from 'gray-matter';
 import { remark } from 'remark';
 import html from 'remark-html';
 import remarkGfm from 'remark-gfm';
+import { log } from '@/lib/logger';
 import type {
   ParsedCourse,
   CourseChapter,
@@ -14,6 +15,7 @@ import type {
   CourseMetadata,
   MarkdownSection,
   MediaReference,
+  VideoReference,
 } from '@/types/course';
 
 /**
@@ -219,11 +221,28 @@ function createSlide(
     `${courseId}-c${chapterOrder}-s${order}-${section.title}`
   );
 
-  // Detect media references in content
-  const mediaRef = detectMediaReference(section.content);
+  // Extract video references BEFORE converting to HTML
+  const videoRefs = extractVideoReferences(section.content);
+
+  // Replace video placeholders with player components
+  let processedMarkdown = section.content;
+  videoRefs.forEach((ref) => {
+    const playerPlaceholder = `<video-player video-id="${ref.videoId}" autoplay="${ref.autoplay || false}" poster="${ref.poster || ''}" quality="${ref.quality || ''}"></video-player>`;
+    const placeholder = new RegExp(
+      `\\{\\{video:${ref.videoId}(?:\\|[^}]+)?\\}\\}`,
+      'g'
+    );
+    processedMarkdown = processedMarkdown.replace(placeholder, playerPlaceholder);
+  });
+
+  // Detect legacy media references in content
+  const mediaRef = detectMediaReference(processedMarkdown);
 
   // Convert markdown to HTML synchronously (remark supports this)
-  const htmlContent = markdownToHtml(section.content);
+  const htmlContent = markdownToHtml(processedMarkdown);
+
+  // Store first video reference (for backward compatibility)
+  const primaryVideo = videoRefs[0];
 
   return {
     id: slideId,
@@ -231,8 +250,9 @@ function createSlide(
     title: section.title,
     content: htmlContent,
     order,
-    mediaUrl: mediaRef?.url,
-    mediaType: mediaRef?.type,
+    mediaUrl: primaryVideo?.videoId || mediaRef?.url,
+    mediaType: primaryVideo ? 'video' : mediaRef?.type,
+    videoReferences: videoRefs.length > 0 ? videoRefs : undefined,
   };
 }
 
@@ -249,9 +269,54 @@ function markdownToHtml(markdown: string): string {
       .processSync(markdown);
     return String(result);
   } catch (error) {
-    console.error('Error converting markdown to HTML:', error);
+    log.error('Error converting markdown to HTML', 'Lib', error);
     return `<p>${markdown}</p>`; // Fallback to plain text wrapped in p tag
   }
+}
+
+/**
+ * Extracts video references from markdown content
+ * Supports: {{video:abc123-def456-ghi789}} or {{video:id|autoplay:false|poster:url}}
+ * @param markdown - Markdown content
+ * @returns Array of video references
+ */
+function extractVideoReferences(markdown: string): VideoReference[] {
+  const videoRegex = /\{\{video:([\w-]+)(?:\|([^}]+))?\}\}/g;
+  const references: VideoReference[] = [];
+  let match;
+
+  while ((match = videoRegex.exec(markdown)) !== null) {
+    const videoId = match[1];
+    const options = match[2] ? parseVideoOptions(match[2]) : {};
+
+    references.push({
+      videoId,
+      autoplay: options.autoplay === 'true',
+      poster: options.poster,
+      quality: options.quality,
+    });
+  }
+
+  return references;
+}
+
+/**
+ * Parses video options from pipe-separated string
+ * @param optionsStr - Options string like "autoplay:false|poster:url"
+ * @returns Parsed options object
+ */
+function parseVideoOptions(optionsStr: string): Record<string, string> {
+  const options: Record<string, string> = {};
+  const pairs = optionsStr.split('|');
+
+  pairs.forEach((pair) => {
+    const [key, value] = pair.split(':');
+    if (key && value) {
+      options[key.trim()] = value.trim();
+    }
+  });
+
+  return options;
 }
 
 /**
