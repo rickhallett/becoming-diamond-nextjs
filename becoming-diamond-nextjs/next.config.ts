@@ -24,22 +24,18 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
+
   experimental: {
     // optimizeCss: true, // Disabled - causes build errors with document manipulation
-    optimizePackageImports: ['@tabler/icons-react', 'framer-motion'],
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
-      },
-    },
+    optimizePackageImports: ['@tabler/icons-react', 'framer-motion']
   },
+
   reactStrictMode: true,
+
   webpack: (config) => {
     // Ignore LICENSE files to prevent parsing errors
     config.module.rules.push({
@@ -48,6 +44,15 @@ const nextConfig: NextConfig = {
     });
     return config;
   },
+
+  turbopack: {
+    rules: {
+      '*.svg': {
+        loaders: ['@svgr/webpack'],
+        as: '*.js',
+      },
+    }
+  }
 };
 
 export default nextConfig;
