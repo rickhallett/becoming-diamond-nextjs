@@ -37,8 +37,11 @@ class Logger {
     if (!this.isServer) return;
 
     try {
-      const { mkdir } = await import('fs/promises');
-      await mkdir(this.logDir, { recursive: true });
+      // Only import fs/promises on server-side
+      if (typeof window === 'undefined') {
+        const { mkdir } = await import('fs/promises');
+        await mkdir(this.logDir, { recursive: true });
+      }
     } catch {
       // Directory might already exist, ignore error
     }
@@ -85,8 +88,11 @@ class Logger {
     try {
       await this.ensureLogDir();
       const logFile = this.getLogFilePath(level);
-      const { appendFile } = await import('fs/promises');
-      await appendFile(logFile, this.formatEntry(entry));
+      // Only import fs/promises on server-side
+      if (typeof window === 'undefined') {
+        const { appendFile } = await import('fs/promises');
+        await appendFile(logFile, this.formatEntry(entry));
+      }
     } catch (error) {
       // Fallback to console if file writing fails
       console.error('Failed to write to log file:', error);
