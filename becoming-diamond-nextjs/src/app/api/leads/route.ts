@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { nanoid } from 'nanoid';
 import { log } from '@/lib/logger';
+import { sendWelcomeEmail, sendAdminNotification } from '@/lib/resend';
 
 // Dynamic route config for Next.js 15
 export const dynamic = 'force-dynamic';
@@ -91,8 +92,9 @@ export async function POST(request: NextRequest) {
     const userAgent = request.headers.get('user-agent') || null;
     const landingPage = referrer || url.origin;
 
-    // Generate ID and timestamps
+    // Generate ID, tokens, and timestamps
     const id = `lead_${nanoid()}`;
+    const unsubscribeToken = nanoid(32);
     const now = new Date().toISOString();
 
     // Insert lead
@@ -101,8 +103,8 @@ export async function POST(request: NextRequest) {
         id, email, created_at, updated_at,
         utm_source, utm_medium, utm_campaign, utm_term, utm_content,
         referrer, landing_page, user_agent, ip_address,
-        consent_given, subscribed, status
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        consent_given, subscribed, status, unsubscribe_token
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       args: [
         id,
         email.toLowerCase(),
@@ -120,8 +122,60 @@ export async function POST(request: NextRequest) {
         1, // consent_given
         1, // subscribed
         'new', // status
+        unsubscribeToken,
       ],
     });
+
+    // Send welcome email (non-blocking - don't fail if email fails)
+    try {
+      const emailResult = await sendWelcomeEmail({
+        to: email.toLowerCase(),
+        unsubscribeToken,
+      });
+
+      if (emailResult.success) {
+        // Update lead with email delivery status
+        await turso.execute({
+          sql: `UPDATE leads SET email_sent_at = ?, email_status = ?, email_id = ? WHERE id = ?`,
+          args: [new Date().toISOString(), 'sent', emailResult.emailId || null, id],
+        });
+
+        await log.info(`Welcome email sent successfully to ${email}`, 'EMAIL', {
+          emailId: emailResult.emailId,
+          leadId: id,
+        });
+      } else {
+        // Mark email as failed for retry
+        await turso.execute({
+          sql: `UPDATE leads SET email_status = ? WHERE id = ?`,
+          args: ['failed', id],
+        });
+
+        await log.error(`Failed to send welcome email to ${email}`, 'EMAIL', {
+          error: emailResult.error,
+          leadId: id,
+        });
+      }
+
+      // Send admin notification (optional, non-blocking)
+      await sendAdminNotification({
+        email: email.toLowerCase(),
+        utmSource,
+        utmMedium,
+        utmCampaign,
+        referrer,
+        landingPage,
+      });
+    } catch (emailError) {
+      // Log email error but don't fail the API call
+      await log.error(`Email sending error for ${email}`, 'EMAIL', emailError);
+
+      // Mark email as failed
+      await turso.execute({
+        sql: `UPDATE leads SET email_status = ? WHERE id = ?`,
+        args: ['failed', id],
+      });
+    }
 
     return NextResponse.json(
       {
