@@ -141,11 +141,14 @@ content/
 
 ### Path Aliases
 
-TypeScript path mapping (`@/*` → `./src/*`):
+TypeScript path mapping (`@/*` → `./src/*` AND `./`):
 ```typescript
 import { Component } from '@/components/ui/component'
 import { getContentByType } from '@/lib/content'
+import { auth } from '@/auth'  // Root-level auth.ts
 ```
+
+**IMPORTANT**: The `auth.ts` file is at project root, NOT in `src/`. Always import as `@/auth`, never use relative paths like `../../../../../auth`.
 
 ### ESLint Configuration
 
