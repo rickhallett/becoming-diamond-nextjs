@@ -30,9 +30,48 @@ export interface ContentItem {
   content: string;
 }
 
+/**
+ * Replaces video placeholders in HTML with standard div placeholders
+ * Uses data attributes for React component hydration
+ * @param htmlContent - HTML content with video placeholders
+ * @returns Processed HTML with video placeholder divs
+ */
+function replaceVideoPlaceholders(htmlContent: string): string {
+  // Replace video placeholders with div elements using data attributes
+  let processed = htmlContent.replace(/{{video:([\w-]+)(?:\|([^}]+))?}}/g, (match, videoId, optionsStr) => {
+    // Parse options if present
+    const options: Record<string, string> = {};
+    if (optionsStr) {
+      const pairs = optionsStr.split('|');
+      pairs.forEach((pair) => {
+        const [key, value] = pair.split(':');
+        if (key && value) {
+          options[key.trim()] = value.trim();
+        }
+      });
+    }
+
+    const autoplay = options.autoplay || 'false';
+    const poster = options.poster || '';
+    const quality = options.quality || '';
+
+    // Return standard div with data attributes
+    return `<div class="video-placeholder" data-video-id="${videoId}" data-autoplay="${autoplay}" data-poster="${poster}" data-quality="${quality}"></div>`;
+  });
+
+  // Remove paragraph tags wrapping video placeholder divs
+  processed = processed.replace(/<p>\s*(<div class="video-placeholder"[^>]*><\/div>)\s*<\/p>/g, '$1');
+
+  return processed;
+}
+
 async function markdownToHtml(markdown: string): Promise<string> {
+  // Convert markdown to HTML first
   const result = await remark().use(html).process(markdown);
-  return result.toString();
+  const htmlContent = result.toString();
+
+  // Then replace video placeholders in the HTML output
+  return replaceVideoPlaceholders(htmlContent);
 }
 
 export async function getContentByType(type: string): Promise<ContentItem[]> {
@@ -176,11 +215,12 @@ export async function getAllCourses(): Promise<ParsedCourse[]> {
  * @returns Array of sprint day content items
  */
 export async function getSprintDays(): Promise<ContentItem[]> {
-  // Check cache first
+  // Check cache first (skip in development)
   const now = Date.now();
   const isBuildTime = process.env.NODE_ENV === 'production' && !process.env.VERCEL;
+  const isDevelopment = process.env.NODE_ENV === 'development';
 
-  if (sprintDaysCache.data && (isBuildTime || now - sprintDaysCache.timestamp < CACHE_TTL)) {
+  if (!isDevelopment && sprintDaysCache.data && (isBuildTime || now - sprintDaysCache.timestamp < CACHE_TTL)) {
     return sprintDaysCache.data;
   }
 
@@ -233,8 +273,8 @@ export async function getSprintDays(): Promise<ContentItem[]> {
 export async function getSprintDay(dayNumber: number): Promise<ContentItem | null> {
   const cacheKey = `sprint-day-${dayNumber}`;
 
-  // Check cache first
-  if (contentCache.has(cacheKey)) {
+  // Check cache first (skip in development)
+  if (process.env.NODE_ENV === 'production' && contentCache.has(cacheKey)) {
     return contentCache.get(cacheKey)!;
   }
 

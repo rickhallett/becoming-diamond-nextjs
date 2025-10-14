@@ -49,3 +49,5 @@ Choose one limiting belief and find three pieces of evidence that contradict it.
 ## Remember
 
 Your beliefs shape your reality. Change your beliefs, change your life.
+
+{{video:5cdfbef8-3f9f-40cf-95f0-5a68e6608f90}}

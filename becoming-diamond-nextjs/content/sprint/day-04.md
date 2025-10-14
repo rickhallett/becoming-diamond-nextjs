@@ -35,6 +35,8 @@ When your actions align with your values, you experience:
 - Clear decision-making
 - Increased life satisfaction
 
+{{video:735281cb-618f-407d-93db-c178eaef0655}}
+
 ## Today's Challenge
 
 Complete your top 5 core values list and write one sentence explaining why each matters to you.

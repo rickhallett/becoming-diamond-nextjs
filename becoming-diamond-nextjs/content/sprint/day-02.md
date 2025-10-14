@@ -20,6 +20,8 @@ Yesterday you committed to this journey. Today, you'll create the foundation tha
 
 Without a clear vision, every obstacle feels insurmountable. With a clear vision, every obstacle becomes a stepping stone. Your vision is your North Star—it keeps you oriented when the path gets difficult.
 
+{{video:edadb6bb-4b15-44d9-b2b1-35ec2dafe101}}
+
 ## Your Vision Exercise
 
 Take 20 minutes to craft your personal vision statement. Answer these questions:

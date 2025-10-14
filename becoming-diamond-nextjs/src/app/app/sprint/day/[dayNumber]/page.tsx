@@ -15,6 +15,7 @@ import {
   IconArrowRight,
   IconCheck,
 } from '@tabler/icons-react';
+import { ContentRenderer } from '@/components/ContentRenderer';
 
 interface DayData {
   slug: string;
@@ -173,9 +174,12 @@ export default function SprintDayPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className="prose prose-sm prose-invert prose-primary max-w-none mb-10 leading-relaxed"
-        dangerouslySetInnerHTML={{ __html: day.content }}
-      />
+      >
+        <ContentRenderer
+          html={day.content}
+          className="prose prose-sm prose-invert prose-primary max-w-none mb-10 leading-relaxed"
+        />
+      </motion.div>
 
       {/* Mark Complete Button */}
       <motion.div

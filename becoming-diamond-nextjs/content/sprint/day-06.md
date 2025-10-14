@@ -16,6 +16,8 @@ tags:
 
 How you start your day determines how you live your day. Today, we'll design a morning routine that transforms your life.
 
+{{video:edadb6bb-4b15-44d9-b2b1-35ec2dafe101}}
+
 ## Why Morning Routines Matter
 
 The first hour of your day sets the tone for everything that follows. A intentional morning routine:
