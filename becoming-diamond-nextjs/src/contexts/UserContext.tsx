@@ -121,6 +121,19 @@ export function UserProvider({ children }: UserProviderProps) {
     }
 
     if (status === 'unauthenticated') {
+      // Check for test auth in localStorage (development mode)
+      const storedAuth = storage.getItem<AuthState>(STORAGE_KEYS.USER_AUTH);
+      const storedProfile = storage.getItem<UserProfile>(STORAGE_KEYS.USER_PROFILE);
+
+      if (storedAuth && storedProfile && storedAuth.isAuthenticated) {
+        // Test auth mode - use localStorage data
+        setAuth(storedAuth);
+        setUser(storedProfile);
+        setIsLoading(false);
+        return;
+      }
+
+      // No session and no test auth - truly unauthenticated
       setUser(null);
       setAuth({
         isAuthenticated: false,
@@ -130,7 +143,7 @@ export function UserProvider({ children }: UserProviderProps) {
       return;
     }
 
-    // Fetch profile from database when session is ready
+    // Fetch profile from database when session is ready (production auth)
     fetchProfile();
   }, [status, fetchProfile]);
 
@@ -142,6 +155,13 @@ export function UserProvider({ children }: UserProviderProps) {
     const updatedProfile = { ...user, ...updates };
     setUser(updatedProfile);
 
+    // Test mode - update localStorage only
+    if (auth.loginMethod === 'test') {
+      storage.setItem(STORAGE_KEYS.USER_PROFILE, updatedProfile);
+      return;
+    }
+
+    // Production mode - update database via API
     try {
       const response = await fetch('/api/profile', {
         method: 'PUT',
@@ -200,12 +220,27 @@ export function UserProvider({ children }: UserProviderProps) {
     storage.removeItem(STORAGE_KEYS.USER_PROFILE);
   };
 
+  // Refresh profile - handles both test mode and production mode
+  const refreshProfile = async () => {
+    // Test mode - reload from localStorage
+    if (auth.loginMethod === 'test') {
+      const storedProfile = storage.getItem<UserProfile>(STORAGE_KEYS.USER_PROFILE);
+      if (storedProfile) {
+        setUser(storedProfile);
+      }
+      return;
+    }
+
+    // Production mode - fetch from API
+    await fetchProfile();
+  };
+
   const value: UserContextValue = {
     user,
     auth,
     isLoading,
     updateProfile,
-    refreshProfile: fetchProfile,
+    refreshProfile,
     login,
     logout,
     isLoggedIn: auth.isAuthenticated,
