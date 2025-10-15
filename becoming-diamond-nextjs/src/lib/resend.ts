@@ -88,9 +88,6 @@ export async function sendWelcomeEmail(
  */
 export async function sendAdminNotification(params: {
   email: string;
-  utmSource?: string | null;
-  utmMedium?: string | null;
-  utmCampaign?: string | null;
   referrer?: string | null;
   landingPage?: string;
 }): Promise<void> {
@@ -100,7 +97,7 @@ export async function sendAdminNotification(params: {
   }
 
   try {
-    const { email, utmSource, utmMedium, utmCampaign, referrer, landingPage } = params;
+    const { email, referrer, landingPage } = params;
 
     const subject = `New Lead: ${email}`;
     const html = `
@@ -124,9 +121,6 @@ export async function sendAdminNotification(params: {
                 <th>Email</th>
                 <td>${email}</td>
               </tr>
-              ${utmSource ? `<tr><th>UTM Source</th><td>${utmSource}</td></tr>` : ''}
-              ${utmMedium ? `<tr><th>UTM Medium</th><td>${utmMedium}</td></tr>` : ''}
-              ${utmCampaign ? `<tr><th>UTM Campaign</th><td>${utmCampaign}</td></tr>` : ''}
               ${referrer ? `<tr><th>Referrer</th><td>${referrer}</td></tr>` : ''}
               ${landingPage ? `<tr><th>Landing Page</th><td>${landingPage}</td></tr>` : ''}
               <tr>
