@@ -20,20 +20,20 @@ config({ path: ".env.local" });
 
 async function runMigrations() {
   // Check for required environment variables
-  if (!process.env.DATABASE_URL) {
-    console.error("❌ ERROR: DATABASE_URL environment variable is not set");
+  if (!process.env.TURSO_DATABASE_URL) {
+    console.error("❌ ERROR: TURSO_DATABASE_URL environment variable is not set");
     process.exit(1);
   }
 
-  if (!process.env.DATABASE_AUTH_TOKEN) {
-    console.error("❌ ERROR: DATABASE_AUTH_TOKEN environment variable is not set");
+  if (!process.env.TURSO_AUTH_TOKEN) {
+    console.error("❌ ERROR: TURSO_AUTH_TOKEN environment variable is not set");
     process.exit(1);
   }
 
   // Create Turso client
   const turso = createClient({
-    url: process.env.DATABASE_URL,
-    authToken: process.env.DATABASE_AUTH_TOKEN,
+    url: process.env.TURSO_DATABASE_URL,
+    authToken: process.env.TURSO_AUTH_TOKEN,
   });
 
   console.log("🔄 Starting database migrations...\n");

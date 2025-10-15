@@ -87,18 +87,18 @@ async function runTests() {
   );
 
   test(
-    "DATABASE_URL",
-    !!process.env.DATABASE_URL,
-    process.env.DATABASE_URL
-      ? process.env.DATABASE_URL.substring(0, 30) + "..."
+    "TURSO_DATABASE_URL",
+    !!process.env.TURSO_DATABASE_URL,
+    process.env.TURSO_DATABASE_URL
+      ? process.env.TURSO_DATABASE_URL.substring(0, 30) + "..."
       : "Missing - configure Turso database"
   );
 
   test(
-    "DATABASE_AUTH_TOKEN",
-    !!process.env.DATABASE_AUTH_TOKEN,
-    process.env.DATABASE_AUTH_TOKEN
-      ? process.env.DATABASE_AUTH_TOKEN.substring(0, 15) + "..."
+    "TURSO_AUTH_TOKEN",
+    !!process.env.TURSO_AUTH_TOKEN,
+    process.env.TURSO_AUTH_TOKEN
+      ? process.env.TURSO_AUTH_TOKEN.substring(0, 15) + "..."
       : "Missing - configure Turso database"
   );
 
@@ -134,11 +134,11 @@ async function runTests() {
   // Test 3: Database Connection
   console.log("\n🗄️  Testing Database Connection...\n");
 
-  if (process.env.DATABASE_URL && process.env.DATABASE_AUTH_TOKEN) {
+  if (process.env.TURSO_DATABASE_URL && process.env.TURSO_AUTH_TOKEN) {
     try {
       const turso = createClient({
-        url: process.env.DATABASE_URL,
-        authToken: process.env.DATABASE_AUTH_TOKEN,
+        url: process.env.TURSO_DATABASE_URL,
+        authToken: process.env.TURSO_AUTH_TOKEN,
       });
 
       const result = await turso.execute("SELECT 1 as test");
@@ -176,7 +176,7 @@ async function runTests() {
     test(
       "Database Connection",
       false,
-      "Skipped - DATABASE_URL or DATABASE_AUTH_TOKEN not set"
+      "Skipped - TURSO_DATABASE_URL or TURSO_AUTH_TOKEN not set"
     );
   }
 
