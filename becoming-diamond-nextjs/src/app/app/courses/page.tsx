@@ -20,18 +20,12 @@ function CoursesPageContent() {
     const { enrollments, enrollInCourse, isEnrolled } = useCourses();
     const [enrollingCourse, setEnrollingCourse] = useState<string | null>(null);
 
-    if (userLoading) {
+    // Show loading state while fetching user data OR if user is not yet loaded
+    // This prevents the "Please log in" flash when navigating between pages
+    if (userLoading || !user) {
         return (
             <div className="flex items-center justify-center min-h-[60vh]">
                 <div className="text-gray-400">Loading courses...</div>
-            </div>
-        );
-    }
-
-    if (!user) {
-        return (
-            <div className="flex items-center justify-center min-h-[60vh]">
-                <div className="text-gray-400">Please log in to view courses.</div>
             </div>
         );
     }

@@ -34,18 +34,12 @@ export default function ProfilePage() {
         }
     }, [user]);
 
-    if (isLoading) {
+    // Show loading state while fetching user data OR if user is not yet loaded
+    // This prevents the "Please log in" flash when navigating between pages
+    if (isLoading || !user) {
         return (
             <div className="flex items-center justify-center min-h-[60vh]">
                 <div className="text-gray-400">Loading profile...</div>
-            </div>
-        );
-    }
-
-    if (!user) {
-        return (
-            <div className="flex items-center justify-center min-h-[60vh]">
-                <div className="text-gray-400">Please log in to view your profile.</div>
             </div>
         );
     }

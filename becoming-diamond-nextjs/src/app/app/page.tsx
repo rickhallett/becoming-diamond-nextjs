@@ -55,18 +55,12 @@ function AppDashboardContent() {
     totalSessions: totalLessons || 4,
   };
 
-  if (isLoading) {
+  // Show loading state while fetching user data OR if user is not yet loaded
+  // This prevents the "Please log in" flash when navigating between pages
+  if (isLoading || !user) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-gray-400">Loading dashboard...</div>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="text-gray-400">Please log in to view your dashboard.</div>
       </div>
     );
   }
