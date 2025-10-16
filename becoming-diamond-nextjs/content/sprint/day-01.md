@@ -16,7 +16,7 @@ images: []
 
 Welcome to the beginning of your 30-day journey to becoming diamond. Today marks the first step in a transformational process that will challenge you, inspire you, and help you unlock your true potential.
 
-{{video:16e263db-8c22-46e8-8e3c-cd9216d7a2ac}}
+{{video:4a151e6b-7911-41b9-b1ef-c6fa00bafaa5}}
 
 ## What You'll Learn Today
 

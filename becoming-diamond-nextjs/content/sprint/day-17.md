@@ -14,6 +14,8 @@ tags:
 
 # Stress Alchemy - Transform Pressure into Power
 
+{{video:332ea0f7-36f8-4a54-b8fb-7286a9498019}}
+
 Stress isn't the enemy. Your relationship with stress is. Today, you learn to alchemize pressure into performance.
 
 ## The Stress Paradox

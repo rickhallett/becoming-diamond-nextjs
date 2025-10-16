@@ -14,6 +14,8 @@ tags:
 
 # Energy Management Over Time Management
 
+{{video:bb119231-068b-485a-9104-1a7603e4d8f5}}
+
 You can't manage time, but you can manage your energy. Today, we learn how to work with your natural rhythms for peak performance.
 
 ## The Energy Crisis

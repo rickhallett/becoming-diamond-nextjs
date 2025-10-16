@@ -14,7 +14,7 @@ images: []
 
 # Day 3: The Power of Small Wins
 
-{{video:4cad3e37-38b6-4b41-a86f-13e44ed917a4}}
+{{video:a2aea625-4738-46f2-b341-46ca7f7dc060}}
 
 You have your vision. Now it's time to build the momentum that will carry you to that vision, one small win at a time.
 

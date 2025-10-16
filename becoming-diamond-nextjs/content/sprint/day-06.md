@@ -16,7 +16,7 @@ tags:
 
 How you start your day determines how you live your day. Today, we'll design a morning routine that transforms your life.
 
-{{video:edadb6bb-4b15-44d9-b2b1-35ec2dafe101}}
+{{video:83af77c8-a9dd-4519-8ef3-0ac4b5734e7b}}
 
 ## Why Morning Routines Matter
 

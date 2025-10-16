@@ -14,6 +14,8 @@ tags:
 
 # Deep Work in a Distracted World
 
+{{video:0e8b5da3-4312-466e-b500-5fe34dab888f}}
+
 In a world optimized for distraction, the ability to focus deeply is a superpower. Today, you'll learn to cultivate it.
 
 ## What is Deep Work?

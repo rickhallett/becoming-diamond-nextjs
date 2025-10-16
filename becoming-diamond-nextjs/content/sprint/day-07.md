@@ -60,7 +60,7 @@ What's ONE practice from this week you'll continue into next week?
 
 Write it down. Make it specific. Schedule it.
 
-{{video:735281cb-618f-407d-93db-c178eaef0655}}
+{{video:df982ffb-df9a-4755-9fe2-366594e0e2b8}}
 
 ## Celebrate
 

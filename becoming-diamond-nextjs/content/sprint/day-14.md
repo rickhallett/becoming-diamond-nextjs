@@ -14,6 +14,8 @@ tags:
 
 # Week 2 Review - Momentum Check
 
+{{video:2fa0592e-cc84-489f-818a-1897ebcbb5aa}}
+
 Two weeks in. You're building momentum. Today, we assess what's working and course-correct what isn't.
 
 ## Week 2 Recap

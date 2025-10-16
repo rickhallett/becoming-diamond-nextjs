@@ -14,6 +14,8 @@ tags:
 
 # Communication Mastery - Listening
 
+{{video:78607971-138c-4f4e-85f9-072833822fe1}}
+
 Most people don't listen to understand. They listen to respond. Today, you learn to truly hear others.
 
 ## The Listening Crisis

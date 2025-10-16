@@ -14,6 +14,8 @@ tags:
 
 # Week 3 Review - Acceleration Point
 
+{{video:411a4444-0be6-48c0-9f71-825858bf247d}}
+
 You're 70% through the sprint. This is where most people either accelerate or plateau. Today, we ensure you accelerate.
 
 ## Week 3 Recap

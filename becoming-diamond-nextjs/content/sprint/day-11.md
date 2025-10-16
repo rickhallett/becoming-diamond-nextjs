@@ -14,6 +14,8 @@ tags:
 
 # Financial Clarity Basics
 
+{{video:ed4d0b12-2a21-4d41-b102-6c3ac51ad19c}}
+
 You can't transform your life without financial clarity. Today, we start getting real about money.
 
 ## The Awareness Gap

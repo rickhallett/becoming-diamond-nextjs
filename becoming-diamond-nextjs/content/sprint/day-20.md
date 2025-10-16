@@ -14,6 +14,8 @@ tags:
 
 # Digital Minimalism
 
+{{video:649a2a38-db81-4912-94da-c70c6bc1e709}}
+
 Your attention is being sold to the highest bidder. Today, you take it back.
 
 ## The Attention Economy

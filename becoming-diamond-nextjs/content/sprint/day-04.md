@@ -35,7 +35,7 @@ When your actions align with your values, you experience:
 - Clear decision-making
 - Increased life satisfaction
 
-{{video:735281cb-618f-407d-93db-c178eaef0655}}
+{{video:c5a735ac-9c1e-45d0-a19c-80028e59da35}}
 
 ## Today's Challenge
 

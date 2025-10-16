@@ -14,6 +14,8 @@ tags:
 
 # The Second Brain System
 
+{{video:ff25ddf2-0576-417d-a861-985f548fa788}}
+
 Your brain is for having ideas, not storing them. Today, you build a system that never forgets.
 
 ## The Problem with Mental Storage

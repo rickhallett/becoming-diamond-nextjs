@@ -14,6 +14,8 @@ tags:
 
 # Physical Foundation - Movement
 
+{{video:ecf0a25a-8df9-42e7-b62a-82118b555406}}
+
 Your body is the vehicle for your transformation. Today, we establish a movement practice that sticks.
 
 ## Why Movement Matters

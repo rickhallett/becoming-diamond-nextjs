@@ -14,6 +14,8 @@ tags:
 
 # Learning Acceleration
 
+{{video:f19e972a-04d6-46bd-9fa3-40a72e8938f6}}
+
 The ability to learn quickly is the ultimate meta-skill. Today, you learn how to learn.
 
 ## The Learning Crisis

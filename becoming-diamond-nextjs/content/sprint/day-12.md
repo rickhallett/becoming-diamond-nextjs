@@ -14,6 +14,8 @@ tags:
 
 # The Art of Saying No
 
+{{video:fe8c2939-7e6c-4863-8538-d98ec5d9fdc0}}
+
 Every yes to something unimportant is a no to something that matters. Today, you learn to say no with grace and power.
 
 ## Why We Can't Say No

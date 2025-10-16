@@ -14,6 +14,8 @@ tags:
 
 # The Five People Principle
 
+{{video:d33ba1bf-d0d3-4e02-bb51-a29d46bfc9f2}}
+
 You are the average of the five people you spend the most time with. Today, we audit and optimize your inner circle.
 
 ## Why Relationships Matter

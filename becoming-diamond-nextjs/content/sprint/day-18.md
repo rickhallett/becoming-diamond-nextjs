@@ -14,6 +14,8 @@ tags:
 
 # Creative Thinking Frameworks
 
+{{video:19706b3e-6a5f-44aa-b473-7fe7d18d7e79}}
+
 Creativity isn't a gift—it's a skill. Today, you learn frameworks to generate breakthrough ideas on demand.
 
 ## Myth: Creativity is Innate

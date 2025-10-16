@@ -14,6 +14,8 @@ tags:
 
 # Decision-Making Frameworks
 
+{{video:49903bed-23fd-4f88-89b2-ab258e98f77a}}
+
 The quality of your life is determined by the quality of your decisions. Today, you learn to decide with confidence and clarity.
 
 ## The Decision Fatigue Problem
