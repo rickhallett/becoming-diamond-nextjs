@@ -3,6 +3,7 @@
 import type { CourseSlide } from "@/types/course";
 import { IconNotes } from "@tabler/icons-react";
 import { useState, useEffect } from "react";
+import { ContentRenderer } from "@/components/ContentRenderer";
 
 interface SlideContentProps {
   slide: CourseSlide;
@@ -66,7 +67,8 @@ export default function SlideContent({ slide, chapterTitle, showNotes }: SlideCo
       )}
 
       {/* Slide Content */}
-      <div
+      <ContentRenderer
+        html={slide.content}
         className="prose prose-invert prose-lg max-w-none
           prose-headings:font-light prose-headings:tracking-tight
           prose-h2:text-3xl prose-h2:mb-6 prose-h2:mt-12 prose-h2:text-primary prose-h2:font-bold prose-h2:leading-tight
@@ -86,7 +88,6 @@ export default function SlideContent({ slide, chapterTitle, showNotes }: SlideCo
           prose-img:rounded-xl prose-img:border prose-img:border-white/10 prose-img:my-8
           prose-hr:border-white/10 prose-hr:my-12
         "
-        dangerouslySetInnerHTML={{ __html: slide.content }}
       />
 
       {/* Notes Panel */}
