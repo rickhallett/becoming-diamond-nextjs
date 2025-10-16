@@ -185,6 +185,31 @@ export function importProgress(jsonData: string): boolean {
 }
 
 /**
+ * Calculates the current streak (consecutive days completed)
+ */
+export function calculateStreak(): number {
+  const progress = getProgress();
+
+  if (progress.completedDays.length === 0) {
+    return 0;
+  }
+
+  const sortedDays = [...progress.completedDays].sort((a, b) => a - b);
+  let streak = 1;
+
+  // Count consecutive days from the end
+  for (let i = sortedDays.length - 1; i > 0; i--) {
+    if (sortedDays[i] - sortedDays[i - 1] === 1) {
+      streak++;
+    } else {
+      break;
+    }
+  }
+
+  return streak;
+}
+
+/**
  * Gets progress statistics
  */
 export function getProgressStats() {
@@ -197,6 +222,7 @@ export function getProgressStats() {
     completionPercentage: progress.completionPercentage,
     currentDay: progress.currentDay,
     status: progress.status,
+    streak: calculateStreak(),
     daysInProgress: progress.status === 'in_progress'
       ? Math.ceil((new Date().getTime() - new Date(progress.enrollmentDate).getTime()) / (1000 * 60 * 60 * 24))
       : 0,

@@ -8,6 +8,7 @@ import {
   isDayAccessible,
   isDayCompleted,
   markDayComplete,
+  calculateStreak,
 } from '@/lib/sprint-progress';
 import { logSync as log } from '@/lib/logger';
 import {
@@ -16,6 +17,7 @@ import {
   IconCheck,
 } from '@tabler/icons-react';
 import { ContentRenderer } from '@/components/ContentRenderer';
+import CelebrationModal from '@/components/sprint/celebration-modal';
 
 interface DayData {
   slug: string;
@@ -40,6 +42,8 @@ export default function SprintDayPage() {
   const [_isAccessible, setIsAccessible] = useState(false);
   const [loading, setLoading] = useState(true);
   const [completing, setCompleting] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [streakCount, setStreakCount] = useState(0);
 
   useEffect(() => {
     async function loadDay() {
@@ -84,14 +88,28 @@ export default function SprintDayPage() {
       markDayComplete(dayNumber);
       setIsCompleted(true);
 
-      // Show success message briefly, then allow navigation
-      setTimeout(() => {
-        setCompleting(false);
-      }, 500);
+      // Calculate streak and show celebration modal
+      const streak = calculateStreak();
+      setStreakCount(streak);
+      setShowModal(true);
+      setCompleting(false);
     } catch (error) {
       log.error('Error marking day complete:', 'App', error);
       setCompleting(false);
     }
+  };
+
+  const handleContinue = () => {
+    setShowModal(false);
+    if (dayNumber < 30) {
+      router.push(`/app/sprint/day/${dayNumber + 1}`);
+    } else {
+      router.push('/app/sprint');
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
   };
 
   if (loading) {
@@ -235,6 +253,15 @@ export default function SprintDayPage() {
           </div>
         </div>
       </motion.div>
+
+      {/* Celebration Modal */}
+      <CelebrationModal
+        isOpen={showModal}
+        onClose={handleCloseModal}
+        dayNumber={dayNumber}
+        streakCount={streakCount}
+        onContinue={handleContinue}
+      />
     </div>
   );
 }
