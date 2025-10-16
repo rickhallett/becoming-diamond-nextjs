@@ -9,9 +9,6 @@ export async function generateStaticParams() {
   }));
 }
 
-// Force dynamic in development, static in production
-export const dynamic = process.env.NODE_ENV === 'development' ? 'force-dynamic' : 'force-static';
-
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ dayNumber: string }> }

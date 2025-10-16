@@ -50,7 +50,7 @@ const createDefaultProfile = (userId: string): UserProfile => ({
   id: userId,
   name: 'Diamond Member',
   email: '',
-  avatar: '/kai_profile.jpeg',
+  avatar: '/profile-placeholder.webp',
   bio: 'On a journey to becoming diamond.',
   location: '',
   website: '',

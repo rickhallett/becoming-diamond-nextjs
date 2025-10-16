@@ -9,6 +9,7 @@ import { FEATURES } from "@/config/features";
 export default function ProfilePage() {
     const { user, updateProfile, isLoading } = useUser();
     const [isEditing, setIsEditing] = useState(false);
+    const [imageError, setImageError] = useState(false);
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -116,11 +117,12 @@ export default function ProfilePage() {
                     <div className="bg-secondary/30 border border-white/10 rounded-xl p-6">
                         {/* Avatar */}
                         <div className="relative w-32 h-32 mx-auto mb-4 group cursor-pointer">
-                            {user.avatar ? (
+                            {user.avatar && !imageError ? (
                                 <img
                                     src={user.avatar}
                                     alt={user.name}
                                     className="w-full h-full rounded-full object-cover"
+                                    onError={() => setImageError(true)}
                                 />
                             ) : (
                                 <div className="w-full h-full rounded-full bg-gradient-to-br from-primary/40 to-primary/10 flex items-center justify-center text-4xl font-light">
