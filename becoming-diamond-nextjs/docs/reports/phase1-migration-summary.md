@@ -1,5 +1,33 @@
 # Phase 1: Database Migration - Completion Summary
 
+> **⚠️ DEPRECATION NOTICE**
+>
+> **Date:** 2025-10-16
+>
+> This document is **PARTIALLY OUTDATED**. The tables documented below were created during initial migration but **4 tables were subsequently dropped** on 2025-10-15 after a usage survey found zero references in the codebase.
+>
+> **Dropped Tables (2025-10-15):**
+> - `course_enrollments` (0 references)
+> - `lesson_progress` (0 references)
+> - `user_activities` (0 references)
+> - `user_achievements` (0 references)
+>
+> **Current Active Tables (6):**
+> - `users` - NextAuth core user data
+> - `accounts` - OAuth provider accounts
+> - `sessions` - Database-backed sessions
+> - `verification_tokens` - Email magic link tokens
+> - `user_profiles` - Extended user profile data
+> - `leads` - Email capture/newsletter signups
+>
+> **For current database schema, see:**
+> - `migrations/000_consolidated_schema.sql` (consolidated production schema)
+> - `docs/reports/database-table-usage-survey.md` (2025-10-15 usage analysis)
+>
+> This document is kept for historical reference only.
+
+---
+
 ## ✅ Completed Tasks
 
 ### 1. Database Schema Extension

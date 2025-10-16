@@ -1,6 +1,6 @@
-# Aceternity Demo with Decap CMS Integration
+# Becoming Diamond with Decap CMS Integration
 
-This project integrates Decap CMS (formerly Netlify CMS) into the Aceternity Next.js demo application.
+This project integrates Decap CMS (formerly Netlify CMS) into the Becoming Diamond Next.js application for content management.
 
 ## Setup Instructions
 
@@ -9,9 +9,9 @@ This project integrates Decap CMS (formerly Netlify CMS) into the Aceternity Nex
 1. Go to [GitHub Settings > Developer settings > OAuth Apps](https://github.com/settings/developers)
 2. Click "New OAuth App"
 3. Fill in the details:
-   - **Application name**: Your app name
-   - **Homepage URL**: `http://localhost:3000` (for development)
-   - **Authorization callback URL**: `http://localhost:3000/api/callback`
+   - **Application name**: Becoming Diamond CMS
+   - **Homepage URL**: `http://localhost:3003` (for development)
+   - **Authorization callback URL**: `http://localhost:3003/api/callback`
 4. Click "Register application"
 5. Copy the **Client ID** and generate a **Client Secret**
 
@@ -22,8 +22,9 @@ Update the `.env.local` file with your GitHub OAuth credentials:
 ```env
 GITHUB_CLIENT_ID=your_client_id_here
 GITHUB_CLIENT_SECRET=your_client_secret_here
-NEXTAUTH_URL=http://localhost:3000
 ```
+
+**Note:** This project uses custom OAuth handlers in `/api/auth` and `/api/callback` routes, not NextAuth for CMS authentication.
 
 ### 3. Update CMS Configuration
 
@@ -43,15 +44,17 @@ backend:
 npm install
 ```
 
-2. Run the development server:
+2. Run the development server with Turbopack:
 ```bash
 npm run dev
 ```
 
+This runs `next dev --turbopack` on port 3003.
+
 3. Access the application:
-   - Main site: [http://localhost:3000](http://localhost:3000)
-   - Admin panel: [http://localhost:3000/admin](http://localhost:3000/admin)
-   - News page: [http://localhost:3000/news](http://localhost:3000/news)
+   - Main site: [http://localhost:3003](http://localhost:3003)
+   - Admin panel: [http://localhost:3003/admin](http://localhost:3003/admin)
+   - News page: [http://localhost:3003/news](http://localhost:3003/news)
 
 ## Features
 

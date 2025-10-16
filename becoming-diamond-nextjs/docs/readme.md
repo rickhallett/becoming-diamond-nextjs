@@ -38,9 +38,8 @@ Technical specifications organized by domain
 
 #### `/specs/integrations/`
 Integration specifications
-- `astro-decap-cms-aceternity-integration.md` - Main integration spec
-- `astro-decap-cms-aceternity-integration-0[0-4].md` - Iteration specs
-- `astro-decap-cms-aceternity-integration-breakdown.md` - Implementation breakdown
+- `resend-lead-email-integration.prd.md` - Resend email integration PRD
+- `resend-implementation-summary.md` - Resend implementation summary
 
 #### `/specs/performance/`
 Performance optimization specifications
@@ -61,11 +60,14 @@ AI and RAG (Retrieval Augmented Generation) specifications
 
 ### `/reports/`
 Implementation and migration reports
-- `phase1-migration-summary.md` - Phase 1 migration summary
+- `database-table-usage-survey.md` - Database table usage analysis (2025-10-15)
+- `profile-navigation-bug-fix.md` - Profile navigation fix report (2025-10-15)
+- `test-auth-navigation-fix.md` - Test auth navigation fix report (2025-10-15)
+- `documentation-audit-2025-10-16.md` - Documentation audit and cleanup report
+- `phase1-migration-summary.md` - Phase 1 migration summary (⚠️ PARTIALLY OUTDATED - see deprecation notice)
 
 #### `/reports/integration-reports/`
-Integration implementation reports
-- `astro-decap-cms-aceternity-integration-0[0-4]-report.md` - Integration reports
+Integration implementation reports (empty - Astro reports archived)
 
 ### `/content/`
 Book content and marketing copy
@@ -84,6 +86,9 @@ Website and marketing copy
 ### `/archive/`
 Deprecated or old versions of code and documentation
 - `landing-alt-all/` - Alternative landing page implementation
+- `astro-abandoned/` - Astro integration documentation (abandoned - project is Next.js 15)
+  - `specs/` - 7 Astro integration specification documents
+  - `reports/` - 5 Astro integration implementation reports
 
 ## Naming Conventions
 
