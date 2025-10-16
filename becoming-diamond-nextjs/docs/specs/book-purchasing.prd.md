@@ -1,615 +1,273 @@
-# PRD: Book Purchasing with Stripe Integration
+# PRD: Single Book Sales via Stripe
 
-**Status:** Draft
+**Status:** Draft v2.0 (MVP Scope)
 **Created:** 2025-10-16
+**Updated:** 2025-10-16 (Reduced scope to single book MVP)
 **Owner:** Product Team
 **Target Release:** TBD
+**Estimated Effort:** 12-20 hours (MVP only)
 
 ---
 
 ## Executive Summary
 
-Implement e-commerce functionality to sell digital and physical books through the Becoming Diamond platform using Stripe as the payment processor. This feature will enable content creators to monetize their book content alongside the existing course offerings, creating an additional revenue stream while providing value to members.
+Enable selling a single digital book through the Becoming Diamond platform using Stripe Checkout. This MVP focuses on the fastest path to revenue with minimal complexity, while maintaining code structure that allows future expansion.
 
-### Goals
-- Enable book sales through a seamless checkout experience
-- Integrate with existing Becoming Diamond brand and member portal
-- Provide secure payment processing with industry-standard compliance
-- Support both digital and physical book fulfillment
-- Track orders and provide purchase history to users
+### MVP Goals
+- Sell ONE digital book via Stripe
+- Stripe-hosted checkout (no custom payment form needed)
+- Automated email receipt (Stripe built-in)
+- Simple order tracking in database
+- Secure download link delivery
 
-### Non-Goals (Out of Scope)
-- Marketplace for third-party authors
-- Subscription-based book access (focus on one-time purchases)
-- Print-on-demand integration (manual fulfillment initially)
-- International currency support (USD only for MVP)
-- Gift purchases or gift cards
+### MVP Non-Goals (Future Expansion)
+- Multiple books / catalog pages
+- Shopping cart
+- Physical book fulfillment
+- Member portal integration (download from member area)
+- Admin order dashboard (use Stripe dashboard initially)
+- Guest checkout accounts
+- Advanced features (discounts, bundles, reviews, etc.)
 
 ---
 
 ## Problem Statement
 
-The Becoming Diamond platform currently focuses on course-based content delivery. However, the program philosophy and teachings could be extended through companion books, workbooks, and reference materials. Currently, there is no way to sell these materials directly through the platform, forcing potential customers to external storefronts and creating a disjointed user experience.
+The author has completed a book and wants to sell it directly through the Becoming Diamond platform. Currently, there is no payment infrastructure in place. The goal is to implement the simplest possible solution that generates revenue quickly while maintaining professional quality.
 
-### User Pain Points
-- Members must leave platform to purchase related materials
-- No centralized location for program-related books
-- Difficulty tracking which books a member has purchased
-- Missed cross-sell opportunities (books to course members, courses to book buyers)
+### Current Situation
+- Book is ready to sell (PDF exists)
+- No payment processing capability
+- Using external platforms would split revenue and fragment brand
+- Need fast time-to-market (weeks, not months)
 
 ### Business Impact
-- Lost revenue from book sales going to external platforms
-- Reduced customer lifetime value
-- Fragmented brand experience
-- Manual order fulfillment overhead
+- **Time is money:** Every week without a sales channel is lost revenue
+- **Complexity risk:** Over-engineered solutions delay launch and increase maintenance burden
+- **Validation need:** Single book sale validates demand before building extensive infrastructure
 
 ---
 
-## User Personas
+## User Persona (MVP)
 
-### Primary: Sarah - Committed Member
-- **Demographics:** 35-year-old professional, existing course member
-- **Goals:** Deepen understanding through supplemental materials
-- **Pain Points:** Wants seamless purchasing without leaving trusted platform
-- **Technical Comfort:** Medium (comfortable with online shopping)
-
-### Secondary: Marcus - Book-First Buyer
-- **Demographics:** 42-year-old skeptical of online programs
-- **Goals:** Test the philosophy with a lower-commitment purchase
-- **Pain Points:** Unsure if full course is worth investment
-- **Technical Comfort:** High (frequent online shopper)
-
-### Tertiary: Admin - Content Creator
-- **Demographics:** Program owner/author
-- **Goals:** Easily add new books, track sales, fulfill orders
-- **Pain Points:** Complex technical systems, time-consuming order management
-- **Technical Comfort:** Low-medium (uses Decap CMS currently)
+### Primary: Book Buyer
+- **Goal:** Purchase and download the book quickly
+- **Expectation:** Standard e-commerce experience (similar to Gumroad, Amazon, etc.)
+- **Flow:** Click "Buy Now" → Pay with card → Receive download link via email
+- **Technical Comfort:** Medium (comfortable with online shopping, expects email confirmation)
 
 ---
 
-## User Stories
+## User Stories (MVP Only)
 
-### Epic 1: Book Discovery & Browsing
-
-**US-001: Browse Book Catalog**
+### US-001: View Book Sales Page
 ```
 As a visitor
-I want to view all available books in a catalog
-So that I can discover relevant materials
+I want to see a dedicated page for the book
+So that I can learn about it and decide to purchase
 ```
 **Acceptance Criteria:**
-- Book catalog page displays at `/books`
-- Each book shows: cover image, title, author, price, short description
-- Books are sortable by: newest, price (low-high, high-low), title
-- Mobile-responsive grid layout (1 col mobile, 2 col tablet, 3-4 col desktop)
-- "Out of stock" indicator for physical books
-- Clear distinction between digital and physical products
+- Single page at `/book` (or `/books/[slug]` for future expansion)
+- Displays: cover image, title, author, description, price
+- "Buy Now" button prominent
+- Mobile-responsive
+- SEO optimized
 
-**US-002: View Book Details**
+### US-002: Complete Purchase
 ```
 As a visitor
-I want to view detailed information about a book
-So that I can make an informed purchase decision
+I want to pay for the book
+So that I can receive the download link
 ```
 **Acceptance Criteria:**
-- Individual book page at `/books/[slug]`
-- Displays: full description, table of contents, author bio, sample pages/preview
-- Shows format options (digital PDF, physical paperback, bundle)
-- Reviews/testimonials section (manual curation initially)
-- "Add to Cart" button prominent and accessible
-- Related books section (manual curation initially)
-- SEO optimized (Open Graph tags, meta descriptions)
+- Click "Buy Now" redirects to Stripe Checkout (hosted by Stripe)
+- Stripe collects email and payment
+- After successful payment, redirect to success page
+- Success page shows download link (temporary, signed URL)
+- Stripe sends receipt email automatically
 
-### Epic 2: Shopping & Checkout
-
-**US-003: Add Books to Cart**
+### US-003: Download Book
 ```
-As a visitor
-I want to add multiple books to a cart
-So that I can purchase several items at once
+As a purchaser
+I want to download the book I paid for
+So that I can read it
 ```
 **Acceptance Criteria:**
-- Cart icon in header shows item count
-- Add to cart button adds item without page refresh
-- Toast notification confirms addition
-- Cart persists across page navigation (localStorage)
-- Cart accessible from any page via header icon
-- Quantity adjustment (1-10 per item)
-- Remove item functionality
-- Cart shows subtotal before checkout
-
-**US-004: Complete Purchase**
-```
-As a visitor
-I want to securely pay for my books
-So that I can receive my purchase
-```
-**Acceptance Criteria:**
-- Checkout page at `/checkout` shows order summary
-- Stripe Payment Element embedded (card, Apple Pay, Google Pay supported)
-- Collects: email, shipping address (if physical), billing address
-- Email validation and format checking
-- Clear total breakdown (subtotal, tax if applicable, shipping, total)
-- Order processing indicator during payment
-- Error messages for declined cards (user-friendly language)
-- Order confirmation page at `/orders/[orderId]/confirmation`
-- Confirmation email sent automatically
-
-### Epic 3: Order Management
-
-**US-005: View Purchase History**
-```
-As a member
-I want to see my past book purchases
-So that I can track orders and re-download digital books
-```
-**Acceptance Criteria:**
-- Purchase history page at `/app/orders`
-- Lists all orders with: date, items, total, status (processing, shipped, delivered)
-- Click order to view details page
-- Digital books show "Download" button (generates signed URL, 24hr expiry)
-- Physical books show tracking number when shipped
-- Filter by: all orders, digital only, physical only, date range
-- Export order history to PDF
-
-**US-006: Access Digital Downloads**
-```
-As a member
-I want to download my purchased digital books
-So that I can read them on my devices
-```
-**Acceptance Criteria:**
-- "My Books" section in member portal sidebar
-- Grid of purchased book covers
-- Click cover to download or view in browser (PDF viewer)
-- Re-download available unlimited times
-- Download URLs expire after 24 hours (regenerate on each access)
-- PDF includes watermark with purchaser email (piracy deterrent)
-- Mobile-optimized reading experience
-
-### Epic 4: Admin Management
-
-**US-007: Add New Book**
-```
-As an admin
-I want to add a new book through the CMS
-So that it appears in the catalog
-```
-**Acceptance Criteria:**
-- New "Books" collection in Decap CMS (`/admin`)
-- Fields: title, slug, author, description, long description, cover image, price (digital), price (physical), ISBN, page count, format options, sample pages (PDF), published status
-- Markdown support for descriptions
-- Cover image upload (auto-resize to 600x900px)
-- Preview functionality before publishing
-- Books sync to Stripe Products API on publish
-
-**US-008: Fulfill Orders**
-```
-As an admin
-I want to view pending orders
-So that I can fulfill physical book shipments
-```
-**Acceptance Criteria:**
-- Admin order dashboard at `/admin/orders` (new custom page)
-- Lists unfulfilled orders with: order ID, customer name, items, shipping address
-- Mark as fulfilled (adds tracking number, triggers email to customer)
-- Export orders to CSV for bulk processing
-- Filter by: pending, fulfilled, canceled
-- Search by customer name or order ID
+- Download link on success page works
+- Link expires after 24 hours (security)
+- Can re-generate link from success page URL (bookmark-able)
+- PDF downloads correctly
 
 ---
 
-## Functional Requirements
+## Functional Requirements (MVP Only)
 
-### Book Catalog Management
+### FR-1: Book Sales Page
+- Single static page at `/book` (hardcoded, no CMS needed for MVP)
+- Displays book information:
+  - Cover image
+  - Title
+  - Author
+  - Description (2-3 paragraphs)
+  - Price ($XX.XX)
+  - "Buy Now" button
+- SEO meta tags for social sharing
 
-**FR-1: Content Structure**
-- Books stored as markdown files in `content/books/` directory
-- Frontmatter schema:
-  ```yaml
-  title: "The Diamond Journey"
-  slug: "diamond-journey"
-  author: "Author Name"
-  description: "Short description (160 chars)"
-  longDescription: "Full description with markdown support"
-  coverImage: "/images/books/diamond-journey-cover.jpg"
-  priceDigital: 29.99
-  pricePhysical: 39.99
-  priceBundle: 59.99  # Both formats
-  isbn: "978-1-234567-89-0"
-  pageCount: 240
-  publishDate: "2025-03-01"
-  published: true
-  formatOptions: ["digital", "physical", "bundle"]
-  samplePdf: "/samples/diamond-journey-sample.pdf"
-  digitalFile: "/products/diamond-journey-full.pdf"  # Secure storage path
-  tags: ["transformation", "mindset", "workbook"]
-  featured: true  # Show on homepage
-  ```
+### FR-2: Stripe Checkout Integration
+- Create Stripe Checkout Session API endpoint (`/api/checkout/create-session`)
+- "Buy Now" button calls API, receives Stripe Checkout URL
+- Redirect user to Stripe-hosted checkout page
+- Stripe collects:
+  - Email address
+  - Card payment
+- Success URL: `/book/success?session_id={CHECKOUT_SESSION_ID}`
+- Cancel URL: `/book` (back to sales page)
 
-**FR-2: Book Display**
-- Public catalog page with grid layout
-- Server-side rendering for SEO
-- Dynamic routes for individual book pages (`/books/[slug]`)
-- Static generation with `generateStaticParams()` at build time
-- Responsive images with next/image optimization
-
-**FR-3: Search & Discovery**
-- Client-side filtering by tags (no backend search for MVP)
-- Sort options: newest, price, title (A-Z)
-- Featured books section on homepage
-- Related books (manually curated via tags)
-
-### Shopping Cart
-
-**FR-4: Cart Functionality**
-- Client-side cart state management (React Context or Zustand)
-- Persist to localStorage (survives page refresh, 7-day expiry)
-- Cart operations: add, remove, update quantity, clear
-- Support multiple format selections (digital + physical = bundle price)
-- Cart accessible from all pages via header component
-
-**FR-5: Cart Validation**
-- Quantity limits (max 10 per item)
-- Stock validation for physical books (check inventory)
-- Price validation on checkout (server-side verification)
-- Handle out-of-stock scenarios (remove from cart, notify user)
-
-### Payment Processing
-
-**FR-6: Stripe Integration**
-- Stripe Payment Element for checkout form
-- Support payment methods: credit/debit cards, Apple Pay, Google Pay
-- Webhook endpoint at `/api/stripe/webhook` for payment events
-- Events handled: `payment_intent.succeeded`, `payment_intent.failed`, `charge.refunded`
-- Idempotency keys for all Stripe API calls (prevent duplicate charges)
-
-**FR-7: Order Creation**
-- Create order record on successful payment
-- Order schema:
+### FR-3: Order Tracking (Minimal)
+- Webhook endpoint (`/api/stripe/webhook`)
+- On `checkout.session.completed`:
+  - Create order record in Turso (email, stripe session ID, amount, timestamp)
+  - Mark order as "completed"
+- Simple schema (no complex relationships needed for MVP):
   ```typescript
   {
-    id: string;  // uuid
-    orderNumber: string;  // human-readable (e.g., "BD-2025-0001")
-    userId: string | null;  // null for guest checkout
+    id: string;
     email: string;
-    status: 'pending' | 'processing' | 'completed' | 'canceled' | 'refunded';
-    items: [
-      {
-        bookSlug: string;
-        title: string;
-        format: 'digital' | 'physical' | 'bundle';
-        quantity: number;
-        priceAtPurchase: number;  // Store price in case it changes later
-      }
-    ];
-    subtotal: number;
-    tax: number;
-    shipping: number;
-    total: number;
-    shippingAddress: {
-      name: string;
-      line1: string;
-      line2?: string;
-      city: string;
-      state: string;
-      postalCode: string;
-      country: string;
-    } | null;
-    stripePaymentIntentId: string;
-    stripeChargeId: string;
+    stripeSessionId: string;
+    amountPaid: number;
     createdAt: timestamp;
-    updatedAt: timestamp;
   }
   ```
 
-**FR-8: Tax Calculation**
-- Use Stripe Tax for automatic tax calculation (US only for MVP)
-- Tax-exempt for digital products in most states (physical books may have sales tax)
-- Display tax breakdown in cart and checkout
+### FR-4: Download Delivery
+- Success page (`/book/success`) accepts `session_id` query param
+- Verify session with Stripe API
+- Generate signed download URL (24-hour expiry)
+- Display download button
+- Store PDF in Vercel Blob (private) or use pre-signed URL approach
 
-**FR-9: Shipping**
-- Flat-rate shipping for physical books: $5.99 (US only)
-- Free shipping on orders over $50
-- Digital-only orders have no shipping fee
-- No international shipping for MVP
-
-### Order Fulfillment
-
-**FR-10: Digital Delivery**
-- Generate secure download URLs with signed tokens
-- URLs expire after 24 hours (regenerate on each access)
-- Store PDFs in private S3 bucket or Vercel Blob Storage
-- PDF watermarking with purchaser email (using pdf-lib)
-- Email delivery: send download link immediately after purchase
-
-**FR-11: Physical Fulfillment**
-- Admin dashboard shows pending shipments
-- Manual fulfillment workflow:
-  1. Admin prints packing slip from order page
-  2. Ships book via USPS/UPS
-  3. Enters tracking number in admin panel
-  4. System sends shipping notification email to customer
-- Tracking number updates order status to "shipped"
-
-**FR-12: Email Notifications**
-- Order confirmation (immediate)
-- Digital download links (immediate)
-- Shipping notification with tracking (when fulfilled)
-- Refund processed (if applicable)
-- Use Resend or SendGrid for email delivery
-- Templates styled to match Becoming Diamond brand
-
-### Authentication Integration
-
-**FR-13: Guest Checkout**
-- Allow purchases without account (email-only identification)
-- Option to "Create account" during checkout (save address, access downloads)
-- Guest orders linked to email address
-
-**FR-14: Member Purchases**
-- Logged-in members have pre-filled email and saved addresses
-- Orders automatically linked to user account
-- Purchase history accessible in member portal
-- Digital downloads available in "My Books" section
-
-**FR-15: Account Creation Post-Purchase**
-- Guest purchasers can claim their order by creating an account with same email
-- Automatic order association on account creation
-- Prompt to create account on confirmation page
+### FR-5: Email Receipt (Automated)
+- Stripe sends receipt email automatically (no custom email needed for MVP)
+- Receipt includes product name and amount
+- **Future:** Custom email with download link (Phase 2)
 
 ---
 
-## Technical Requirements
+## Technical Requirements (MVP)
 
 ### Architecture
 
-**TR-1: Technology Stack**
-- **Payment Processing:** Stripe (stripe npm package, @stripe/stripe-js)
-- **Database:** Prisma + PostgreSQL (or Supabase for hosted solution)
-- **File Storage:** Vercel Blob Storage for PDFs (or AWS S3)
-- **Email:** Resend (resend npm package) - modern, developer-friendly
-- **PDF Processing:** pdf-lib for watermarking
-- **State Management:** Zustand for cart (lightweight, TypeScript-friendly)
+**TR-1: Technology Stack (Minimal)**
+- **Payment Processing:** Stripe Checkout (hosted, no @stripe/stripe-js needed initially)
+- **Database:** Turso (libSQL) with Drizzle ORM (already in use - extend schema)
+- **File Storage:** Vercel Blob Storage for PDF
+- **Email:** None (Stripe handles receipts automatically for MVP)
+- **State Management:** None (no cart needed for MVP)
 
-**TR-2: Database Schema**
+**TR-2: Database Schema (Minimal)**
 
-```prisma
-// prisma/schema.prisma
+```typescript
+// src/lib/db/schema.ts (Add to existing Drizzle schema)
 
-model Book {
-  id            String   @id @default(uuid())
-  slug          String   @unique
-  title         String
-  author        String
-  description   String
-  coverImage    String
-  priceDigital  Decimal?
-  pricePhysical Decimal?
-  priceBundle   Decimal?
-  stripeProductId String?
-  stripePriceIdDigital String?
-  stripePriceIdPhysical String?
-  stripePriceIdBundle String?
-  digitalFileUrl String?  // Secure storage URL
-  published     Boolean  @default(false)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+import { sqliteTable, text, real, integer } from 'drizzle-orm/sqlite-core';
+import { sql } from 'drizzle-orm';
 
-  orderItems    OrderItem[]
-}
+// Simple orders table (no complex relationships for MVP)
+export const bookOrders = sqliteTable('book_orders', {
+  id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
+  email: text('email').notNull(),
+  stripeSessionId: text('stripe_session_id').notNull().unique(),
+  amountPaid: real('amount_paid').notNull(),
+  status: text('status', { enum: ['completed', 'refunded'] }).notNull().default('completed'),
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
+});
 
-model Order {
-  id                    String   @id @default(uuid())
-  orderNumber           String   @unique
-  userId                String?
-  email                 String
-  status                OrderStatus
-  subtotal              Decimal
-  tax                   Decimal
-  shipping              Decimal
-  total                 Decimal
-  shippingAddress       Json?
-  stripePaymentIntentId String   @unique
-  stripeChargeId        String?
-  trackingNumber        String?
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
+// Index for looking up orders by email
+CREATE INDEX idx_book_orders_email ON book_orders(email);
+CREATE INDEX idx_book_orders_session_id ON book_orders(stripe_session_id);
 
-  items                 OrderItem[]
-  user                  User?    @relation(fields: [userId], references: [id])
-}
-
-model OrderItem {
-  id               String  @id @default(uuid())
-  orderId          String
-  bookId           String
-  bookSlug         String  // Denormalized for historical accuracy
-  title            String  // Denormalized
-  format           BookFormat
-  quantity         Int
-  priceAtPurchase  Decimal
-
-  order            Order   @relation(fields: [orderId], references: [id])
-  book             Book    @relation(fields: [bookId], references: [id])
-}
-
-enum OrderStatus {
-  PENDING
-  PROCESSING
-  COMPLETED
-  SHIPPED
-  CANCELED
-  REFUNDED
-}
-
-enum BookFormat {
-  DIGITAL
-  PHYSICAL
-  BUNDLE
-}
-
-// Extend existing User model (if exists)
-model User {
-  id       String  @id @default(uuid())
-  email    String  @unique
-  name     String?
-  // ... existing fields
-  orders   Order[]
-}
+// TypeScript types
+export type BookOrder = typeof bookOrders.$inferSelect;
+export type NewBookOrder = typeof bookOrders.$inferInsert;
 ```
 
-**TR-3: API Endpoints**
+**Migration:**
+```bash
+# Generate migration
+npx drizzle-kit generate:sqlite
+
+# Apply to Turso
+npx drizzle-kit push:sqlite
+```
+
+**TR-3: API Endpoints (MVP Only)**
 
 | Endpoint | Method | Purpose | Auth Required |
 |----------|--------|---------|---------------|
-| `/api/books` | GET | List all published books | No |
-| `/api/books/[slug]` | GET | Get single book details | No |
-| `/api/cart/validate` | POST | Validate cart contents and prices | No |
-| `/api/stripe/create-payment-intent` | POST | Create Stripe payment intent | No |
-| `/api/stripe/webhook` | POST | Handle Stripe webhooks | No (signature verification) |
-| `/api/orders` | GET | Get user's order history | Yes (user) |
-| `/api/orders/[orderId]` | GET | Get single order details | Yes (user or guest with token) |
-| `/api/orders/[orderId]/download` | POST | Generate download URL for digital book | Yes |
-| `/api/admin/orders` | GET | List all orders (with filters) | Yes (admin) |
-| `/api/admin/orders/[orderId]/fulfill` | POST | Mark order as fulfilled, add tracking | Yes (admin) |
-| `/api/admin/books/sync` | POST | Sync book to Stripe Products API | Yes (admin) |
+| `/api/checkout/create-session` | POST | Create Stripe Checkout session | No |
+| `/api/stripe/webhook` | POST | Handle Stripe webhooks (record orders) | No (signature verification) |
+| `/api/download` | GET | Generate temporary download URL | No (validates session_id) |
 
-**TR-4: File Structure**
+**TR-4: File Structure (MVP Only - ~6 files)**
 
 ```
 src/
 ├── app/
-│   ├── books/
-│   │   ├── page.tsx                 # Book catalog
-│   │   └── [slug]/
-│   │       └── page.tsx             # Individual book page
-│   ├── checkout/
-│   │   └── page.tsx                 # Checkout flow
-│   ├── orders/
-│   │   └── [orderId]/
-│   │       └── confirmation/
-│   │           └── page.tsx         # Order confirmation
-│   ├── app/
-│   │   ├── orders/
-│   │   │   └── page.tsx             # User order history
-│   │   └── books/
-│   │       └── page.tsx             # User's purchased books
-│   ├── admin/
-│   │   └── orders/
-│   │       ├── page.tsx             # Admin order dashboard
-│   │       └── [orderId]/
-│   │           └── page.tsx         # Admin order detail
+│   ├── book/
+│   │   ├── page.tsx                 # Sales page for THE book
+│   │   └── success/
+│   │       └── page.tsx             # Success page with download link
 │   └── api/
-│       ├── books/
-│       │   ├── route.ts
-│       │   └── [slug]/
-│       │       └── route.ts
-│       ├── cart/
-│       │   └── validate/
-│       │       └── route.ts
-│       ├── stripe/
-│       │   ├── create-payment-intent/
-│       │   │   └── route.ts
-│       │   └── webhook/
-│       │       └── route.ts
-│       ├── orders/
-│       │   ├── route.ts
-│       │   └── [orderId]/
-│       │       ├── route.ts
-│       │       └── download/
-│       │           └── route.ts
-│       └── admin/
-│           ├── orders/
-│           │   ├── route.ts
-│           │   └── [orderId]/
-│           │       └── fulfill/
-│           │           └── route.ts
-│           └── books/
-│               └── sync/
-│                   └── route.ts
-├── components/
-│   ├── books/
-│   │   ├── BookCard.tsx             # Book grid item
-│   │   ├── BookGrid.tsx             # Book catalog grid
-│   │   ├── BookDetail.tsx           # Book detail layout
-│   │   └── BookFilters.tsx          # Sort/filter controls
-│   ├── cart/
-│   │   ├── CartDrawer.tsx           # Slide-out cart
-│   │   ├── CartIcon.tsx             # Header cart icon
-│   │   ├── CartItem.tsx             # Single cart item
-│   │   └── CartSummary.tsx          # Totals display
-│   ├── checkout/
-│   │   ├── CheckoutForm.tsx         # Main checkout component
-│   │   ├── PaymentForm.tsx          # Stripe Payment Element wrapper
-│   │   ├── ShippingForm.tsx         # Address collection
-│   │   └── OrderSummary.tsx         # Right sidebar summary
-│   └── orders/
-│       ├── OrderList.tsx            # Order history list
-│       ├── OrderCard.tsx            # Single order display
-│       └── DownloadButton.tsx       # Digital download CTA
+│       ├── checkout/
+│       │   └── create-session/
+│       │       └── route.ts         # Create Stripe Checkout session
+│       ├── download/
+│       │   └── route.ts             # Generate temporary download URL
+│       └── stripe/
+│           └── webhook/
+│               └── route.ts         # Handle Stripe events
 ├── lib/
-│   ├── stripe.ts                    # Stripe client initialization
-│   ├── books.ts                     # Book data fetching utilities
-│   ├── orders.ts                    # Order management utilities
-│   └── email.ts                     # Email sending utilities
-├── stores/
-│   └── cart.ts                      # Zustand cart store
-└── types/
-    ├── book.ts                      # Book TypeScript types
-    ├── order.ts                     # Order TypeScript types
-    └── cart.ts                      # Cart TypeScript types
-
-content/
-└── books/
-    ├── diamond-journey.md           # Example book content
-    └── transformation-workbook.md
-
-prisma/
-├── schema.prisma                    # Database schema
-└── migrations/                      # Database migrations
+│   ├── db/
+│   │   ├── schema.ts                # Extend with bookOrders table
+│   │   └── client.ts                # Turso client (already exists)
+│   └── stripe.ts                    # Stripe client initialization (new)
 
 public/
-├── images/
-│   └── books/
-│       ├── covers/                  # Book cover images
-│       └── samples/                 # Sample page images
-└── products/                        # Digital book files (dev only, use cloud storage in prod)
+└── book/
+    ├── cover.jpg                    # Book cover image
+    └── the-book.pdf                 # The actual PDF (temporary - move to Vercel Blob)
 ```
 
-**TR-5: Environment Variables**
+**Future Expansion Structure** (not built in MVP):
+- `src/app/books/` - Multiple book catalog
+- `src/components/cart/` - Shopping cart components
+- `src/app/app/orders/` - Member portal order history
+- etc.
+
+**TR-5: Environment Variables (MVP Only)**
 
 ```bash
 # .env.local
 
-# Stripe
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
+# Stripe (required)
 STRIPE_SECRET_KEY=sk_test_...
 STRIPE_WEBHOOK_SECRET=whsec_...
 
-# Database
-DATABASE_URL=postgresql://user:password@localhost:5432/becoming_diamond
+# Database (Turso - already configured)
+TURSO_DATABASE_URL=libsql://[database-name]-[org-name].turso.io
+TURSO_AUTH_TOKEN=eyJhbGc...
 
-# File Storage (choose one)
-# Option A: Vercel Blob
+# File Storage (Vercel Blob - for private PDF hosting)
 BLOB_READ_WRITE_TOKEN=vercel_blob_...
 
-# Option B: AWS S3
-AWS_ACCESS_KEY_ID=...
-AWS_SECRET_ACCESS_KEY=...
-AWS_S3_BUCKET_NAME=...
-AWS_REGION=us-east-1
-
-# Email
-RESEND_API_KEY=re_...
-EMAIL_FROM="Becoming Diamond <orders@becomingdiamond.com>"
-
-# App
-NEXT_PUBLIC_APP_URL=http://localhost:3003  # For email links
-
-# Admin (simple auth for MVP)
-ADMIN_EMAIL=admin@becomingdiamond.com
+# App URL (for Stripe redirect URLs)
+NEXT_PUBLIC_APP_URL=http://localhost:3003
 ```
+
+**Not Needed for MVP:**
+- ~~Email service~~ (Stripe sends receipts)
+- ~~Stripe publishable key~~ (using Checkout, not custom form)
+- ~~Admin email~~ (no admin features in MVP)
 
 **TR-6: Security Requirements**
 
@@ -621,7 +279,7 @@ ADMIN_EMAIL=admin@becomingdiamond.com
 - HTTPS required in production
 - Environment variables never exposed to client
 - Order amount validation on server (never trust client)
-- SQL injection prevention (Prisma prepared statements)
+- SQL injection prevention (Drizzle ORM parameterized queries)
 - XSS protection (React auto-escaping, sanitize user input)
 
 **TR-7: Performance Requirements**
@@ -633,6 +291,13 @@ ADMIN_EMAIL=admin@becomingdiamond.com
 - Book images optimized (WebP/AVIF, max 200KB per cover)
 - Static generation for book pages (rebuild on content changes)
 - Cart operations feel instant (<100ms)
+
+**Turso Performance Benefits:**
+- Edge-replicated database (reads from nearest location globally)
+- Sub-10ms query latency for most operations
+- Built-in read replicas (no additional configuration)
+- SQLite performance characteristics (fast reads, simple queries)
+- Excellent for e-commerce workloads (read-heavy with occasional writes)
 
 **TR-8: Monitoring & Logging**
 
@@ -649,744 +314,303 @@ ADMIN_EMAIL=admin@becomingdiamond.com
 
 ---
 
-## Implementation Phases
+## Implementation Plan (MVP - Single Phase)
 
-### Phase 0: Prerequisites (1 week)
-**Blockers must be resolved first**
+### MVP Implementation: 12-20 hours
+**Goal: Sell one book, take payment, deliver PDF**
 
-**Tasks:**
-- [ ] Implement authentication system (NextAuth.js or similar)
-  - GitHub OAuth (already have credentials)
-  - Email/password as alternative
-  - Session management
-  - Protected route middleware
-- [ ] Set up database
-  - Install Prisma
-  - Configure PostgreSQL (local + production)
-  - Create initial schema (User model)
-  - Set up migrations
-- [ ] Choose and configure email provider (Resend recommended)
-- [ ] Choose file storage solution (Vercel Blob recommended)
+**Prerequisites (1-2 hours):**
+- [ ] Create Stripe account (test mode)
+- [ ] Set up Vercel Blob storage (or decide to use public/ temporarily)
+- [ ] Get book PDF and cover image from author
 
-**Deliverables:**
-- Authentication working on member portal
-- Database connected and migrated
-- Email sending functional (test email)
-- File upload/download tested
+**Step 1: Database (1-2 hours)**
+- [ ] Add `bookOrders` table to `src/lib/db/schema.ts`
+- [ ] Run migration: `npx drizzle-kit generate:sqlite && npx drizzle-kit push:sqlite`
+- [ ] Verify table exists in Turso dashboard
 
-**Dependencies:**
-- None (blocks all other phases)
+**Step 2: Stripe Setup (1 hour)**
+- [ ] Install Stripe: `npm install stripe`
+- [ ] Create `src/lib/stripe.ts` (initialize Stripe client)
+- [ ] Create Stripe Product in dashboard (name: "Book Title", price: $XX)
+- [ ] Copy Price ID for use in checkout
 
-**Estimated Effort:** 20-30 hours
+**Step 3: Book Sales Page (2-3 hours)**
+- [ ] Create `src/app/book/page.tsx`
+- [ ] Add book cover to `public/book/cover.jpg`
+- [ ] Hardcode book info (title, description, price)
+- [ ] Add "Buy Now" button
+- [ ] Make mobile-responsive
+- [ ] Add SEO meta tags
 
----
+**Step 4: Checkout API (2-3 hours)**
+- [ ] Create `src/app/api/checkout/create-session/route.ts`
+- [ ] Implement Stripe Checkout Session creation
+- [ ] Set success_url: `/book/success?session_id={CHECKOUT_SESSION_ID}`
+- [ ] Set cancel_url: `/book`
+- [ ] Wire up "Buy Now" button to call API
 
-### Phase 1: Foundation (1 week)
-**MVP: Single book, direct checkout (no cart)**
+**Step 5: Webhook Handler (2-3 hours)**
+- [ ] Create `src/app/api/stripe/webhook/route.ts`
+- [ ] Verify webhook signature
+- [ ] Handle `checkout.session.completed` event
+- [ ] Insert order record into `bookOrders` table
+- [ ] Test with Stripe CLI: `stripe listen --forward-to localhost:3003/api/stripe/webhook`
 
-**Tasks:**
-- [ ] Install dependencies
-  ```bash
-  npm install stripe @stripe/stripe-js zustand prisma @prisma/client resend pdf-lib zod
-  npm install -D @types/node
-  ```
-- [ ] Set up Stripe account (test mode)
-- [ ] Create database schema (Book, Order, OrderItem models)
-- [ ] Run Prisma migrations
-- [ ] Configure Stripe client (`src/lib/stripe.ts`)
-- [ ] Create "Books" collection in Decap CMS
-- [ ] Add first test book via CMS
-- [ ] Create book catalog page (list view only)
-- [ ] Create book detail page (static generation)
+**Step 6: Success Page + Download (3-4 hours)**
+- [ ] Create `src/app/book/success/page.tsx`
+- [ ] Retrieve session ID from query param
+- [ ] Verify session with Stripe API
+- [ ] Upload PDF to Vercel Blob (or keep in public/ for now)
+- [ ] Create `src/app/api/download/route.ts`
+- [ ] Generate signed URL (24-hour expiry)
+- [ ] Display download button on success page
 
-**Deliverables:**
-- Books visible on website
-- Database schema deployed
-- One test book in catalog
-- Book detail pages rendering
+**Step 7: Testing (1-2 hours)**
+- [ ] Test successful purchase with test card (4242 4242 4242 4242)
+- [ ] Test declined card (4000 0000 0000 0002)
+- [ ] Verify order appears in database
+- [ ] Verify download link works
+- [ ] Verify download link expires after 24 hours
+- [ ] Test on mobile device
 
-**Acceptance Criteria:**
-- `/books` page displays books from CMS
-- `/books/[slug]` shows full book details
-- Cover images load properly
-- Price displays correctly
-- SEO meta tags present
+**Step 8: Deploy (1 hour)**
+- [ ] Add production Stripe keys to Vercel env vars
+- [ ] Deploy to production
+- [ ] Configure production webhook endpoint in Stripe dashboard
+- [ ] Test live purchase (real card, real money - refund after)
+- [ ] Update production URL in code if needed
 
-**Estimated Effort:** 25-35 hours
-
----
-
-### Phase 2: Checkout & Payment (1.5 weeks)
-**Goal: Complete purchase flow for single book**
-
-**Tasks:**
-- [ ] Create Stripe checkout session API (`/api/stripe/create-payment-intent`)
-- [ ] Build checkout page UI
-- [ ] Integrate Stripe Payment Element
-- [ ] Collect shipping address form (if physical book)
-- [ ] Server-side price validation
-- [ ] Create webhook endpoint (`/api/stripe/webhook`)
-- [ ] Implement webhook signature verification
-- [ ] Handle `payment_intent.succeeded` event
-  - Create order in database
-  - Send confirmation email
-  - Generate download link for digital books
-- [ ] Handle `payment_intent.failed` event
-- [ ] Create order confirmation page
-- [ ] Build email templates (order confirmation, digital delivery)
-- [ ] Test with Stripe test cards
-
-**Deliverables:**
-- Working checkout flow
-- Order creation on successful payment
-- Email notifications sent
-- Order confirmation page
-
-**Acceptance Criteria:**
-- User can complete purchase with test card
-- Order appears in database
-- Confirmation email received
-- Digital download link works
-- Failed payments show error message
-- Webhook events logged
-
-**Test Scenarios:**
-- ✅ Successful card payment (4242 4242 4242 4242)
-- ✅ Declined card (4000 0000 0000 0002)
-- ✅ Insufficient funds (4000 0000 0000 9995)
-- ✅ Digital book purchase
-- ✅ Physical book purchase
-- ✅ Webhook replay attack (signature invalid)
-
-**Estimated Effort:** 35-45 hours
+**Total Estimated Time: 12-20 hours**
 
 ---
 
-### Phase 3: Shopping Cart (1 week)
-**Goal: Multiple book purchases in one transaction**
+## Future Expansion Phases (Not in MVP)
 
-**Tasks:**
-- [ ] Create Zustand cart store
-- [ ] Build cart icon with item count (header)
-- [ ] Create cart drawer component (slide-out)
-- [ ] Implement cart operations (add, remove, update quantity)
-- [ ] Cart persistence (localStorage)
-- [ ] Cart validation API (`/api/cart/validate`)
-- [ ] Update checkout to accept multiple items
-- [ ] Update order creation to handle multiple items
-- [ ] Modify Stripe payment intent to include line items
-- [ ] Test multi-item purchases
+### Phase 2: Multiple Books (15-20 hours)
+- Dynamic book pages from CMS
+- Book catalog page
+- Book detail pages with SEO
 
-**Deliverables:**
-- Shopping cart with add/remove/update
-- Cart persists across sessions
-- Multi-item checkout works
-- Order confirmation shows all items
+### Phase 3: Shopping Cart (20-25 hours)
+- Cart state management
+- Multi-item checkout
+- Quantity selection
 
-**Acceptance Criteria:**
-- Add to cart from book detail page
-- Cart icon shows correct count
-- Cart drawer opens with animation
-- Remove item works
-- Quantity adjustment works (1-10)
-- Cart total calculates correctly
-- Empty cart shows placeholder
-- Checkout processes all items
-- Confirmation email lists all purchases
-
-**Estimated Effort:** 25-30 hours
-
----
-
-### Phase 4: Order Management (1 week)
-**Goal: Users can view orders, download books**
-
-**Tasks:**
-- [ ] Create "My Orders" page in member portal (`/app/orders`)
-- [ ] Build order list component
-- [ ] Create order detail page
-- [ ] Implement download URL generation API (`/api/orders/[orderId]/download`)
-- [ ] Add PDF watermarking with pdf-lib
-- [ ] Build "My Books" page (`/app/books`)
-- [ ] Create download button component
-- [ ] Add download expiry handling (24 hours)
-- [ ] Build order filtering (all, digital, physical)
-- [ ] Guest order access (email + order number lookup)
-
-**Deliverables:**
+### Phase 4: Member Portal Integration (15-20 hours)
 - Order history page
-- Digital download functionality
+- Re-download functionality
+- Link orders to user accounts
+
+### Phase 5: Admin Dashboard (20-25 hours)
+- View all orders
+- Filter and search
+- Export to CSV
+- Refund handling
+
+### Phase 6: Advanced Features (variable)
 - PDF watermarking
-- Guest order lookup
-
-**Acceptance Criteria:**
-- Logged-in users see all orders
-- Orders sorted by date (newest first)
-- Click order to view details
-- Download button generates fresh URL
-- PDF opens with email watermark
-- Download URL expires after 24 hours
-- Physical orders show "pending shipment"
-- Guest users can access order via email link
-
-**Estimated Effort:** 30-40 hours
+- Email customization
+- Discount codes
+- Physical book fulfillment
+- etc.
 
 ---
 
-### Phase 5: Admin Fulfillment (1 week)
-**Goal: Admins can manage orders and fulfill shipments**
-
-**Tasks:**
-- [ ] Create admin middleware (role-based access)
-- [ ] Build admin order dashboard (`/admin/orders`)
-- [ ] Order list with filters (pending, fulfilled, all)
-- [ ] Order detail page for admin
-- [ ] Implement fulfillment API (`/api/admin/orders/[orderId]/fulfill`)
-- [ ] Add tracking number field
-- [ ] Send shipping notification email
-- [ ] Export orders to CSV
-- [ ] Add order search (by email, order number)
-- [ ] Packing slip generation (print view)
-
-**Deliverables:**
-- Admin order dashboard
-- Order fulfillment workflow
-- Shipping notifications
-- CSV export
-
-**Acceptance Criteria:**
-- Admin can view all orders
-- Filter by status works
-- Mark order as fulfilled
-- Add tracking number
-- Customer receives shipping email with tracking
-- CSV export includes all order data
-- Print packing slip shows address and items
-- Non-admin users cannot access admin pages
-
-**Estimated Effort:** 25-35 hours
-
----
-
-### Phase 6: Polish & Optimization (1 week)
-**Goal: Production-ready experience**
-
-**Tasks:**
-- [ ] Add loading states (skeleton screens)
-- [ ] Error boundary components
-- [ ] Retry logic for failed webhooks
-- [ ] Rate limiting on checkout endpoint
-- [ ] Add analytics events (add to cart, purchase, etc.)
-- [ ] SEO optimization (structured data for books)
-- [ ] Mobile responsiveness testing
-- [ ] Accessibility audit (WCAG AA compliance)
-- [ ] Performance optimization
-  - Image optimization (next/image)
-  - Code splitting for checkout
-  - Lazy load cart drawer
-- [ ] Error tracking setup (Sentry)
-- [ ] Create user documentation
-- [ ] Create admin documentation
-
-**Deliverables:**
-- Polished UI/UX
-- Performance optimized
-- Production monitoring
-- Documentation
-
-**Acceptance Criteria:**
-- Lighthouse score >90 on all pages
-- Mobile usability 100%
-- Accessibility score >90
-- All user flows tested on mobile
-- Error tracking active
-- Documentation published
-
-**Estimated Effort:** 25-30 hours
-
----
-
-### Phase 7: Advanced Features (Future)
-**Post-MVP enhancements**
-
-**Potential Features:**
-- Bundle deals (course + book discounts)
-- Discount codes / coupon system
-- Affiliate program
-- Book reviews (user-generated)
-- Wishlist functionality
-- Gift purchases
-- Pre-orders for upcoming books
-- Print-on-demand integration
-- International shipping
-- Multi-currency support
-- Subscription box (monthly book club)
-- Audiobook support
-- Sample chapter downloads (lead magnet)
-- Automatic upsells (related courses)
-
----
-
-## Success Metrics
+## Success Metrics (MVP)
 
 ### Primary KPIs
+**Track in first 30 days:**
+- Total revenue
+- Number of purchases
+- Failed payment rate (target: <5%)
+- Sales page visits (Google Analytics or Vercel Analytics)
+- Conversion rate (visits → purchases)
 
-**Revenue Metrics:**
-- Monthly book revenue
-- Average order value (AOV)
-- Revenue per visitor (RPV)
-- Digital vs. physical split
+### Monitoring (MVP)
+- **Payments:** Stripe Dashboard (free, built-in)
+- **Orders:** Query Turso database directly or use Drizzle Studio
+- **Analytics:** Vercel Analytics (free) or Google Analytics 4
 
-**Conversion Metrics:**
-- Catalog → Detail page (CTR)
-- Detail page → Add to cart (conversion rate)
-- Cart → Checkout (cart abandonment rate)
-- Checkout → Purchase (checkout conversion rate)
-- Overall conversion funnel (catalog → purchase)
+### Success Criteria
+- At least 1 successful purchase within first week (validates technical implementation)
+- Failed payment rate <10% (indicates smooth checkout experience)
+- No critical bugs reported by purchasers
 
-**Operational Metrics:**
-- Failed payment rate (<5% target)
-- Webhook processing success rate (>99.9% target)
-- Order fulfillment time (physical books <48 hours)
-- Digital delivery time (<5 minutes)
-- Support tickets related to orders (<2% of orders)
-
-### Target Metrics (6 months post-launch)
-
-- **Monthly revenue:** $5,000+
-- **Conversion rate:** 2-5% (catalog visitors → purchasers)
-- **AOV:** $40-60
-- **Cart abandonment:** <70%
-- **Failed payments:** <3%
-- **Fulfillment time:** <24 hours (90th percentile)
-- **Customer satisfaction:** >4.5/5 stars
-
-### Monitoring Tools
-
-- **Analytics:** Vercel Analytics or Google Analytics 4
-- **Error Tracking:** Sentry
-- **Stripe Dashboard:** Payment metrics, revenue reports
-- **Custom Dashboard:** Order fulfillment metrics (build in admin panel)
+**Note:** Advanced metrics (AOV, cart abandonment, etc.) only matter once you have multiple products and shopping cart.
 
 ---
 
-## Dependencies & Blockers
+## Dependencies & Blockers (MVP)
 
-### Critical Blockers (Must Resolve Before Start)
+### Critical - Required Before Starting
+**None!** MVP can start immediately with existing infrastructure.
+- ✅ Turso database already set up (just need schema migration)
+- ✅ Vercel hosting already configured
+- ✅ No authentication needed (guest checkout only)
 
-**1. Authentication System (HIGH PRIORITY)**
-- **Issue:** Member portal has no authentication
-- **Impact:** Cannot link orders to users, no purchase history, no protected downloads
-- **Solution:** Implement NextAuth.js with GitHub OAuth + email/password
-- **Timeline:** 1 week
-- **Owner:** Backend team
-
-**2. Database Infrastructure**
-- **Issue:** No database currently (file-based CMS only)
-- **Impact:** Cannot store orders, user data, transactions
-- **Solution:** Add Prisma + PostgreSQL (or Supabase)
-- **Timeline:** 3-5 days
-- **Owner:** DevOps/Backend team
-
-### External Dependencies
-
+### External Setup (Can do in parallel - 1-2 hours)
 **1. Stripe Account**
-- Create account (free)
-- Complete business verification (1-3 days)
+- Create account (free, 5 minutes)
 - Activate test mode (immediate)
-- Production approval (submit when ready)
+- Create product and price in dashboard (10 minutes)
+- Production activation can wait until launch
 
-**2. Email Service Provider**
-- Resend account (recommended)
-- Domain verification (DNS records, 24-48 hours)
-- Send test emails
+**2. Vercel Blob**
+- Enable in Vercel dashboard (immediate)
+- Get API token (2 minutes)
+- OR use `public/` directory temporarily for MVP
 
-**3. File Storage**
-- Vercel Blob (if using Vercel hosting) - immediate
-- OR AWS S3 setup (1-2 days for IAM, bucket policies)
+### Content Required from Author (Before launch)
+- Book PDF file
+- Book cover image (JPG/PNG, ideally 600x900px)
+- Book description (2-3 paragraphs)
+- Book title, author name, price
 
-### Internal Dependencies
-
-**1. Content Creation**
-- At least 1 book ready for launch (PDF, cover image, metadata)
-- Ideally 3-5 books for catalog
-
-**2. Design Assets**
-- Book cover images (600x900px minimum)
-- Sample pages or preview PDFs
-- Email template designs
-
-**3. Legal/Compliance**
-- Terms of Service (mention refund policy)
-- Privacy Policy (mention payment data handling)
-- Refund policy (digital vs. physical)
-- Tax nexus determination (if selling physical products)
-
-**4. Business Operations**
-- Physical book inventory management
-- Shipping supplies (boxes, labels)
-- Return/refund process
-- Customer support procedures
+### Legal (Can defer to launch)
+- Add refund policy to sales page ("Digital products non-refundable after download")
+- Update Privacy Policy to mention Stripe (use Stripe's template)
 
 ---
 
-## Risk Assessment
+## Risk Assessment (MVP)
 
 ### Technical Risks
 
-**Risk 1: Webhook Reliability**
-- **Likelihood:** Medium
-- **Impact:** High (orders not created if webhook fails)
+**Risk 1: Webhook Failure**
+- **Impact:** Orders not recorded (user paid but no download)
 - **Mitigation:**
-  - Implement retry logic with exponential backoff
+  - Test webhooks thoroughly with Stripe CLI
   - Log all webhook events
-  - Alert on failures
-  - Poll Stripe API for payment status as backup
-  - Test webhook handling thoroughly
+  - Monitor Stripe dashboard for webhook delivery issues
+  - **Workaround:** User can email support with receipt, manually look up session in Stripe dashboard
 
-**Risk 2: Digital File Piracy**
-- **Likelihood:** Medium
-- **Impact:** Medium (revenue loss from shared PDFs)
+**Risk 2: PDF Download Issues**
+- **Impact:** Customer can't access purchased book
 - **Mitigation:**
-  - PDF watermarking with purchaser email
-  - Expiring download URLs (24 hours)
-  - Monitor for unauthorized distribution
-  - Consider DRM if piracy becomes significant
-  - Price books competitively to reduce piracy incentive
+  - Test download from success page multiple times
+  - Ensure Vercel Blob URLs are correctly signed
+  - Set clear expiry messaging ("Link expires in 24 hours")
+  - **Workaround:** Support can regenerate download link manually via success page URL
 
-**Risk 3: Payment Fraud**
-- **Likelihood:** Low-Medium
-- **Impact:** High (chargebacks, financial loss)
+**Risk 3: Stripe Test/Production Key Mixup**
+- **Impact:** Test purchases in production or vice versa
 - **Mitigation:**
-  - Use Stripe Radar for fraud detection (included)
-  - Limit digital delivery to verified payments
-  - Monitor chargeback rate
-  - Require CVV for all transactions
-  - Implement velocity limits (max purchases per user per day)
-
-**Risk 4: Database Performance**
-- **Likelihood:** Low (small scale initially)
-- **Impact:** Medium (slow page loads, timeouts)
-- **Mitigation:**
-  - Index frequently queried fields (userId, email, orderNumber)
-  - Cache book catalog data (revalidate on CMS publish)
-  - Use connection pooling (Prisma built-in)
-  - Monitor query performance
+  - Use environment variables for all keys
+  - Clearly label test vs. production in Stripe dashboard
+  - Test one real purchase after deployment (then refund)
 
 ### Business Risks
 
-**Risk 5: Low Conversion Rate**
-- **Likelihood:** Medium
-- **Impact:** High (feature doesn't generate revenue)
+**Risk 4: Low Sales Volume**
+- **Impact:** MVP doesn't validate product-market fit
 - **Mitigation:**
-  - A/B test pricing
-  - Offer digital + physical bundles (higher perceived value)
-  - Free sample chapters as lead magnet
-  - Cross-sell to existing course members (they already trust brand)
-  - Guest checkout to reduce friction
+  - Price competitively for initial launch
+  - Promote to existing audience first (warm traffic)
+  - If no sales in 30 days, reassess pricing/positioning
+  - **MVP benefit:** Low time investment (12-20 hours) limits downside
 
-**Risk 6: High Cart Abandonment**
-- **Likelihood:** Medium-High (typical e-commerce is 60-80%)
-- **Impact:** Medium (lost sales)
+**Risk 5: Chargebacks/Refund Requests**
+- **Impact:** Revenue loss, Stripe fees ($15/chargeback)
 - **Mitigation:**
-  - Abandon cart email sequence (if user logged in)
-  - Show security badges on checkout
-  - Display total upfront (no surprise fees)
-  - Fast checkout (minimize form fields)
-  - Apple Pay / Google Pay for one-click purchase
-
-**Risk 7: Fulfillment Bottleneck**
-- **Likelihood:** Medium (manual process)
-- **Impact:** Medium (slow shipping, customer dissatisfaction)
-- **Mitigation:**
-  - Clear fulfillment SLA (ship within 48 hours)
-  - Admin dashboard prioritizes pending orders
-  - Consider ShipStation integration for scaling
-  - Automate packing slip generation
-
-### Operational Risks
-
-**Risk 8: Customer Support Volume**
-- **Likelihood:** Medium
-- **Impact:** Medium (time-consuming, support costs)
-- **Mitigation:**
-  - Comprehensive FAQ page
-  - Self-service order tracking
-  - Clear refund policy displayed
-  - Automated emails reduce "where is my order" tickets
-  - Knowledge base for common issues
-
-**Risk 9: Refund/Chargeback Rate**
-- **Likelihood:** Low
-- **Impact:** Medium (revenue loss, Stripe fees)
-- **Mitigation:**
-  - Clear refund policy (digital books non-refundable after download)
-  - 30-day refund for physical books (unopened)
-  - High-quality book covers and descriptions (set accurate expectations)
-  - Prompt customer service
-  - Target <1% chargeback rate
+  - Clear refund policy on sales page
+  - Accurate book description (set expectations)
+  - Respond quickly to support inquiries
+  - For MVP: Accept 1-2 refunds as cost of learning
 
 ---
 
-## Open Questions
+## Open Questions (MVP)
 
-### Product Questions
+### Must Decide Before Starting
 
-1. **Pricing Strategy**
-   - Q: What price points for books? ($9.99, $19.99, $29.99 tiers?)
-   - Q: Bundle discount percentage? (e.g., digital + physical for 20% off?)
-   - Q: Dynamic pricing or fixed?
+1. **Book Price**
+   - Q: What is the book priced at? ($XX.XX)
+   - A: ____________ (fill in before implementation)
 
 2. **Refund Policy**
-   - Q: Are digital books refundable? (Industry standard: no refunds after download)
-   - Q: Physical book return window? (30 days?)
-   - Q: Restocking fee for physical returns?
+   - Q: Any refunds allowed for digital book?
+   - Recommendation: "Digital products are non-refundable after download" (industry standard)
+   - A: ____________ (decision needed)
 
-3. **Content Strategy**
-   - Q: How many books at launch? (Recommend 3-5 minimum)
-   - Q: Release cadence? (New book every quarter?)
-   - Q: Workbooks vs. full books vs. journals?
+3. **File Storage**
+   - Q: Use Vercel Blob ($0.15/GB) or keep PDF in `public/` initially?
+   - Recommendation: `public/` for MVP (faster), migrate to Blob when scaling
+   - A: ____________ (decision needed)
 
-4. **Cross-Selling**
-   - Q: Should book purchasers get discount on course? (Lead gen strategy)
-   - Q: Should course members get free/discounted books? (Retention strategy)
-   - Q: Bundle books with specific course modules?
+### Can Defer to Later
 
-### Technical Questions
+1. **Tax Collection**
+   - Stripe automatically calculates tax based on customer location
+   - For US digital products, usually no sales tax
+   - No action needed for MVP
 
-1. **File Storage**
-   - Q: Vercel Blob vs. AWS S3? (Cost, simplicity, scalability)
-   - Q: Max file size for digital books? (Assume <50MB?)
-   - Q: Support EPUB/MOBI or PDF only?
+2. **International Sales**
+   - Stripe Checkout supports international cards automatically
+   - No additional work needed for MVP
 
-2. **Tax Handling**
-   - Q: Which states require sales tax collection? (Stripe Tax handles automatically)
-   - Q: Is company registered for sales tax? (Economic nexus thresholds)
-   - Q: Tax-exempt customers? (Non-profit, education?)
-
-3. **Internationalization**
-   - Q: Launch with US-only or international? (Recommend US-only MVP)
-   - Q: Future plans for non-USD currencies?
-   - Q: International shipping rates?
-
-4. **Authentication**
-   - Q: Use existing auth system or implement new? (Depends on Phase 0 decision)
-   - Q: Social login options? (GitHub, Google, Facebook?)
-   - Q: Guest checkout allowed? (Recommend yes)
-
-### Operations Questions
-
-1. **Fulfillment**
-   - Q: Who handles physical book fulfillment? (In-house or 3PL?)
-   - Q: Current inventory levels?
-   - Q: Inventory management system?
-
-2. **Customer Support**
-   - Q: Who handles order support? (Dedicated support or general inquiries?)
-   - Q: Support hours? (Business hours only or 24/7?)
-   - Q: Expected support volume?
-
-3. **Analytics**
-   - Q: Which metrics to track daily vs. weekly?
-   - Q: Who has access to admin dashboard?
-   - Q: Reporting cadence (daily, weekly, monthly)?
+3. **Support Process**
+   - Who responds to "I paid but can't download" emails?
+   - Recommendation: Author checks Stripe dashboard, manually sends success page URL
+   - Can formalize later if volume increases
 
 ---
 
 ## Appendix
 
-### A. Stripe Webhook Events Reference
+### A. Stripe Webhook Testing
 
-**Events to Handle:**
-
-| Event | Priority | Action |
-|-------|----------|--------|
-| `payment_intent.succeeded` | Critical | Create order, send confirmation email, deliver digital books |
-| `payment_intent.payment_failed` | High | Log failure, notify customer (optional) |
-| `charge.refunded` | High | Update order status to refunded, send refund confirmation |
-| `charge.dispute.created` | Medium | Alert admin, flag order for review |
-| `payment_intent.canceled` | Low | Log event (usually user canceled) |
-
-**Webhook Testing:**
+**Install Stripe CLI:**
 ```bash
-# Install Stripe CLI
 brew install stripe/stripe-cli/stripe
+```
 
-# Login
+**Test Webhooks Locally:**
+```bash
+# Login to Stripe
 stripe login
 
 # Forward webhooks to local dev server
 stripe listen --forward-to localhost:3003/api/stripe/webhook
 
-# Trigger test event
-stripe trigger payment_intent.succeeded
+# In another terminal, trigger test checkout completion
+stripe trigger checkout.session.completed
 ```
 
-### B. Email Templates Required
+**Webhook Event to Handle (MVP):**
+- `checkout.session.completed` - Critical (create order, mark as completed)
 
-1. **Order Confirmation (All Orders)**
-   - Subject: "Your Becoming Diamond order confirmation (#ORDER_NUMBER)"
-   - Content: Order summary, items, total, billing address, expected delivery
-   - CTA: View order details (link to order page)
+### B. MVP Testing Checklist
 
-2. **Digital Delivery (Digital Books)**
-   - Subject: "Your books are ready to download!"
-   - Content: List of purchased books with download buttons
-   - Note: Download links expire in 24 hours
-   - CTA: Download now
+**Pre-Launch Testing (Must Complete):**
 
-3. **Shipping Notification (Physical Books)**
-   - Subject: "Your order has shipped!"
-   - Content: Tracking number, carrier, estimated delivery
-   - CTA: Track package
+- [ ] **Happy Path**
+  - [ ] Can view book sales page
+  - [ ] "Buy Now" button redirects to Stripe Checkout
+  - [ ] Can complete purchase with test card (4242 4242 4242 4242)
+  - [ ] Redirected to success page after payment
+  - [ ] Download link appears on success page
+  - [ ] Can download PDF successfully
+  - [ ] Order appears in Turso database
 
-4. **Refund Processed**
-   - Subject: "Your refund has been processed"
-   - Content: Refund amount, reason, timeline (5-10 business days)
+- [ ] **Payment Failures**
+  - [ ] Declined card shows error (4000 0000 0000 0002)
+  - [ ] User can retry payment
 
-5. **Guest Order Access (Guest Checkout)**
-   - Subject: "Access your Becoming Diamond order"
-   - Content: Magic link to view order without logging in
-   - CTA: View order
-
-### C. Sample Book Markdown
-
-```markdown
----
-title: "The Diamond Journey: A Guide to Personal Transformation"
-slug: "diamond-journey"
-author: "Dr. Jane Smith"
-description: "Transform your mindset and unlock your potential with proven strategies from the Becoming Diamond philosophy."
-longDescription: |
-  The Diamond Journey takes you through the complete transformation process, from recognizing your raw potential to polishing yourself into the diamond you were meant to become.
-
-  This comprehensive guide includes:
-  - 12 core principles of transformation
-  - Weekly exercises and journal prompts
-  - Case studies from successful program graduates
-  - Integration practices for lasting change
-
-  Perfect for new members or those deepening their practice.
-coverImage: "/images/books/diamond-journey-cover.jpg"
-priceDigital: 29.99
-pricePhysical: 39.99
-priceBundle: 59.99
-isbn: "978-1-234567-89-0"
-pageCount: 240
-publishDate: "2025-03-01"
-published: true
-formatOptions: ["digital", "physical", "bundle"]
-samplePdf: "/samples/diamond-journey-sample.pdf"
-digitalFile: "books/diamond-journey-full.pdf"  # Relative to storage bucket
-tags: ["transformation", "mindset", "foundational"]
-featured: true
----
-
-## About This Book
-
-The Diamond Journey is the essential companion to the Becoming Diamond program...
-
-## What You'll Learn
-
-- How to identify and overcome limiting beliefs
-- The science behind lasting behavior change
-- Daily practices for maintaining momentum
-- ...
-
-## Who This Book Is For
-
-- New program members looking for structure
-- Anyone feeling stuck in their personal growth
-- Coaches and facilitators teaching transformation
-- ...
-
-## Testimonials
-
-> "This book changed my life. The exercises helped me break through barriers I didn't even know I had." - Sarah M.
-
-## Table of Contents
-
-1. Introduction: Your Diamond Potential
-2. Chapter 1: Recognizing the Rough
-3. Chapter 2: The Pressure Process
-...
-```
-
-### D. Testing Checklist
-
-**Pre-Launch Testing:**
-
-- [ ] **Payment Flow**
-  - [ ] Successful payment (test card 4242 4242 4242 4242)
-  - [ ] Declined card (4000 0000 0000 0002)
-  - [ ] Insufficient funds (4000 0000 0000 9995)
-  - [ ] 3D Secure required (4000 0027 6000 3184)
-  - [ ] Apple Pay (if supported)
-  - [ ] Google Pay (if supported)
-
-- [ ] **Order Creation**
-  - [ ] Digital-only order
-  - [ ] Physical-only order
-  - [ ] Bundle order (digital + physical)
-  - [ ] Multi-item order (3+ books)
-  - [ ] Guest checkout
-  - [ ] Logged-in user checkout
-
-- [ ] **Email Delivery**
-  - [ ] Order confirmation received
-  - [ ] Digital download links work
-  - [ ] Shipping notification received
-  - [ ] Refund confirmation received
-
-- [ ] **Digital Delivery**
-  - [ ] Download link generates successfully
-  - [ ] PDF opens correctly
-  - [ ] Watermark shows correct email
-  - [ ] Download link expires after 24 hours
-  - [ ] Re-download generates new link
-
-- [ ] **Admin Functions**
-  - [ ] View all orders
-  - [ ] Filter by status
-  - [ ] Mark order as fulfilled
-  - [ ] Add tracking number
-  - [ ] Export to CSV
-  - [ ] Print packing slip
-
-- [ ] **Error Handling**
-  - [ ] Webhook signature verification fails
-  - [ ] Duplicate webhook events (idempotency)
-  - [ ] Stripe API timeout
-  - [ ] Database connection error
-  - [ ] File storage unavailable
-
-- [ ] **Security**
-  - [ ] Cannot access other users' orders
-  - [ ] Admin routes require authentication
-  - [ ] Download URLs are signed
-  - [ ] Webhook endpoint verifies signatures
-  - [ ] Rate limiting on checkout
-
-- [ ] **Performance**
-  - [ ] Catalog page <2s LCP
-  - [ ] Checkout page <1.5s LCP
-  - [ ] Payment processing <3s
-  - [ ] Download generation <1s
-  - [ ] Mobile performance acceptable
+- [ ] **Download Security**
+  - [ ] Download URL expires after 24 hours
+  - [ ] Can re-access success page via bookmark (generates fresh URL)
+  - [ ] Invalid session_id shows error message
 
 - [ ] **Mobile**
-  - [ ] Catalog browsing on mobile
-  - [ ] Book detail page responsive
-  - [ ] Cart drawer usable on mobile
-  - [ ] Checkout form mobile-friendly
-  - [ ] Touch targets >44px
+  - [ ] Sales page looks good on mobile
+  - [ ] Stripe Checkout works on mobile
+  - [ ] Can download PDF on mobile device
 
-- [ ] **Accessibility**
-  - [ ] Keyboard navigation works
-  - [ ] Screen reader announces actions
-  - [ ] Color contrast WCAG AA
-  - [ ] Form labels properly associated
-  - [ ] Error messages announced
+- [ ] **Production**
+  - [ ] Test one real purchase with real card
+  - [ ] Verify webhook fires in production
+  - [ ] Refund test purchase in Stripe dashboard
 
 ---
 
@@ -1402,11 +626,41 @@ The Diamond Journey is the essential companion to the Becoming Diamond program..
 
 ---
 
+## Cost Estimate (MVP)
+
+### Development Time: 12-20 hours @ $XX/hour = $XXX-$XXX
+
+### Monthly Operational Costs:
+- **Stripe:** 2.9% + $0.30 per transaction (no monthly fee)
+- **Turso:** Free tier (500M row reads/month) - adequate for MVP
+- **Vercel Blob:** $0.15/GB storage, $0.20/GB transfer - ~$1-5/month
+- **Vercel Hosting:** Likely already covered by existing plan
+
+**Total Monthly: ~$1-5 (plus Stripe transaction fees)**
+
+### Break-Even Analysis:
+If book sells for $29:
+- Stripe fee: $1.14
+- Net per sale: $27.86
+- Break-even at ~1-2 sales (covers first month ops)
+- Development costs recovered after ~10-20 sales (assuming $500-1000 dev investment)
+
+### Comparison to Alternatives:
+- **Gumroad:** 10% fee ($2.90/sale) + payment processing
+- **Amazon KDP:** 30-65% commission
+- **Custom solution:** $0 commission (only 2.9% + $0.30 payment processing)
+
+**ROI:** If this generates 50+ sales, MVP pays for itself and validates building more features.
+
+---
+
 ## Document History
 
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
-| 1.0 | 2025-10-16 | Product Team | Initial draft |
+| 1.0 | 2025-10-16 | Product Team | Initial draft (comprehensive, 160-215 hours) |
+| 1.1 | 2025-10-16 | Engineering Team | Updated database specs from Prisma + PostgreSQL to Turso + Drizzle ORM |
+| 2.0 | 2025-10-16 | Product Team | **Scope reduction to MVP (12-20 hours)** - Single book, guest checkout, Stripe-hosted payment, minimal features. Future expansion documented but not implemented. |
 
 ---
 
