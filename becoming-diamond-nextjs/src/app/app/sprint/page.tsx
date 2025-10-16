@@ -12,6 +12,7 @@ import {
   IconTarget,
   IconCalendar,
   IconArrowRight,
+  IconPlayerPlay,
 } from '@tabler/icons-react';
 
 export default function SprintOverviewPage() {
@@ -170,23 +171,23 @@ export default function SprintOverviewPage() {
           </div>
         </Link>
 
-        <div className="p-6 bg-black border border-gray-800 rounded-lg">
-          <h3 className="text-xl font-light mb-2">What to Expect</h3>
-          <ul className="space-y-2 text-sm text-gray-400">
-            <li className="flex items-center gap-2">
-              <IconFlame size={16} className="text-primary" />
-              Daily 15-20 minute lessons
-            </li>
-            <li className="flex items-center gap-2">
-              <IconTarget size={16} className="text-primary" />
-              Practical exercises and challenges
-            </li>
-            <li className="flex items-center gap-2">
-              <IconTrophy size={16} className="text-primary" />
-              Progressive unlocking system
-            </li>
-          </ul>
-        </div>
+        <Link
+          href="/app/sprint/watch"
+          className="block p-6 bg-black border border-gray-800 rounded-lg hover:border-primary transition-all group"
+        >
+          <div className="flex items-start justify-between mb-4">
+            <div>
+              <h3 className="text-xl font-light mb-2 group-hover:text-primary transition-colors flex items-center gap-2">
+                <IconPlayerPlay size={20} className="text-primary" />
+                Watch Playlist
+              </h3>
+              <p className="text-sm text-gray-400">
+                Watch all videos continuously with auto-play. Perfect for binge-watching your transformation.
+              </p>
+            </div>
+            <IconArrowRight className="text-primary opacity-0 group-hover:opacity-100 transition-opacity" size={24} />
+          </div>
+        </Link>
       </motion.div>
 
       {/* Info Section */}
