@@ -68,7 +68,7 @@ export function BookSalesSection({ className }: BookSalesSectionProps) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          priceId: "price_1SDQ50RVLr5O3VREdsw5inuj",
+          priceId: "price_1SIvHtRVLr5O3VREAT3TYyh2",
           productId: "prod_T9jYQj5hLB9gYw",
         }),
       });

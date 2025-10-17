@@ -27,8 +27,8 @@ export async function POST(request: NextRequest) {
           quantity: 1,
         },
       ],
-      success_url: `${request.nextUrl.origin}/app?success=true`,
-      cancel_url: `${request.nextUrl.origin}/?canceled=true`,
+      success_url: `${request.nextUrl.origin}/book/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${request.nextUrl.origin}/book`,
       automatic_tax: { enabled: true },
     });
 
