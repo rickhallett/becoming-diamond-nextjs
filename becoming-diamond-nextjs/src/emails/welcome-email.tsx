@@ -48,7 +48,7 @@ export function WelcomeEmail({ email, unsubscribeUrl }: WelcomeEmailProps) {
 
           {/* What You'll Learn */}
           <Text style={text}>
-            Over the next 30 days, you'll learn to:
+            Over the next 30 days, you&apos;ll learn to:
           </Text>
 
           <ul style={list}>
@@ -61,8 +61,8 @@ export function WelcomeEmail({ email, unsubscribeUrl }: WelcomeEmailProps) {
           {/* Testimonial Box */}
           <Section style={testimonialBox}>
             <Text style={testimonialText}>
-              "This program fundamentally changed how I show up in high-stakes situations.
-              I'm no longer reactive—I'm present."
+              &quot;This program fundamentally changed how I show up in high-stakes situations.
+              I&apos;m no longer reactive—I&apos;m present.&quot;
             </Text>
             <Text style={testimonialAuthor}>— Sarah K., Executive Coach</Text>
           </Section>
@@ -81,7 +81,7 @@ export function WelcomeEmail({ email, unsubscribeUrl }: WelcomeEmailProps) {
           {/* Footer */}
           <Section style={footer}>
             <Text style={footerText}>
-              You're receiving this because you signed up for the Diamond Sprint at{' '}
+              You&apos;re receiving this because you signed up for the Diamond Sprint at{' '}
               <Link href={baseUrl} style={link}>becomingdiamond.com</Link>
             </Text>
             <Text style={footerText}>

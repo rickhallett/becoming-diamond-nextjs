@@ -43,7 +43,7 @@ function replaceVideoPlaceholders(htmlContent: string): string {
     const options: Record<string, string> = {};
     if (optionsStr) {
       const pairs = optionsStr.split('|');
-      pairs.forEach((pair) => {
+      pairs.forEach((pair: string) => {
         const [key, value] = pair.split(':');
         if (key && value) {
           options[key.trim()] = value.trim();
