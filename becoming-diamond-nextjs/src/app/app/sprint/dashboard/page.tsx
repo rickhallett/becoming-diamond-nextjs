@@ -1,11 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { isDayAccessible, isDayCompleted, getProgressStats } from '@/lib/sprint-progress';
+import { isDayAccessible, isDayCompleted, getProgressStats, resetProgress } from '@/lib/sprint-progress';
 import ProgressBar from '@/components/sprint/ProgressBar';
 import DayCard from '@/components/sprint/DayCard';
 import { motion } from 'framer-motion';
 import { logSync as log } from '@/lib/logger';
+import { IconRefresh } from '@tabler/icons-react';
 
 interface DayData {
   slug: string;
@@ -41,6 +42,13 @@ export default function SprintDashboardPage() {
     loadData();
   }, []);
 
+  const handleReset = () => {
+    if (confirm('Reset all sprint progress? This will take you back to Day 1.')) {
+      resetProgress();
+      window.location.reload();
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -66,12 +74,26 @@ export default function SprintDashboardPage() {
         animate={{ opacity: 1, y: 0 }}
         className="mb-8"
       >
-        <h1 className="text-3xl font-light mb-2">
-          Your <span className="text-primary">30 Day Sprint</span>
-        </h1>
-        <p className="text-gray-400">
-          Track your progress through all 30 days of transformation
-        </p>
+        <div className="flex items-start justify-between">
+          <div>
+            <h1 className="text-3xl font-light mb-2">
+              Your <span className="text-primary">30 Day Sprint</span>
+            </h1>
+            <p className="text-gray-400">
+              Track your progress through all 30 days of transformation
+            </p>
+          </div>
+
+          {/* Test Reset Button */}
+          <button
+            onClick={handleReset}
+            className="flex items-center gap-2 px-4 py-2 text-sm border border-red-500/30 text-red-400 rounded-lg hover:bg-red-500/10 transition-colors"
+            title="Reset sprint progress (testing only)"
+          >
+            <IconRefresh size={16} />
+            Reset Progress
+          </button>
+        </div>
       </motion.div>
 
       {/* Progress Overview */}
