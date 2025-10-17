@@ -6,7 +6,6 @@ import Anthropic from '@anthropic-ai/sdk';
 import { log } from '@/lib/logger';
 
 export const runtime = 'nodejs';
-export const maxDuration = 60; // Allow up to 60 seconds for AI processing
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY!,
