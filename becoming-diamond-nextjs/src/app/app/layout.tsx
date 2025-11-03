@@ -195,7 +195,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                                             {active && (
                                                 <div className="absolute left-0 w-1 h-8 bg-primary rounded-r-full" />
                                             )}
-                                            <Icon className="w-5 h-5 flex-shrink-0" />
+                                            <Icon className="w-6 h-6 flex-shrink-0" />
                                             <span className="font-light">{item.name}</span>
                                         </div>
                                     </Link>

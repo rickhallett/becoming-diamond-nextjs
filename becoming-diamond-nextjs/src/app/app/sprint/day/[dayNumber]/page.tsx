@@ -44,6 +44,7 @@ export default function SprintDayPage() {
   const [completing, setCompleting] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [streakCount, setStreakCount] = useState(0);
+  const [isNavigating, setIsNavigating] = useState(false);
 
   useEffect(() => {
     async function loadDay() {
@@ -100,12 +101,13 @@ export default function SprintDayPage() {
   };
 
   const handleContinue = () => {
-    setShowModal(false);
+    setIsNavigating(true);
     if (dayNumber < 30) {
       router.push(`/app/sprint/day/${dayNumber + 1}`);
     } else {
       router.push('/app/sprint');
     }
+    // Modal will stay open until new page loads
   };
 
   const handleCloseModal = () => {
@@ -129,6 +131,9 @@ export default function SprintDayPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
+      {/* Hide content when navigating */}
+      {isNavigating && <div className="fixed inset-0 bg-black z-40" />}
+
       {/* Navigation Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
