@@ -3,8 +3,19 @@ import { render } from '@react-email/render';
 import { WelcomeEmail } from '@/emails/welcome-email';
 import { log } from '@/lib/logger';
 
-// Initialize Resend client
-export const resend = new Resend(process.env.RESEND_API_KEY);
+// Lazy-initialize Resend client to avoid build-time errors
+let resendInstance: Resend | null = null;
+
+function getResendClient(): Resend {
+  if (!resendInstance) {
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey) {
+      throw new Error('RESEND_API_KEY environment variable is not set');
+    }
+    resendInstance = new Resend(apiKey);
+  }
+  return resendInstance;
+}
 
 // Email configuration
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'hello@becomingdiamond.com';
@@ -43,6 +54,7 @@ export async function sendWelcomeEmail(
     );
 
     // Send email via Resend
+    const resend = getResendClient();
     const result = await resend.emails.send({
       from: FROM_EMAIL,
       to,
@@ -133,6 +145,7 @@ export async function sendAdminNotification(params: {
       </html>
     `;
 
+    const resend = getResendClient();
     await resend.emails.send({
       from: FROM_EMAIL,
       to: ADMIN_EMAIL,
