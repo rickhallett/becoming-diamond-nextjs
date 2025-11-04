@@ -1056,7 +1056,7 @@ export default function LandingAltAll() {
                                     </svg>
                                     <div>
                                         <div className="text-gray-400 text-sm mb-1">Email</div>
-                                        <a href="mailto:hello@becomingdiamond.com" className="text-white hover:text-primary transition-colors">
+                                        <a href="mailto:support@becomingdiamond.com" className="text-white hover:text-primary transition-colors">
                                             transform@becomingdiamond.com
                                         </a>
                                     </div>

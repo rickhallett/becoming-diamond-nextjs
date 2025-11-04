@@ -16,6 +16,8 @@ interface LeadMagnetSectionProps {
     ctaText: string;
     onSubmit?: (email: string) => void | Promise<void>;
     disclaimer?: string;
+    liabilityText?: string;
+    liabilityRequired?: boolean;
 }
 
 export function LeadMagnetSection({
@@ -27,10 +29,13 @@ export function LeadMagnetSection({
     ctaText,
     onSubmit,
     disclaimer,
+    liabilityText = "I understand that this program provides educational content and coaching guidance. I acknowledge that results vary and that I am responsible for my own implementation and outcomes.",
+    liabilityRequired = true,
 }: LeadMagnetSectionProps) {
     const router = useRouter();
     const [email, setEmail] = useState('');
     const [consent, setConsent] = useState(false);
+    const [noLiabilityAccepted, setNoLiabilityAccepted] = useState(false);
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
     const [message, setMessage] = useState('');
@@ -44,6 +49,12 @@ export function LeadMagnetSection({
             return;
         }
 
+        if (liabilityRequired && !noLiabilityAccepted) {
+            setStatus('error');
+            setMessage('Please acknowledge the terms to continue.');
+            return;
+        }
+
         setLoading(true);
         setStatus('idle');
         setMessage('');
@@ -54,7 +65,8 @@ export function LeadMagnetSection({
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     email,
-                    consentGiven: consent
+                    consentGiven: consent,
+                    noLiabilityAccepted
                 }),
             });
 
@@ -65,6 +77,7 @@ export function LeadMagnetSection({
                 setMessage(data.message);
                 setEmail('');
                 setConsent(false);
+                setNoLiabilityAccepted(false);
 
                 // Call optional onSubmit callback
                 if (onSubmit) {
@@ -73,7 +86,9 @@ export function LeadMagnetSection({
 
                 // Redirect to book page after 2 seconds
                 setTimeout(() => {
-                    router.push('/book?from=lead-capture');
+                    // Use window.location for full page reload to ensure proper component initialization
+                    // This prevents race conditions with Spotlight animations and component hydration
+                    window.location.href = '/book?from=lead-capture';
                 }, 2000);
             } else {
                 setStatus('error');
@@ -149,9 +164,24 @@ export function LeadMagnetSection({
                                 </span>
                             </label>
 
+                            {liabilityRequired && (
+                                <label className="flex items-start gap-3 text-left text-sm text-gray-300 cursor-pointer">
+                                    <input
+                                        type="checkbox"
+                                        checked={noLiabilityAccepted}
+                                        onChange={(e) => setNoLiabilityAccepted(e.target.checked)}
+                                        disabled={loading}
+                                        className="mt-1 w-4 h-4 rounded border-white/20 bg-black/50 text-primary focus:ring-primary focus:ring-offset-0 cursor-pointer disabled:opacity-50"
+                                    />
+                                    <span>
+                                        {liabilityText}
+                                    </span>
+                                </label>
+                            )}
+
                             <button
                                 type="submit"
-                                disabled={loading || !consent}
+                                disabled={loading || !consent || (liabilityRequired && !noLiabilityAccepted)}
                                 className="w-full bg-primary text-black px-8 py-4 text-lg font-medium rounded-lg hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 {loading ? 'Submitting...' : ctaText}

@@ -8,6 +8,7 @@ import { LampContainer } from "@/components/ui/lamp";
 import { Timeline } from "@/components/ui/timeline";
 import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input";
 import { EvervaultCard } from "@/components/ui/evervault-card";
+import { isFeatureEnabled } from "@/config/features";
 
 export default function CollectivePage() {
   return (
@@ -150,54 +151,56 @@ export default function CollectivePage() {
       </section>
 
       {/* DiamondMindAI */}
-      <section className="py-24 px-6 relative bg-black">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="flex flex-col items-center max-w-3xl mx-auto"
-        >
-          <div className="w-full flex justify-center mb-16">
-            <div className="relative w-[500px] h-[500px] max-w-full" style={{
-              maskImage: 'radial-gradient(circle, black 40%, transparent 70%)',
-              WebkitMaskImage: 'radial-gradient(circle, black 40%, transparent 70%)'
-            }}>
-              <EvervaultCard text="" className="w-full h-full" />
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="relative">
-                  <div className="absolute inset-0 bg-primary/30 blur-[120px] rounded-full" style={{ width: '400px', height: '400px', left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }} />
-                  <span className="relative z-20 text-4xl md:text-5xl font-bold tracking-wider drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]" style={{ whiteSpace: 'nowrap' }}>
-                    Diamond<span className="text-primary">Mind</span>AI
-                  </span>
+      {isFeatureEnabled('diamondMindAI') && (
+        <section className="py-24 px-6 relative bg-black">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="flex flex-col items-center max-w-3xl mx-auto"
+          >
+            <div className="w-full flex justify-center mb-16">
+              <div className="relative w-[500px] h-[500px] max-w-full" style={{
+                maskImage: 'radial-gradient(circle, black 40%, transparent 70%)',
+                WebkitMaskImage: 'radial-gradient(circle, black 40%, transparent 70%)'
+              }}>
+                <EvervaultCard text="" className="w-full h-full" />
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-primary/30 blur-[120px] rounded-full" style={{ width: '400px', height: '400px', left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }} />
+                    <span className="relative z-20 text-4xl md:text-5xl font-bold tracking-wider drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]" style={{ whiteSpace: 'nowrap' }}>
+                      Diamond<span className="text-primary">Mind</span>AI
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div className="w-full max-w-2xl">
-            <h3 className="text-2xl md:text-3xl mb-3 text-center text-gray-300">
-              Questions About DiamondMind Immersion?
-            </h3>
-            <p className="text-base md:text-lg mb-8 text-center text-gray-400">
-              Ask <span className="text-primary">DiamondMindAI</span>, our flagship model
-            </p>
-            <PlaceholdersAndVanishInput
-              placeholders={[
-                "What makes DiamondMind Immersion different?",
-                "How long is the transformation journey?",
-                "What happens in the 5 Pressure Room Intensives?",
-                "Is this right for emerging leaders?",
-                "What support do I get during the year?",
-              ]}
-              onChange={() => {}}
-              onSubmit={(e) => {
-                e.preventDefault();
-              }}
-            />
-          </div>
-        </motion.div>
-      </section>
+            <div className="w-full max-w-2xl">
+              <h3 className="text-2xl md:text-3xl mb-3 text-center text-gray-300">
+                Questions About DiamondMind Immersion?
+              </h3>
+              <p className="text-base md:text-lg mb-8 text-center text-gray-400">
+                Ask <span className="text-primary">DiamondMindAI</span>, our flagship model
+              </p>
+              <PlaceholdersAndVanishInput
+                placeholders={[
+                  "What makes DiamondMind Immersion different?",
+                  "How long is the transformation journey?",
+                  "What happens in the 5 Pressure Room Intensives?",
+                  "Is this right for emerging leaders?",
+                  "What support do I get during the year?",
+                ]}
+                onChange={() => { }}
+                onSubmit={(e) => {
+                  e.preventDefault();
+                }}
+              />
+            </div>
+          </motion.div>
+        </section>
+      )}
 
       {/* Pressure Room Journey Timeline */}
       <section className="py-24 px-6 relative bg-black">

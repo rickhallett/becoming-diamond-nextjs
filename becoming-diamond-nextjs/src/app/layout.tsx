@@ -23,6 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <title>Becoming Diamond - Transform Pressure into Clarity</title>
         {/* Resource hints for performance optimization */}
         <link rel="preconnect" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://js.stripe.com" />

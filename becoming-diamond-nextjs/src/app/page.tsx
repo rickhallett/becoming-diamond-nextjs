@@ -340,14 +340,14 @@ export default function LandingPage() {
                         Turning <span className="text-primary">Pressure</span> Into Power
                     </>
                 }
-                subtitle="Get the Free Diamond Sprint + Manifesto"
+                subtitle="Get the Free Diamond Sprint + Manifesto (Instant PDF Delivery)"
                 benefits={[
-                    { text: "The Diamond Manifesto – Daily identity upgrade ritual" },
-                    { text: "The 30-Day Diamond Sprint – Nervous system training tracker" },
+                    { text: "The Diamond Manifesto PDF – Your philosophical foundation (sent instantly via email)" },
+                    { text: "The 30-Day Diamond Sprint – Complete nervous system training program" },
                     { text: "Swiss Army Knife Reset Guide – Emotional regulation cheat sheet" }
                 ]}
                 bonusItem="BONUS Audio: &quot;The Boss: Who's Really Running Your Life?&quot;"
-                ctaText="Yes, I Want the Free Diamond Sprint"
+                ctaText="Send Me the Manifesto + Sprint Materials"
                 disclaimer="Discover the 3 tools that helped thousands regulate stress, rewire identity, and lead through chaos—in just 15 minutes a day."
             />
 
