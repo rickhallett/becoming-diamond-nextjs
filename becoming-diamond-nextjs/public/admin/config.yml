@@ -1,9 +1,9 @@
 backend:
   name: github
-  repo: owner/repo # Replace with your GitHub username/repo
+  repo: rickhallett/becoming-diamond-nextjs
   branch: main
-  base_url: http://localhost:3000 # Will be updated for production
-  auth_endpoint: api/auth
+  base_url: http://localhost:3003
+  auth_endpoint: api/cms-auth
 
 # Media files will be stored in the repo under public/uploads
 media_folder: "public/uploads"
@@ -76,11 +76,7 @@ collections:
       - {label: "Published", name: "published", widget: "boolean", default: true}
       - {label: "Duration (e.g., '15 minutes')", name: "duration", widget: "string"}
       - {label: "Difficulty", name: "difficulty", widget: "select", options: ["Beginner", "Intermediate", "Advanced"]}
-      - {label: "Week", name: "week", widget: "number", min: 1, max: 5}
-      - {label: "Tags", name: "tags", widget: "list", required: false}
-      - {label: "Video URL", name: "video", widget: "string", required: false}
-      - {label: "Audio URL", name: "audio", widget: "string", required: false}
-      - {label: "Images", name: "images", widget: "list", required: false}
+      - {label: "Video ID", name: "video", widget: "string", required: false}
       - {label: "Body", name: "body", widget: "markdown"}
 
   # Site Settings

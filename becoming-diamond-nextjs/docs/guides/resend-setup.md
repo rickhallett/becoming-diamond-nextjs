@@ -75,25 +75,25 @@ Add these variables to your `.env.local` file:
 ```bash
 # Resend Email Configuration
 RESEND_API_KEY=re_your_api_key_here
-RESEND_FROM_EMAIL=hello@becomingdiamond.com
+RESEND_FROM_EMAIL=support@becomingdiamond.com
 RESEND_ADMIN_EMAIL=admin@becomingdiamond.com  # Optional: for new lead notifications
 NEXT_PUBLIC_BASE_URL=https://becomingdiamond.com  # Production URL
 ```
 
 ### Environment Variable Descriptions:
 
-| Variable | Required | Description | Example |
-|----------|----------|-------------|---------|
-| `RESEND_API_KEY` | **Yes** | API key from Resend dashboard | `re_abc123...` |
-| `RESEND_FROM_EMAIL` | **Yes** | Verified sender email address | `hello@becomingdiamond.com` |
-| `RESEND_ADMIN_EMAIL` | No | Email for admin notifications on new leads | `admin@becomingdiamond.com` |
-| `NEXT_PUBLIC_BASE_URL` | **Yes** | Base URL for links in emails (must be publicly accessible) | `https://becomingdiamond.com` |
+| Variable               | Required | Description                                                | Example                       |
+| ---------------------- | -------- | ---------------------------------------------------------- | ----------------------------- |
+| `RESEND_API_KEY`       | **Yes**  | API key from Resend dashboard                              | `re_abc123...`                |
+| `RESEND_FROM_EMAIL`    | **Yes**  | Verified sender email address                              | `support@becomingdiamond.com` |
+| `RESEND_ADMIN_EMAIL`   | No       | Email for admin notifications on new leads                 | `admin@becomingdiamond.com`   |
+| `NEXT_PUBLIC_BASE_URL` | **Yes**  | Base URL for links in emails (must be publicly accessible) | `https://becomingdiamond.com` |
 
 ### For Local Development:
 
 ```bash
 RESEND_API_KEY=re_your_test_api_key
-RESEND_FROM_EMAIL=hello@becomingdiamond.com
+RESEND_FROM_EMAIL=support@becomingdiamond.com
 NEXT_PUBLIC_BASE_URL=http://localhost:3003
 ```
 
@@ -124,6 +124,7 @@ npm run db:migrate
 ```
 
 This will run the migration `003_add_email_tracking_to_leads.sql` which adds:
+
 - `email_sent_at` - Timestamp when email was sent
 - `email_status` - Status: `pending`, `sent`, `failed`, `bounced`
 - `email_id` - Resend email ID for tracking
@@ -136,6 +137,7 @@ This will run the migration `003_add_email_tracking_to_leads.sql` which adds:
 ### Test in Development:
 
 1. Start the dev server:
+
    ```bash
    npm run dev
    ```
@@ -177,12 +179,12 @@ Use these tools to monitor your email sending reputation:
 
 ### Recommended Thresholds:
 
-| Metric | Good | Warning | Critical |
-|--------|------|---------|----------|
-| Delivery Rate | >98% | 95-98% | <95% |
-| Bounce Rate | <2% | 2-5% | >5% |
-| Spam Complaint Rate | <0.1% | 0.1-0.5% | >0.5% |
-| Unsubscribe Rate | <0.5% | 0.5-2% | >2% |
+| Metric              | Good  | Warning  | Critical |
+| ------------------- | ----- | -------- | -------- |
+| Delivery Rate       | >98%  | 95-98%   | <95%     |
+| Bounce Rate         | <2%   | 2-5%     | >5%      |
+| Spam Complaint Rate | <0.1% | 0.1-0.5% | >0.5%    |
+| Unsubscribe Rate    | <0.5% | 0.5-2%   | >2%      |
 
 ---
 
@@ -195,11 +197,13 @@ Use these tools to monitor your email sending reputation:
 **Solutions:**
 
 1. Check environment variables are set correctly:
+
    ```bash
    echo $RESEND_API_KEY
    ```
 
 2. Check application logs for errors:
+
    ```bash
    npm run dev
    # Submit form and watch console
@@ -247,17 +251,20 @@ Use these tools to monitor your email sending reputation:
 **Solutions:**
 
 1. Check database connection:
+
    ```bash
    echo $DATABASE_URL
    echo $DATABASE_AUTH_TOKEN
    ```
 
 2. Verify Turso database is accessible:
+
    ```bash
    curl -s -o /dev/null -w "%{http_code}" $DATABASE_URL
    ```
 
 3. If columns already exist, migration will fail. Manual fix:
+
    ```sql
    -- Check if columns exist
    PRAGMA table_info(leads);

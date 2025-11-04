@@ -13,6 +13,7 @@
 The lead capture system currently stores emails in the Turso database but does not send any emails to subscribers despite the UI messaging that states "Check your email for the Diamond Sprint materials." This PRD outlines the integration of Resend email service to deliver automated welcome emails and the promised Diamond Sprint materials to new leads.
 
 **Key Deliverables:**
+
 - Resend API integration with error handling and retry logic
 - Welcome email template with Diamond Sprint materials
 - Email delivery within `/api/leads` route handler
@@ -55,6 +56,7 @@ The lead capture system currently stores emails in the Turso database but does n
 #### 1. Email Delivery System
 
 **FR-1.1: Welcome Email**
+
 - Send welcome email immediately after successful lead capture
 - Include personalized greeting with email address
 - Deliver promised Diamond Sprint materials (links, PDF attachments, or both)
@@ -62,6 +64,7 @@ The lead capture system currently stores emails in the Turso database but does n
 - Include unsubscribe link (legally required)
 
 **FR-1.2: Email Content Structure**
+
 - Professional HTML email template with brand colors (black, diamond blue #4fc3f7)
 - Mobile-responsive design
 - Plain text fallback version
@@ -70,12 +73,14 @@ The lead capture system currently stores emails in the Turso database but does n
 - Footer with legal links (privacy, terms, unsubscribe)
 
 **FR-1.3: Error Handling**
+
 - Graceful degradation if email service fails (still save lead to database)
 - Log email delivery failures for admin review
 - Retry logic for transient failures (3 attempts with exponential backoff)
 - User-facing success message even if email is queued for later delivery
 
 **FR-1.4: Email Tracking**
+
 - Track email sends (success/failure) in database
 - Store Resend email ID for debugging
 - Optional: Track opens and clicks (Resend provides webhooks)
@@ -83,6 +88,7 @@ The lead capture system currently stores emails in the Turso database but does n
 #### 2. Email Templates
 
 **FR-2.1: Welcome Email Template**
+
 ```
 Subject: Your Diamond Sprint Materials Are Here 💎
 
@@ -97,6 +103,7 @@ Content Structure:
 ```
 
 **FR-2.2: Admin Notification Email** (Optional)
+
 - Send to admin email when new lead captured
 - Include lead details (email, UTM params, referrer)
 - Quick link to admin dashboard
@@ -104,12 +111,14 @@ Content Structure:
 #### 3. Lead Status Management
 
 **FR-3.1: Email Status Tracking**
+
 - Add `email_sent_at` column to `leads` table (nullable datetime)
 - Add `email_status` column: `pending`, `sent`, `failed`, `bounced`
 - Add `email_id` column to store Resend email ID (nullable string)
 - Update status after email delivery attempt
 
 **FR-3.2: Retry Mechanism**
+
 - Queue failed emails for retry (max 3 attempts)
 - Exponential backoff: 1 minute, 5 minutes, 30 minutes
 - Mark as permanently failed after 3 attempts
@@ -117,12 +126,14 @@ Content Structure:
 #### 4. Unsubscribe System
 
 **FR-4.1: Unsubscribe Link**
+
 - Generate unique unsubscribe token for each lead
 - Add `unsubscribe_token` column to `leads` table (unique string)
 - Create `/api/unsubscribe?token=xxx` endpoint
 - Update `subscribed` status to `false` when unsubscribed
 
 **FR-4.2: Preference Center** (Future Enhancement)
+
 - Simple page at `/preferences?token=xxx`
 - Allow users to update email frequency preferences
 - Show current subscription status
@@ -132,25 +143,29 @@ Content Structure:
 #### TR-1: Resend Configuration
 
 **Environment Variables:**
+
 ```bash
 RESEND_API_KEY=re_xxxxx           # Resend API key
-RESEND_FROM_EMAIL=hello@becomingdiamond.com  # Verified sender
+RESEND_FROM_EMAIL=support@becomingdiamond.com  # Verified sender
 RESEND_ADMIN_EMAIL=admin@becomingdiamond.com # Admin notifications
 ```
 
 **Dependencies:**
+
 - `resend: ^6.1.2` (already installed ✓)
 - Optional: `@react-email/components` for React-based templates
 
 #### TR-2: Email Template Implementation
 
 **Option A: React Email (Recommended)**
+
 - Use `@react-email/components` for type-safe templates
 - Store templates in `src/emails/` directory
 - Render to HTML at send time
 - Easier to maintain and preview
 
 **Option B: HTML String Templates**
+
 - Store HTML templates in `src/emails/` directory
 - Use template literals with variables
 - Faster but harder to maintain
@@ -168,6 +183,7 @@ ALTER TABLE leads ADD COLUMN unsubscribe_token TEXT UNIQUE;
 #### TR-4: API Route Updates
 
 **Update `/api/leads` POST handler:**
+
 1. After successful database insert
 2. Generate unsubscribe token
 3. Send welcome email via Resend
@@ -176,6 +192,7 @@ ALTER TABLE leads ADD COLUMN unsubscribe_token TEXT UNIQUE;
 6. Return success response to user (even if email queued)
 
 **Create `/api/unsubscribe` handler:**
+
 - Accept `token` query parameter
 - Validate token exists in database
 - Update `subscribed` to `false`
@@ -193,6 +210,7 @@ ALTER TABLE leads ADD COLUMN unsubscribe_token TEXT UNIQUE;
 #### DR-1: Email Design System
 
 **Brand Colors:**
+
 - Background: `#000000` (black)
 - Primary: `#4fc3f7` (diamond blue)
 - Text: `#ffffff` (white)
@@ -200,12 +218,14 @@ ALTER TABLE leads ADD COLUMN unsubscribe_token TEXT UNIQUE;
 - Borders: `rgba(255, 255, 255, 0.1)`
 
 **Typography:**
+
 - Font family: System fonts (Arial, Helvetica, sans-serif) for email compatibility
 - Heading size: 24px (mobile), 32px (desktop)
 - Body text: 16px
 - Line height: 1.5
 
 **Layout:**
+
 - Max width: 600px (standard email width)
 - Padding: 40px (desktop), 20px (mobile)
 - Responsive breakpoint: 600px
@@ -252,6 +272,7 @@ ALTER TABLE leads ADD COLUMN unsubscribe_token TEXT UNIQUE;
 **Estimated Time:** 4-6 hours
 
 **Tasks:**
+
 1. Create Resend account and verify sending domain (30 min)
 2. Add environment variables to `.env.local` and Vercel (10 min)
 3. Update database schema with email tracking columns (20 min)
@@ -264,8 +285,8 @@ ALTER TABLE leads ADD COLUMN unsubscribe_token TEXT UNIQUE;
 
 ```typescript
 // src/app/api/leads/route.ts
-import { Resend } from 'resend';
-import { WelcomeEmail } from '@/emails/welcome-email';
+import { Resend } from "resend";
+import { WelcomeEmail } from "@/emails/welcome-email";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -287,34 +308,40 @@ export async function POST(request: NextRequest) {
       const emailResult = await resend.emails.send({
         from: process.env.RESEND_FROM_EMAIL!,
         to: email,
-        subject: 'Your Diamond Sprint Materials Are Here 💎',
+        subject: "Your Diamond Sprint Materials Are Here 💎",
         react: WelcomeEmail({
           email,
-          unsubscribeUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/api/unsubscribe?token=${unsubscribeToken}`
+          unsubscribeUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/api/unsubscribe?token=${unsubscribeToken}`,
         }),
       });
 
       // Update lead with email delivery status
       await turso.execute({
         sql: `UPDATE leads SET email_sent_at = ?, email_status = ?, email_id = ? WHERE id = ?`,
-        args: [new Date().toISOString(), 'sent', emailResult.id, id],
+        args: [new Date().toISOString(), "sent", emailResult.id, id],
       });
 
-      await log.info(`Welcome email sent to ${email}`, 'EMAIL', { emailId: emailResult.id });
+      await log.info(`Welcome email sent to ${email}`, "EMAIL", {
+        emailId: emailResult.id,
+      });
     } catch (emailError) {
       // Log error but don't fail the API call
-      await log.error(`Failed to send welcome email to ${email}`, 'EMAIL', emailError);
+      await log.error(
+        `Failed to send welcome email to ${email}`,
+        "EMAIL",
+        emailError
+      );
 
       // Mark email as failed for retry
       await turso.execute({
         sql: `UPDATE leads SET email_status = ? WHERE id = ?`,
-        args: ['failed', id],
+        args: ["failed", id],
       });
     }
 
     return NextResponse.json({
       success: true,
-      message: 'Thanks! Check your email for the Diamond Sprint materials.',
+      message: "Thanks! Check your email for the Diamond Sprint materials.",
       leadId: id,
     });
   } catch (error) {
@@ -338,7 +365,7 @@ import {
   Preview,
   Section,
   Text,
-} from '@react-email/components';
+} from "@react-email/components";
 
 interface WelcomeEmailProps {
   email: string;
@@ -357,18 +384,20 @@ export function WelcomeEmail({ email, unsubscribeUrl }: WelcomeEmailProps) {
           <Text style={text}>Hi there!</Text>
 
           <Text style={text}>
-            Thanks for joining the Diamond Sprint. Your materials are ready to access.
+            Thanks for joining the Diamond Sprint. Your materials are ready to
+            access.
           </Text>
 
           <Section style={buttonContainer}>
-            <Button style={button} href={`${process.env.NEXT_PUBLIC_BASE_URL}/app/sprint`}>
+            <Button
+              style={button}
+              href={`${process.env.NEXT_PUBLIC_BASE_URL}/app/sprint`}
+            >
               Access Your Sprint Materials →
             </Button>
           </Section>
 
-          <Text style={text}>
-            Over the next 30 days, you'll learn to:
-          </Text>
+          <Text style={text}>Over the next 30 days, you'll learn to:</Text>
 
           <ul style={list}>
             <li>Master presence under pressure</li>
@@ -378,10 +407,13 @@ export function WelcomeEmail({ email, unsubscribeUrl }: WelcomeEmailProps) {
 
           <Section style={footer}>
             <Text style={footerText}>
-              <Link href={`${process.env.NEXT_PUBLIC_BASE_URL}/privacy`} style={link}>
+              <Link
+                href={`${process.env.NEXT_PUBLIC_BASE_URL}/privacy`}
+                style={link}
+              >
                 Privacy Policy
               </Link>
-              {' • '}
+              {" • "}
               <Link href={unsubscribeUrl} style={link}>
                 Unsubscribe
               </Link>
@@ -394,25 +426,43 @@ export function WelcomeEmail({ email, unsubscribeUrl }: WelcomeEmailProps) {
 }
 
 // Styles
-const main = { backgroundColor: '#000000', fontFamily: 'Arial, sans-serif' };
-const container = { margin: '0 auto', padding: '40px 20px', maxWidth: '600px' };
-const h1 = { color: '#ffffff', fontSize: '32px', fontWeight: 'bold', marginBottom: '20px' };
-const text = { color: '#ffffff', fontSize: '16px', lineHeight: '1.5', marginBottom: '16px' };
-const list = { color: '#ffffff', fontSize: '16px', paddingLeft: '20px' };
-const buttonContainer = { margin: '32px 0' };
-const button = {
-  backgroundColor: '#4fc3f7',
-  color: '#000000',
-  fontSize: '18px',
-  fontWeight: 'bold',
-  padding: '16px 32px',
-  borderRadius: '8px',
-  textDecoration: 'none',
-  display: 'inline-block',
+const main = { backgroundColor: "#000000", fontFamily: "Arial, sans-serif" };
+const container = { margin: "0 auto", padding: "40px 20px", maxWidth: "600px" };
+const h1 = {
+  color: "#ffffff",
+  fontSize: "32px",
+  fontWeight: "bold",
+  marginBottom: "20px",
 };
-const footer = { marginTop: '48px', paddingTop: '24px', borderTop: '1px solid rgba(255,255,255,0.1)' };
-const footerText = { color: '#9ca3af', fontSize: '14px', textAlign: 'center' as const };
-const link = { color: '#4fc3f7', textDecoration: 'underline' };
+const text = {
+  color: "#ffffff",
+  fontSize: "16px",
+  lineHeight: "1.5",
+  marginBottom: "16px",
+};
+const list = { color: "#ffffff", fontSize: "16px", paddingLeft: "20px" };
+const buttonContainer = { margin: "32px 0" };
+const button = {
+  backgroundColor: "#4fc3f7",
+  color: "#000000",
+  fontSize: "18px",
+  fontWeight: "bold",
+  padding: "16px 32px",
+  borderRadius: "8px",
+  textDecoration: "none",
+  display: "inline-block",
+};
+const footer = {
+  marginTop: "48px",
+  paddingTop: "24px",
+  borderTop: "1px solid rgba(255,255,255,0.1)",
+};
+const footerText = {
+  color: "#9ca3af",
+  fontSize: "14px",
+  textAlign: "center" as const,
+};
+const link = { color: "#4fc3f7", textDecoration: "underline" };
 ```
 
 ### Phase 2: Unsubscribe Functionality
@@ -420,6 +470,7 @@ const link = { color: '#4fc3f7', textDecoration: 'underline' };
 **Estimated Time:** 2-3 hours
 
 **Tasks:**
+
 1. Create `/api/unsubscribe` route handler
 2. Implement token validation and status update
 3. Create simple unsubscribe confirmation page
@@ -429,38 +480,39 @@ const link = { color: '#4fc3f7', textDecoration: 'underline' };
 
 ```typescript
 // src/app/api/unsubscribe/route.ts
-import { NextRequest, NextResponse } from 'next/server';
-import { turso } from '@/lib/turso';
+import { NextRequest, NextResponse } from "next/server";
+import { turso } from "@/lib/turso";
 
 export async function GET(request: NextRequest) {
   try {
     const url = new URL(request.url);
-    const token = url.searchParams.get('token');
+    const token = url.searchParams.get("token");
 
     if (!token) {
-      return new NextResponse('Missing unsubscribe token', { status: 400 });
+      return new NextResponse("Missing unsubscribe token", { status: 400 });
     }
 
     // Find lead by token
     const result = await turso.execute({
-      sql: 'SELECT id, email FROM leads WHERE unsubscribe_token = ?',
+      sql: "SELECT id, email FROM leads WHERE unsubscribe_token = ?",
       args: [token],
     });
 
     if (result.rows.length === 0) {
-      return new NextResponse('Invalid unsubscribe token', { status: 404 });
+      return new NextResponse("Invalid unsubscribe token", { status: 404 });
     }
 
     const lead = result.rows[0];
 
     // Update subscription status
     await turso.execute({
-      sql: 'UPDATE leads SET subscribed = 0, updated_at = ? WHERE id = ?',
+      sql: "UPDATE leads SET subscribed = 0, updated_at = ? WHERE id = ?",
       args: [new Date().toISOString(), lead.id],
     });
 
     // Return simple HTML confirmation
-    return new NextResponse(`
+    return new NextResponse(
+      `
       <!DOCTYPE html>
       <html>
         <head>
@@ -476,12 +528,14 @@ export async function GET(request: NextRequest) {
           <p>Email: ${lead.email}</p>
         </body>
       </html>
-    `, {
-      headers: { 'Content-Type': 'text/html' },
-    });
+    `,
+      {
+        headers: { "Content-Type": "text/html" },
+      }
+    );
   } catch (error) {
-    console.error('Unsubscribe error:', error);
-    return new NextResponse('An error occurred', { status: 500 });
+    console.error("Unsubscribe error:", error);
+    return new NextResponse("An error occurred", { status: 500 });
   }
 }
 ```
@@ -491,6 +545,7 @@ export async function GET(request: NextRequest) {
 **Estimated Time:** 3-4 hours
 
 **Features:**
+
 - Resend webhooks for open/click tracking
 - Dashboard showing email performance
 - A/B testing for subject lines
@@ -511,6 +566,7 @@ export async function GET(request: NextRequest) {
 ### Email Client Compatibility
 
 Test emails in:
+
 - Gmail (desktop, mobile)
 - Apple Mail (iOS, macOS)
 - Outlook (desktop, web)
@@ -654,7 +710,7 @@ Use **Litmus** or **Email on Acid** for cross-client testing (optional paid tool
 ### Required
 
 - **Resend account**: Free tier supports 100 emails/day, 3,000/month
-- **Verified sending domain**: Required for production (e.g., hello@becomingdiamond.com)
+- **Verified sending domain**: Required for production (e.g., support@becomingdiamond.com)
 - **Database schema updates**: Add email tracking columns to `leads` table
 
 ### Optional
@@ -689,6 +745,7 @@ Use **Litmus** or **Email on Acid** for cross-client testing (optional paid tool
 ### Why Resend?
 
 Resend was chosen over alternatives (SendGrid, Mailgun, AWS SES) for:
+
 - **Developer experience**: Simple API, TypeScript support, React Email integration
 - **Pricing**: Generous free tier (3,000 emails/month), affordable paid plans
 - **Deliverability**: Built by developers, optimized for transactional emails
@@ -698,11 +755,13 @@ Resend was chosen over alternatives (SendGrid, Mailgun, AWS SES) for:
 ### Diamond Sprint Materials Delivery
 
 The PRD assumes Diamond Sprint materials are:
+
 1. **Web-based**: Link to `/app/sprint` member portal
 2. **PDF download**: Link to PDF file in Resend CDN or Vercel Blob storage
 3. **Email attachment**: Attach PDF to welcome email (not recommended, increases spam risk)
 
 **Recommendation**: Use web-based delivery (option 1) with optional PDF download link. This:
+
 - Reduces email size (better deliverability)
 - Allows content updates without resending emails
 - Provides better analytics (page views, completion tracking)
@@ -721,9 +780,9 @@ The PRD assumes Diamond Sprint materials are:
 
 ## Approval
 
-**Product Owner:** _____________________
-**Engineering Lead:** _____________________
-**Date:** _____________________
+**Product Owner:** **********\_**********
+**Engineering Lead:** **********\_**********
+**Date:** **********\_**********
 
 ---
 

@@ -15,6 +15,7 @@ npm install @react-email/components @react-email/render
 ```
 
 **Packages Added:**
+
 - `@react-email/components` v0.5.6 - React components for email templates
 - `@react-email/render` v1.3.2 - Server-side email rendering
 
@@ -27,16 +28,19 @@ npm install @react-email/components @react-email/render
 **Migration File:** `migrations/003_add_email_tracking_to_leads.sql`
 
 **New Columns Added to `leads` Table:**
+
 - `email_sent_at` (TEXT) - Timestamp when email was sent
 - `email_status` (TEXT) - Status: `pending`, `sent`, `failed`, `bounced`
 - `email_id` (TEXT) - Resend email ID for tracking
 - `unsubscribe_token` (TEXT, UNIQUE) - Unique token for unsubscribe links
 
 **Indexes Created:**
+
 - `idx_leads_unsubscribe_token` - Fast token lookups for unsubscribe
 - `idx_leads_email_status` - Filtering by email status
 
 **To Apply Migration:**
+
 ```bash
 npm run db:migrate
 ```
@@ -48,6 +52,7 @@ npm run db:migrate
 **File:** `src/emails/welcome-email.tsx`
 
 **Template Features:**
+
 - Professional HTML email with brand colors (black, diamond blue)
 - Mobile-responsive design
 - Welcome message with Diamond Sprint materials CTA
@@ -58,6 +63,7 @@ npm run db:migrate
 - Plain text fallback support
 
 **Design System:**
+
 - Background: `#000000` (black)
 - Primary: `#4fc3f7` (diamond blue)
 - Text: `#ffffff` (white)
@@ -73,18 +79,21 @@ npm run db:migrate
 **Functions Implemented:**
 
 #### `sendWelcomeEmail(params)`
+
 - Sends welcome email to new leads
 - Includes retry logic with exponential backoff (3 attempts)
 - Returns `{ success: boolean, emailId?: string, error?: string }`
 - Non-blocking - doesn't fail API call if email fails
 
 #### `sendAdminNotification(params)`
+
 - Optional admin notification for new leads
 - Only sends if `RESEND_ADMIN_EMAIL` is configured
 - Includes lead details and UTM parameters
 - Non-blocking - errors logged but don't fail request
 
 #### `validateEmailConfig()`
+
 - Validates required environment variables
 - Returns `{ valid: boolean, errors: string[] }`
 - Can be called on app startup
@@ -98,11 +107,13 @@ npm run db:migrate
 **Changes Made:**
 
 1. **Added Imports:**
+
    ```typescript
-   import { sendWelcomeEmail, sendAdminNotification } from '@/lib/resend';
+   import { sendWelcomeEmail, sendAdminNotification } from "@/lib/resend";
    ```
 
 2. **Generate Unsubscribe Token:**
+
    ```typescript
    const unsubscribeToken = nanoid(32);
    ```
@@ -119,6 +130,7 @@ npm run db:migrate
    - Graceful degradation - form submission succeeds even if email fails
 
 **Email Flow:**
+
 ```
 Lead Submission
     ↓
@@ -142,6 +154,7 @@ Return Success Response
 **Endpoint:** `GET /api/unsubscribe?token=xxx`
 
 **Features:**
+
 - Token validation
 - Updates `subscribed` to `0` in database
 - Beautiful HTML response page
@@ -150,6 +163,7 @@ Return Success Response
 - Mobile-responsive design
 
 **Response Types:**
+
 - **Success:** "Successfully Unsubscribed" with green checkmark
 - **Error:** "Invalid Link" with red X
 - **Info:** "Already Unsubscribed" with blue info icon
@@ -182,7 +196,7 @@ Add these to `.env.local` and Vercel:
 ```bash
 # Required
 RESEND_API_KEY=re_your_api_key_here
-RESEND_FROM_EMAIL=hello@becomingdiamond.com
+RESEND_FROM_EMAIL=support@becomingdiamond.com
 NEXT_PUBLIC_BASE_URL=https://becomingdiamond.com
 
 # Optional
@@ -194,6 +208,7 @@ RESEND_ADMIN_EMAIL=admin@becomingdiamond.com
 ## Files Created/Modified
 
 ### New Files (6):
+
 1. `src/emails/welcome-email.tsx` - Email template
 2. `src/lib/resend.ts` - Resend client utility
 3. `src/app/api/unsubscribe/route.ts` - Unsubscribe endpoint
@@ -202,6 +217,7 @@ RESEND_ADMIN_EMAIL=admin@becomingdiamond.com
 6. `docs/specs/integrations/resend-implementation-summary.md` - This file
 
 ### Modified Files (2):
+
 1. `src/app/api/leads/route.ts` - Added email sending logic
 2. `package.json` - Added `@react-email/components` and `@react-email/render`
 
@@ -250,6 +266,7 @@ RESEND_ADMIN_EMAIL=admin@becomingdiamond.com
    - Add to Vercel environment variables
 
 4. **Run Migration**
+
    ```bash
    npm run db:migrate
    ```
@@ -292,18 +309,21 @@ RESEND_ADMIN_EMAIL=admin@becomingdiamond.com
 ## Security & Compliance
 
 ### CAN-SPAM Act ✅
+
 - [x] Unsubscribe link in every email
 - [x] Physical mailing address in footer (TODO: add to template)
 - [x] Clear sender identification
 - [x] Accurate subject line
 
 ### GDPR ✅
+
 - [x] Explicit consent checkbox (already implemented in form)
 - [x] Unsubscribe mechanism
 - [x] Data portability (leads export via API)
 - [x] Right to be forgotten (unsubscribe)
 
 ### CASL (Canada) ✅
+
 - [x] Explicit consent
 - [x] Unsubscribe in every email
 - [x] Clear sender identification
@@ -313,6 +333,7 @@ RESEND_ADMIN_EMAIL=admin@becomingdiamond.com
 ## Performance Metrics
 
 **Target Metrics:**
+
 - Delivery Rate: >95%
 - Open Rate: >20% (industry average: 50-60% for welcome emails)
 - Click-Through Rate: >10%
@@ -320,6 +341,7 @@ RESEND_ADMIN_EMAIL=admin@becomingdiamond.com
 - Unsubscribe Rate: <0.5%
 
 **Monitoring:**
+
 - Resend Dashboard: Real-time delivery stats
 - Application Logs: Email sending errors
 - Database Queries: Email status distribution
@@ -355,11 +377,13 @@ RESEND_ADMIN_EMAIL=admin@becomingdiamond.com
 **Issues:** Check application logs first
 
 **Resend Issues:**
+
 - Status Page: https://status.resend.com
 - Support: support@resend.com
 - Discord: https://discord.gg/resend
 
 **Code Issues:**
+
 - Review PRD: `docs/specs/integrations/resend-lead-email-integration.prd.md`
 - Check setup guide: `docs/guides/resend-setup.md`
 - Search codebase for email-related code
@@ -369,6 +393,7 @@ RESEND_ADMIN_EMAIL=admin@becomingdiamond.com
 ## Success Criteria ✅
 
 **MVP Requirements (All Completed):**
+
 - [x] Welcome email sent on form submission
 - [x] Email includes Diamond Sprint materials link
 - [x] Unsubscribe link works correctly
@@ -383,6 +408,7 @@ RESEND_ADMIN_EMAIL=admin@becomingdiamond.com
 **Implementation Status:** ✅ **COMPLETE**
 
 All code is written and tested locally. Ready for:
+
 1. Resend account setup
 2. Domain verification
 3. Environment variable configuration
