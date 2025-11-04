@@ -12,7 +12,18 @@
     "lint:next": "next lint",
     "db:migrate": "tsx scripts/migrate-db.ts",
     "test:auth": "tsx scripts/test-auth-setup.ts",
-    "dev:restart": "nodemon --exec 'bun dev' --watch package.json --ext js,ts,tsx,jsx"
+    "dev:restart": "nodemon --exec 'bun dev' --watch package.json --ext js,ts,tsx,jsx",
+    "test": "vitest",
+    "test:unit": "vitest run src/test/unit",
+    "test:integration": "vitest run src/test/integration",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest watch",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:report": "playwright show-report"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.65.0",
@@ -65,7 +76,9 @@
     "tsx": "^4.20.6"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.0",
     "@eslint/eslintrc": "^3",
+    "@playwright/test": "^1.56.1",
     "@tailwindcss/postcss": "^4",
     "@tailwindcss/typography": "^0.5.19",
     "@types/canvas-confetti": "^1.9.0",
@@ -76,6 +89,8 @@
     "@types/three": "^0.180.0",
     "@typescript-eslint/eslint-plugin": "^8.43.0",
     "@typescript-eslint/parser": "^8.43.0",
+    "@vitest/coverage-v8": "^4.0.6",
+    "@vitest/ui": "^4.0.6",
     "aceternity-ui": "^0.2.2",
     "critters": "^0.0.23",
     "eslint": "^9",
@@ -83,6 +98,7 @@
     "repomix": "^0.3.5",
     "tailwindcss": "^4",
     "tw-animate-css": "^1.3.8",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.0.6"
   }
 }
