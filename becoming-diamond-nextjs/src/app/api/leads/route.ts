@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
 
     // Parse request body
     const body = await request.json();
-    const { email, consentGiven } = body;
+    const { email, consentGiven, noLiabilityAccepted } = body;
 
     // Validate email
     if (!email || !validateEmail(email)) {
@@ -64,6 +64,14 @@ export async function POST(request: NextRequest) {
     if (!consentGiven) {
       return NextResponse.json(
         { success: false, error: "Consent required to subscribe" },
+        { status: 400 }
+      );
+    }
+
+    // Validate liability acceptance
+    if (!noLiabilityAccepted) {
+      return NextResponse.json(
+        { success: false, error: "Terms acknowledgment required" },
         { status: 400 }
       );
     }
@@ -104,8 +112,8 @@ export async function POST(request: NextRequest) {
       sql: `INSERT INTO leads (
         id, email, created_at, updated_at,
         referrer, landing_page, user_agent, ip_address,
-        consent_given, subscribed, status, unsubscribe_token
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        consent_given, no_liability_accepted, subscribed, status, unsubscribe_token
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       args: [
         id,
         email.toLowerCase(),
@@ -116,6 +124,7 @@ export async function POST(request: NextRequest) {
         userAgent,
         ip,
         1, // consent_given
+        1, // no_liability_accepted
         1, // subscribed
         "new", // status
         unsubscribeToken,

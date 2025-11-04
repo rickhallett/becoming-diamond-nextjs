@@ -22,7 +22,7 @@ export function WelcomeEmail({ email, unsubscribeUrl }: WelcomeEmailProps) {
   return (
     <Html>
       <Head />
-      <Preview>Your Diamond Sprint materials are ready!</Preview>
+      <Preview>Your Diamond Sprint materials + Manifesto are ready!</Preview>
       <Body style={main}>
         <Container style={container}>
           {/* Header */}
@@ -32,6 +32,7 @@ export function WelcomeEmail({ email, unsubscribeUrl }: WelcomeEmailProps) {
 
           {/* Main Content */}
           <Heading style={h1}>Welcome to the Diamond Sprint 💎</Heading>
+          <Text style={subheading}>+ Your Complete Diamond Manifesto Inside</Text>
 
           <Text style={text}>Hi there!</Text>
 
@@ -44,6 +45,21 @@ export function WelcomeEmail({ email, unsubscribeUrl }: WelcomeEmailProps) {
             <Button style={button} href={`${baseUrl}/app/sprint`}>
               Access Your Sprint Materials →
             </Button>
+          </Section>
+
+          {/* Diamond Manifesto Section */}
+          <Section style={manifestoBox}>
+            <Heading style={h2}>📖 Your Diamond Manifesto</Heading>
+            <Text style={text}>
+              We&apos;ve included the complete Diamond Manifesto as a gift. This is the philosophical
+              foundation of everything we teach—your blueprint for unshakable presence.
+            </Text>
+            <Text style={manifestoHighlight}>
+              &quot;I am Diamond. I am conscious. I am presence.&quot;
+            </Text>
+            <Text style={smallText}>
+              (The Manifesto is attached to this email as a PDF—check your attachments)
+            </Text>
           </Section>
 
           {/* What You'll Learn */}
@@ -236,6 +252,46 @@ const footerCopyright = {
 const link = {
   color: '#4fc3f7',
   textDecoration: 'underline',
+};
+
+const manifestoBox = {
+  backgroundColor: 'rgba(79, 195, 247, 0.15)',
+  border: '2px solid #4fc3f7',
+  borderRadius: '12px',
+  padding: '24px',
+  margin: '24px 0',
+  textAlign: 'center' as const,
+};
+
+const h2 = {
+  color: '#4fc3f7',
+  fontSize: '24px',
+  fontWeight: 'bold',
+  marginBottom: '16px',
+  textAlign: 'center' as const,
+};
+
+const manifestoHighlight = {
+  color: '#4fc3f7',
+  fontSize: '18px',
+  fontStyle: 'italic',
+  lineHeight: '1.6',
+  margin: '20px 0',
+  fontWeight: 'bold' as const,
+};
+
+const subheading = {
+  color: '#9ca3af',
+  fontSize: '18px',
+  textAlign: 'center' as const,
+  marginTop: '-16px',
+  marginBottom: '24px',
+};
+
+const smallText = {
+  color: '#9ca3af',
+  fontSize: '14px',
+  marginTop: '12px',
 };
 
 // Default export for preview

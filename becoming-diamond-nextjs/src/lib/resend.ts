@@ -1,7 +1,9 @@
-import { Resend } from 'resend';
-import { render } from '@react-email/render';
-import { WelcomeEmail } from '@/emails/welcome-email';
-import { log } from '@/lib/logger';
+import { Resend } from "resend";
+import { render } from "@react-email/render";
+import { WelcomeEmail } from "@/emails/welcome-email";
+import { log } from "@/lib/logger";
+import fs from "fs";
+import path from "path";
 
 // Lazy-initialize Resend client to avoid build-time errors
 let resendInstance: Resend | null = null;
@@ -10,7 +12,7 @@ function getResendClient(): Resend {
   if (!resendInstance) {
     const apiKey = process.env.RESEND_API_KEY;
     if (!apiKey) {
-      throw new Error('RESEND_API_KEY environment variable is not set');
+      throw new Error("RESEND_API_KEY environment variable is not set");
     }
     resendInstance = new Resend(apiKey);
   }
@@ -18,7 +20,8 @@ function getResendClient(): Resend {
 }
 
 // Email configuration
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'hello@becomingdiamond.com';
+const FROM_EMAIL =
+  process.env.RESEND_FROM_EMAIL || "support@becomingdiamond.com";
 const ADMIN_EMAIL = process.env.RESEND_ADMIN_EMAIL;
 
 interface SendWelcomeEmailParams {
@@ -33,6 +36,40 @@ interface EmailResult {
 }
 
 /**
+ * Load Diamond Manifesto PDF as attachment for email
+ */
+function getManifestoAttachment(): {
+  filename: string;
+  content: Buffer;
+} | null {
+  try {
+    const manifestoPath = path.join(
+      process.cwd(),
+      "public",
+      "assets",
+      "diamond-manifesto.pdf"
+    );
+
+    if (!fs.existsSync(manifestoPath)) {
+      log.error("Diamond Manifesto PDF not found", "EMAIL", {
+        path: manifestoPath,
+      });
+      return null;
+    }
+
+    const content = fs.readFileSync(manifestoPath);
+
+    return {
+      filename: "Diamond-Manifesto.pdf",
+      content,
+    };
+  } catch (error) {
+    log.error("Failed to load Diamond Manifesto for attachment", "EMAIL", error);
+    return null;
+  }
+}
+
+/**
  * Send welcome email to new lead
  * Includes retry logic with exponential backoff
  */
@@ -41,7 +78,7 @@ export async function sendWelcomeEmail(
   retryCount = 0
 ): Promise<EmailResult> {
   const { to, unsubscribeToken } = params;
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3003';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3003";
   const unsubscribeUrl = `${baseUrl}/api/unsubscribe?token=${unsubscribeToken}`;
 
   try {
@@ -53,16 +90,42 @@ export async function sendWelcomeEmail(
       })
     );
 
-    // Send email via Resend
+    // Load manifesto attachment
+    const manifestoAttachment = getManifestoAttachment();
+
+    // Prepare email payload
     const resend = getResendClient();
-    const result = await resend.emails.send({
+    const emailPayload: {
+      from: string;
+      to: string;
+      subject: string;
+      html: string;
+      attachments?: Array<{ filename: string; content: Buffer }>;
+    } = {
       from: FROM_EMAIL,
       to,
-      subject: 'Your Diamond Sprint Materials Are Here 💎',
+      subject: "Your Diamond Sprint Materials + Manifesto Are Here 💎",
       html: emailHtml,
-    });
+    };
 
-    await log.info(`Welcome email sent to ${to}`, 'EMAIL', {
+    // Add attachment if available
+    if (manifestoAttachment) {
+      emailPayload.attachments = [manifestoAttachment];
+      await log.info("Including Diamond Manifesto attachment", "EMAIL", {
+        filename: manifestoAttachment.filename,
+        size: manifestoAttachment.content.length,
+      });
+    } else {
+      await log.warn(
+        "Sending email without Diamond Manifesto attachment",
+        "EMAIL"
+      );
+    }
+
+    // Send email via Resend
+    const result = await resend.emails.send(emailPayload);
+
+    await log.info(`Welcome email sent to ${to}`, "EMAIL", {
       emailId: result.data?.id,
       to,
     });
@@ -72,14 +135,14 @@ export async function sendWelcomeEmail(
       emailId: result.data?.id,
     };
   } catch (error) {
-    await log.error(`Failed to send welcome email to ${to}`, 'EMAIL', error);
+    await log.error(`Failed to send welcome email to ${to}`, "EMAIL", error);
 
     // Retry logic (max 3 attempts)
     if (retryCount < 2) {
       const delay = Math.pow(2, retryCount) * 1000; // Exponential backoff: 1s, 2s
       await log.info(
         `Retrying email send to ${to} in ${delay}ms (attempt ${retryCount + 2}/3)`,
-        'EMAIL'
+        "EMAIL"
       );
 
       await new Promise((resolve) => setTimeout(resolve, delay));
@@ -89,7 +152,7 @@ export async function sendWelcomeEmail(
     // Return error after all retries exhausted
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error.message : "Unknown error",
     };
   }
 }
@@ -133,8 +196,8 @@ export async function sendAdminNotification(params: {
                 <th>Email</th>
                 <td>${email}</td>
               </tr>
-              ${referrer ? `<tr><th>Referrer</th><td>${referrer}</td></tr>` : ''}
-              ${landingPage ? `<tr><th>Landing Page</th><td>${landingPage}</td></tr>` : ''}
+              ${referrer ? `<tr><th>Referrer</th><td>${referrer}</td></tr>` : ""}
+              ${landingPage ? `<tr><th>Landing Page</th><td>${landingPage}</td></tr>` : ""}
               <tr>
                 <th>Timestamp</th>
                 <td>${new Date().toLocaleString()}</td>
@@ -153,10 +216,10 @@ export async function sendAdminNotification(params: {
       html,
     });
 
-    await log.info(`Admin notification sent for lead: ${email}`, 'EMAIL');
+    await log.info(`Admin notification sent for lead: ${email}`, "EMAIL");
   } catch (error) {
     // Don't fail the request if admin notification fails
-    await log.error('Failed to send admin notification', 'EMAIL', error);
+    await log.error("Failed to send admin notification", "EMAIL", error);
   }
 }
 
@@ -168,15 +231,19 @@ export function validateEmailConfig(): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
 
   if (!process.env.RESEND_API_KEY) {
-    errors.push('RESEND_API_KEY is not set');
+    errors.push("RESEND_API_KEY is not set");
   }
 
   if (!process.env.RESEND_FROM_EMAIL) {
-    errors.push('RESEND_FROM_EMAIL is not set (will use default: hello@becomingdiamond.com)');
+    errors.push(
+      "RESEND_FROM_EMAIL is not set (will use default: support@becomingdiamond.com)"
+    );
   }
 
   if (!process.env.NEXT_PUBLIC_BASE_URL) {
-    errors.push('NEXT_PUBLIC_BASE_URL is not set (will use default: http://localhost:3003)');
+    errors.push(
+      "NEXT_PUBLIC_BASE_URL is not set (will use default: http://localhost:3003)"
+    );
   }
 
   return {
