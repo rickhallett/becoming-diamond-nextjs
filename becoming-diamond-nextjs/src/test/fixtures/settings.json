@@ -1,0 +1,145 @@
+{
+  "defaultSettings": {
+    "notifications": {
+      "emailNotifications": true,
+      "pushNotifications": true,
+      "courseReminders": true,
+      "communityUpdates": false
+    },
+    "appearance": {
+      "darkMode": true,
+      "themeColor": "#4fc3f7"
+    },
+    "security": {
+      "twoFactorEnabled": false,
+      "activeSessions": [
+        {
+          "device": "Chrome on MacOS",
+          "location": "Los Angeles, CA",
+          "isCurrent": true,
+          "status": "Active"
+        }
+      ]
+    },
+    "billing": {
+      "subscription": {
+        "plan": "Full Program",
+        "status": "Active",
+        "amount": "$497",
+        "nextBillingDate": "February 1, 2025"
+      },
+      "paymentMethod": {
+        "type": "VISA",
+        "last4": "4242",
+        "expiresMonth": "12",
+        "expiresYear": "26"
+      },
+      "billingHistory": [
+        {
+          "date": "Jan 1, 2025",
+          "amount": "$497",
+          "status": "Paid"
+        },
+        {
+          "date": "Dec 1, 2024",
+          "amount": "$497",
+          "status": "Paid"
+        }
+      ]
+    }
+  },
+  "customSettings": {
+    "allNotificationsDisabled": {
+      "emailNotifications": false,
+      "pushNotifications": false,
+      "courseReminders": false,
+      "communityUpdates": false
+    },
+    "allNotificationsEnabled": {
+      "emailNotifications": true,
+      "pushNotifications": true,
+      "courseReminders": true,
+      "communityUpdates": true
+    },
+    "lightModeTheme": {
+      "darkMode": false,
+      "themeColor": "#4fc3f7"
+    },
+    "purpleTheme": {
+      "darkMode": true,
+      "themeColor": "#9333ea"
+    }
+  },
+  "validationTests": {
+    "security": {
+      "validPassword": "NewSecurePassword123!",
+      "weakPassword": "123",
+      "mismatchedPasswords": {
+        "new": "NewPassword123",
+        "confirm": "DifferentPassword456"
+      },
+      "emptyCurrentPassword": {
+        "current": "",
+        "new": "NewPassword123",
+        "confirm": "NewPassword123"
+      }
+    }
+  },
+  "formStates": {
+    "valid": {
+      "currentPassword": "CurrentPassword123",
+      "newPassword": "NewSecurePassword123!",
+      "confirmPassword": "NewSecurePassword123!"
+    },
+    "invalid": {
+      "currentPassword": "CurrentPassword123",
+      "newPassword": "123",
+      "confirmPassword": "456"
+    }
+  },
+  "tabs": [
+    {
+      "name": "Notifications",
+      "value": "notifications",
+      "icon": "IconBell"
+    },
+    {
+      "name": "Security",
+      "value": "security",
+      "icon": "IconLock"
+    },
+    {
+      "name": "Appearance",
+      "value": "appearance",
+      "icon": "IconPalette"
+    },
+    {
+      "name": "Billing",
+      "value": "billing",
+      "icon": "IconCreditCard"
+    }
+  ],
+  "themeColors": [
+    {
+      "name": "Cyan",
+      "color": "#4fc3f7"
+    },
+    {
+      "name": "Purple",
+      "color": "#9333ea"
+    },
+    {
+      "name": "Green",
+      "color": "#10b981"
+    },
+    {
+      "name": "Orange",
+      "color": "#f59e0b"
+    }
+  ],
+  "localStorage": {
+    "settingsKey": "user_settings_v1",
+    "defaultSettings": "{\"notifications\":{\"emailNotifications\":true,\"pushNotifications\":true,\"courseReminders\":true,\"communityUpdates\":false},\"appearance\":{\"darkMode\":true,\"themeColor\":\"#4fc3f7\"},\"security\":{\"twoFactorEnabled\":false}}",
+    "customSettings": "{\"notifications\":{\"emailNotifications\":false,\"pushNotifications\":false,\"courseReminders\":false,\"communityUpdates\":false},\"appearance\":{\"darkMode\":false,\"themeColor\":\"#9333ea\"},\"security\":{\"twoFactorEnabled\":true}}"
+  }
+}

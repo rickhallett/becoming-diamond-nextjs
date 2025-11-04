@@ -1,0 +1,97 @@
+{
+  "sprintProgress": {
+    "notStarted": {
+      "sprintId": "30-day-sprint",
+      "enrollmentDate": "2025-01-01T00:00:00.000Z",
+      "completedDays": [],
+      "currentDay": 1,
+      "totalDaysCompleted": 0,
+      "completionPercentage": 0,
+      "status": "not_started",
+      "lastAccessDate": "2025-01-01T00:00:00.000Z",
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "updatedAt": "2025-01-01T00:00:00.000Z"
+    },
+    "inProgress": {
+      "sprintId": "30-day-sprint",
+      "enrollmentDate": "2025-01-01T00:00:00.000Z",
+      "completedDays": [1, 2, 3, 4],
+      "currentDay": 5,
+      "totalDaysCompleted": 4,
+      "completionPercentage": 13.33,
+      "status": "in_progress",
+      "lastAccessDate": "2025-01-05T00:00:00.000Z",
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "updatedAt": "2025-01-05T00:00:00.000Z"
+    },
+    "completed": {
+      "sprintId": "30-day-sprint",
+      "enrollmentDate": "2025-01-01T00:00:00.000Z",
+      "completedDays": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
+      "currentDay": 30,
+      "totalDaysCompleted": 30,
+      "completionPercentage": 100,
+      "status": "completed",
+      "lastAccessDate": "2025-01-30T00:00:00.000Z",
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "updatedAt": "2025-01-30T00:00:00.000Z"
+    }
+  },
+  "sampleDays": {
+    "day1": {
+      "day": 1,
+      "title": "Set Your Baseline",
+      "subtitle": "If your baseline doesn't change… nothing does.",
+      "duration": "15 minutes",
+      "difficulty": "Beginner",
+      "week": 1,
+      "tags": ["stabilize", "baseline", "foundation"],
+      "videoId": "4a151e6b-7911-41b9-b1ef-c6fa00bafaa5"
+    },
+    "day5": {
+      "day": 5,
+      "title": "Interrupt the Pattern",
+      "subtitle": "Change your pattern, change your trajectory.",
+      "duration": "15 minutes",
+      "difficulty": "Beginner",
+      "week": 1,
+      "tags": ["stabilize", "patterns", "habits"],
+      "videoId": "df89060d-213c-431e-8d77-90b0d756e275"
+    },
+    "day30": {
+      "day": 30,
+      "title": "Integration and Next Steps",
+      "subtitle": "Your transformation continues.",
+      "duration": "20 minutes",
+      "difficulty": "Advanced",
+      "week": 5,
+      "tags": ["mastery", "integration", "completion"]
+    }
+  },
+  "videoPlaylist": [
+    {
+      "day": 1,
+      "videoId": "4a151e6b-7911-41b9-b1ef-c6fa00bafaa5",
+      "title": "Day 1: Welcome and Baseline",
+      "duration": "5:54"
+    },
+    {
+      "day": 2,
+      "videoId": "daf70a49-4110-4f52-a2de-7f273a8475c1",
+      "title": "Day 2: Stand Strong Be Strong",
+      "duration": "4:03"
+    },
+    {
+      "day": 5,
+      "videoId": "df89060d-213c-431e-8d77-90b0d756e275",
+      "title": "Day 5: Pattern Interrupts",
+      "duration": "3:38"
+    }
+  ],
+  "localStorage": {
+    "key": "sprint_progress_v1",
+    "notStarted": null,
+    "day5InProgress": "{\"sprintId\":\"30-day-sprint\",\"enrollmentDate\":\"2025-01-01T00:00:00.000Z\",\"completedDays\":[1,2,3,4],\"currentDay\":5,\"totalDaysCompleted\":4,\"completionPercentage\":13.33,\"status\":\"in_progress\",\"lastAccessDate\":\"2025-01-05T00:00:00.000Z\",\"createdAt\":\"2025-01-01T00:00:00.000Z\",\"updatedAt\":\"2025-01-05T00:00:00.000Z\"}",
+    "completed": "{\"sprintId\":\"30-day-sprint\",\"enrollmentDate\":\"2025-01-01T00:00:00.000Z\",\"completedDays\":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30],\"currentDay\":30,\"totalDaysCompleted\":30,\"completionPercentage\":100,\"status\":\"completed\",\"lastAccessDate\":\"2025-01-30T00:00:00.000Z\",\"createdAt\":\"2025-01-01T00:00:00.000Z\",\"updatedAt\":\"2025-01-30T00:00:00.000Z\"}"
+  }
+}

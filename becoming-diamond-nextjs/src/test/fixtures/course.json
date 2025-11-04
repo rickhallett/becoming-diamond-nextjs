@@ -1,0 +1,93 @@
+{
+  "testCourse": {
+    "courseId": "pr1-stabilize-snowflakes-to-diamonds",
+    "title": "PR1: Stabilize - Turning Snowflakes into Diamonds",
+    "expectedSlides": {
+      "chapter1": {
+        "chapterId": "ch1-understanding-pressure",
+        "slides": [
+          {
+            "slideId": "slide-ch1-1",
+            "title": "Introduction to Pressure",
+            "expectedContent": "pressure"
+          },
+          {
+            "slideId": "slide-ch1-2",
+            "title": "The Pressure Room Concept",
+            "expectedContent": "transformation"
+          }
+        ]
+      }
+    },
+    "progressStates": {
+      "new": {
+        "description": "Brand new course, no progress",
+        "expectedProgress": 0,
+        "completedSlides": []
+      },
+      "inProgress": {
+        "description": "Partially completed course",
+        "expectedProgress": 50,
+        "completedSlides": ["slide-ch1-1", "slide-ch1-2", "slide-ch1-3"]
+      },
+      "completed": {
+        "description": "Fully completed course",
+        "expectedProgress": 100,
+        "completedSlides": ["all"]
+      }
+    }
+  },
+  "mockStorage": {
+    "progressKey": "course-progress-pr1-stabilize-snowflakes-to-diamonds",
+    "sampleProgress": {
+      "courseId": "pr1-stabilize-snowflakes-to-diamonds",
+      "currentSlideId": "slide-ch1-3",
+      "lastAccessedAt": "2025-11-04T00:00:00.000Z",
+      "startedAt": "2025-11-01T00:00:00.000Z",
+      "chapters": [
+        {
+          "chapterId": "ch1-understanding-pressure",
+          "slides": [
+            {
+              "slideId": "slide-ch1-1",
+              "completed": true,
+              "completedAt": "2025-11-01T10:00:00.000Z"
+            },
+            {
+              "slideId": "slide-ch1-2",
+              "completed": true,
+              "completedAt": "2025-11-01T11:00:00.000Z"
+            },
+            {
+              "slideId": "slide-ch1-3",
+              "completed": false
+            }
+          ],
+          "completedSlides": 2,
+          "totalSlides": 5,
+          "isComplete": false
+        }
+      ],
+      "overallProgress": 40,
+      "totalSlidesCompleted": 2,
+      "totalSlides": 5
+    }
+  },
+  "activities": {
+    "sampleActivity": {
+      "type": "quiz",
+      "slideId": "slide-ch2-3",
+      "questions": 3,
+      "expectedFeedback": "Great job"
+    }
+  },
+  "navigation": {
+    "firstSlide": 0,
+    "middleSlide": 2,
+    "lastSlide": 4
+  },
+  "routes": {
+    "courseListing": "/app/courses",
+    "courseViewer": "/app/courses/pr1-stabilize-snowflakes-to-diamonds"
+  }
+}

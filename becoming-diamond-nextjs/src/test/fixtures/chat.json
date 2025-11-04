@@ -1,0 +1,210 @@
+{
+  "testChat": {
+    "chatRoute": "/app/chat",
+    "welcomeMessage": "Welcome! I'm DiamondMindAI, your guide",
+    "expectedContent": {
+      "header": "DiamondMindAI",
+      "description": "Ask me anything about",
+      "placeholder": "Ask a question about the book..."
+    }
+  },
+  "mockMessages": {
+    "userMessage1": {
+      "role": "user",
+      "content": "What is the Diamond Transformation Roadmap?",
+      "expectedInChat": true
+    },
+    "assistantResponse1": {
+      "role": "assistant",
+      "content": "The Diamond Transformation Roadmap is a systematic approach to personal transformation that guides individuals from reactive states (snowflakes) to stable, high-performing states (diamonds). It consists of multiple phases including stabilization, regulation, and integration.",
+      "expectedMarkdown": true,
+      "expectedFormatting": ["bold", "lists"]
+    },
+    "userMessage2": {
+      "role": "user",
+      "content": "How do I stabilize under pressure?",
+      "expectedInChat": true
+    },
+    "assistantResponse2": {
+      "role": "assistant",
+      "content": "To stabilize under pressure:\n\n1. **Recognize the pressure** - Acknowledge when you're in a high-stress situation\n2. **Regulate your nervous system** - Use breathing techniques and grounding exercises\n3. **Apply the pressure room concept** - View pressure as transformation opportunity\n\nThese techniques help you maintain composure and perform optimally.",
+      "expectedMarkdown": true,
+      "expectedFormatting": ["bold", "lists", "code"]
+    },
+    "markdownExample": {
+      "role": "assistant",
+      "content": "Here's a **bold statement** and a list:\n\n1. First item\n2. Second item\n\n```javascript\nconst example = 'code block';\n```\n\n[Link example](https://example.com)",
+      "expectedMarkdown": true,
+      "expectedFormatting": ["bold", "lists", "code", "links"]
+    }
+  },
+  "mockConversation": {
+    "messages": [
+      {
+        "id": "msg_1730678400000_abc123",
+        "role": "user",
+        "content": "What is identity transformation?",
+        "timestamp": "2025-11-04T10:00:00.000Z"
+      },
+      {
+        "id": "msg_1730678401000_def456",
+        "role": "assistant",
+        "content": "Identity transformation is the process of fundamentally changing who you are at your core, moving from reactive patterns to proactive, high-performance states.",
+        "timestamp": "2025-11-04T10:00:01.000Z"
+      },
+      {
+        "id": "msg_1730678402000_ghi789",
+        "role": "user",
+        "content": "How long does transformation take?",
+        "timestamp": "2025-11-04T10:00:02.000Z"
+      },
+      {
+        "id": "msg_1730678403000_jkl012",
+        "role": "assistant",
+        "content": "The transformation process varies by individual, but typically requires consistent practice over 3-6 months to establish new neural patterns and identity shifts.",
+        "timestamp": "2025-11-04T10:00:03.000Z"
+      }
+    ]
+  },
+  "longConversation": {
+    "messageCount": 50,
+    "description": "Simulated long conversation with 50+ messages for scroll testing"
+  },
+  "mockSessions": {
+    "session1": {
+      "id": "session_1730678400000_abc123",
+      "title": "What is identity transformation?",
+      "messages": [],
+      "createdAt": "2025-11-04T10:00:00.000Z",
+      "updatedAt": "2025-11-04T10:00:00.000Z"
+    },
+    "session2": {
+      "id": "session_1730678500000_def456",
+      "title": "Nervous system regulation",
+      "messages": [
+        {
+          "id": "msg_1730678500000_abc123",
+          "role": "user",
+          "content": "How do I regulate my nervous system?",
+          "timestamp": "2025-11-04T10:05:00.000Z"
+        }
+      ],
+      "createdAt": "2025-11-04T10:05:00.000Z",
+      "updatedAt": "2025-11-04T10:05:00.000Z"
+    },
+    "session3": {
+      "id": "session_1730678600000_ghi789",
+      "title": "Diamond vs Snowflake mindset",
+      "messages": [
+        {
+          "id": "msg_1730678600000_abc123",
+          "role": "user",
+          "content": "What's the difference between diamond and snowflake?",
+          "timestamp": "2025-11-04T10:10:00.000Z"
+        },
+        {
+          "id": "msg_1730678601000_def456",
+          "role": "assistant",
+          "content": "Diamonds are stable under pressure, while snowflakes melt. This metaphor represents the transformation from reactive to resilient.",
+          "timestamp": "2025-11-04T10:10:01.000Z"
+        }
+      ],
+      "createdAt": "2025-11-04T10:10:00.000Z",
+      "updatedAt": "2025-11-04T10:10:01.000Z"
+    }
+  },
+  "errorStates": {
+    "networkError": {
+      "type": "network",
+      "message": "Failed to get response",
+      "expectedErrorMessage": "I apologize, but I'm having trouble accessing the book content right now"
+    },
+    "apiError": {
+      "type": "api",
+      "status": 500,
+      "message": "Internal server error"
+    },
+    "rateLimitError": {
+      "type": "rateLimit",
+      "status": 429,
+      "message": "Too many requests"
+    }
+  },
+  "loadingStates": {
+    "typingIndicator": {
+      "expectedElement": "div[class*=\"bg-primary/60\"]",
+      "expectedCount": 3,
+      "description": "Three animated dots for typing indicator"
+    },
+    "streamingMessage": {
+      "expectedElement": "prose prose-invert",
+      "description": "Markdown message being streamed"
+    }
+  },
+  "suggestedPrompts": [
+    "What is the Diamond Transformation Roadmap?",
+    "Explain snowflakes vs diamonds",
+    "How do I stabilize under pressure?",
+    "What makes humans irreplaceable in the AI age?"
+  ],
+  "localStorage": {
+    "sessionsKey": "chat-sessions",
+    "mockSessionsData": {
+      "sessions": [
+        {
+          "id": "session_1730678400000_abc123",
+          "title": "Diamond Transformation Roadmap",
+          "messages": [
+            {
+              "id": "msg_1730678400000_abc123",
+              "role": "user",
+              "content": "What is the Diamond Transformation Roadmap?",
+              "timestamp": "2025-11-04T10:00:00.000Z"
+            },
+            {
+              "id": "msg_1730678401000_def456",
+              "role": "assistant",
+              "content": "The Diamond Transformation Roadmap is a systematic approach...",
+              "timestamp": "2025-11-04T10:00:01.000Z"
+            }
+          ],
+          "createdAt": "2025-11-04T10:00:00.000Z",
+          "updatedAt": "2025-11-04T10:00:01.000Z"
+        }
+      ]
+    }
+  },
+  "apiEndpoints": {
+    "chat": "/api/chat",
+    "ask": "/api/ask"
+  },
+  "chatStorage": {
+    "storageKey": "chat-sessions",
+    "currentSessionKey": "current-chat-session"
+  },
+  "icons": {
+    "brain": "IconBrain",
+    "user": "IconUser",
+    "sparkles": "IconSparkles",
+    "send": "IconSend",
+    "plus": "IconPlus",
+    "trash": "IconTrash",
+    "menu": "IconMenu2",
+    "close": "IconX"
+  },
+  "testData": {
+    "simpleQuestion": "What is nervous system regulation?",
+    "complexQuestion": "How do the concepts of identity transformation, nervous system regulation, and high-performance under pressure work together in the Diamond Transformation Roadmap?",
+    "emptyMessage": "",
+    "whitespaceMessage": "   ",
+    "longMessage": "This is a very long message that tests the input field's ability to handle extended text content. It should properly render in the chat interface and maintain formatting across multiple lines when displayed in the message history. The system should handle this gracefully without any layout issues or performance degradation.",
+    "specialCharacters": "Test message with special chars: <>&\"'`{}[]",
+    "unicodeEmoji": "Test with emoji 🔥 💎 ❄️ 🚀",
+    "markdownInUserMessage": "What about **bold** and *italic* in user messages?"
+  },
+  "routes": {
+    "chatPage": "/app/chat",
+    "dashboard": "/app",
+    "courses": "/app/courses"
+  }
+}

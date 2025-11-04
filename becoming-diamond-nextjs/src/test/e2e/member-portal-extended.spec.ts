@@ -2,20 +2,16 @@ import { test, expect } from '@playwright/test';
 
 test.describe('member portal navigation extended', () => {
   test('should highlight active navigation route', async ({ page }) => {
-    await page.goto('/app/courses');
+    await page.goto('/app/profile');
     await page.waitForLoadState('domcontentloaded');
 
-    // If on courses page, check for active styling
-    if (page.url().includes('/app/courses')) {
-      const coursesLink = page.getByRole('link', { name: /courses/i });
+    // Check for active styling on profile route
+    const profileNav = page.locator('nav').getByText('Profile');
+    await expect(profileNav).toBeVisible();
 
-      // Active link should have specific classes or attributes
-      // Common patterns: 'active', 'bg-primary', 'text-primary', '[aria-current="page"]'
-      const classList = await coursesLink.getAttribute('class');
-
-      // Verify some form of active state exists
-      expect(classList).toBeTruthy();
-    }
+    // The parent div should have the active classes
+    const parentDiv = page.locator('div.bg-primary\\/10.text-primary').filter({ hasText: 'Profile' });
+    await expect(parentDiv).toBeVisible();
   });
 
   test('should toggle mobile menu drawer', async ({ page }) => {

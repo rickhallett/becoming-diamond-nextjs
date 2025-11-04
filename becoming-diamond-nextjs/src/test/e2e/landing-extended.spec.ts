@@ -44,7 +44,7 @@ test.describe('landing page extended scenarios', () => {
 
     // Scroll in increments
     for (let i = 0; i < 5; i++) {
-      await page.evaluate((offset) => window.scrollBy(0, offset), window.innerHeight);
+      await page.evaluate(() => window.scrollBy(0, window.innerHeight));
       await page.waitForTimeout(300);
       sectionCount++;
     }
@@ -54,53 +54,128 @@ test.describe('landing page extended scenarios', () => {
 });
 
 test.describe('newsletter signup flow', () => {
-  test.skip('should submit newsletter form and show success message', async ({ page }) => {
-    // TODO: Implement when API integration is complete
+  test('should submit newsletter form and show success message', async ({ page }) => {
+    // Mock successful API response
+    await page.route('/api/leads', route => {
+      route.fulfill({
+        status: 201,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          success: true,
+          message: 'Thanks! Check your email for the Diamond Sprint materials.',
+          leadId: 'lead_test123'
+        })
+      });
+    });
+
     await page.goto('/');
     await page.waitForLoadState('domcontentloaded');
 
-    const emailInput = page.getByPlaceholder(/email/i).first();
+    // Scroll to lead magnet section
+    await page.evaluate(() => {
+      document.getElementById('lead-magnet')?.scrollIntoView({ behavior: 'smooth' });
+    });
+    await page.waitForTimeout(500);
+
+    // Fill in email
+    const emailInput = page.locator('input[type="email"]').first();
     await emailInput.fill('test@example.com');
 
+    // Check consent checkbox
+    const consentCheckbox = page.locator('input[type="checkbox"]').first();
+    await consentCheckbox.check();
+
     // Find and click submit button
-    const submitButton = page.locator('form').first().getByRole('button').first();
+    const submitButton = page.locator('button[type="submit"]').first();
     await submitButton.click();
 
     // Wait for API call
     const apiResponse = await page.waitForResponse(
-      resp => resp.url().includes('/api/leads') && resp.status() === 200,
+      resp => resp.url().includes('/api/leads') && resp.status() === 201,
       { timeout: 5000 }
     );
     expect(apiResponse.ok()).toBeTruthy();
 
     // Verify success message
-    await expect(page.getByText(/thank you|success|subscribed/i)).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText(/thanks.*check your email/i)).toBeVisible({ timeout: 5000 });
   });
 
-  test.skip('should handle newsletter signup errors gracefully', async ({ page }) => {
-    // TODO: Implement when error handling is implemented
+  test('should handle newsletter signup errors gracefully', async ({ page }) => {
+    // Mock server error response
+    await page.route('/api/leads', route => {
+      route.fulfill({
+        status: 500,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          success: false,
+          error: 'An error occurred. Please try again.'
+        })
+      });
+    });
+
     await page.goto('/');
     await page.waitForLoadState('domcontentloaded');
 
-    // Try to submit with invalid/duplicate email
-    const emailInput = page.getByPlaceholder(/email/i).first();
-    await emailInput.fill('duplicate@example.com');
+    // Scroll to lead magnet section
+    await page.evaluate(() => {
+      document.getElementById('lead-magnet')?.scrollIntoView({ behavior: 'smooth' });
+    });
+    await page.waitForTimeout(500);
 
-    const submitButton = page.locator('form').first().getByRole('button').first();
+    // Fill in email
+    const emailInput = page.locator('input[type="email"]').first();
+    await emailInput.fill('error@example.com');
+
+    // Check consent checkbox
+    const consentCheckbox = page.locator('input[type="checkbox"]').first();
+    await consentCheckbox.check();
+
+    // Submit form
+    const submitButton = page.locator('button[type="submit"]').first();
     await submitButton.click();
 
+    // Wait for API call
+    await page.waitForResponse(
+      resp => resp.url().includes('/api/leads'),
+      { timeout: 5000 }
+    );
+
     // Should show error message
-    await expect(page.getByText(/error|already subscribed/i)).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText(/an error occurred.*please try again/i)).toBeVisible({ timeout: 5000 });
   });
 
-  test.skip('should prevent duplicate newsletter signups', async ({ page }) => {
-    // TODO: Implement when duplicate detection is added
-    await page.goto('/');
+  test('should prevent duplicate newsletter signups', async ({ page }) => {
+    // Mock duplicate email conflict response
+    await page.route('/api/leads', route => {
+      route.fulfill({
+        status: 409,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          success: false,
+          error: 'This email is already registered. Check your inbox!'
+        })
+      });
+    });
 
-    const emailInput = page.getByPlaceholder(/email/i).first();
+    await page.goto('/');
+    await page.waitForLoadState('domcontentloaded');
+
+    // Scroll to lead magnet section
+    await page.evaluate(() => {
+      document.getElementById('lead-magnet')?.scrollIntoView({ behavior: 'smooth' });
+    });
+    await page.waitForTimeout(500);
+
+    // Fill in email
+    const emailInput = page.locator('input[type="email"]').first();
     await emailInput.fill('existing@example.com');
 
-    const submitButton = page.locator('form').first().getByRole('button').first();
+    // Check consent checkbox
+    const consentCheckbox = page.locator('input[type="checkbox"]').first();
+    await consentCheckbox.check();
+
+    // Submit form
+    const submitButton = page.locator('button[type="submit"]').first();
     await submitButton.click();
 
     // API should return error for duplicate
@@ -110,5 +185,34 @@ test.describe('newsletter signup flow', () => {
     );
 
     expect(apiResponse.status()).toBe(409); // Conflict
+
+    // Verify error message shows
+    await expect(page.getByText(/already registered.*check your inbox/i)).toBeVisible({ timeout: 5000 });
+  });
+
+  test('should require consent checkbox before submitting', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForLoadState('domcontentloaded');
+
+    // Scroll to lead magnet section
+    await page.evaluate(() => {
+      document.getElementById('lead-magnet')?.scrollIntoView({ behavior: 'smooth' });
+    });
+    await page.waitForTimeout(500);
+
+    // Fill in email but don't check consent
+    const emailInput = page.locator('input[type="email"]').first();
+    await emailInput.fill('test@example.com');
+
+    // Submit button should be disabled
+    const submitButton = page.locator('button[type="submit"]').first();
+    await expect(submitButton).toBeDisabled();
+
+    // Check consent checkbox
+    const consentCheckbox = page.locator('input[type="checkbox"]').first();
+    await consentCheckbox.check();
+
+    // Submit button should now be enabled
+    await expect(submitButton).toBeEnabled();
   });
 });
