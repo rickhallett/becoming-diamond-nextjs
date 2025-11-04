@@ -5,11 +5,7 @@ subtitle: "I'm not in here with you. You're in here with me."
 published: true
 duration: "20 minutes"
 difficulty: "Advanced"
-week: 4
-tags: ["shine", "presence", "influence"]
 video: "49903bed-23fd-4f88-89b2-ab258e98f77a"
-audio: ""
-images: []
 ---
 
 # Proximity Prime

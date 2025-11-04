@@ -5,11 +5,7 @@ subtitle: "You can't be present if you're not in your body."
 published: true
 duration: "20 minutes"
 difficulty: "Beginner"
-week: 1
-tags: ["stabilize", "presence", "integration"]
 video: "83af77c8-a9dd-4519-8ef3-0ac4b5734e7b"
-audio: ""
-images: []
 ---
 
 # Ground Into the Now

@@ -5,11 +5,7 @@ subtitle: "Your ego runs on fear. The Boss runs on clarity."
 published: true
 duration: "20 minutes"
 difficulty: "Intermediate"
-week: 2
-tags: ["shift", "identity", "leadership"]
 video: "bb119231-068b-485a-9104-1a7603e4d8f5"
-audio: ""
-images: []
 ---
 
 # Meet The Boss

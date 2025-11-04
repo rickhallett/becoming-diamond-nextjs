@@ -5,11 +5,7 @@ subtitle: "Your first win isn't perfection. It's presence."
 published: true
 duration: "25 minutes"
 difficulty: "Beginner"
-week: 1
-tags: ["stabilize", "reflection", "integration"]
 video: "df982ffb-df9a-4755-9fe2-366594e0e2b8"
-audio: ""
-images: []
 ---
 
 # Stabilize Recap + Reset

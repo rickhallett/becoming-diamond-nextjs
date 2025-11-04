@@ -5,11 +5,7 @@ subtitle: "Pressure isn't your enemy. It's your training ground."
 published: true
 duration: "18 minutes"
 difficulty: "Intermediate"
-week: 3
-tags: ["strengthen", "pressure", "growth"]
 video: "ff25ddf2-0576-417d-a861-985f548fa788"
-audio: ""
-images: []
 ---
 
 # Enter the Pressure Room

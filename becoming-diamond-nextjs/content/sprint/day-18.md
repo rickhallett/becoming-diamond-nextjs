@@ -5,11 +5,7 @@ subtitle: "Calm is magnetic. Focus is rare. You become both."
 published: true
 duration: "20 minutes"
 difficulty: "Intermediate"
-week: 3
-tags: ["strengthen", "calm", "presence"]
 video: "19706b3e-6a5f-44aa-b473-7fe7d18d7e79"
-audio: ""
-images: []
 ---
 
 # Calm is Currency

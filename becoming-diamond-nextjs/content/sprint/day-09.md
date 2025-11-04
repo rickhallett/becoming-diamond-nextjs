@@ -5,11 +5,7 @@ subtitle: "You don't need to find yourself. You write yourself."
 published: true
 duration: "18 minutes"
 difficulty: "Intermediate"
-week: 2
-tags: ["shift", "identity", "writing"]
 video: "0e8b5da3-4312-466e-b500-5fe34dab888f"
-audio: ""
-images: []
 ---
 
 # I AM: Identity Writing

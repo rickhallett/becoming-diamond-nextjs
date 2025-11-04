@@ -5,11 +5,7 @@ subtitle: "Accept. Release. Transform."
 published: true
 duration: "20 minutes"
 difficulty: "Intermediate"
-week: 2
-tags: ["shift", "emotion", "processing"]
 video: "d33ba1bf-d0d3-4e02-bb51-a29d46bfc9f2"
-audio: ""
-images: []
 ---
 
 # The ART Protocol

@@ -5,11 +5,7 @@ subtitle: "The more you own, the more power you access."
 published: true
 duration: "22 minutes"
 difficulty: "Intermediate"
-week: 3
-tags: ["strengthen", "responsibility", "ownership"]
 video: "78607971-138c-4f4e-85f9-072833822fe1"
-audio: ""
-images: []
 ---
 
 # ART²: The Power of Responsibility

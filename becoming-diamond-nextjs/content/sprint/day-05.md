@@ -5,11 +5,7 @@ subtitle: "Change your pattern, change your trajectory."
 published: true
 duration: "15 minutes"
 difficulty: "Beginner"
-week: 1
-tags: ["stabilize", "patterns", "habits"]
 video: "df89060d-213c-431e-8d77-90b0d756e275"
-audio: ""
-images: []
 ---
 
 # Interrupt the Pattern

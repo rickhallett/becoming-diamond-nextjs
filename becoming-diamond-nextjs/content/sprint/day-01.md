@@ -5,11 +5,7 @@ subtitle: "If your baseline doesn't change… nothing does."
 published: true
 duration: "15 minutes"
 difficulty: "Beginner"
-week: 1
-tags: ["stabilize", "baseline", "foundation"]
 video: "4a151e6b-7911-41b9-b1ef-c6fa00bafaa5"
-audio: ""
-images: []
 ---
 
 # Set Your Baseline
