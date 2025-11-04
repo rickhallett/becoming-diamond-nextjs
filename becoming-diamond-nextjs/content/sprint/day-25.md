@@ -5,15 +5,13 @@ subtitle: "Create the energetic signature that enters the room before you do."
 published: true
 duration: "23 minutes"
 difficulty: "Advanced"
-week: 4
-tags: ["shine", "field", "presence"]
-video: ""
-audio: ""
-images: []
+video: "3597a13f-324d-405c-871b-352593da8321"
 ---
 
 # Build the Diamond Field
 
 Create the energetic signature that enters the room before you do.
+
+{{video:3597a13f-324d-405c-871b-352593da8321}}
 
 You'll start to cultivate an energetic field around you — not as a spiritual theory, but as a grounded emotional frequency that others feel and follow.
