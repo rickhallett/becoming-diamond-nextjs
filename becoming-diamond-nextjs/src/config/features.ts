@@ -29,6 +29,9 @@ export interface FeatureFlags {
   // Book Sales Features
   readFreeSample: boolean;
 
+  // Public Features
+  publicDiamondMindAI: boolean;
+
   // Future Features
   communityForum: boolean;
   liveEvents: boolean;
@@ -69,6 +72,9 @@ export const FEATURES: FeatureFlags = {
 
   // Book Sales Features - Disabled for Phase 1
   readFreeSample: false,
+
+  // Public Features - Phase 2
+  publicDiamondMindAI: false,
 
   // Future Features - Disabled
   communityForum: false,
