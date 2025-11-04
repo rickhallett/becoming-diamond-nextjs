@@ -105,30 +105,60 @@ export function CourseProvider({ children }: CourseProviderProps) {
   const [enrollments, setEnrollments] = useState<CourseEnrollment[]>([]);
   const [activities, setActivities] = useState<ActivityLog[]>([]);
 
-  // Load course data from localStorage on mount
+  // Fetch course data from database or fallback to localStorage
   useEffect(() => {
     if (!user) return;
 
-    try {
-      const savedEnrollments = storage.getItem<CourseEnrollment[]>(STORAGE_KEYS.COURSE_PROGRESS) || [];
-      setEnrollments(savedEnrollments);
+    const fetchCourseData = async () => {
+      try {
+        // Try to fetch from API first (production mode)
+        const response = await fetch('/api/courses');
+        if (response.ok) {
+          const data = await response.json();
+          setEnrollments(data.enrollments || []);
+        } else {
+          // Fallback to localStorage (test mode)
+          const savedEnrollments = storage.getItem<CourseEnrollment[]>(STORAGE_KEYS.COURSE_PROGRESS) || [];
+          setEnrollments(savedEnrollments);
+        }
+      } catch (error) {
+        log.error('Error loading course data:', 'Context', error);
+        // Fallback to localStorage on error
+        const savedEnrollments = storage.getItem<CourseEnrollment[]>(STORAGE_KEYS.COURSE_PROGRESS) || [];
+        setEnrollments(savedEnrollments);
+      }
+    };
 
-      const savedActivities = storage.getItem<ActivityLog[]>(STORAGE_KEYS.ACTIVITY_LOG) || [];
-      setActivities(savedActivities);
-    } catch (error) {
-      log.error('Error loading course data:', 'Context', error);
-    }
+    const fetchActivities = async () => {
+      try {
+        const response = await fetch('/api/activities?limit=100');
+        if (response.ok) {
+          const data = await response.json();
+          setActivities(data.activities || []);
+        } else {
+          // Fallback to localStorage
+          const savedActivities = storage.getItem<ActivityLog[]>(STORAGE_KEYS.ACTIVITY_LOG) || [];
+          setActivities(savedActivities);
+        }
+      } catch (error) {
+        log.error('Error loading activities:', 'Context', error);
+        const savedActivities = storage.getItem<ActivityLog[]>(STORAGE_KEYS.ACTIVITY_LOG) || [];
+        setActivities(savedActivities);
+      }
+    };
+
+    fetchCourseData();
+    fetchActivities();
   }, [user]);
 
   // Log activity function needs to be defined before useEffect
   // wrap logActivity in a useCallback
-  const logActivity = useCallback((
+  const logActivity = useCallback(async (
     type: ActivityLog['type'],
     description: string,
     metadata: Record<string, unknown> = {}
   ) => {
     if (!user) return;
-
 
     const newActivity: ActivityLog = {
       id: `activity_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -139,9 +169,26 @@ export function CourseProvider({ children }: CourseProviderProps) {
       description,
     };
 
-    const updatedActivities = [newActivity, ...activities].slice(0, 100); // Keep last 100 activities
+    // Optimistic update
+    const updatedActivities = [newActivity, ...activities].slice(0, 100);
     setActivities(updatedActivities);
-    storage.setItem(STORAGE_KEYS.ACTIVITY_LOG, updatedActivities);
+
+    try {
+      // Try API first
+      const response = await fetch('/api/activities', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type, description, metadata }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to log activity');
+      }
+    } catch (error) {
+      log.error('Error logging activity, using localStorage:', 'Context', error);
+      // Fallback to localStorage
+      storage.setItem(STORAGE_KEYS.ACTIVITY_LOG, updatedActivities);
+    }
   }, [user, activities]);
 
   // Listen for login events to log activity
@@ -159,7 +206,7 @@ export function CourseProvider({ children }: CourseProviderProps) {
   }, [user, logActivity]);
 
   // Enroll in a course
-  const enrollInCourse = (courseId: string) => {
+  const enrollInCourse = async (courseId: string) => {
     if (!user) return;
 
     const existingEnrollment = enrollments.find(e => e.courseId === courseId);
@@ -174,9 +221,26 @@ export function CourseProvider({ children }: CourseProviderProps) {
       timeSpent: 0,
     };
 
+    // Optimistic update
     const updatedEnrollments = [...enrollments, newEnrollment];
     setEnrollments(updatedEnrollments);
-    storage.setItem(STORAGE_KEYS.COURSE_PROGRESS, updatedEnrollments);
+
+    try {
+      // Try API first
+      const response = await fetch('/api/courses', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ courseId }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to enroll in course');
+      }
+    } catch (error) {
+      log.error('Error enrolling in course, using localStorage:', 'Context', error);
+      // Fallback to localStorage
+      storage.setItem(STORAGE_KEYS.COURSE_PROGRESS, updatedEnrollments);
+    }
 
     // Log activity
     const course = SAMPLE_COURSES.find(c => c.id === courseId);
@@ -184,7 +248,7 @@ export function CourseProvider({ children }: CourseProviderProps) {
   };
 
   // Update course progress
-  const updateProgress = (courseId: string, updates: Partial<CourseEnrollment>) => {
+  const updateProgress = async (courseId: string, updates: Partial<CourseEnrollment>) => {
     if (!user) return;
 
     const updatedEnrollments = enrollments.map(enrollment => {
@@ -198,8 +262,25 @@ export function CourseProvider({ children }: CourseProviderProps) {
       return enrollment;
     });
 
+    // Optimistic update
     setEnrollments(updatedEnrollments);
-    storage.setItem(STORAGE_KEYS.COURSE_PROGRESS, updatedEnrollments);
+
+    try {
+      // Try API first
+      const response = await fetch('/api/courses', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ courseId, updates }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update course progress');
+      }
+    } catch (error) {
+      log.error('Error updating course progress, using localStorage:', 'Context', error);
+      // Fallback to localStorage
+      storage.setItem(STORAGE_KEYS.COURSE_PROGRESS, updatedEnrollments);
+    }
   };
 
   // Complete a lesson

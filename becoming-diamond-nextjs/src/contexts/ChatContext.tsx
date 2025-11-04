@@ -56,29 +56,56 @@ export function ChatProvider({ children }: ChatProviderProps) {
   const [sessions, setSessions] = useState<ChatSession[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Load chat sessions from localStorage on mount
+  // Fetch chat sessions from database or fallback to localStorage
   useEffect(() => {
     if (!user) {
       setIsLoading(false);
       return;
     }
 
-    try {
-      const savedSessions = storage.getItem<ChatSession[]>(STORAGE_KEYS.CHAT_SESSIONS) || [];
-      setSessions(savedSessions);
+    const fetchSessions = async () => {
+      try {
+        // Try API first
+        const response = await fetch('/api/chat');
+        if (response.ok) {
+          const data = await response.json();
+          setSessions(data.sessions || []);
 
-      // Load the most recent session as current (if any)
-      if (savedSessions.length > 0) {
-        const mostRecent = savedSessions.sort((a, b) =>
-          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-        )[0];
-        setCurrentSession(mostRecent);
+          // Load the most recent session as current (if any)
+          if (data.sessions && data.sessions.length > 0) {
+            const mostRecent = data.sessions[0]; // Already sorted by API
+            setCurrentSession(mostRecent);
+          }
+        } else {
+          // Fallback to localStorage
+          const savedSessions = storage.getItem<ChatSession[]>(STORAGE_KEYS.CHAT_SESSIONS) || [];
+          setSessions(savedSessions);
+
+          if (savedSessions.length > 0) {
+            const mostRecent = savedSessions.sort((a, b) =>
+              new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+            )[0];
+            setCurrentSession(mostRecent);
+          }
+        }
+      } catch (error) {
+        log.error('Error loading chat sessions:', 'Context', error);
+        // Fallback to localStorage on error
+        const savedSessions = storage.getItem<ChatSession[]>(STORAGE_KEYS.CHAT_SESSIONS) || [];
+        setSessions(savedSessions);
+
+        if (savedSessions.length > 0) {
+          const mostRecent = savedSessions.sort((a, b) =>
+            new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+          )[0];
+          setCurrentSession(mostRecent);
+        }
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      log.error('Error loading chat sessions:', 'Context', error);
-    } finally {
-      setIsLoading(false);
-    }
+    };
+
+    fetchSessions();
   }, [user]);
 
   // Generate a title from the first user message
@@ -91,34 +118,53 @@ export function ChatProvider({ children }: ChatProviderProps) {
   };
 
   // Create a new chat session
-  const createSession = (title?: string) => {
+  const createSession = async (title?: string) => {
     if (!user) return;
 
     const now = new Date().toISOString();
-    const newSession: ChatSession = {
-      id: `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-      title: title || 'New Conversation',
-      messages: [],
-      createdAt: now,
-      updatedAt: now,
-    };
+    const sessionTitle = title || 'New Conversation';
 
-    setCurrentSession(newSession);
+    try {
+      // Try API first
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: sessionTitle }),
+      });
 
-    // Add to sessions list (will be saved when first message is added)
-    const updatedSessions = [newSession, ...sessions];
+      if (response.ok) {
+        const data = await response.json();
+        setCurrentSession(data.session);
 
-    // Enforce MAX_SESSIONS limit with LRU eviction
-    if (updatedSessions.length > MAX_SESSIONS) {
-      // Remove oldest session (by updatedAt)
-      updatedSessions.sort((a, b) =>
-        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-      );
-      updatedSessions.splice(MAX_SESSIONS);
+        const updatedSessions = [data.session, ...sessions];
+        if (updatedSessions.length > MAX_SESSIONS) {
+          updatedSessions.splice(MAX_SESSIONS);
+        }
+        setSessions(updatedSessions);
+      } else {
+        throw new Error('Failed to create session');
+      }
+    } catch (error) {
+      log.error('Error creating session, using localStorage:', 'Context', error);
+      // Fallback to localStorage
+      const newSession: ChatSession = {
+        id: `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        title: sessionTitle,
+        messages: [],
+        createdAt: now,
+        updatedAt: now,
+      };
+
+      setCurrentSession(newSession);
+
+      const updatedSessions = [newSession, ...sessions];
+      if (updatedSessions.length > MAX_SESSIONS) {
+        updatedSessions.splice(MAX_SESSIONS);
+      }
+
+      setSessions(updatedSessions);
+      storage.setItem(STORAGE_KEYS.CHAT_SESSIONS, updatedSessions);
     }
-
-    setSessions(updatedSessions);
-    storage.setItem(STORAGE_KEYS.CHAT_SESSIONS, updatedSessions);
   };
 
   // Load an existing session
@@ -130,7 +176,7 @@ export function ChatProvider({ children }: ChatProviderProps) {
   };
 
   // Add a message to the current session
-  const addMessage = (content: string, role: 'user' | 'assistant') => {
+  const addMessage = async (content: string, role: 'user' | 'assistant') => {
     if (!user || !currentSession) return;
 
     const newMessage: ChatMessage = {
@@ -155,33 +201,74 @@ export function ChatProvider({ children }: ChatProviderProps) {
       updatedAt: new Date().toISOString(),
     };
 
+    // Optimistic update
     setCurrentSession(updatedSession);
 
-    // Update sessions list
-    const updatedSessions = sessions.map(s =>
-      s.id === updatedSession.id ? updatedSession : s
-    );
+    try {
+      // Try API first
+      const requests = [];
 
-    // If this was a new session that didn't exist in the list yet, add it
-    if (!sessions.find(s => s.id === updatedSession.id)) {
-      updatedSessions.unshift(updatedSession);
+      // Update title if it changed
+      if (updatedTitle !== currentSession.title) {
+        requests.push(
+          fetch('/api/chat', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sessionId: currentSession.id, title: updatedTitle }),
+          })
+        );
+      }
+
+      // Add message
+      requests.push(
+        fetch('/api/chat', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            sessionId: currentSession.id,
+            message: { role, content },
+          }),
+        })
+      );
+
+      await Promise.all(requests);
+    } catch (error) {
+      log.error('Error adding message, using localStorage:', 'Context', error);
+      // Fallback to localStorage
+      const updatedSessions = sessions.map(s =>
+        s.id === updatedSession.id ? updatedSession : s
+      );
+
+      if (!sessions.find(s => s.id === updatedSession.id)) {
+        updatedSessions.unshift(updatedSession);
+      }
+
+      setSessions(updatedSessions);
+      storage.setItem(STORAGE_KEYS.CHAT_SESSIONS, updatedSessions);
     }
-
-    setSessions(updatedSessions);
-    storage.setItem(STORAGE_KEYS.CHAT_SESSIONS, updatedSessions);
   };
 
   // Delete a session
-  const deleteSession = (sessionId: string) => {
+  const deleteSession = async (sessionId: string) => {
     if (!user) return;
 
+    // Optimistic update
     const updatedSessions = sessions.filter(s => s.id !== sessionId);
     setSessions(updatedSessions);
-    storage.setItem(STORAGE_KEYS.CHAT_SESSIONS, updatedSessions);
 
-    // If deleted session was current, clear it
     if (currentSession?.id === sessionId) {
       setCurrentSession(null);
+    }
+
+    try {
+      // Try API first
+      await fetch(`/api/chat?sessionId=${sessionId}`, {
+        method: 'DELETE',
+      });
+    } catch (error) {
+      log.error('Error deleting session, using localStorage:', 'Context', error);
+      // Fallback to localStorage
+      storage.setItem(STORAGE_KEYS.CHAT_SESSIONS, updatedSessions);
     }
   };
 
@@ -191,18 +278,32 @@ export function ChatProvider({ children }: ChatProviderProps) {
   };
 
   // Update session title manually
-  const updateSessionTitle = (sessionId: string, title: string) => {
+  const updateSessionTitle = async (sessionId: string, title: string) => {
     if (!user) return;
 
+    const now = new Date().toISOString();
     const updatedSessions = sessions.map(s =>
-      s.id === sessionId ? { ...s, title, updatedAt: new Date().toISOString() } : s
+      s.id === sessionId ? { ...s, title, updatedAt: now } : s
     );
 
+    // Optimistic update
     setSessions(updatedSessions);
-    storage.setItem(STORAGE_KEYS.CHAT_SESSIONS, updatedSessions);
 
     if (currentSession?.id === sessionId) {
       setCurrentSession({ ...currentSession, title });
+    }
+
+    try {
+      // Try API first
+      await fetch('/api/chat', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sessionId, title }),
+      });
+    } catch (error) {
+      log.error('Error updating session title, using localStorage:', 'Context', error);
+      // Fallback to localStorage
+      storage.setItem(STORAGE_KEYS.CHAT_SESSIONS, updatedSessions);
     }
   };
 
