@@ -18,16 +18,21 @@ export default function CollectivePage() {
       {/* Hero - DiamondMind Collective */}
       <section className="py-24 px-6 relative overflow-hidden pt-32">
         <LampContainer>
+          <div className="text-center max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+              className="inline-block bg-primary/20 border-2 border-primary px-6 py-2 rounded-full mb-6 relative z-[60] shadow-lg shadow-primary/50"
+            >
+              <span className="text-white text-xl font-bold drop-shadow-[0_0_8px_rgba(79,195,247,1)]">$7,995</span>
+            </motion.div>
           {/* Note: Use `animate` for above-fold content - whileInView doesn't trigger for initially-visible elements */}
           <motion.div
             initial={{ opacity: 0, y: 100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center max-w-4xl mx-auto"
           >
-            <div className="inline-block bg-primary/10 border border-primary/30 px-6 py-2 rounded-full mb-6">
-              <span className="text-primary text-xl font-bold">$7,995</span>
-            </div>
             <h1 className="mb-6 text-4xl md:text-6xl">
               The <span className="text-primary">DiamondMind</span> Immersion
             </h1>
@@ -81,6 +86,7 @@ export default function CollectivePage() {
               </p>
             </div>
           </motion.div>
+          </div>
         </LampContainer>
       </section>
 
@@ -397,11 +403,11 @@ export default function CollectivePage() {
             <p className="text-xl text-gray-300 mb-8">
               Applications are now open for the next cohort of DiamondMind Immersion
             </p>
-            <Link href="/auth/signin">
+            <a href="mailto:support@becomingdiamond.com">
               <button className="bg-primary text-black px-10 py-5 rounded-full text-xl font-medium hover:bg-primary/90 transition-all shadow-lg shadow-primary/30">
                 Begin Your DiamondMind Immersion
               </button>
-            </Link>
+            </a>
             <p className="text-sm text-gray-500 mt-6">Perfect for those ready to live from the Diamond frequency—every single day.</p>
           </motion.div>
         </div>
