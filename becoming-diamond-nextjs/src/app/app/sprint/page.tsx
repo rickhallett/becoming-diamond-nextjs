@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { getProgressStats } from '@/lib/sprint-progress';
 import ProgressBar from '@/components/sprint/ProgressBar';
 import StatsCard from '@/components/sprint/StatsCard';
+import { FEATURES } from '@/config/features';
 import {
   IconTrophy,
   IconFlame,
@@ -152,7 +153,7 @@ export default function SprintOverviewPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.4 }}
-        className="grid grid-cols-1 md:grid-cols-2 gap-6"
+        className={`grid grid-cols-1 gap-6 ${FEATURES.sprintWatchPlaylist ? 'md:grid-cols-2' : 'max-w-2xl mx-auto'}`}
       >
         <Link
           href="/app/sprint/dashboard"
@@ -171,23 +172,25 @@ export default function SprintOverviewPage() {
           </div>
         </Link>
 
-        <Link
-          href="/app/sprint/watch"
-          className="block p-6 bg-black border border-gray-800 rounded-lg hover:border-primary transition-all group"
-        >
-          <div className="flex items-start justify-between mb-4">
-            <div>
-              <h3 className="text-xl font-light mb-2 group-hover:text-primary transition-colors flex items-center gap-2">
-                <IconPlayerPlay size={20} className="text-primary" />
-                Watch Playlist
-              </h3>
-              <p className="text-sm text-gray-400">
-                Watch all videos continuously with auto-play. Perfect for binge-watching your transformation.
-              </p>
+        {FEATURES.sprintWatchPlaylist && (
+          <Link
+            href="/app/sprint/watch"
+            className="block p-6 bg-black border border-gray-800 rounded-lg hover:border-primary transition-all group"
+          >
+            <div className="flex items-start justify-between mb-4">
+              <div>
+                <h3 className="text-xl font-light mb-2 group-hover:text-primary transition-colors flex items-center gap-2">
+                  <IconPlayerPlay size={20} className="text-primary" />
+                  Watch Playlist
+                </h3>
+                <p className="text-sm text-gray-400">
+                  Watch all videos continuously with auto-play. Perfect for binge-watching your transformation.
+                </p>
+              </div>
+              <IconArrowRight className="text-primary opacity-0 group-hover:opacity-100 transition-opacity" size={24} />
             </div>
-            <IconArrowRight className="text-primary opacity-0 group-hover:opacity-100 transition-opacity" size={24} />
-          </div>
-        </Link>
+          </Link>
+        )}
       </motion.div>
 
       {/* Info Section */}
@@ -196,7 +199,7 @@ export default function SprintOverviewPage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
-          className="mt-12 p-6 bg-primary/5 border border-primary/20 rounded-lg"
+          className={`mt-12 p-6 bg-primary/5 border border-primary/20 rounded-lg ${!FEATURES.sprintWatchPlaylist ? 'max-w-2xl mx-auto' : ''}`}
         >
           <h3 className="text-lg font-medium mb-3 text-primary">Before You Begin</h3>
           <p className="text-gray-300 mb-4">

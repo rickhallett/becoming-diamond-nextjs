@@ -32,6 +32,9 @@ export interface FeatureFlags {
   // Public Features
   publicDiamondMindAI: boolean;
 
+  // Sprint Features
+  sprintWatchPlaylist: boolean;
+
   // Future Features
   communityForum: boolean;
   liveEvents: boolean;
@@ -75,6 +78,9 @@ export const FEATURES: FeatureFlags = {
 
   // Public Features - Phase 2
   publicDiamondMindAI: false,
+
+  // Sprint Features
+  sprintWatchPlaylist: false,
 
   // Future Features - Disabled
   communityForum: false,
