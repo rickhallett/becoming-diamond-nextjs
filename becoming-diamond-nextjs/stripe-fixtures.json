@@ -1,0 +1,149 @@
+{
+  "_meta": {
+    "template_version": 0,
+    "description": "Becoming Diamond Stripe product catalog and webhook configuration"
+  },
+  "fixtures": [
+    {
+      "name": "diamond_sprint_product",
+      "path": "/v1/products",
+      "method": "post",
+      "params": {
+        "name": "Diamond Sprint Course",
+        "description": "30-day nervous system training program. Learn to regulate stress, rewire identity, and lead through chaos in just 15 minutes a day.",
+        "active": true,
+        "metadata": {
+          "type": "course",
+          "duration_days": "30",
+          "access_type": "lifetime",
+          "category": "nervous_system_training"
+        },
+        "images": [
+          "https://becomingdiamond.com/images/diamond-sprint-course.jpg"
+        ]
+      }
+    },
+    {
+      "name": "diamond_sprint_price",
+      "path": "/v1/prices",
+      "method": "post",
+      "params": {
+        "product": "${diamond_sprint_product:id}",
+        "currency": "usd",
+        "unit_amount": 49700,
+        "nickname": "Diamond Sprint - One-time Payment",
+        "metadata": {
+          "access_type": "lifetime",
+          "product_type": "course"
+        }
+      }
+    },
+    {
+      "name": "monthly_membership_product",
+      "path": "/v1/products",
+      "method": "post",
+      "params": {
+        "name": "Diamond Monthly Membership",
+        "description": "Full access to all courses, content, and DiamondMindAI coaching. Billed monthly.",
+        "active": true,
+        "metadata": {
+          "type": "subscription",
+          "billing_interval": "monthly",
+          "access_type": "all_access"
+        },
+        "images": [
+          "https://becomingdiamond.com/images/membership.jpg"
+        ]
+      }
+    },
+    {
+      "name": "monthly_membership_price",
+      "path": "/v1/prices",
+      "method": "post",
+      "params": {
+        "product": "${monthly_membership_product:id}",
+        "currency": "usd",
+        "unit_amount": 9700,
+        "recurring": {
+          "interval": "month",
+          "interval_count": 1
+        },
+        "nickname": "Monthly Membership - $97/month",
+        "metadata": {
+          "access_type": "all_access",
+          "product_type": "subscription"
+        }
+      }
+    },
+    {
+      "name": "annual_membership_product",
+      "path": "/v1/products",
+      "method": "post",
+      "params": {
+        "name": "Diamond Annual Membership",
+        "description": "Full access to all courses, content, and DiamondMindAI coaching. Billed annually. Save 2 months compared to monthly.",
+        "active": true,
+        "metadata": {
+          "type": "subscription",
+          "billing_interval": "yearly",
+          "access_type": "all_access",
+          "discount": "2_months_free"
+        },
+        "images": [
+          "https://becomingdiamond.com/images/membership.jpg"
+        ]
+      }
+    },
+    {
+      "name": "annual_membership_price",
+      "path": "/v1/prices",
+      "method": "post",
+      "params": {
+        "product": "${annual_membership_product:id}",
+        "currency": "usd",
+        "unit_amount": 97000,
+        "recurring": {
+          "interval": "year",
+          "interval_count": 1
+        },
+        "nickname": "Annual Membership - $970/year (save $194)",
+        "metadata": {
+          "access_type": "all_access",
+          "product_type": "subscription",
+          "savings": "194"
+        }
+      }
+    },
+    {
+      "name": "webhook_endpoint_production",
+      "path": "/v1/webhook_endpoints",
+      "method": "post",
+      "params": {
+        "url": "https://becomingdiamond.com/api/stripe/webhook",
+        "enabled_events": [
+          "checkout.session.completed",
+          "checkout.session.expired",
+          "customer.created",
+          "customer.updated",
+          "customer.subscription.created",
+          "customer.subscription.updated",
+          "customer.subscription.deleted",
+          "customer.subscription.paused",
+          "customer.subscription.resumed",
+          "payment_intent.succeeded",
+          "payment_intent.payment_failed",
+          "payment_intent.canceled",
+          "invoice.paid",
+          "invoice.payment_failed",
+          "charge.succeeded",
+          "charge.failed",
+          "charge.refunded"
+        ],
+        "description": "Production webhook for Becoming Diamond payment events",
+        "metadata": {
+          "environment": "production"
+        }
+      }
+    }
+  ]
+}

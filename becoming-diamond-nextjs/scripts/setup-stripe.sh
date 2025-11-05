@@ -1,0 +1,243 @@
+#!/bin/bash
+
+# Becoming Diamond - Stripe Setup Script
+# This script provisions Stripe products, prices, and webhooks using the Stripe CLI
+
+set -e  # Exit on error
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Helper functions
+print_header() {
+    echo -e "\n${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${BLUE}  $1${NC}"
+    echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}\n"
+}
+
+print_success() {
+    echo -e "${GREEN}✓ $1${NC}"
+}
+
+print_error() {
+    echo -e "${RED}✗ $1${NC}"
+}
+
+print_warning() {
+    echo -e "${YELLOW}⚠ $1${NC}"
+}
+
+print_info() {
+    echo -e "${BLUE}ℹ $1${NC}"
+}
+
+# Check if Stripe CLI is installed
+if ! command -v stripe &> /dev/null; then
+    print_error "Stripe CLI is not installed"
+    echo ""
+    echo "Install it with:"
+    echo "  brew install stripe/stripe-cli/stripe"
+    echo ""
+    echo "Or visit: https://stripe.com/docs/stripe-cli"
+    exit 1
+fi
+
+# Check if jq is installed (for JSON parsing)
+if ! command -v jq &> /dev/null; then
+    print_error "jq is not installed (required for JSON parsing)"
+    echo ""
+    echo "Install it with:"
+    echo "  brew install jq"
+    exit 1
+fi
+
+# Check if user is logged in to Stripe
+if ! stripe config --list &> /dev/null; then
+    print_error "Not logged in to Stripe CLI"
+    echo ""
+    echo "Login with:"
+    echo "  stripe login"
+    exit 1
+fi
+
+print_header "Becoming Diamond - Stripe Setup"
+
+# Determine environment
+echo "Which environment are you setting up?"
+echo "  1) Test Mode (recommended for development)"
+echo "  2) Live Mode (production only)"
+echo ""
+read -p "Enter choice [1-2]: " env_choice
+
+LIVE_FLAG=""
+ENV_SUFFIX="_TEST"
+ENV_NAME="Test Mode"
+
+if [ "$env_choice" == "2" ]; then
+    print_warning "You are about to set up LIVE MODE"
+    read -p "Are you sure? This will create real products. (yes/no): " confirm
+    if [ "$confirm" != "yes" ]; then
+        print_info "Setup cancelled"
+        exit 0
+    fi
+    LIVE_FLAG="--live"
+    ENV_SUFFIX=""
+    ENV_NAME="Live Mode"
+fi
+
+print_info "Setting up: $ENV_NAME"
+echo ""
+
+# Check if fixtures file exists
+FIXTURES_FILE="stripe-fixtures.json"
+if [ ! -f "$FIXTURES_FILE" ]; then
+    print_error "Fixtures file not found: $FIXTURES_FILE"
+    echo "Make sure you're running this script from the project root"
+    exit 1
+fi
+
+print_header "Step 1: Running Stripe Fixtures"
+
+print_info "Creating products, prices, and webhooks..."
+echo ""
+
+# Run fixtures and capture output
+FIXTURE_OUTPUT=$(stripe fixtures $FIXTURES_FILE $LIVE_FLAG 2>&1 || true)
+
+# Check if fixtures ran successfully
+if echo "$FIXTURE_OUTPUT" | grep -q "Error\|error\|failed"; then
+    print_error "Fixtures failed to run"
+    echo "$FIXTURE_OUTPUT"
+    exit 1
+fi
+
+print_success "Fixtures executed successfully"
+echo ""
+
+print_header "Step 2: Retrieving Created Resources"
+
+# Extract product and price IDs
+print_info "Fetching products and prices..."
+
+# Get all products
+PRODUCTS=$(stripe products list $LIVE_FLAG --limit 100 | jq -r '.data[] | select(.name | contains("Diamond")) | {id: .id, name: .name, default_price: .default_price}')
+
+# Extract specific price IDs
+DIAMOND_SPRINT_PRICE=$(stripe products list $LIVE_FLAG --limit 100 | jq -r '.data[] | select(.name == "Diamond Sprint Course") | .default_price')
+MONTHLY_PRICE=$(stripe products list $LIVE_FLAG --limit 100 | jq -r '.data[] | select(.name == "Diamond Monthly Membership") | .default_price')
+ANNUAL_PRICE=$(stripe products list $LIVE_FLAG --limit 100 | jq -r '.data[] | select(.name == "Diamond Annual Membership") | .default_price')
+
+# Get webhook secret
+print_info "Fetching webhook endpoint..."
+WEBHOOK_SECRET=$(stripe webhook_endpoints list $LIVE_FLAG | jq -r '.data[] | select(.url | contains("becomingdiamond.com")) | .secret')
+
+# Validation
+if [ -z "$DIAMOND_SPRINT_PRICE" ] || [ "$DIAMOND_SPRINT_PRICE" == "null" ]; then
+    print_error "Failed to retrieve Diamond Sprint price ID"
+    exit 1
+fi
+
+if [ -z "$MONTHLY_PRICE" ] || [ "$MONTHLY_PRICE" == "null" ]; then
+    print_error "Failed to retrieve Monthly Membership price ID"
+    exit 1
+fi
+
+if [ -z "$ANNUAL_PRICE" ] || [ "$ANNUAL_PRICE" == "null" ]; then
+    print_error "Failed to retrieve Annual Membership price ID"
+    exit 1
+fi
+
+print_success "Retrieved all price IDs"
+echo ""
+
+print_header "Step 3: Updating Environment Variables"
+
+# Determine .env file
+ENV_FILE=".env.local"
+
+# Backup existing .env.local if it exists
+if [ -f "$ENV_FILE" ]; then
+    BACKUP_FILE="${ENV_FILE}.backup.$(date +%Y%m%d_%H%M%S)"
+    cp "$ENV_FILE" "$BACKUP_FILE"
+    print_info "Backed up existing $ENV_FILE to $BACKUP_FILE"
+fi
+
+# Remove old Stripe variables if they exist
+if [ -f "$ENV_FILE" ]; then
+    sed -i.tmp '/^STRIPE_/d' "$ENV_FILE"
+    rm -f "${ENV_FILE}.tmp"
+fi
+
+# Append new Stripe variables
+cat >> "$ENV_FILE" <<EOF
+
+# Stripe Configuration (${ENV_NAME})
+# Generated by scripts/setup-stripe.sh on $(date)
+
+# Price IDs
+STRIPE_PRICE_DIAMOND_SPRINT${ENV_SUFFIX}=${DIAMOND_SPRINT_PRICE}
+STRIPE_PRICE_MONTHLY${ENV_SUFFIX}=${MONTHLY_PRICE}
+STRIPE_PRICE_ANNUAL${ENV_SUFFIX}=${ANNUAL_PRICE}
+
+# Webhook Secret
+STRIPE_WEBHOOK_SECRET${ENV_SUFFIX}=${WEBHOOK_SECRET}
+
+# API Keys (you need to add these manually from Stripe Dashboard)
+# Get them from: https://dashboard.stripe.com/apikeys
+STRIPE_PUBLISHABLE_KEY${ENV_SUFFIX}=pk_test_...
+STRIPE_SECRET_KEY${ENV_SUFFIX}=sk_test_...
+
+# Feature Flag
+STRIPE_ENABLED=true
+EOF
+
+print_success "Environment variables written to $ENV_FILE"
+echo ""
+
+print_header "Summary"
+
+echo -e "${GREEN}Products Created:${NC}"
+echo "  • Diamond Sprint Course: $DIAMOND_SPRINT_PRICE ($497)"
+echo "  • Monthly Membership: $MONTHLY_PRICE ($97/month)"
+echo "  • Annual Membership: $ANNUAL_PRICE ($970/year)"
+echo ""
+
+echo -e "${GREEN}Webhook Endpoint:${NC}"
+echo "  • URL: https://becomingdiamond.com/api/stripe/webhook"
+if [ -n "$WEBHOOK_SECRET" ] && [ "$WEBHOOK_SECRET" != "null" ]; then
+    echo "  • Secret: ${WEBHOOK_SECRET:0:20}..."
+else
+    print_warning "Webhook secret not found (may need to be configured manually)"
+fi
+echo ""
+
+print_header "Next Steps"
+
+echo "1. Add API keys to $ENV_FILE:"
+echo "   • Go to: https://dashboard.stripe.com/apikeys"
+echo "   • Copy Publishable key → STRIPE_PUBLISHABLE_KEY${ENV_SUFFIX}"
+echo "   • Copy Secret key → STRIPE_SECRET_KEY${ENV_SUFFIX}"
+echo ""
+
+echo "2. Test webhook locally:"
+echo "   stripe listen --forward-to localhost:3003/api/stripe/webhook"
+echo ""
+
+echo "3. Trigger test events:"
+echo "   stripe trigger checkout.session.completed"
+echo ""
+
+echo "4. Run payment E2E tests:"
+echo "   SKIP_PAYMENT_TESTS=false npx playwright test payment-flow.spec.ts"
+echo ""
+
+echo "5. View products in Stripe Dashboard:"
+echo "   https://dashboard.stripe.com/products"
+echo ""
+
+print_success "Stripe setup complete!"
+echo ""
