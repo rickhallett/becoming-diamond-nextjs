@@ -152,9 +152,8 @@ export default function ProgramPage() {
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
                 className={`relative rounded-2xl p-8 flex flex-col ${tier.popular
                   ? 'bg-gradient-to-b from-primary/20 to-primary/5 border-2 border-primary'
                   : 'bg-secondary/50 border border-white/10'
@@ -182,7 +181,7 @@ export default function ProgramPage() {
 
                 <p className="text-sm text-gray-500 italic mb-6">{tier.ideal}</p>
 
-                <Link href="/auth/signin" className="mt-auto">
+                <a href="mailto:support@becomingdiamond.com" className="mt-auto">
                   <button
                     className={`w-full py-3 rounded-lg font-medium transition-all ${tier.popular
                       ? 'bg-primary text-black hover:bg-primary/90'
@@ -191,7 +190,7 @@ export default function ProgramPage() {
                   >
                     {tier.cta}
                   </button>
-                </Link>
+                </a>
               </motion.div>
             ))}
           </div>
