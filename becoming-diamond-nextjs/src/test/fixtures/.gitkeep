@@ -1,0 +1,21 @@
+# Test Fixtures Directory
+
+This directory contains test fixtures for E2E tests, including:
+- Authentication session states
+- Test data (courses, sprint content, etc.)
+- Mock API responses
+
+## Files
+
+- `auth.json` - Authenticated user session state (generated)
+- `sprint.json` - Sprint test data
+- `course.json` - Course test data
+- `chat.json` - Chat test data
+- `profile.json` - Profile test data
+- `settings.json` - Settings test data
+- `offers.json` - Offers test data
+- `blog.json` - Blog test data
+
+## Usage
+
+Fixtures are generated during test setup and should not be committed to version control if they contain sensitive data.

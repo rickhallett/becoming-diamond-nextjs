@@ -9,21 +9,21 @@ export const mockVideoReference: VideoReference = {
 
 export const mockSlide: CourseSlide = {
   id: 'pr1-c0-s0-intro',
+  chapterId: 'pr1-c0',
   title: 'Introduction',
   content: '<p>Test slide content</p>',
   order: 0,
   videoReferences: [mockVideoReference],
   mediaType: 'video',
-  estimatedTime: 5,
 };
 
 export const mockSlide2: CourseSlide = {
   id: 'pr1-c0-s1-lesson',
+  chapterId: 'pr1-c0',
   title: 'First Lesson',
   content: '<p>Lesson content</p>',
   order: 1,
   videoReferences: [],
-  estimatedTime: 10,
 };
 
 export const mockChapter: CourseChapter = {
@@ -41,11 +41,11 @@ export const mockChapter2: CourseChapter = {
   slides: [
     {
       id: 'pr1-c1-s0-intro',
+      chapterId: 'pr1-c1',
       title: 'Chapter 2 Intro',
       content: '<p>Chapter 2 content</p>',
       order: 0,
       videoReferences: [],
-      estimatedTime: 8,
     },
   ],
   part: 1,

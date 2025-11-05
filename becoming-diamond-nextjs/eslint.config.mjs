@@ -67,6 +67,9 @@ const eslintConfig = [
       "*.config.mjs",
       "*.config.ts",
       "src/components/ui/**",
+      "src/test/**",
+      "playwright-report/**",
+      "test-results/**",
     ],
   },
 ];
