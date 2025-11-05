@@ -2024,7 +2024,7 @@ But you're not here to just keep up — you're here to lead. Every day you live 
 
 ### Your Call to Action
 
-Go to BecomingDiamond.com or TurningSnowflakesIntoDiamonds.com today. Download the free Diamond Activation Kit — a set of guided practices and quick-start tools to help you lock in what you've learned in this book.
+Go to BecomingDiamond.com or becomingdiamond.com today. Download the free Diamond Activation Kit — a set of guided practices and quick-start tools to help you lock in what you've learned in this book.
 Share your commitment publicly or with a trusted ally: “I am becoming a Diamond."
 Because once you decide to live as a Diamond, you stop waiting for the world to change — you start shaping it.
 This is your moment. Step into it. From snowflake to Diamond — the future is yours to create.
