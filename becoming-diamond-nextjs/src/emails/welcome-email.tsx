@@ -21,7 +21,11 @@ export function WelcomeEmail({ email, unsubscribeUrl }: WelcomeEmailProps) {
 
   return (
     <Html>
-      <Head />
+      <Head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+      </Head>
       <Preview>Your Diamond Sprint materials + Manifesto are ready!</Preview>
       <Body style={main}>
         <Container style={container}>
@@ -31,7 +35,7 @@ export function WelcomeEmail({ email, unsubscribeUrl }: WelcomeEmailProps) {
           </Section>
 
           {/* Main Content */}
-          <Heading style={h1}>Welcome to the Diamond Sprint 💎</Heading>
+          <Heading style={h1}>Welcome to the Diamond Sprint</Heading>
           <Text style={subheading}>+ Your Complete Diamond Manifesto Inside</Text>
 
           <Text style={text}>Hi there!</Text>
@@ -49,7 +53,7 @@ export function WelcomeEmail({ email, unsubscribeUrl }: WelcomeEmailProps) {
 
           {/* Diamond Manifesto Section */}
           <Section style={manifestoBox}>
-            <Heading style={h2}>📖 Your Diamond Manifesto</Heading>
+            <Heading style={h2}>Your Diamond Manifesto</Heading>
             <Text style={text}>
               We&apos;ve included the complete Diamond Manifesto as a gift. This is the philosophical
               foundation of everything we teach—your blueprint for unshakable presence.
@@ -126,7 +130,7 @@ export function WelcomeEmail({ email, unsubscribeUrl }: WelcomeEmailProps) {
 // Styles
 const main = {
   backgroundColor: '#000000',
-  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+  fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
   padding: '20px 0',
 };
 

@@ -82,6 +82,10 @@ export async function sendWelcomeEmail(
   const unsubscribeUrl = `${baseUrl}/api/unsubscribe?token=${unsubscribeToken}`;
 
   try {
+    await log.info(`Starting email send to ${to}`, "EMAIL", {
+      retryCount,
+    });
+
     // Render email template
     const emailHtml = await render(
       WelcomeEmail({
@@ -90,11 +94,17 @@ export async function sendWelcomeEmail(
       })
     );
 
+    await log.info("Email template rendered", "EMAIL");
+
     // Load manifesto attachment
     const manifestoAttachment = getManifestoAttachment();
 
     // Prepare email payload
     const resend = getResendClient();
+    await log.info("Resend client initialized", "EMAIL", {
+      fromEmail: FROM_EMAIL,
+    });
+
     const emailPayload: {
       from: string;
       to: string;
@@ -123,9 +133,45 @@ export async function sendWelcomeEmail(
     }
 
     // Send email via Resend
+    await log.info("Calling Resend API", "EMAIL", {
+      from: emailPayload.from,
+      to: emailPayload.to,
+      hasAttachments: !!emailPayload.attachments,
+    });
+
     const result = await resend.emails.send(emailPayload);
 
-    await log.info(`Welcome email sent to ${to}`, "EMAIL", {
+    await log.info("Resend API response received", "EMAIL", {
+      success: !!result.data,
+      error: result.error,
+      emailId: result.data?.id,
+      data: JSON.stringify(result.data),
+    });
+
+    // Check for Resend API error
+    if (result.error) {
+      await log.error("Resend API returned error", "EMAIL", {
+        error: result.error,
+        to,
+      });
+      return {
+        success: false,
+        error: JSON.stringify(result.error),
+      };
+    }
+
+    if (!result.data?.id) {
+      await log.error("Resend API returned no email ID", "EMAIL", {
+        result: JSON.stringify(result),
+        to,
+      });
+      return {
+        success: false,
+        error: "No email ID returned from Resend",
+      };
+    }
+
+    await log.info(`Welcome email sent successfully to ${to}`, "EMAIL", {
       emailId: result.data?.id,
       to,
     });

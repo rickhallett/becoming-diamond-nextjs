@@ -3,7 +3,7 @@ import Stripe from 'stripe';
 import { turso } from '@/lib/turso';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY_TEST || process.env.STRIPE_SECRET_KEY || '', {
-  apiVersion: '2024-11-20.acacia',
+  apiVersion: '2025-10-29.clover',
 });
 
 const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET_TEST || process.env.STRIPE_WEBHOOK_SECRET || '';
@@ -164,7 +164,7 @@ export async function POST(req: NextRequest) {
         // Grant access to user
         await grantCourseAccess({
           userId: session.metadata?.userId,
-          customerEmail: session.customer_email || session.customer_details?.email,
+          customerEmail: session.customer_email || session.customer_details?.email || null,
           sessionId: session.id,
           amountTotal: session.amount_total,
         });
@@ -187,7 +187,7 @@ export async function POST(req: NextRequest) {
           subscriptionId: subscription.id,
           stripeCustomerId: subscription.customer as string,
           status: subscription.status,
-          currentPeriodEnd: new Date(subscription.current_period_end * 1000),
+          currentPeriodEnd: new Date((subscription as any).current_period_end * 1000),
         });
 
         break;

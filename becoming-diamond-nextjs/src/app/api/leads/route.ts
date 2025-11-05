@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { nanoid } from "nanoid";
 import { log } from "@/lib/logger";
-import { sendWelcomeEmail, sendAdminNotification } from "@/lib/resend";
+import { sendWelcomeEmail } from "@/lib/gmail-smtp";
 
 // Dynamic route config for Next.js 15
 export const dynamic = "force-dynamic";
@@ -166,13 +166,6 @@ export async function POST(request: NextRequest) {
           leadId: id,
         });
       }
-
-      // Send admin notification (optional, non-blocking)
-      await sendAdminNotification({
-        email: email.toLowerCase(),
-        referrer,
-        landingPage,
-      });
     } catch (emailError) {
       // Log email error but don't fail the API call
       await log.error(`Email sending error for ${email}`, "EMAIL", emailError);
