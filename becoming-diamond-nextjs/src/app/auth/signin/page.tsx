@@ -43,9 +43,28 @@ export default function SignInPage() {
     signIn(provider, { callbackUrl: AUTH_CONFIG.successRedirectUri });
   };
 
-  const handleTestLogin = () => {
-    login("test-user-" + Date.now(), "test");
-    router.push(AUTH_CONFIG.successRedirectUri);
+  const handleTestLogin = async () => {
+    // Create mock NextAuth session by calling dev-only API endpoint
+    try {
+      const response = await fetch('/api/auth/test-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: "test-user-" + Date.now(),
+          name: "Diamond Member",
+          email: "test@example.com",
+        }),
+      });
+
+      if (response.ok) {
+        // Also set localStorage for UserContext compatibility
+        login("test-user-" + Date.now(), "test");
+        // Force page reload to pick up new session cookie
+        window.location.href = AUTH_CONFIG.successRedirectUri;
+      }
+    } catch (error) {
+      log.error("Test login error:", 'App', error);
+    }
   };
 
   if (emailSent) {
