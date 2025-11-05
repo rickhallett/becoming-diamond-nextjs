@@ -19,6 +19,8 @@ import {
 import { SignOutButton } from "@/components/auth/SignOutButton";
 import { UserAvatar } from "@/components/auth/UserAvatar";
 import { FEATURES } from "@/config/features";
+import { CourseProvider } from "@/contexts/CourseContext";
+import { ChatProvider } from "@/contexts/ChatContext";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
@@ -52,6 +54,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     };
 
     return (
+        <CourseProvider>
+            <ChatProvider>
         <div className="min-h-screen bg-black text-white flex">
             {/* Desktop Sidebar */}
             <aside className="hidden lg:flex lg:flex-col w-72 bg-gradient-to-b from-secondary/50 to-black border-r border-white/10 fixed h-full z-40">
@@ -240,5 +244,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 </div>
             </main>
         </div>
+            </ChatProvider>
+        </CourseProvider>
     );
 }
