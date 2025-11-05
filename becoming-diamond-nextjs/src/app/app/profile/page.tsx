@@ -1,5 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { IconEdit, IconCheck, IconX, IconCamera, IconMail, IconMapPin, IconBriefcase } from "@tabler/icons-react";
@@ -7,6 +9,8 @@ import { useUser } from "@/contexts/UserContext";
 import { FEATURES } from "@/config/features";
 
 export default function ProfilePage() {
+    const router = useRouter();
+    const { status } = useSession();
     const { user, updateProfile, isLoading } = useUser();
     const [isEditing, setIsEditing] = useState(false);
     const [imageError, setImageError] = useState(false);
@@ -19,6 +23,13 @@ export default function ProfilePage() {
         bio: "",
         website: "",
     });
+
+    // Redirect to sign-in if unauthenticated
+    useEffect(() => {
+        if (status === 'unauthenticated') {
+            router.push('/auth/signin');
+        }
+    }, [status, router]);
 
     // Load user data into form when available
     useEffect(() => {
@@ -37,7 +48,7 @@ export default function ProfilePage() {
 
     // Show loading state while fetching user data OR if user is not yet loaded
     // This prevents the "Please log in" flash when navigating between pages
-    if (isLoading || !user) {
+    if (status === 'loading' || isLoading || !user) {
         return (
             <div className="flex items-center justify-center min-h-[60vh]">
                 <div className="text-gray-400">Loading profile...</div>
