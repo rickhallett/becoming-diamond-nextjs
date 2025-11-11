@@ -35,21 +35,25 @@ function getGmailTransporter() {
   }
 
   // Remove any spaces or quotes from app password
-  const cleanPassword = GMAIL_APP_PASSWORD.replace(/[\s"']/g, '');
+  const cleanPassword = GMAIL_APP_PASSWORD.replace(/[\s"']/g, "");
 
   return nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false, // Use TLS
+    host: "173.194.76.108", // Direct IP to bypass DNS timeout issue
+    port: 465,
+    secure: true, // Use SSL
     auth: {
       user: GMAIL_USER,
       pass: cleanPassword,
     },
+    tls: {
+      servername: "smtp.gmail.com", // Required for certificate validation
+      rejectUnauthorized: true,
+    },
     // Add timeout and debug options
-    connectionTimeout: 10000, // 10 seconds
-    greetingTimeout: 5000,
-    socketTimeout: 30000,
-    debug: true, // Enable debug logging
+    connectionTimeout: 60000, // 60 seconds
+    greetingTimeout: 30000,
+    socketTimeout: 120000,
+    // debug: true, // Enable debug logging
     logger: true,
   });
 }
@@ -133,7 +137,7 @@ export async function sendWelcomeEmail(
       html: string;
       attachments?: Array<{ filename: string; path: string }>;
     } = {
-      from: FROM_EMAIL,
+      from: FROM_EMAIL || "",
       to,
       subject: "Your Diamond Sprint Materials + Manifesto Are Here",
       html: emailHtml,
@@ -279,7 +283,7 @@ export async function sendAdminNotification(params: {
 
     const transporter = getGmailTransporter();
     await transporter.sendMail({
-      from: FROM_EMAIL,
+      from: FROM_EMAIL || "",
       to: ADMIN_EMAIL,
       subject,
       html,
