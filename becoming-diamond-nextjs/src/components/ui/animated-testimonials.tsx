@@ -47,7 +47,7 @@ export const AnimatedTestimonials = ({
     <div className="mx-auto max-w-sm px-4 py-20 font-sans antialiased md:max-w-4xl md:px-8 lg:px-12">
       <div className="relative grid grid-cols-1 gap-20 md:grid-cols-2">
         <div>
-          <div className="relative h-80 w-full">
+          <div className="relative h-80 w-full overflow-hidden">
             <AnimatePresence>
               {testimonials.map((testimonial, index) => (
                 <motion.div
@@ -66,7 +66,7 @@ export const AnimatedTestimonials = ({
                     zIndex: isActive(index)
                       ? 40
                       : testimonials.length + 2 - index,
-                    y: isActive(index) ? [0, -80, 0] : 0,
+                    y: 0,
                   }}
                   exit={{
                     opacity: 0,
@@ -78,7 +78,7 @@ export const AnimatedTestimonials = ({
                     duration: 0.4,
                     ease: "easeInOut",
                   }}
-                  className="absolute inset-0 origin-bottom"
+                  className="absolute inset-0 origin-bottom will-change-transform"
                 >
                   <img
                     src={testimonial.src}
