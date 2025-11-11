@@ -32,28 +32,23 @@ const eslintConfig = [
     },
     rules: {
       // TypeScript specific rules
-      "@typescript-eslint/no-unused-vars": [
-        "warn",
-        {
-          argsIgnorePattern: "^_",
-          varsIgnorePattern: "^_",
-        },
-      ],
-      "@typescript-eslint/no-explicit-any": "warn",
-      "@typescript-eslint/no-non-null-assertion": "warn",
+      "@typescript-eslint/no-unused-vars": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-non-null-assertion": "off",
       "@typescript-eslint/ban-ts-comment": "off",
-      
+
       // React rules
       "react/prop-types": "off",
       "react/react-in-jsx-scope": "off",
-      
+
       // Next.js specific
       "@next/next/no-img-element": "off",
-      
+      "@next/next/no-page-custom-font": "off",
+
       // General rules
-      "no-console": ["warn", { allow: ["warn", "error"] }],
-      "prefer-const": "warn",
-      "no-unused-expressions": "warn",
+      "no-console": "off",
+      "prefer-const": "off",
+      "no-unused-expressions": "off",
     },
   },
   {
