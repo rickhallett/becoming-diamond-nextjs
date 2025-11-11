@@ -19,7 +19,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
     Resend({
       apiKey: process.env.AUTH_RESEND_KEY!,
-      from: "noreply@diamond.oceanheart.ai",
+      from: process.env.RESEND_FROM_EMAIL!,
     }),
     Google({
       clientId: process.env.AUTH_GOOGLE_ID!,
