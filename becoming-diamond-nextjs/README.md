@@ -309,18 +309,187 @@ const World = dynamic(
 
 ## Environment Variables
 
+### Required Environment Variables
+
 Create a `.env.local` file with the following variables:
 
 ```env
-# Required for Decap CMS
-GITHUB_CLIENT_ID=your_github_oauth_client_id
-GITHUB_CLIENT_SECRET=your_github_oauth_client_secret
+# ============================================
+# AUTHENTICATION (NextAuth.js v5)
+# ============================================
+# Base URL for authentication callbacks
+# Development: http://localhost:3003
+# Production: https://your-domain.com (NO trailing slash, MUST match domain exactly)
+NEXTAUTH_URL=http://localhost:3003
+
+# Secret key for JWT signing (generate with: openssl rand -base64 32)
+AUTH_SECRET=your_random_secret_key_here
+
+# Email Authentication (Resend)
+AUTH_RESEND_KEY=re_xxxxxxxxxxxxxxxxx
+
+# Google OAuth
+# Get credentials: https://console.cloud.google.com/apis/credentials
+# Authorized redirect URIs: {NEXTAUTH_URL}/api/auth/callback/google
+AUTH_GOOGLE_ID=your_google_client_id.apps.googleusercontent.com
+AUTH_GOOGLE_SECRET=GOCSPX-xxxxxxxxxxxxxxxxxxxxx
+
+# GitHub OAuth (for member authentication)
+# Get credentials: https://github.com/settings/developers
+# Authorization callback URL: {NEXTAUTH_URL}/api/auth/callback/github
+AUTH_GITHUB_ID=your_github_oauth_app_client_id
+AUTH_GITHUB_SECRET=your_github_oauth_app_client_secret
+
+# ============================================
+# DECAP CMS (Separate GitHub OAuth App)
+# ============================================
+# Get credentials: https://github.com/settings/developers
+# Authorization callback URL: {NEXTAUTH_URL}/api/callback
+GITHUB_CLIENT_ID=your_decap_cms_github_client_id
+GITHUB_CLIENT_SECRET=your_decap_cms_github_client_secret
+
+# ============================================
+# DATABASE (Turso SQLite)
+# ============================================
+# Get credentials: https://turso.tech/
+TURSO_DATABASE_URL=libsql://your-database.turso.io
+TURSO_AUTH_TOKEN=your_turso_auth_token
+
+# Legacy aliases (same values as above)
+DATABASE_URL=libsql://your-database.turso.io
+DATABASE_AUTH_TOKEN=your_turso_auth_token
+
+# ============================================
+# PAYMENT (Stripe)
+# ============================================
+# Get credentials: https://dashboard.stripe.com/apikeys
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_xxxxxxxxxxxxxxxxxxxxx
+STRIPE_SECRET_KEY=sk_test_xxxxxxxxxxxxxxxxxxxxx
+
+# ============================================
+# VIDEO HOSTING (Bunny Stream)
+# ============================================
+# Get credentials: https://bunny.net/
+BUNNY_STREAM_LIBRARY_ID=512164
+BUNNY_STREAM_API_KEY=your_bunny_api_key
+BUNNY_STREAM_CDN_HOSTNAME=vz-xxxxxxx-xxx.b-cdn.net
+BUNNY_STREAM_PULL_ZONE=vz-xxxxxxx-xxx
+
+# ============================================
+# EMAIL (Choose ONE: Resend OR Gmail)
+# ============================================
+# Option 1: Resend (Recommended)
+RESEND_API_KEY=re_xxxxxxxxxxxxxxxxx
+RESEND_FROM_EMAIL=support@yourdomain.com
+RESEND_ADMIN_EMAIL=admin@yourdomain.com
+
+# Option 2: Gmail SMTP (Google Workspace)
+GMAIL_USER=support@yourdomain.com
+GMAIL_APP_PASSWORD=your_google_app_password
+
+# ============================================
+# AI INTEGRATION (Optional)
+# ============================================
+ANTHROPIC_API_KEY=sk-ant-xxxxxxxxxxxxxxxxxxxxx
 ```
 
-For production deployment (`.env.prod` or Vercel environment variables):
-- Update `base_url` in `/public/admin/config.yml` to your production domain
-- Set the same GitHub OAuth variables
-- Update OAuth callback URL in GitHub OAuth App settings
+### Environment Variable Setup Guide
+
+#### 1. Authentication Setup (NextAuth.js)
+
+**NEXTAUTH_URL** (Critical - Must be exact):
+- Development: `http://localhost:3003`
+- Production: `https://www.becomingdiamond.com` (NO trailing slash)
+- **Common Issue**: Typos like `wwww` cause OAuth failures
+
+**AUTH_SECRET**:
+```bash
+# Generate a secure secret
+openssl rand -base64 32
+```
+
+**Google OAuth** ([Setup Guide](https://console.cloud.google.com/apis/credentials)):
+1. Create OAuth 2.0 Client ID
+2. Add Authorized redirect URIs:
+   - Development: `http://localhost:3003/api/auth/callback/google`
+   - Production: `https://www.becomingdiamond.com/api/auth/callback/google`
+3. Copy Client ID and Secret to `AUTH_GOOGLE_ID` and `AUTH_GOOGLE_SECRET`
+
+**GitHub OAuth for Members** ([Setup Guide](https://github.com/settings/developers)):
+1. Create OAuth App (for member authentication)
+2. Set callback URL:
+   - Development: `http://localhost:3003/api/auth/callback/github`
+   - Production: `https://www.becomingdiamond.com/api/auth/callback/github`
+3. Copy credentials to `AUTH_GITHUB_ID` and `AUTH_GITHUB_SECRET`
+
+#### 2. Decap CMS Setup (Separate GitHub OAuth App)
+
+**Important**: Decap CMS requires its own GitHub OAuth app (different from member auth)
+
+1. Create a **second** OAuth App at https://github.com/settings/developers
+2. Set callback URL:
+   - Development: `http://localhost:3003/api/callback`
+   - Production: `https://www.becomingdiamond.com/api/callback`
+3. Copy credentials to `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET`
+
+#### 3. Database Setup (Turso)
+
+1. Sign up at https://turso.tech/
+2. Create a database
+3. Copy connection string and auth token
+4. Both `TURSO_*` and `DATABASE_*` variables should have the same values
+
+#### 4. Payment Setup (Stripe)
+
+1. Create account at https://stripe.com/
+2. Get API keys from https://dashboard.stripe.com/apikeys
+3. Use test keys for development (`pk_test_*`, `sk_test_*`)
+4. Use live keys for production (`pk_live_*`, `sk_live_*`)
+
+#### 5. Video Hosting Setup (Bunny Stream)
+
+1. Sign up at https://bunny.net/
+2. Create a Stream library
+3. Copy Library ID, API Key, CDN Hostname, and Pull Zone name
+
+#### 6. Email Setup
+
+**Option A: Resend** (Recommended):
+1. Sign up at https://resend.com/
+2. Add and verify your domain
+3. Create API key
+4. Use verified email address for `RESEND_FROM_EMAIL`
+
+**Option B: Gmail SMTP** (Google Workspace):
+1. Enable 2FA on Google account
+2. Generate App Password at https://myaccount.google.com/apppasswords
+3. Use workspace email and app password
+
+### Production Deployment Checklist
+
+For production deployment on Vercel:
+
+- [ ] Set `NEXTAUTH_URL` to exact production domain (no typos, no trailing slash)
+- [ ] Update all OAuth redirect URIs in Google/GitHub consoles
+- [ ] Update `/public/admin/config.yml` `base_url` to production domain
+- [ ] Use production API keys (Stripe live keys, production database)
+- [ ] Set `AUTH_SECRET` to a strong random value
+- [ ] Verify email domain is verified (Resend or Google Workspace)
+- [ ] Test OAuth flows after deployment (Google, GitHub, Decap CMS)
+
+### Common Issues
+
+**OAuth Error: `redirect_uri_mismatch`**
+- Check `NEXTAUTH_URL` matches exactly (no typos like `wwww`)
+- Verify redirect URIs in OAuth provider console match `{NEXTAUTH_URL}/api/auth/callback/{provider}`
+
+**CMS Login Fails**
+- Ensure Decap CMS has separate GitHub OAuth app (not the same as member auth)
+- Callback URL must be `/api/callback` (not `/api/auth/callback/github`)
+
+**Database Connection Fails**
+- Verify both `TURSO_*` and `DATABASE_*` variables are set
+- Check auth token is valid and not expired
 
 ## Development Workflow
 
