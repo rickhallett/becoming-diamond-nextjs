@@ -436,7 +436,7 @@ export function BookSalesSection({ className }: BookSalesSectionProps) {
               {
                 quote: "I expected a process class. What I got was a blueprint for identity, emotional mastery, and becoming the leader I was meant to be.",
                 author: "Lisa K.",
-                role: "Aaron F, Wasilla Chevrolet"
+                role: "Wasilla Chevrolet"
               }
             ].map((testimonial, index) => (
               <motion.div
