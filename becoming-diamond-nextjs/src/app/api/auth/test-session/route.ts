@@ -71,14 +71,12 @@ export async function POST(request: NextRequest) {
     // Set session cookie (NextAuth uses different names in dev vs prod)
     const response = NextResponse.json({ success: true });
 
-    // Use the same cookie name NextAuth uses
-    const cookieName = process.env.NODE_ENV === "production"
-      ? "__Secure-authjs.session-token"
-      : "authjs.session-token";
+    // Use the same cookie name NextAuth uses (always dev since we're in dev-only endpoint)
+    const cookieName = "authjs.session-token";
 
     response.cookies.set(cookieName, sessionToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: false,
       sameSite: "lax",
       maxAge: 30 * 24 * 60 * 60,
       path: "/",
