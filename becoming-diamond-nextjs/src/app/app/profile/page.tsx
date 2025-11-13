@@ -76,10 +76,9 @@ export default function ProfilePage() {
     ] : [];
 
     const handleSave = () => {
-        // Update user profile with form data
+        // Update user profile with form data (email is read-only)
         updateProfile({
             name: formData.name,
-            email: formData.email,
             location: formData.location,
             bio: formData.bio,
             website: formData.website,
@@ -234,19 +233,10 @@ export default function ProfilePage() {
 
                             <div>
                                 <Label htmlFor="email" className="text-gray-300 mb-2 block">Email Address</Label>
-                                {isEditing ? (
-                                    <Input
-                                        id="email"
-                                        type="email"
-                                        value={formData.email}
-                                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                    />
-                                ) : (
-                                    <div className="flex items-center gap-2 text-white">
-                                        <IconMail className="w-4 h-4 text-gray-400" />
-                                        {user.email || 'Not set'}
-                                    </div>
-                                )}
+                                <div className="flex items-center gap-2 text-white">
+                                    <IconMail className="w-4 h-4 text-gray-400" />
+                                    {user.email || 'Not set'}
+                                </div>
                             </div>
 
                             <div className="md:col-span-2">
