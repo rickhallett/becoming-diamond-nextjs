@@ -2,12 +2,10 @@
 
 import { signIn } from "next-auth/react";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Spotlight } from "@/components/ui/spotlight";
-import { IconBrandGoogle, IconBrandGithub, IconMail, IconFlask } from "@tabler/icons-react";
-import { useUser } from "@/contexts/UserContext";
+import { IconBrandGoogle, IconBrandGithub, IconMail } from "@tabler/icons-react";
 import { AUTH_CONFIG } from "@/config/features";
 import { logSync as log } from '@/lib/logger';
 
@@ -16,8 +14,6 @@ export default function SignInPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
-  const { login } = useUser();
 
   const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,30 +45,6 @@ export default function SignInPage() {
 
   const handleOAuthSignIn = (provider: "google" | "github") => {
     signIn(provider, { callbackUrl: AUTH_CONFIG.successRedirectUri });
-  };
-
-  const handleTestLogin = async () => {
-    // Create mock NextAuth session by calling dev-only API endpoint
-    try {
-      const response = await fetch('/api/auth/test-session', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId: "test-user-" + Date.now(),
-          name: "Diamond Member",
-          email: "test@example.com",
-        }),
-      });
-
-      if (response.ok) {
-        // Also set localStorage for UserContext compatibility
-        login("test-user-" + Date.now(), "test");
-        // Force page reload to pick up new session cookie
-        window.location.href = AUTH_CONFIG.successRedirectUri;
-      }
-    } catch (error) {
-      log.error("Test login error:", 'App', error);
-    }
   };
 
   if (emailSent) {
@@ -207,27 +179,6 @@ export default function SignInPage() {
             )}
           </div>
 
-          {/* Test Login (Development) */}
-          {process.env.NODE_ENV === "development" && (
-            <>
-              <div className="relative flex items-center justify-center my-6">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-yellow-500/20"></div>
-                </div>
-                <div className="relative bg-secondary px-4 text-xs text-yellow-500/60">
-                  Development Only
-                </div>
-              </div>
-
-              <button
-                onClick={handleTestLogin}
-                className="w-full bg-yellow-500/10 hover:bg-yellow-500/20 border border-yellow-500/30 text-yellow-500 font-medium py-3 px-6 rounded-lg transition-all flex items-center justify-center gap-2"
-              >
-                <IconFlask className="w-5 h-5" />
-                Test Login (Bypass Auth)
-              </button>
-            </>
-          )}
 
           {/* Footer */}
           <div className="mt-6 text-center">

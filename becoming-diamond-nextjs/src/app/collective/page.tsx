@@ -18,12 +18,12 @@ export default function CollectivePage() {
       {/* Hero - DiamondMind Collective */}
       <section className="py-24 px-6 relative overflow-hidden pt-32">
         <LampContainer>
-          <div className="text-center max-w-4xl mx-auto">
+          <div className="text-center max-w-4xl mx-auto relative z-[60]">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
-              className="inline-block bg-primary/20 border-2 border-primary px-6 py-2 rounded-full mb-6 relative z-[60] shadow-lg shadow-primary/50"
+              className="inline-block bg-primary/20 border-2 border-primary px-6 py-2 rounded-full mb-6 shadow-lg shadow-primary/50"
             >
               <span className="text-white text-xl font-bold drop-shadow-[0_0_8px_rgba(79,195,247,1)]">$7,995</span>
             </motion.div>
@@ -32,9 +32,10 @@ export default function CollectivePage() {
             initial={{ opacity: 0, y: 100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
+            className="relative z-[60]"
           >
-            <h1 className="mb-6 text-4xl md:text-6xl">
-              The <span className="text-primary">DiamondMind</span> Immersion
+            <h1 className="mb-6 text-4xl md:text-6xl text-white font-light">
+              The <span className="text-primary font-normal">DiamondMind</span> Immersion
             </h1>
             <p className="text-xl md:text-2xl text-gray-300 mb-4">
               The Ultimate Transformation: Live Unshakable Every Day.

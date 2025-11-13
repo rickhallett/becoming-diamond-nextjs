@@ -23,7 +23,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
     // Define all possible navigation items
     const allNavItems = [
-        { name: "Dashboard", href: "/app", icon: IconHome, feature: 'dashboard' as const },
         { name: "30 Day Sprint", href: "/app/sprint", icon: IconRocket, feature: null },
         { name: "Profile", href: "/app/profile", icon: IconUser, feature: null },
     ];
