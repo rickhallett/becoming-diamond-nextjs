@@ -1,97 +1,45 @@
 /**
- * Feature Flag Configuration
+ * Feature Flag Configuration - Simplified MVP Scope
  *
- * This file controls which features are enabled/disabled in the member portal.
- * Toggle these flags to enable or disable features across the application.
- *
- * Phase 1 (Current): Basic profile and dashboard
- * Phase 2 (Future): Courses, DiamondMindAI, Settings
- * Phase 3 (Future): XP system, Achievements, Advanced features
+ * This file controls which features are enabled/disabled in the application.
+ * Simplified to focus on core features: Sprint, Blog, Book, Lead Gen
  */
 
 export interface FeatureFlags {
-  // Navigation & Route Features
-  courses: boolean;
-  diamondMindAI: boolean;
-  settings: boolean;
+  // Core Features
+  sprint: boolean;
+  leadGen: boolean;
+  bookSales: boolean;
   dashboard: boolean;
-  support: boolean;
-
-  // Profile Features
-  achievements: boolean;
-  xpPoints: boolean;
-  coursesCompleted: boolean;
-
-  // Dashboard Features
-  courseStats: boolean;
-  xpDisplay: boolean;
-
-  // Book Sales Features
-  readFreeSample: boolean;
-
-  // Public Features
-  publicDiamondMindAI: boolean;
 
   // Sprint Features
   sprintWatchPlaylist: boolean;
 
   // Authentication Features
   githubAuth: boolean;
-
-  // Future Features
-  communityForum: boolean;
-  liveEvents: boolean;
-  certifications: boolean;
 }
 
 /**
- * Current Feature Configuration
+ * Current Feature Configuration - Simplified MVP
  *
- * Phase 1 (Active):
+ * Active Features:
+ * - Sprint (30-day sprint tracking)
+ * - Lead Gen (email capture)
+ * - Book Sales (Stripe checkout)
  * - Dashboard (basic stats)
- * - Profile (essential info only)
- * - Support
- * - Sprint tracking
- *
- * Phase 2+ (Disabled):
- * - Courses
- * - DiamondMindAI
- * - Settings
- * - XP/Achievements
  */
 export const FEATURES: FeatureFlags = {
-  // Navigation & Routes - Disabled for Phase 1
-  courses: false,
-  diamondMindAI: false,
-  settings: false,
-  dashboard: false,
-  support: false,
-
-  // Profile Features - Disabled for Phase 1
-  achievements: false,
-  xpPoints: false,
-  coursesCompleted: false,
-
-  // Dashboard Features - Disabled for Phase 1
-  courseStats: false,
-  xpDisplay: false,
-
-  // Book Sales Features - Disabled for Phase 1
-  readFreeSample: false,
-
-  // Public Features - Phase 2
-  publicDiamondMindAI: false,
+  // Core Features
+  sprint: true,
+  leadGen: true,
+  bookSales: true,
+  dashboard: true,
 
   // Sprint Features
   sprintWatchPlaylist: false,
 
   // Authentication Features
   githubAuth: false,
-
-  // Future Features - Disabled
-  communityForum: false,
-  liveEvents: false,
-  certifications: false,
 };
 
 /**
@@ -107,11 +55,8 @@ export function isFeatureEnabled(feature: keyof FeatureFlags): boolean {
 export function getDisabledRoutes(): string[] {
   const routes: string[] = [];
 
-  if (!FEATURES.courses) routes.push('/app/courses');
-  if (!FEATURES.diamondMindAI) routes.push('/app/chat');
-  if (!FEATURES.settings) routes.push('/app/settings');
   if (!FEATURES.dashboard) routes.push('/app');
-  if (!FEATURES.support) routes.push('/app/support');
+  if (!FEATURES.sprint) routes.push('/app/sprint');
 
   return routes;
 }

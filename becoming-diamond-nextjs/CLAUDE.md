@@ -27,32 +27,44 @@ npm run lint:next   # Run Next.js linter
 
 ### High-Level Architecture
 
-This is a **Next.js 15 application** using the **App Router** with a **hybrid rendering strategy**:
-- **Public pages** (landing, news): Server-side rendered (SSR) and statically generated (SSG)
-- **Member portal** (`/app/*`): Client-side rendered (CSR) with protected routes
-- **CMS integration**: Decap CMS with GitHub backend for content management
+This is a **Next.js 15 MVP application** focused on core features with a **simplified hybrid rendering strategy**:
+- **Public pages** (landing, blog, book): Server-side rendered (SSR) and statically generated (SSG)
+- **Member portal** (`/app/*`): Client-side rendered (CSR) with NextAuth protected routes
+- **CMS integration**: Decap CMS with GitHub backend for blog content management
+
+**MVP Scope** (Simplified January 2025):
+- ✅ **30-Day Sprint**: Core video-based training program with progress tracking
+- ✅ **Blog (Insights)**: Content management via Decap CMS
+- ✅ **Book Sales**: Digital product sales with Stripe integration
+- ✅ **Lead Generation**: Email collection via Gmail SMTP
+- ❌ **Removed**: Course platform, AI chat (DiamondMindAI), News section, Settings, Support ticketing
 
 **Architectural Pattern**: Layered architecture with clear separation:
 1. **Presentation Layer**: React Server/Client Components with Aceternity UI
-2. **Business Logic Layer**: Content processing, authentication flows
-3. **Data Layer**: File-based CMS (markdown) + GitHub OAuth
-4. **Infrastructure Layer**: Next.js 15 with Turbopack, deployed on Vercel
+2. **Business Logic Layer**: Sprint progress tracking, authentication flows, payment processing
+3. **Data Layer**: File-based CMS (markdown) + Turso database (user data) + NextAuth sessions
+4. **Infrastructure Layer**: Next.js 15 with Turbopack, Bunny Stream (video), Stripe (payments), Gmail SMTP (email)
 
 ### Project Structure
 
 **Key directories:**
 - `src/app/` - Next.js App Router pages (routing via file system)
   - `page.tsx` - Public landing page (client component, SSR)
-  - `app/` - Protected member portal (requires authentication)
-    - `layout.tsx` - Sidebar layout with navigation
-    - `page.tsx` - Dashboard with user stats and progress
-    - `courses/`, `chat/`, `profile/`, `settings/`, `support/` - Feature pages
-  - `auth/` - Authentication pages (OAuth flow)
-  - `news/` - Dynamic routes for content ([slug])
-    - `[slug]/page.tsx` - Individual article pages (SSG with `generateStaticParams`)
+  - `app/` - Protected member portal (NextAuth authentication required)
+    - `layout.tsx` - Sidebar layout with simplified navigation
+    - `page.tsx` - Dashboard with sprint stats and user progress
+    - `sprint/` - 30-day sprint pages and video player
+    - `profile/` - User profile management
+  - `auth/` - Authentication pages (NextAuth magic link + OAuth flow)
+  - `blog/` - Dynamic routes for blog content ([slug])
+    - `[slug]/page.tsx` - Individual blog post pages (SSG with `generateStaticParams`)
+  - `book/` - Book sales landing page
+  - `collective/` - DiamondMind Immersion landing page
+  - `program/` - Training program information
   - `api/` - API Routes (Route Handlers)
-    - `auth/route.ts` - GitHub OAuth initiation and token exchange
-    - `callback/route.ts` - OAuth callback handler (returns HTML with postMessage)
+    - `auth/[...nextauth]/route.ts` - NextAuth authentication handlers
+    - `profile/route.ts` - User profile management
+    - `leads/route.ts` - Lead capture endpoint
 - `src/components/ui/` - 89 Aceternity UI components (pre-built, complex animations)
 - `src/lib/` - Shared utilities
   - `content.ts` - Content management API (gray-matter + remark)
@@ -73,8 +85,12 @@ This is a **Next.js 15 application** using the **App Router** with a **hybrid re
   - Framer Motion for animations
   - React Three Fiber for 3D graphics
   - Radix UI primitives
-- **Content Management:** Decap CMS with GitHub backend
-- **Authentication:** GitHub OAuth (see `src/app/api/auth/route.ts`)
+- **Content Management:** Decap CMS with GitHub backend for blog content
+- **Authentication:** NextAuth v5 (magic link via Gmail SMTP, Google OAuth, optional GitHub OAuth)
+- **Database:** Turso (libSQL) with custom adapter for user data and sessions
+- **Video Platform:** Bunny Stream with HLS delivery and token-based authentication
+- **Payments:** Stripe for book sales and product purchases
+- **Email:** Gmail SMTP via Nodemailer for transactional emails
 - **Content Processing:** Gray-matter for frontmatter, Remark for markdown to HTML
 
 ### Content Management System (Decap CMS)
@@ -88,15 +104,13 @@ The project uses **Decap CMS** (formerly Netlify CMS) for content management:
 - **Access**: `/admin` route (served as static HTML)
 
 **Content Collections:**
-- `news/` - News updates with date, thumbnail, tags, published status
-- `blog/` - Blog posts with author, categories, tags
-- `pages/` - Static pages (about, contact) - file-based collection
+- `blog/` - Blog posts (Insights) with author, categories, tags, published status
+- `pages/` - Static pages (privacy, terms) - file-based collection
 - `settings/` - Site configuration (general settings, social media) - YAML format
 
 **Content Structure:**
 ```
 content/
-├── news/YYYY-MM-DD-slug.md      # Markdown with YAML frontmatter
 ├── blog/YYYY-MM-DD-slug.md      # Markdown with YAML frontmatter
 ├── pages/[name].md              # Static page content
 └── settings/general.yml         # Site-wide settings
@@ -242,30 +256,27 @@ The main landing page (`src/app/page.tsx`) demonstrates advanced React patterns:
   - `usePathname()` hook for active route detection
   - Uses Tabler Icons for UI icons
 
-**Navigation Items:**
+**Navigation Items (Simplified MVP):**
 ```typescript
 [
-  { name: "Dashboard", href: "/app", icon: IconHome },
-  { name: "Courses", href: "/app/courses", icon: IconBooks },
-  { name: "DiamondMindAI", href: "/app/chat", icon: IconBrain },
-  { name: "Profile", href: "/app/profile", icon: IconUser },
-  { name: "Settings", href: "/app/settings", icon: IconSettings },
-  { name: "Support", href: "/app/support", icon: IconHelp },
+  { name: "Dashboard", href: "/app", icon: IconHome, feature: 'dashboard' },
+  { name: "30 Day Sprint", href: "/app/sprint", icon: IconRocket, feature: null },
+  { name: "Profile", href: "/app/profile", icon: IconUser, feature: null },
 ]
 ```
 
 **Page Structure:**
-- `page.tsx` - Dashboard with user stats, progress tracking, upcoming sessions
-- `courses/page.tsx` - Course catalog and enrollment
-- `chat/page.tsx` - AI chat interface (DiamondMindAI)
-- `profile/page.tsx` - User profile and progress
-- `settings/page.tsx` - Account settings
-- `support/page.tsx` - Help and support resources
+- `page.tsx` - Dashboard with sprint stats, user progress, recent activity
+- `sprint/page.tsx` - 30-day sprint overview and daily lessons
+- `sprint/day/[day]/page.tsx` - Individual day lessons with video player
+- `sprint/watch/page.tsx` - Continuous video playlist mode
+- `profile/page.tsx` - User profile management and sprint achievements
 
 **State Management:**
-- Local component state with `useState`
-- Route state with Next.js `useRouter` and `usePathname`
-- No global state management (Redux, Zustand, etc.) currently implemented
+- User state via React Context (`UserContext`) with session integration
+- Local component state with `useState` for UI interactions
+- Sprint progress tracking with localStorage and database sync
+- NextAuth session management for authentication state
 
 **Design System:**
 - Pure black theme (`--background: #000000`)
@@ -358,28 +369,33 @@ CMS Login → OAuth Popup → GitHub Authorization → Callback
 - Receives: `NextRequest` object
 - Returns: `NextResponse` object or `Response`
 
-**Current API Endpoints:**
+**Current API Endpoints (MVP):**
 
-1. **`/api/auth`**
-   - `GET`: OAuth initiation (redirects to GitHub)
-   - `POST`: Token exchange (JSON request/response)
+1. **`/api/auth/[...nextauth]`**
+   - NextAuth handlers for authentication (magic link, Google OAuth, GitHub OAuth)
+   - Session management and JWT tokens
 
-2. **`/api/callback`**
-   - `GET`: OAuth callback handler (returns HTML with postMessage script)
+2. **`/api/profile`**
+   - `GET`: Fetch user profile data
+   - `PUT`: Update user profile (name, bio, location, website)
+
+3. **`/api/leads`**
+   - `POST`: Capture email leads for sprint signup
+
+4. **`/api/stripe/webhooks`**
+   - `POST`: Handle Stripe payment webhooks for book purchases
 
 **API Patterns:**
-- Environment variables for secrets
+- Environment variables for secrets (NextAuth, Stripe, Gmail, Turso)
 - Error handling with appropriate HTTP status codes
 - JSON responses for data endpoints
-- HTML responses for redirect/callback pages
-- No middleware or API route protection implemented yet
+- NextAuth middleware for route protection
+- Database operations via Turso adapter
 
-**Potential Expansion Areas:**
-- `/api/user` - User profile management
-- `/api/courses` - Course data and enrollment
-- `/api/progress` - User progress tracking
-- `/api/chat` - AI chat endpoint (DiamondMindAI)
-- `/api/video/[videoId]/token` - Video streaming token generation (planned for Bunny Stream integration)
+**Future Expansion (Post-MVP):**
+- `/api/video/[videoId]/token` - Video streaming token generation for Bunny Stream
+- `/api/sprint/progress` - Sprint progress tracking and completion
+- `/api/achievements` - User achievement system
 
 ### Architectural Decisions and Trade-offs
 
@@ -410,11 +426,11 @@ CMS Login → OAuth Popup → GitHub Authorization → Callback
    - **Trade-off**: Non-standard location for configuration, harder to find for newcomers
    - **Location**: `src/app/globals.css` (lines 6-44)
 
-5. **No Authentication for Member Portal**
-   - **Current State**: Member portal accessible without authentication
-   - **Rationale**: Likely in development/demo phase
-   - **Risk**: Production deployment would expose protected content
-   - **TODO**: Implement authentication middleware or route protection
+5. **NextAuth v5 with Multiple Providers**
+   - **Chosen**: Magic link (primary), Google OAuth, optional GitHub OAuth
+   - **Rationale**: Passwordless experience reduces friction, multiple options for user preference
+   - **Trade-off**: Email delivery dependency (Gmail SMTP), session management complexity
+   - **Implementation**: Custom Turso adapter for session storage, conditional GitHub OAuth via feature flags
 
 6. **Monolithic Landing Page Component**
    - **Current**: 1000+ line `page.tsx` with all sections inline
@@ -451,74 +467,82 @@ CMS Login → OAuth Popup → GitHub Authorization → Callback
 - Content Security Policy: Not configured
 - Rate limiting: Not implemented
 
-### Rendering Strategy by Route
+### Rendering Strategy by Route (Simplified MVP)
 
 | Route | Strategy | Rationale |
 |-------|----------|-----------|
 | `/` (landing) | SSR (Client Component) | Interactive animations, scroll effects |
-| `/news` | SSG (Static Generation) | Content rarely changes, SEO important |
-| `/news/[slug]` | SSG with ISR potential | Pre-render all articles, regenerate on rebuild |
+| `/blog` | SSG (Static Generation) | Content rarely changes, SEO important |
+| `/blog/[slug]` | SSG with ISR potential | Pre-render all blog posts, regenerate on rebuild |
+| `/book` | SSR (Client Component) | Stripe integration, dynamic content |
+| `/collective` | SSR (Client Component) | Marketing page with animations |
+| `/program` | SSR (Client Component) | Marketing page with animations |
 | `/app/*` | CSR (Client-Side) | Protected content, user-specific data, interactive UI |
 | `/admin` | Static HTML | Decap CMS single-page application |
-| `/api/*` | Server-Side | API endpoints, OAuth handlers |
+| `/api/*` | Server-Side | API endpoints, NextAuth handlers, webhooks |
 
 ### Future Architecture Considerations
 
-**Recommended Enhancements:**
+**MVP Implementation Status (January 2025):**
 
+✅ **Completed:**
 1. **Authentication & Authorization**
-   - Implement NextAuth.js or similar
-   - Add middleware for route protection
-   - Store user sessions securely
-   - Add role-based access control (admin, member, etc.)
+   - NextAuth v5 implemented with magic link (Gmail SMTP)
+   - Google OAuth and optional GitHub OAuth
+   - Custom Turso adapter for session storage
+   - Middleware protecting `/app/*` routes
 
 2. **Database Integration**
-   - Add database for user data (PostgreSQL, MongoDB)
-   - Store user progress, course enrollment, chat history
-   - Consider Prisma ORM for type-safe database access
-   - Keep content in Git-based CMS, user data in database
+   - Turso (libSQL) database for user data
+   - Custom adapter for NextAuth sessions
+   - User profiles, sprint progress tracking
+   - Feature flags for conditional functionality
 
-3. **API Layer Expansion**
-   - Implement REST or GraphQL API for member features
-   - Add API authentication (JWT, session tokens)
-   - Create endpoints for courses, progress, chat, profile
-   - Consider API rate limiting and validation
+3. **Core API Layer**
+   - NextAuth handlers for authentication
+   - Profile management API
+   - Lead capture endpoint
+   - Stripe webhook handler for payments
 
-4. **State Management**
-   - Add Zustand or Jotai for global state (lightweight)
-   - Store user profile, preferences, UI state
-   - Avoid Redux (overkill for current needs)
+4. **Basic State Management**
+   - UserContext for global user state
+   - localStorage for sprint progress persistence
+   - NextAuth session management
 
-5. **Testing Infrastructure**
+**Post-MVP Enhancements:**
+
+1. **Testing Infrastructure** (Priority: High)
    - Unit tests: Vitest or Jest
    - Component tests: React Testing Library
    - E2E tests: Playwright or Cypress
-   - API tests: Supertest or Vitest
+   - API tests for authentication and payment flows
 
-6. **Performance Optimization**
+2. **Performance Optimization** (Priority: Medium)
    - Replace `<img>` with `next/image` for optimization
-   - Add image CDN (Cloudinary, Vercel Image Optimization)
-   - Implement ISR (Incremental Static Regeneration) for news
+   - Implement ISR (Incremental Static Regeneration) for blog
    - Add loading skeletons for async content
    - Optimize 3D component loading and rendering
 
-7. **Monitoring & Analytics**
+3. **Monitoring & Analytics** (Priority: High)
    - Add error tracking (Sentry)
    - Add analytics (Plausible, Vercel Analytics)
    - Implement performance monitoring
-   - Add logging for API routes
+   - Add structured logging for API routes
 
-8. **Video Hosting Integration (Planned)**
+4. **Video Token Authentication** (Priority: High, In Progress)
    - **Platform**: Bunny Stream (selected after comprehensive analysis)
-   - **Cost**: $10-30/month for MVP (vs $158+/month for alternatives like Mux)
-   - **Architecture**: Simplified approach using Bunny's native dashboard
-   - **Implementation**: 1-2 days, ~200 lines of code
+   - **Current Status**: Hardcoded video IDs in sprint pages
+   - **Next Step**: Implement token-based authentication
    - **Key Components**:
      - Token-based authentication API (`/api/video/[videoId]/token`)
-     - VideoPlayer component with HLS.js
-     - Markdown parser enhancement for `{{video:ID}}` syntax
+     - Enhanced VideoPlayer component with security
    - **Documentation**: See `/docs/specs/video-integration-simplified.md`
-   - **Alternative Docs**: Full comparison in `/docs/specs/video-hosting-analysis.md`
+
+5. **Sprint Progress Sync** (Priority: High)
+   - Database sync for localStorage progress data
+   - Completion tracking API
+   - Cross-device progress synchronization
+   - Achievement system integration
 
 ## Development Notes
 

@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 import { IconTrendingUp, IconFlame, IconTarget, IconCalendar, IconUsers, IconBook, IconSparkles, IconBolt, IconChevronRight, IconDiamond, IconCheck } from "@tabler/icons-react";
 import { useUser } from "@/contexts/UserContext";
-import { useCourses, SAMPLE_COURSES } from "@/contexts/CourseContext";
 import { FEATURES } from "@/config/features";
 import { FeatureGuard } from "@/components/FeatureGuard";
 import { logSync as log } from '@/lib/logger';
@@ -14,7 +13,6 @@ function AppDashboardContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { user, isLoading } = useUser();
-  const { enrollments, getRecentActivities } = useCourses();
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   // Check for success parameter from Stripe redirect
@@ -37,22 +35,13 @@ function AppDashboardContent() {
     (Date.now() - new Date(user.joinedDate).getTime()) / (1000 * 60 * 60 * 24)
   ) : 0;
 
-  // Calculate completed sessions from enrollments
-  const completedLessons = enrollments.reduce((total, enrollment) => {
-    return total + enrollment.lessonsCompleted.length;
-  }, 0);
-
-  const totalLessons = SAMPLE_COURSES.slice(0, user?.currentPR || 1).reduce((total, course) => {
-    return total + course.lessons.length;
-  }, 0);
-
-  // User progress data
+  // User progress data (simplified for sprint-only)
   const userStats = {
     currentPR: user?.currentPR || 1,
     daysInProgram,
     currentStreak: user?.streak || 0,
-    completedSessions: completedLessons,
-    totalSessions: totalLessons || 4,
+    completedSessions: 0, // Sprint progress tracking to be implemented
+    totalSessions: 30,
   };
 
   // Show loading state while fetching user data OR if user is not yet loaded
@@ -85,34 +74,11 @@ function AppDashboardContent() {
     { title: "Swiss Army Knife Workshop", date: "Oct 12, 2025", time: "11:00 AM PST", type: "Workshop" },
   ];
 
-  // Get recent activities from CourseContext
-  const recentActivitiesData = getRecentActivities(4);
-  const recentActivity = recentActivitiesData.length > 0
-    ? recentActivitiesData.map(activity => {
-        const timeAgo = getTimeAgo(new Date(activity.timestamp));
-        return {
-          action: activity.description,
-          time: timeAgo,
-        };
-      })
-    : [
-        { action: "Welcome to Becoming Diamond!", time: "Just now" },
-        { action: "Profile created", time: "Just now" },
-      ];
-
-  // Helper function to calculate time ago
-  function getTimeAgo(date: Date): string {
-    const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
-
-    if (seconds < 60) return "Just now";
-    if (seconds < 3600) return `${Math.floor(seconds / 60)} minutes ago`;
-    if (seconds < 86400) return `${Math.floor(seconds / 3600)} hours ago`;
-    return `${Math.floor(seconds / 86400)} days ago`;
-  }
-
-  // Find current course for quick action
-  const currentCourse = SAMPLE_COURSES.find(c => c.pressureRoom === user.currentPR);
-  const currentEnrollment = currentCourse ? enrollments.find(e => e.courseId === currentCourse.id) : null;
+  // Recent activity (simplified for sprint-only)
+  const recentActivity = [
+    { action: "Welcome to Becoming Diamond!", time: "Just now" },
+    { action: "Profile created", time: "Just now" },
+  ];
 
   return (
     <div className="min-h-full relative">
@@ -427,22 +393,21 @@ function AppDashboardContent() {
             Quick Actions
           </h2>
           <div className="space-y-3">
-            {/* Continue PR - Only show if courses feature is enabled */}
-            {FEATURES.courses && (
+            {/* Continue Sprint */}
+            {FEATURES.sprint && (
               <motion.button
                 whileHover={{ scale: 1.02, boxShadow: "0 0 20px rgba(79,195,247,0.3)" }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => router.push('/app/courses')}
+                onClick={() => router.push('/app/sprint')}
                 className="w-full bg-gradient-to-r from-primary/30 to-primary/10 border border-primary/50 rounded-lg p-4 text-left hover:border-primary transition-all group"
               >
                 <div className="flex items-center justify-between">
                   <div>
                     <div className="text-white font-medium mb-1">
-                      {currentEnrollment ? 'Continue' : 'Start'} PR{user.currentPR}
+                      Continue 30-Day Sprint
                     </div>
                     <div className="text-xs text-gray-400">
-                      {currentCourse?.title.split(': ')[1] || prNames[user.currentPR - 1]}
-                      {currentEnrollment && ` - ${currentEnrollment.progress}% complete`}
+                      Track your daily progress
                     </div>
                   </div>
                   <IconChevronRight className="w-5 h-5 text-primary group-hover:translate-x-1 transition-transform" />
@@ -465,23 +430,6 @@ function AppDashboardContent() {
               </div>
             </motion.button>
 
-            {/* DiamondMindAI - Only show if feature is enabled */}
-            {FEATURES.diamondMindAI && (
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => router.push('/app/chat')}
-                className="w-full bg-secondary/50 border border-white/10 rounded-lg p-4 text-left hover:border-primary/30 transition-all group"
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="text-white font-medium mb-1">Chat with DiamondMindAI</div>
-                    <div className="text-xs text-gray-400">Get personalized guidance</div>
-                  </div>
-                  <IconChevronRight className="w-5 h-5 text-gray-500 group-hover:text-primary group-hover:translate-x-1 transition-all" />
-                </div>
-              </motion.button>
-            )}
 
             <motion.button
               whileHover={{ scale: 1.02 }}

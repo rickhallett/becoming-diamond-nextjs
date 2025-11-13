@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { PlaylistVideoPlayer } from '@/components/PlaylistVideoPlayer';
+import { VideoPlayer } from '@/components/VideoPlayer';
 import {
   IconPlayerPlay,
   IconCheck,
@@ -129,12 +129,10 @@ export default function SprintWatchPage() {
             transition={{ delay: 0.1 }}
             className="lg:col-span-2"
           >
-            <PlaylistVideoPlayer
+            <VideoPlayer
               key={currentVideo.videoId}
               videoId={currentVideo.videoId}
-              title={currentVideo.title}
               autoplay={true}
-              onEnded={handleVideoEnded}
             />
 
             {/* Video Info */}

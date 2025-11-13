@@ -156,8 +156,8 @@ export default function CollectivePage() {
         </div>
       </section>
 
-      {/* DiamondMindAI */}
-      {isFeatureEnabled('diamondMindAI') && (
+      {/* DiamondMindAI - Disabled for MVP */}
+      {false && (
         <section className="py-24 px-6 relative bg-black">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

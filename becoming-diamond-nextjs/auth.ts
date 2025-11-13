@@ -12,11 +12,12 @@ import Nodemailer from "next-auth/providers/nodemailer";
 import { TursoAdapter, getTursoClient } from "@/lib/turso-adapter";
 import { FEATURES } from "@/config/features";
 import { GMAIL_SMTP_CONFIG } from "@/lib/gmail-smtp";
+import type { Provider } from "next-auth/providers";
 
 const turso = getTursoClient();
 
 // Build providers array conditionally
-const providers = [
+const providers: Provider[] = [
   Nodemailer({
     server: {
       ...GMAIL_SMTP_CONFIG,

@@ -6,21 +6,15 @@ import { useSession } from "next-auth/react";
 import { cn } from "@/lib/utils";
 import {
     IconHome,
-    IconBooks,
-    IconBrain,
+    IconRocket,
     IconUser,
-    IconSettings,
-    IconHelp,
     IconMenu2,
     IconX,
-    IconSparkles,
-    IconRocket
+    IconSparkles
 } from "@tabler/icons-react";
 import { SignOutButton } from "@/components/auth/SignOutButton";
 import { UserAvatar } from "@/components/auth/UserAvatar";
 import { FEATURES } from "@/config/features";
-import { CourseProvider } from "@/contexts/CourseContext";
-import { ChatProvider } from "@/contexts/ChatContext";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
@@ -31,11 +25,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     const allNavItems = [
         { name: "Dashboard", href: "/app", icon: IconHome, feature: 'dashboard' as const },
         { name: "30 Day Sprint", href: "/app/sprint", icon: IconRocket, feature: null },
-        { name: "Courses", href: "/app/courses", icon: IconBooks, feature: 'courses' as const },
-        { name: "DiamondMindAI", href: "/app/chat", icon: IconBrain, feature: 'diamondMindAI' as const },
         { name: "Profile", href: "/app/profile", icon: IconUser, feature: null },
-        { name: "Settings", href: "/app/settings", icon: IconSettings, feature: 'settings' as const },
-        { name: "Support", href: "/app/support", icon: IconHelp, feature: 'support' as const },
     ];
 
     // Filter navigation items based on feature flags
@@ -54,8 +44,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     };
 
     return (
-        <CourseProvider>
-            <ChatProvider>
         <div className="min-h-screen bg-black text-white flex">
             {/* Desktop Sidebar */}
             <aside className="hidden lg:flex lg:flex-col w-72 bg-gradient-to-b from-secondary/50 to-black border-r border-white/10 fixed h-full z-40">
@@ -244,7 +232,5 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 </div>
             </main>
         </div>
-            </ChatProvider>
-        </CourseProvider>
     );
 }

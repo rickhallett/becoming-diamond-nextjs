@@ -367,8 +367,8 @@ export function BookSalesSection({ className }: BookSalesSectionProps) {
                 </HoverBorderGradient>
               </div>
 
-              {/* Secondary CTA - Conditionally rendered based on feature flag */}
-              {FEATURES.readFreeSample && (
+              {/* Secondary CTA - Disabled for MVP */}
+              {false && (
                 <button
                   onClick={handleFreeSample}
                   className="w-full border border-primary/50 text-primary px-8 py-4 text-lg font-medium rounded-full hover:bg-primary/10 transition-all flex items-center justify-center gap-2"
