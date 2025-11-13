@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { log } from '@/lib/logger';

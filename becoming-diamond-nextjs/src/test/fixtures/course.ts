@@ -1,4 +1,28 @@
-import type { CourseChapter, CourseSlide, VideoReference } from '@/types/course';
+// Inline types for test fixtures (course platform removed from MVP)
+type VideoReference = {
+  videoId: string;
+  autoplay?: boolean;
+  poster?: string;
+  quality?: string;
+};
+
+type CourseSlide = {
+  id: string;
+  chapterId: string;
+  title: string;
+  content: string;
+  order: number;
+  videoReferences?: VideoReference[];
+  mediaType?: string;
+};
+
+type CourseChapter = {
+  id: string;
+  title: string;
+  order: number;
+  slides: CourseSlide[];
+  part: number;
+};
 
 export const mockVideoReference: VideoReference = {
   videoId: 'test-video-123',

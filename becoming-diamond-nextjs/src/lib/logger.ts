@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
-/* eslint-disable no-console */
 /**
  * File-based logging utility
  * Logs to files instead of console for production debugging
