@@ -3,12 +3,17 @@
  *
  * Protects /app/* routes and redirects unauthenticated users to sign-in.
  * Runs on edge runtime for optimal performance.
+ * Wrapped with Axiom for automatic request logging.
  */
 
 import NextAuth from "next-auth";
 import { authConfig } from "./auth.config";
+import { withAxiom } from '@axiomhq/nextjs';
 
-export default NextAuth(authConfig).auth;
+const authMiddleware = NextAuth(authConfig).auth;
+
+// Wrap with Axiom for automatic request logging
+export default withAxiom(authMiddleware);
 
 export const config = {
   // Match all routes except:

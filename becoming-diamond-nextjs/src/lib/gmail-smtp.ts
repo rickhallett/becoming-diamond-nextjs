@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 import { render } from "@react-email/render";
 import { WelcomeEmail } from "@/emails/welcome-email";
-import { log } from "@/lib/logger";
+import { log } from '@axiomhq/nextjs';
 import fs from "fs";
 import path from "path";
 
@@ -86,8 +86,10 @@ function getManifestoAttachment(): {
     );
 
     if (!fs.existsSync(manifestoPath)) {
-      log.error("Diamond Manifesto PDF not found", "EMAIL", {
+      await log.error("Diamond Manifesto PDF not found", {
+        context: "EMAIL",
         path: manifestoPath,
+        timestamp: new Date().toISOString(),
       });
       return null;
     }
@@ -97,11 +99,11 @@ function getManifestoAttachment(): {
       path: manifestoPath,
     };
   } catch (error) {
-    log.error(
-      "Failed to load Diamond Manifesto for attachment",
-      "EMAIL",
-      error
-    );
+    await log.error("Failed to load Diamond Manifesto for attachment", {
+      context: "EMAIL",
+      error: error instanceof Error ? error.message : String(error),
+      timestamp: new Date().toISOString(),
+    });
     return null;
   }
 }
@@ -122,8 +124,11 @@ export async function sendWelcomeEmail(
   const unsubscribeUrl = `${baseUrl}/api/unsubscribe?token=${unsubscribeToken}`;
 
   try {
-    await log.info(`Starting Gmail SMTP email send to ${to}`, "EMAIL", {
+    await log.info("Starting email send", {
+      context: "EMAIL",
+      to,
       retryCount,
+      timestamp: new Date().toISOString(),
     });
 
     // Render email template
@@ -134,15 +139,21 @@ export async function sendWelcomeEmail(
       })
     );
 
-    await log.info("Email template rendered", "EMAIL");
+    await log.info("Email template rendered", {
+      context: "EMAIL",
+      to,
+      timestamp: new Date().toISOString(),
+    });
 
     // Load manifesto attachment
     const manifestoAttachment = getManifestoAttachment();
 
     // Get Gmail transporter
     const transporter = getGmailTransporter();
-    await log.info("Gmail SMTP transporter initialized", "EMAIL", {
+    await log.info("Gmail SMTP transporter initialized", {
+      context: "EMAIL",
       fromEmail: FROM_EMAIL,
+      timestamp: new Date().toISOString(),
     });
 
     // Prepare email payload
@@ -162,53 +173,62 @@ export async function sendWelcomeEmail(
     // Add attachment if available
     if (manifestoAttachment) {
       emailPayload.attachments = [manifestoAttachment];
-      await log.info("Including Diamond Manifesto attachment", "EMAIL", {
+      await log.info("Including Diamond Manifesto attachment", {
+        context: "EMAIL",
         filename: manifestoAttachment.filename,
+        to,
+        timestamp: new Date().toISOString(),
       });
     } else {
-      await log.warn(
-        "Sending email without Diamond Manifesto attachment",
-        "EMAIL"
-      );
+      await log.warn("Sending email without Diamond Manifesto attachment", {
+        context: "EMAIL",
+        to,
+        timestamp: new Date().toISOString(),
+      });
     }
 
     // Send email via Gmail SMTP
-    await log.info("Calling Gmail SMTP", "EMAIL", {
+    await log.info("Calling Gmail SMTP", {
+      context: "EMAIL",
       from: emailPayload.from,
       to: emailPayload.to,
       hasAttachments: !!emailPayload.attachments,
-      smtpConfig: {
-        host: "smtp.gmail.com",
-        port: 587,
-        user: GMAIL_USER,
-      },
+      timestamp: new Date().toISOString(),
     });
 
     let result;
     try {
       result = await transporter.sendMail(emailPayload);
     } catch (smtpError: any) {
-      await log.error("Gmail SMTP send failed", "EMAIL", {
+      await log.error("Gmail SMTP send failed", {
+        context: "EMAIL",
         error: smtpError.message,
         code: smtpError.code,
         command: smtpError.command,
         response: smtpError.response,
         responseCode: smtpError.responseCode,
+        to,
+        timestamp: new Date().toISOString(),
       });
       throw smtpError;
     }
 
-    await log.info("Gmail SMTP response received", "EMAIL", {
+    await log.info("Gmail SMTP response received", {
+      context: "EMAIL",
       messageId: result.messageId,
       accepted: result.accepted,
       rejected: result.rejected,
       response: result.response,
+      to,
+      timestamp: new Date().toISOString(),
     });
 
     if (result.rejected && result.rejected.length > 0) {
-      await log.error("Gmail SMTP rejected recipients", "EMAIL", {
+      await log.error("Gmail SMTP rejected recipients", {
+        context: "EMAIL",
         rejected: result.rejected,
         to,
+        timestamp: new Date().toISOString(),
       });
       return {
         success: false,
@@ -216,9 +236,13 @@ export async function sendWelcomeEmail(
       };
     }
 
-    await log.info(`Welcome email sent successfully to ${to}`, "EMAIL", {
+    await log.info("Welcome email sent successfully", {
+      context: "EMAIL",
       emailId: result.messageId,
       to,
+      hasAttachment: !!emailPayload.attachments,
+      retryCount,
+      timestamp: new Date().toISOString(),
     });
 
     return {
@@ -226,15 +250,24 @@ export async function sendWelcomeEmail(
       emailId: result.messageId,
     };
   } catch (error) {
-    await log.error(`Failed to send welcome email to ${to}`, "EMAIL", error);
+    await log.error("Failed to send welcome email", {
+      context: "EMAIL",
+      to,
+      error: error instanceof Error ? error.message : String(error),
+      retryCount,
+      timestamp: new Date().toISOString(),
+    });
 
     // Retry logic (max 3 attempts)
     if (retryCount < 2) {
       const delay = Math.pow(2, retryCount) * 1000; // Exponential backoff: 1s, 2s
-      await log.info(
-        `Retrying email send to ${to} in ${delay}ms (attempt ${retryCount + 2}/3)`,
-        "EMAIL"
-      );
+      await log.info("Scheduling email retry", {
+        context: "EMAIL",
+        to,
+        delayMs: delay,
+        attemptNumber: retryCount + 2,
+        timestamp: new Date().toISOString(),
+      });
 
       await new Promise((resolve) => setTimeout(resolve, delay));
       return sendWelcomeEmail(params, retryCount + 1);
@@ -305,8 +338,17 @@ export async function sendAdminNotification(params: {
       html,
     });
 
-    await log.info(`Admin notification sent for lead: ${email}`, "EMAIL");
+    await log.info("Admin notification sent", {
+      context: "EMAIL",
+      leadEmail: email,
+      timestamp: new Date().toISOString(),
+    });
   } catch (error) {
-    await log.error("Failed to send admin notification", "EMAIL", error);
+    await log.error("Failed to send admin notification", {
+      context: "EMAIL",
+      leadEmail: email,
+      error: error instanceof Error ? error.message : String(error),
+      timestamp: new Date().toISOString(),
+    });
   }
 }

@@ -13,6 +13,7 @@ import { TursoAdapter, getTursoClient } from "@/lib/turso-adapter";
 import { FEATURES } from "@/config/features";
 import { GMAIL_SMTP_CONFIG } from "@/lib/gmail-smtp";
 import type { Provider } from "next-auth/providers";
+import { log } from '@axiomhq/nextjs';
 
 const turso = getTursoClient();
 
@@ -73,25 +74,46 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
 
     async signIn({ user, account, profile, email }) {
-      // Log sign-in attempts for debugging
-      console.log('[Auth] signIn callback:', {
-        provider: account?.provider,
-        email: email?.verificationRequest ? 'magic-link' : user.email,
-        userId: user.id,
-      });
+      try {
+        // Validate user data
+        if (!user.email) {
+          await log.error('Sign-in failed: Missing email', {
+            userId: user.id,
+            provider: account?.provider,
+            timestamp: new Date().toISOString(),
+          });
+          return false;
+        }
 
-      // Allow sign-in
-      return true;
+        await log.info('User sign-in attempt', {
+          provider: account?.provider,
+          authMethod: email?.verificationRequest ? 'magic-link' : 'oauth',
+          userId: user.id,
+          email: user.email,
+          hasProfile: !!profile,
+          timestamp: new Date().toISOString(),
+        });
+
+        return true;
+      } catch (error) {
+        await log.error('Sign-in callback error', {
+          error: error instanceof Error ? error.message : String(error),
+          userId: user.id,
+          provider: account?.provider,
+          timestamp: new Date().toISOString(),
+        });
+        return false;
+      }
     },
   },
 
   events: {
     async createUser({ user }) {
-      // Create user profile when a new user signs up
-      console.log(`[Auth Event] createUser triggered:`, {
+      await log.info('User creation triggered', {
         userId: user.id,
         email: user.email,
-        name: user.name,
+        name: user.name || 'not provided',
+        timestamp: new Date().toISOString(),
       });
 
       try {
@@ -104,12 +126,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           args: [profileId, user.id, now, now],
         });
 
-        console.log(`[Auth Event] Created profile for user ${user.id}`);
+        await log.info('User profile created successfully', {
+          userId: user.id,
+          profileId,
+          timestamp: new Date().toISOString(),
+        });
       } catch (error) {
-        console.error(
-          `[Auth Event] Failed to create profile for user ${user.id}:`,
-          error
-        );
+        await log.error('Failed to create user profile', {
+          userId: user.id,
+          error: error instanceof Error ? error.message : String(error),
+          timestamp: new Date().toISOString(),
+        });
       }
     },
   },

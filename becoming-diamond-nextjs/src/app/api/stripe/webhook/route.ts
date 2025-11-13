@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { turso } from '@/lib/turso';
+import { log } from '@axiomhq/nextjs';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY_TEST || process.env.STRIPE_SECRET_KEY || '', {
   apiVersion: '2025-10-29.clover',
@@ -35,14 +36,22 @@ async function grantCourseAccess(params: {
       ],
     });
 
-    console.log('[Webhook] Course access granted:', {
+    await log.info('Course access granted', {
       paymentId,
-      userId,
-      customerEmail,
+      userId: userId || 'anonymous',
+      customerEmail: customerEmail || 'not provided',
       sessionId,
+      amount: amountTotal ? amountTotal / 100 : 0,
+      timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    console.error('[Webhook] Failed to grant course access:', error);
+    await log.error('Failed to grant course access', {
+      userId: userId || 'anonymous',
+      customerEmail: customerEmail || 'not provided',
+      sessionId,
+      error: error instanceof Error ? error.message : String(error),
+      timestamp: new Date().toISOString(),
+    });
     throw error;
   }
 }
@@ -79,13 +88,21 @@ async function updateSubscription(params: {
       ],
     });
 
-    console.log('[Webhook] Subscription updated:', {
+    await log.info('Subscription updated', {
       subscriptionId,
       status,
-      currentPeriodEnd,
+      currentPeriodEnd: currentPeriodEnd.toISOString(),
+      userId: userId || 'anonymous',
+      stripeCustomerId: stripeCustomerId || 'not provided',
+      timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    console.error('[Webhook] Failed to update subscription:', error);
+    await log.error('Failed to update subscription', {
+      subscriptionId,
+      userId: userId || 'anonymous',
+      error: error instanceof Error ? error.message : String(error),
+      timestamp: new Date().toISOString(),
+    });
     throw error;
   }
 }
@@ -107,12 +124,18 @@ async function revokeAccess(params: {
       args: [subscriptionId],
     });
 
-    console.log('[Webhook] Access revoked:', {
-      userId,
+    await log.info('Access revoked', {
+      userId: userId || 'anonymous',
       subscriptionId,
+      timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    console.error('[Webhook] Failed to revoke access:', error);
+    await log.error('Failed to revoke access', {
+      userId: userId || 'anonymous',
+      subscriptionId,
+      error: error instanceof Error ? error.message : String(error),
+      timestamp: new Date().toISOString(),
+    });
     throw error;
   }
 }
@@ -122,6 +145,10 @@ export async function POST(req: NextRequest) {
   const signature = req.headers.get('stripe-signature');
 
   if (!signature) {
+    await log.warn('Stripe webhook: Missing signature', {
+      ipAddress: req.headers.get('x-forwarded-for') || 'unknown',
+      timestamp: new Date().toISOString(),
+    });
     return NextResponse.json(
       { error: 'No signature provided' },
       { status: 400 }
@@ -129,7 +156,9 @@ export async function POST(req: NextRequest) {
   }
 
   if (!WEBHOOK_SECRET) {
-    console.error('[Webhook] STRIPE_WEBHOOK_SECRET is not set');
+    await log.error('Stripe webhook secret not configured', {
+      timestamp: new Date().toISOString(),
+    });
     return NextResponse.json(
       { error: 'Webhook secret not configured' },
       { status: 500 }
@@ -145,21 +174,42 @@ export async function POST(req: NextRequest) {
       signature,
       WEBHOOK_SECRET
     );
+
+    await log.info('Stripe webhook received', {
+      eventType: event.type,
+      eventId: event.id,
+      timestamp: new Date().toISOString(),
+    });
   } catch (err) {
-    console.error('[Webhook] Signature verification failed:', err);
+    await log.error('Stripe webhook signature verification failed', {
+      error: err instanceof Error ? err.message : String(err),
+      hasSignature: !!signature,
+      timestamp: new Date().toISOString(),
+    });
     return NextResponse.json(
       { error: 'Invalid signature' },
       { status: 400 }
     );
   }
 
-  console.log('[Webhook] Event received:', event.type);
-
   // Handle different event types
   try {
     switch (event.type) {
       case 'checkout.session.completed': {
         const session = event.data.object as Stripe.Checkout.Session;
+
+        await log.info('Stripe checkout completed', {
+          eventType: 'checkout.session.completed',
+          stripeEventId: event.id,
+          sessionId: session.id,
+          customerId: session.customer as string,
+          customerEmail: session.customer_email || session.customer_details?.email || 'not provided',
+          amount: session.amount_total ? session.amount_total / 100 : 0,
+          currency: session.currency || 'usd',
+          userId: session.metadata?.userId || 'not provided',
+          paymentStatus: session.payment_status,
+          timestamp: new Date().toISOString(),
+        });
 
         // Grant access to user
         await grantCourseAccess({
@@ -208,10 +258,15 @@ export async function POST(req: NextRequest) {
       case 'payment_intent.payment_failed': {
         const paymentIntent = event.data.object as Stripe.PaymentIntent;
 
-        console.error('[Webhook] Payment failed:', {
+        await log.error('Payment failed', {
+          eventType: 'payment_intent.payment_failed',
+          stripeEventId: event.id,
           paymentIntentId: paymentIntent.id,
-          amount: paymentIntent.amount,
-          customerEmail: paymentIntent.receipt_email,
+          amount: paymentIntent.amount / 100,
+          currency: paymentIntent.currency,
+          customerEmail: paymentIntent.receipt_email || 'not provided',
+          failureMessage: paymentIntent.last_payment_error?.message || 'not provided',
+          timestamp: new Date().toISOString(),
         });
 
         // TODO: Send payment failed email
@@ -226,10 +281,14 @@ export async function POST(req: NextRequest) {
       case 'invoice.payment_failed': {
         const invoice = event.data.object as Stripe.Invoice;
 
-        console.error('[Webhook] Invoice payment failed:', {
+        await log.error('Invoice payment failed', {
+          eventType: 'invoice.payment_failed',
+          stripeEventId: event.id,
           invoiceId: invoice.id,
-          customerEmail: invoice.customer_email,
-          amountDue: invoice.amount_due,
+          customerEmail: invoice.customer_email || 'not provided',
+          amountDue: invoice.amount_due / 100,
+          currency: invoice.currency,
+          timestamp: new Date().toISOString(),
         });
 
         // TODO: Send dunning email
@@ -237,12 +296,20 @@ export async function POST(req: NextRequest) {
       }
 
       default:
-        console.log('[Webhook] Unhandled event type:', event.type);
+        await log.info('Unhandled Stripe webhook event', {
+          eventType: event.type,
+          stripeEventId: event.id,
+          timestamp: new Date().toISOString(),
+        });
     }
 
     return NextResponse.json({ received: true });
   } catch (err) {
-    console.error('[Webhook] Error processing event:', err);
+    await log.error('Webhook processing error', {
+      error: err instanceof Error ? err.message : String(err),
+      eventType: event?.type || 'unknown',
+      timestamp: new Date().toISOString(),
+    });
     return NextResponse.json(
       { error: 'Webhook processing failed' },
       { status: 500 }

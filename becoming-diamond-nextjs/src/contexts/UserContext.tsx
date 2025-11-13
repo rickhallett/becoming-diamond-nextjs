@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useSession } from 'next-auth/react';
 import { storage, STORAGE_KEYS } from '@/lib/storage';
-import { logSync as log } from '@/lib/logger';
+import { log } from '@axiomhq/nextjs';
 
 // User profile interface
 export interface UserProfile {
@@ -91,11 +91,17 @@ export function UserProvider({ children }: UserProviderProps) {
     try {
       const response = await fetch('/api/profile');
       if (!response.ok) {
-        throw new Error('Failed to fetch profile');
+        throw new Error(`Failed to fetch profile: ${response.status}`);
       }
 
       const data = await response.json();
       setUser(data.profile);
+
+      // Log successful profile load
+      await log.info('User profile loaded', {
+        userId: data.profile.id,
+        timestamp: new Date().toISOString(),
+      });
 
       // Update auth state
       const authState: AuthState = {
@@ -106,7 +112,10 @@ export function UserProvider({ children }: UserProviderProps) {
       };
       setAuth(authState);
     } catch (error) {
-      log.error('Error fetching profile:', 'Context', error);
+      await log.error('Failed to load user profile', {
+        error: error instanceof Error ? error.message : String(error),
+        timestamp: new Date().toISOString(),
+      });
       setUser(null);
     } finally {
       setIsLoading(false);
@@ -176,7 +185,11 @@ export function UserProvider({ children }: UserProviderProps) {
       // Refresh from server to ensure consistency
       await fetchProfile();
     } catch (error) {
-      log.error('Error updating profile:', 'Context', error);
+      await log.error('Failed to update profile', {
+        error: error instanceof Error ? error.message : String(error),
+        userId: user.id,
+        timestamp: new Date().toISOString(),
+      });
       // Revert optimistic update
       await fetchProfile();
     }

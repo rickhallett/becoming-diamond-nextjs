@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { nanoid } from "nanoid";
-import { log } from "@/lib/logger";
+import { log } from '@axiomhq/nextjs';
 import { sendWelcomeEmail } from "@/lib/gmail-smtp";
 
 // Dynamic route config for Next.js 15
@@ -150,9 +150,12 @@ export async function POST(request: NextRequest) {
           ],
         });
 
-        await log.info(`Welcome email sent successfully to ${email}`, "EMAIL", {
+        await log.info("Welcome email sent successfully", {
+          context: "EMAIL",
+          email,
           emailId: emailResult.emailId,
           leadId: id,
+          timestamp: new Date().toISOString(),
         });
       } else {
         // Mark email as failed for retry
@@ -161,14 +164,23 @@ export async function POST(request: NextRequest) {
           args: ["failed", id],
         });
 
-        await log.error(`Failed to send welcome email to ${email}`, "EMAIL", {
+        await log.error("Failed to send welcome email", {
+          context: "EMAIL",
+          email,
           error: emailResult.error,
           leadId: id,
+          timestamp: new Date().toISOString(),
         });
       }
     } catch (emailError) {
       // Log email error but don't fail the API call
-      await log.error(`Email sending error for ${email}`, "EMAIL", emailError);
+      await log.error("Email sending error", {
+        context: "EMAIL",
+        email,
+        error: emailError instanceof Error ? emailError.message : String(emailError),
+        leadId: id,
+        timestamp: new Date().toISOString(),
+      });
 
       // Mark email as failed
       await turso.execute({
@@ -186,11 +198,15 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    await log.error("Lead capture error:", "API", error);
+    await log.error("Lead capture error", {
+      context: "API",
+      error: error instanceof Error ? error.message : String(error),
+      timestamp: new Date().toISOString(),
+    });
     return NextResponse.json(
       {
         success: false,
-        error: `An error occurred. Please try again. ${JSON.stringify(error)}`,
+        error: `An error occurred. Please try again.`,
       },
       { status: 500 }
     );
@@ -314,7 +330,11 @@ export async function GET(request: NextRequest) {
       pageSize,
     });
   } catch (error) {
-    await log.error("Lead export error:", "API", error);
+    await log.error("Lead export error", {
+      context: "API",
+      error: error instanceof Error ? error.message : String(error),
+      timestamp: new Date().toISOString(),
+    });
     return NextResponse.json(
       { success: false, error: "An error occurred" },
       { status: 500 }

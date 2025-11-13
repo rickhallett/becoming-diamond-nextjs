@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/auth';
 import { getTursoClient } from '@/lib/turso-adapter';
+import { log } from '@axiomhq/nextjs';
 
 const turso = getTursoClient();
 
@@ -36,13 +37,11 @@ export async function GET() {
 
     const user = result.rows[0];
 
-    // Log user data for debugging
-    console.log('[Profile API] User data:', {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      nameType: typeof user.name,
-      nameValue: user.name === null ? 'NULL' : user.name === undefined ? 'UNDEFINED' : user.name,
+    await log.info('User profile fetched from database', {
+      userId: userId,
+      hasName: !!user.name,
+      hasEmail: !!user.email,
+      timestamp: new Date().toISOString(),
     });
 
     // Fetch user profile (additional fields including progress)
@@ -54,17 +53,13 @@ export async function GET() {
 
     const profileData = profileResult.rows[0];
 
-    // Log for debugging
-    console.log('[Profile API] User ID:', userId);
-    console.log('[Profile API] Profile data found:', !!profileData);
-    if (profileData) {
-      console.log('[Profile API] Profile fields:', {
-        current_pr: profileData.current_pr,
-        level: profileData.level,
-        xp: profileData.xp,
-        streak: profileData.streak,
-      });
-    }
+    await log.info('User profile data retrieved', {
+      userId,
+      hasProfileData: !!profileData,
+      currentPR: profileData?.current_pr,
+      level: profileData?.level,
+      timestamp: new Date().toISOString(),
+    });
 
     // Parse completed_prs JSON string to array
     let completedPRs: number[] = [];
@@ -93,17 +88,19 @@ export async function GET() {
       streak: (profileData?.streak as number) || 0,
     };
 
-    console.log('[Profile API] Returning profile:', {
-      id: profile.id,
-      name: profile.name,
+    await log.info('Profile returned successfully', {
+      userId: profile.id,
       currentPR: profile.currentPR,
       level: profile.level,
-      xp: profile.xp,
+      timestamp: new Date().toISOString(),
     });
 
     return NextResponse.json({ profile });
   } catch (error) {
-    console.error('Error fetching profile:', error);
+    await log.error('Error fetching profile', {
+      error: error instanceof Error ? error.message : String(error),
+      timestamp: new Date().toISOString(),
+    });
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -130,8 +127,11 @@ export async function PUT(request: NextRequest) {
     const updates = await request.json();
     const now = Math.floor(Date.now() / 1000);
 
-    console.log('[Profile API PUT] User ID:', userId);
-    console.log('[Profile API PUT] Updates received:', updates);
+    await log.info('Profile update request received', {
+      userId,
+      fieldsToUpdate: Object.keys(updates),
+      timestamp: new Date().toISOString(),
+    });
 
     // Update name in users table if provided
     if (updates.name !== undefined) {
@@ -139,7 +139,10 @@ export async function PUT(request: NextRequest) {
         sql: `UPDATE users SET name = ?, updated_at = ? WHERE id = ?`,
         args: [updates.name, now, userId],
       });
-      console.log('[Profile API PUT] Updated name in users table');
+      await log.info('Updated name in users table', {
+        userId,
+        timestamp: new Date().toISOString(),
+      });
     }
 
     // Update profile fields (bio, location, website)
@@ -168,7 +171,10 @@ export async function PUT(request: NextRequest) {
 
       if (checkResult.rows.length === 0) {
         // Profile doesn't exist - create it
-        console.log('[Profile API PUT] Profile not found, creating new profile');
+        await log.info('Profile not found, creating new profile', {
+          userId,
+          timestamp: new Date().toISOString(),
+        });
         const profileId = crypto.randomUUID();
         await turso.execute({
           sql: `INSERT INTO user_profiles (id, user_id, bio, location, website, created_at, updated_at)
@@ -183,7 +189,11 @@ export async function PUT(request: NextRequest) {
             now,
           ],
         });
-        console.log('[Profile API PUT] Created new profile');
+        await log.info('Created new profile', {
+          userId,
+          profileId,
+          timestamp: new Date().toISOString(),
+        });
       } else {
         // Profile exists - update it
         profileFields.push('updated_at = ?');
@@ -191,14 +201,18 @@ export async function PUT(request: NextRequest) {
         profileValues.push(userId);
 
         const sql = `UPDATE user_profiles SET ${profileFields.join(', ')} WHERE user_id = ?`;
-        console.log('[Profile API PUT] Updating user_profiles:', { sql, args: profileValues });
 
         const result = await turso.execute({
           sql,
           args: profileValues,
         });
 
-        console.log('[Profile API PUT] Update result:', { rowsAffected: result.rowsAffected });
+        await log.info('Updated user profile', {
+          userId,
+          rowsAffected: result.rowsAffected,
+          fieldsUpdated: profileFields.length - 1,
+          timestamp: new Date().toISOString(),
+        });
       }
     }
 
@@ -246,7 +260,10 @@ export async function PUT(request: NextRequest) {
 
     return NextResponse.json({ profile });
   } catch (error) {
-    console.error('Error updating profile:', error);
+    await log.error('Error updating profile', {
+      error: error instanceof Error ? error.message : String(error),
+      timestamp: new Date().toISOString(),
+    });
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

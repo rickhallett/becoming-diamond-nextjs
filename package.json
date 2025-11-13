@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@axiomhq/nextjs": "^0.1.6"
+  }
+}

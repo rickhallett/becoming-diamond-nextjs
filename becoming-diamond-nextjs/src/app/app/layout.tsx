@@ -15,6 +15,7 @@ import {
 import { SignOutButton } from "@/components/auth/SignOutButton";
 import { UserAvatar } from "@/components/auth/UserAvatar";
 import { FEATURES } from "@/config/features";
+import { ErrorBoundaryWithLogging } from "@/components/error-boundary-with-logging";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
@@ -226,7 +227,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
                 <div className="min-h-screen">
                     <div className="p-6 lg:p-8">
-                        {children}
+                        <ErrorBoundaryWithLogging>
+                            {children}
+                        </ErrorBoundaryWithLogging>
                     </div>
                 </div>
             </main>
