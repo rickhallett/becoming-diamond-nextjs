@@ -121,7 +121,10 @@ function getHtmlResponse(params: {
     },
   };
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3003';
+  // Construct base URL with Vercel auto-detection support
+  // Priority: NEXT_PUBLIC_BASE_URL > VERCEL_URL (auto-provided by Vercel) > localhost fallback
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+    || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3003');
 
   return `
     <!DOCTYPE html>

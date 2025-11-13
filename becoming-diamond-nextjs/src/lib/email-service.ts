@@ -8,7 +8,11 @@
 import { log } from "@/lib/logger";
 
 const FROM_EMAIL = process.env.GMAIL_USER || "support@becomingdiamond.com";
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3003";
+
+// Construct base URL with Vercel auto-detection support
+// Priority: NEXT_PUBLIC_BASE_URL > VERCEL_URL (auto-provided by Vercel) > localhost fallback
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
+  || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3003");
 
 interface EmailResult {
   success: boolean;

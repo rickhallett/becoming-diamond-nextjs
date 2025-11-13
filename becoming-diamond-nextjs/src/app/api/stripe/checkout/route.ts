@@ -5,7 +5,10 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY_TEST || process.env.STRI
   apiVersion: '2025-10-29.clover',
 });
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3003';
+// Construct base URL with Vercel auto-detection support
+// Priority: NEXT_PUBLIC_BASE_URL > VERCEL_URL (auto-provided by Vercel) > localhost fallback
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
+  || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3003');
 
 // Allowed price IDs (prevent price manipulation)
 const ALLOWED_PRICE_IDS = [

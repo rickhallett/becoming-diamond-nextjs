@@ -3,7 +3,11 @@ import { stripe } from '@/lib/stripe';
 
 export async function POST(req: NextRequest) {
   try {
-    const origin = req.headers.get('origin') || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3003';
+    // Construct base URL with auto-detection
+    // Priority: Request origin > NEXT_PUBLIC_APP_URL > VERCEL_URL > localhost fallback
+    const origin = req.headers.get('origin')
+      || process.env.NEXT_PUBLIC_APP_URL
+      || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3003');
 
     // Create Stripe Checkout Session
     const session = await stripe.checkout.sessions.create({
