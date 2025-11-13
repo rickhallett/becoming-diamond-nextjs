@@ -15,15 +15,17 @@ export default function SignInPage() {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const { login } = useUser();
 
   const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setError(null);
 
     try {
-      const result = await signIn("resend", {
+      const result = await signIn("nodemailer", {
         email,
         redirect: false,
         callbackUrl: AUTH_CONFIG.successRedirectUri,
@@ -31,8 +33,14 @@ export default function SignInPage() {
 
       if (result?.ok) {
         setEmailSent(true);
+      } else if (result?.error) {
+        setError(result.error === "EmailSignin"
+          ? "Failed to send magic link. Please try again or use another sign-in method."
+          : "An error occurred. Please try again.");
+        log.error("Sign-in failed:", 'App', result.error);
       }
     } catch (error) {
+      setError("An unexpected error occurred. Please try again.");
       log.error("Sign-in error:", 'App', error);
     } finally {
       setIsLoading(false);
@@ -140,6 +148,12 @@ export default function SignInPage() {
               className="w-full px-4 py-3 bg-secondary/50 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-primary/50 transition-colors disabled:opacity-50"
             />
 
+            {error && (
+              <div className="mt-3 p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-sm">
+                {error}
+              </div>
+            )}
+
             <button
               type="submit"
               disabled={isLoading || !email}
@@ -182,13 +196,15 @@ export default function SignInPage() {
               Sign in with Google
             </button>
 
-            <button
-              onClick={() => handleOAuthSignIn("github")}
-              className="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium py-3 px-6 rounded-lg transition-all flex items-center justify-center gap-2"
-            >
-              <IconBrandGithub className="w-5 h-5" />
-              Sign in with GitHub
-            </button>
+            {AUTH_CONFIG.githubAuth && (
+              <button
+                onClick={() => handleOAuthSignIn("github")}
+                className="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium py-3 px-6 rounded-lg transition-all flex items-center justify-center gap-2"
+              >
+                <IconBrandGithub className="w-5 h-5" />
+                Sign in with GitHub
+              </button>
+            )}
           </div>
 
           {/* Test Login (Development) */}

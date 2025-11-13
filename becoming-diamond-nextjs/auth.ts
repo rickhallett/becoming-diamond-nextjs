@@ -8,30 +8,47 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import GitHub from "next-auth/providers/github";
-import Resend from "next-auth/providers/resend";
+import Nodemailer from "next-auth/providers/nodemailer";
 import { TursoAdapter, getTursoClient } from "@/lib/turso-adapter";
+import { FEATURES } from "@/config/features";
+import { GMAIL_SMTP_CONFIG } from "@/lib/gmail-smtp";
 
 const turso = getTursoClient();
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
-  adapter: TursoAdapter(turso),
+// Build providers array conditionally
+const providers = [
+  Nodemailer({
+    server: {
+      ...GMAIL_SMTP_CONFIG,
+      auth: {
+        user: process.env.GMAIL_USER!,
+        pass: process.env.GMAIL_APP_PASSWORD!,
+      },
+    },
+    from: process.env.GMAIL_USER!,
+  }),
+  Google({
+    clientId: process.env.AUTH_GOOGLE_ID!,
+    clientSecret: process.env.AUTH_GOOGLE_SECRET!,
+    allowDangerousEmailAccountLinking: true,
+  }),
+];
 
-  providers: [
-    Resend({
-      apiKey: process.env.AUTH_RESEND_KEY!,
-      from: process.env.RESEND_FROM_EMAIL!,
-    }),
-    Google({
-      clientId: process.env.AUTH_GOOGLE_ID!,
-      clientSecret: process.env.AUTH_GOOGLE_SECRET!,
-      allowDangerousEmailAccountLinking: true,
-    }),
+// Conditionally add GitHub provider
+if (FEATURES.githubAuth) {
+  providers.push(
     GitHub({
       clientId: process.env.AUTH_GITHUB_ID!,
       clientSecret: process.env.AUTH_GITHUB_SECRET!,
       allowDangerousEmailAccountLinking: true,
-    }),
-  ],
+    })
+  );
+}
+
+export const { handlers, auth, signIn, signOut } = NextAuth({
+  adapter: TursoAdapter(turso),
+
+  providers,
 
   session: {
     strategy: "database",
@@ -54,9 +71,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return session;
     },
 
-    async signIn({ user, account, profile }) {
+    async signIn({ user, account, profile, email }) {
+      // Log sign-in attempts for debugging
+      console.log('[Auth] signIn callback:', {
+        provider: account?.provider,
+        email: email?.verificationRequest ? 'magic-link' : user.email,
+        userId: user.id,
+      });
+
       // Allow sign-in
-      // Add custom logic here if you need to restrict access
       return true;
     },
   },
@@ -64,6 +87,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   events: {
     async createUser({ user }) {
       // Create user profile when a new user signs up
+      console.log(`[Auth Event] createUser triggered:`, {
+        userId: user.id,
+        email: user.email,
+        name: user.name,
+      });
+
       try {
         const profileId = crypto.randomUUID();
         const now = Math.floor(Date.now() / 1000);
@@ -74,10 +103,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           args: [profileId, user.id, now, now],
         });
 
-        console.log(`[Auth] Created profile for user ${user.id}`);
+        console.log(`[Auth Event] Created profile for user ${user.id}`);
       } catch (error) {
         console.error(
-          `[Auth] Failed to create profile for user ${user.id}:`,
+          `[Auth Event] Failed to create profile for user ${user.id}:`,
           error
         );
       }

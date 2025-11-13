@@ -69,7 +69,6 @@
     "remark": "^15.0.1",
     "remark-gfm": "^4.0.1",
     "remark-html": "^16.0.1",
-    "resend": "^6.1.2",
     "simplex-noise": "^4.0.3",
     "stripe": "^19.2.0",
     "tailwind-merge": "^3.3.1",

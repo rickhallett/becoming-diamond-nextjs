@@ -25,6 +25,30 @@ interface EmailResult {
 }
 
 /**
+ * Gmail SMTP Configuration
+ *
+ * DNS Workaround: Uses direct IP (173.194.76.108) instead of smtp.gmail.com
+ * to avoid ETIMEOUT errors in some network environments.
+ *
+ * This configuration is used by both:
+ * - NextAuth magic link emails
+ * - Newsletter welcome emails
+ */
+export const GMAIL_SMTP_CONFIG = {
+  host: "173.194.76.108", // Direct IP to bypass DNS timeout issue
+  port: 465,
+  secure: true, // Use SSL
+  tls: {
+    servername: "smtp.gmail.com", // Required for certificate validation
+    rejectUnauthorized: true,
+  },
+  connectionTimeout: 60000, // 60 seconds
+  greetingTimeout: 30000,
+  socketTimeout: 120000,
+  logger: true,
+} as const;
+
+/**
  * Create Gmail SMTP transporter
  */
 function getGmailTransporter() {
@@ -38,23 +62,11 @@ function getGmailTransporter() {
   const cleanPassword = GMAIL_APP_PASSWORD.replace(/[\s"']/g, "");
 
   return nodemailer.createTransport({
-    host: "173.194.76.108", // Direct IP to bypass DNS timeout issue
-    port: 465,
-    secure: true, // Use SSL
+    ...GMAIL_SMTP_CONFIG,
     auth: {
       user: GMAIL_USER,
       pass: cleanPassword,
     },
-    tls: {
-      servername: "smtp.gmail.com", // Required for certificate validation
-      rejectUnauthorized: true,
-    },
-    // Add timeout and debug options
-    connectionTimeout: 60000, // 60 seconds
-    greetingTimeout: 30000,
-    socketTimeout: 120000,
-    // debug: true, // Enable debug logging
-    logger: true,
   });
 }
 
