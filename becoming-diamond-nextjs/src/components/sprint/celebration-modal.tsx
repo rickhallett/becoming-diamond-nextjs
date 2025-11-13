@@ -68,9 +68,9 @@ export default function CelebrationModal({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ type: "spring", duration: 0.5 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 z-50 flex items-center justify-center p-6 md:p-4"
           >
-            <div className="bg-secondary/95 border border-primary/30 rounded-2xl p-8 max-w-md w-full shadow-2xl">
+            <div className="bg-secondary/95 border border-primary/30 rounded-2xl p-6 md:p-8 max-w-md w-full shadow-2xl">
               {/* Trophy Icon */}
               <div className="flex justify-center mb-6">
                 <div className="relative">

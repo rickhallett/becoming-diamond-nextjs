@@ -56,14 +56,6 @@ export default function ProfilePage() {
         );
     }
 
-    // Build stats array (simplified for MVP)
-    type StatItem = { label: string; value: string; color: string };
-    const stats: StatItem[] = [
-        { label: "Sprint Progress", value: `${user.completedPRs.length} / 30 days`, color: "text-green-400" },
-        { label: "Current Streak", value: `${user.streak} days`, color: "text-primary" },
-        { label: "Current Level", value: user.level, color: "text-purple-400" },
-    ];
-
     // No achievements for simplified MVP
     const achievements: { name: string; earned: boolean }[] = [];
 
@@ -113,10 +105,10 @@ export default function ProfilePage() {
                 <p className="text-gray-400">Manage your personal information and track your progress</p>
             </div>
 
-            <div className="grid lg:grid-cols-3 gap-6">
+            <div className="grid lg:grid-cols-3 gap-6 lg:items-stretch">
                 {/* Profile Card */}
                 <div className="lg:col-span-1">
-                    <div className="bg-secondary/30 border border-white/10 rounded-xl p-6">
+                    <div className="bg-secondary/30 border border-white/10 rounded-xl p-6 h-full flex flex-col">
                         {/* Avatar */}
                         <div className="relative w-32 h-32 mx-auto mb-4 group cursor-pointer">
                             {user.avatar && !imageError ? (
@@ -155,29 +147,14 @@ export default function ProfilePage() {
                             </div>
                         </div>
                     </div>
-
-                    {/* Stats Grid - Only show if there are stats to display */}
-                    {stats.length > 0 && (
-                        <div className="mt-6 grid grid-cols-2 gap-3">
-                            {stats.map((stat, index) => (
-                                <div
-                                    key={index}
-                                    className="bg-secondary/30 border border-white/10 rounded-lg p-4"
-                                >
-                                    <p className={`text-2xl font-light ${stat.color}`}>{stat.value}</p>
-                                    <p className="text-xs text-gray-400 mt-1">{stat.label}</p>
-                                </div>
-                            ))}
-                        </div>
-                    )}
                 </div>
 
                 {/* Profile Details */}
-                <div className="lg:col-span-2 space-y-6">
+                <div className="lg:col-span-2">
                     {/* Personal Information */}
-                    <div className="bg-secondary/30 border border-white/10 rounded-xl p-6">
+                    <div className="bg-secondary/30 border border-white/10 rounded-xl p-6 h-full">
                         <div className="flex items-center justify-between mb-6">
-                            <h3 className="text-xl font-light">Personal Information</h3>
+                            <h3 className="text-lg font-light">Personal Information</h3>
                             {!isEditing ? (
                                 <button
                                     onClick={() => setIsEditing(true)}
@@ -208,7 +185,7 @@ export default function ProfilePage() {
 
                         <div className="grid md:grid-cols-2 gap-6">
                             <div>
-                                <Label htmlFor="name" className="text-gray-300 mb-2 block">Full Name</Label>
+                                <Label htmlFor="name" className="text-gray-400 text-sm mb-2 block">Full Name</Label>
                                 {isEditing ? (
                                     <Input
                                         id="name"
@@ -216,7 +193,7 @@ export default function ProfilePage() {
                                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                     />
                                 ) : (
-                                    <div className="flex items-center gap-2 text-white">
+                                    <div className="flex items-center gap-2 text-white text-sm">
                                         <IconBriefcase className="w-4 h-4 text-gray-400" />
                                         {user.name}
                                     </div>
@@ -224,15 +201,15 @@ export default function ProfilePage() {
                             </div>
 
                             <div>
-                                <Label htmlFor="email" className="text-gray-300 mb-2 block">Email Address</Label>
-                                <div className="flex items-center gap-2 text-white">
+                                <Label htmlFor="email" className="text-gray-400 text-sm mb-2 block">Email Address</Label>
+                                <div className="flex items-center gap-2 text-white text-sm">
                                     <IconMail className="w-4 h-4 text-gray-400" />
                                     {user.email || 'Not set'}
                                 </div>
                             </div>
 
                             <div className="md:col-span-2">
-                                <Label htmlFor="location" className="text-gray-300 mb-2 block">Location</Label>
+                                <Label htmlFor="location" className="text-gray-400 text-sm mb-2 block">Location</Label>
                                 {isEditing ? (
                                     <Input
                                         id="location"
@@ -241,7 +218,7 @@ export default function ProfilePage() {
                                         placeholder="City, State/Country"
                                     />
                                 ) : (
-                                    <div className="flex items-center gap-2 text-white">
+                                    <div className="flex items-center gap-2 text-white text-sm">
                                         <IconMapPin className="w-4 h-4 text-gray-400" />
                                         {user.location || 'Not set'}
                                     </div>
@@ -249,7 +226,7 @@ export default function ProfilePage() {
                             </div>
 
                             <div className="md:col-span-2">
-                                <Label htmlFor="website" className="text-gray-300 mb-2 block">Website</Label>
+                                <Label htmlFor="website" className="text-gray-400 text-sm mb-2 block">Website</Label>
                                 {isEditing ? (
                                     <Input
                                         id="website"
@@ -259,25 +236,25 @@ export default function ProfilePage() {
                                         placeholder="https://yourwebsite.com"
                                     />
                                 ) : (
-                                    <div className="flex items-center gap-2 text-white">
+                                    <div className="flex items-center gap-2 text-white text-sm">
                                         {user.website || 'Not set'}
                                     </div>
                                 )}
                             </div>
 
                             <div className="md:col-span-2">
-                                <Label htmlFor="bio" className="text-gray-300 mb-2 block">Bio</Label>
+                                <Label htmlFor="bio" className="text-gray-400 text-sm mb-2 block">Bio</Label>
                                 {isEditing ? (
                                     <textarea
                                         id="bio"
                                         value={formData.bio}
                                         onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
                                         rows={3}
-                                        className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:border-primary focus:outline-none transition-colors"
+                                        className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-500 focus:border-primary focus:outline-none transition-colors"
                                         placeholder="Tell us about yourself..."
                                     />
                                 ) : (
-                                    <p className="text-white">{user.bio || 'No bio yet'}</p>
+                                    <p className="text-white text-sm">{user.bio || 'No bio yet'}</p>
                                 )}
                             </div>
                         </div>

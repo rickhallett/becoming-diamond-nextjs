@@ -16,14 +16,14 @@ export default function CollectivePage() {
       <Navigation />
 
       {/* Hero - DiamondMind Collective */}
-      <section className="py-24 px-6 relative overflow-hidden pt-32">
+      <section className="py-12 md:py-24 px-6 relative overflow-hidden pt-32 md:pt-32">
         <LampContainer>
-          <div className="text-center max-w-4xl mx-auto relative z-[60]">
+          <div className="text-center max-w-4xl mx-auto relative z-[60] pt-24 md:pt-0">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
-              className="inline-block bg-primary/20 border-2 border-primary px-6 py-2 rounded-full mb-6 shadow-lg shadow-primary/50"
+              className="inline-block bg-primary/20 border-2 border-primary px-6 py-2 rounded-full mb-4 md:mb-6 shadow-lg shadow-primary/50"
             >
               <span className="text-white text-xl font-bold drop-shadow-[0_0_8px_rgba(79,195,247,1)]">$7,995</span>
             </motion.div>
@@ -34,54 +34,54 @@ export default function CollectivePage() {
             transition={{ duration: 0.8 }}
             className="relative z-[60]"
           >
-            <h1 className="mb-6 text-4xl md:text-6xl text-white font-light">
+            <h1 className="mb-6 text-3xl md:text-6xl text-white font-light">
               The <span className="text-primary font-normal">DiamondMind</span> Immersion
             </h1>
-            <p className="text-xl md:text-2xl text-gray-300 mb-4">
+            <p className="text-lg md:text-2xl text-gray-300 mb-4">
               The Ultimate Transformation: Live Unshakable Every Day.
             </p>
-            <p className="text-lg text-gray-400 mb-8">
+            <p className="text-base md:text-lg text-gray-400 mb-8">
               A yearlong journey to become emotionally grounded, energetically powerful, and irreplaceable.
             </p>
-            <p className="text-2xl font-light mb-16">
+            <p className="text-xl md:text-2xl font-light mb-16">
               Become the Leader Pressure Can't Break
             </p>
 
             <div className="max-w-3xl mx-auto mb-12">
-              <p className="text-lg text-gray-300 mb-6">
+              <p className="text-base md:text-lg text-gray-300 mb-6">
                 A yearlong journey featuring <span className="text-primary font-normal">5 x 3-day Pressure Room Intensives</span> (22 hours each) and <span className="text-primary font-normal">5 x 2-hour Integration Labs</span>—designed to train your body, mind, and identity to operate under pressure with grace, clarity, and conviction.
               </p>
               <div className="space-y-3 mb-6">
-                <div className="flex items-start text-base text-gray-300">
+                <div className="flex items-start text-sm md:text-base text-gray-300">
                   <span className="text-primary mr-2">→</span>
                   <span>Everything in Pressure Room One</span>
                 </div>
-                <div className="flex items-start text-base text-gray-300">
+                <div className="flex items-start text-sm md:text-base text-gray-300">
                   <span className="text-primary mr-2">→</span>
                   <span>5x 3-day Pressure Room Intensives (22 hours each)</span>
                 </div>
-                <div className="flex items-start text-base text-gray-300">
+                <div className="flex items-start text-sm md:text-base text-gray-300">
                   <span className="text-primary mr-2">→</span>
                   <span>5x 2-hour Integration Labs to refine and practice your skills</span>
                 </div>
-                <div className="flex items-start text-base text-gray-300">
+                <div className="flex items-start text-sm md:text-base text-gray-300">
                   <span className="text-primary mr-2">→</span>
                   <span>Digital platform access for ongoing learning</span>
                 </div>
-                <div className="flex items-start text-base text-gray-300">
+                <div className="flex items-start text-sm md:text-base text-gray-300">
                   <span className="text-primary mr-2">→</span>
                   <span>Surround yourself with others becoming their clearest, strongest selves</span>
                 </div>
-                <div className="flex items-start text-base text-gray-300">
+                <div className="flex items-start text-sm md:text-base text-gray-300">
                   <span className="text-primary mr-2">→</span>
                   <span>Build emotional precision, energetic strength, and inner steadiness</span>
                 </div>
-                <div className="flex items-start text-base text-gray-300">
+                <div className="flex items-start text-sm md:text-base text-gray-300">
                   <span className="text-primary mr-2">→</span>
                   <span>Create a personal legacy plan to reshape your role, relationships, and reality</span>
                 </div>
               </div>
-              <p className="text-base text-gray-400 italic">
+              <p className="text-sm md:text-base text-gray-400 italic">
                 This is not a course. This is not a seminar.<br />
                 This is <span className="text-primary not-italic">soul-tempering, system-level transformation</span>.
               </p>
