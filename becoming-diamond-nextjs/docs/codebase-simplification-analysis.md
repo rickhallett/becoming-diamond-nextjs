@@ -8,6 +8,15 @@
 
 ---
 
+## Critical Decisions - FINALIZED
+
+✅ **Video Delivery:** Keep Bunny Stream (already implemented)
+✅ **Book Checkout:** Keep Stripe integration (checkout + webhooks)
+✅ **Blog Management:** Keep Decap CMS admin
+✅ **Email Provider:** Gmail SMTP (already configured)
+
+---
+
 ## Scope Definition
 
 ### Required Features
@@ -24,11 +33,11 @@
 - AI Chat (DiamondMindAI)
 - News section (separate from blog)
 - Individual offer detail pages
-- CMS admin interface (Decap CMS)
-- Video streaming infrastructure
-- Complex progress tracking
-- Payment webhooks (if book uses external checkout)
-- OAuth flows
+- ~~CMS admin interface (Decap CMS)~~ **KEEP - Decision made**
+- ~~Video streaming infrastructure~~ **KEEP - Bunny Stream**
+- Complex course progress tracking (keep sprint progress only)
+- ~~Payment webhooks~~ **KEEP - Stripe integration**
+- ~~OAuth flows~~ **KEEP - GitHub OAuth for CMS**
 - Support ticketing
 - Settings page
 - Full profile management
@@ -220,36 +229,47 @@ const navItems = [
 /src/app/api/blog/route.ts                   ⚠️  OPTIONAL - Only if CMS is kept
 ```
 
-#### REMOVE - Complex Features (15 files)
+#### KEEP - Video & CMS Infrastructure (4 files)
 
 ```
-# CMS (if moving to static blog)
-/src/app/api/cms-auth/route.ts               ❌ REMOVE - No CMS admin
-/src/app/api/cms-callback/route.ts           ❌ REMOVE - No CMS admin
+# CMS (Decision: Keep Decap CMS)
+/src/app/api/cms-auth/route.ts               ✅ KEEP - GitHub OAuth for CMS
+/src/app/api/cms-callback/route.ts           ✅ KEEP - CMS OAuth callback
 
+# Video Infrastructure (Decision: Keep Bunny Stream)
+/src/app/api/videos/route.ts                 ✅ KEEP - Sprint video metadata
+/src/app/api/video/[videoId]/token/route.ts  ✅ KEEP - Secure video tokens
+```
+
+#### KEEP - Payments (3 files)
+
+```
+# Payments (Decision: Keep Stripe integration)
+/src/app/api/stripe/webhook/route.ts         ✅ KEEP - Payment event handling
+/src/app/api/stripe/checkout/route.ts        ✅ KEEP - Book checkout
+/src/app/api/checkout/create-session/route.ts ✅ KEEP - Session creation helper
+```
+
+#### REMOVE - Complex Features (5 files)
+
+```
 # Courses
 /src/app/api/courses/route.ts                ❌ REMOVE - No course platform
-/src/app/api/activities/route.ts             ❌ REMOVE - No activity tracking
-
-# Video Infrastructure
-/src/app/api/videos/route.ts                 ⚠️  MAYBE KEEP - If sprint uses Bunny videos
-/src/app/api/video/[videoId]/token/route.ts  ⚠️  MAYBE KEEP - If sprint uses Bunny videos
+/src/app/api/activities/route.ts             ❌ REMOVE - Complex activity tracking
 
 # AI Chat
 /src/app/api/chat/route.ts                   ❌ REMOVE - No AI chat
 /src/app/api/ask/route.ts                    ❌ REMOVE - No RAG queries
 
-# Payments (if not needed)
-/src/app/api/stripe/webhook/route.ts         ⚠️  DEPENDS - Keep if handling subscriptions
-/src/app/api/stripe/checkout/route.ts        ⚠️  DEPENDS - Keep if Stripe integration needed
-
 # Dev Tools
 /src/app/api/dev/zip/route.ts                ❌ REMOVE - Dev utility only
 ```
 
-**Decision Point:** Video infrastructure depends on how sprint videos are delivered.
-- **Option A:** Keep Bunny Stream integration for sprint videos → Keep video APIs
-- **Option B:** Use YouTube embeds or simple video links → Remove video APIs
+**✅ Decisions Made:**
+- Keep Bunny Stream for professional video delivery
+- Keep Stripe for book checkout and webhooks
+- Keep Decap CMS for blog management
+- Keep Gmail SMTP for email delivery
 
 ---
 
@@ -271,14 +291,19 @@ const navItems = [
 /src/components/ErrorBoundary.tsx            ✅ KEEP - Error handling
 ```
 
-#### REMOVE - Complex Features (5 files)
+#### KEEP - Video Components (Decision: Bunny Stream)
 
 ```
-/src/components/ContentRenderer.tsx          ⚠️  SIMPLIFY - Remove video parsing if videos removed
+/src/components/VideoPlayer.tsx              ✅ KEEP - Sprint video playback (HLS)
+/src/components/ContentRenderer.tsx          ✅ KEEP - Markdown + video rendering
+```
+
+#### REMOVE - Unused Components (3 files)
+
+```
 /src/components/MarkdownMessage.tsx          ❌ REMOVE - Only used for AI chat
-/src/components/VideoPlayer.tsx              ⚠️  DEPENDS - Sprint video playback
 /src/components/PlaylistVideoPlayer.tsx      ❌ REMOVE - Not used
-/src/components/MemberAreaTransition.tsx     ⚠️  OPTIONAL - Nice to have
+/src/components/MemberAreaTransition.tsx     ❌ REMOVE - Optional, not essential
 ```
 
 #### Sprint-Specific Components
@@ -332,11 +357,12 @@ const navItems = [
 /src/lib/logger.ts                 ✅ KEEP - Logging
 ```
 
-#### OPTIONAL - Depending on Decisions
+#### KEEP - Email & Payments (Decision: Gmail SMTP + Stripe)
 
 ```
-/src/lib/gmail-smtp.ts             ⚠️  KEEP IF using Gmail instead of Resend
-/src/lib/stripe.ts                 ⚠️  KEEP IF book checkout uses Stripe
+/src/lib/gmail-smtp.ts             ✅ KEEP - Gmail SMTP (configured)
+/src/lib/stripe.ts                 ✅ KEEP - Book checkout
+/src/lib/resend.ts                 ❌ REMOVE - Not using Resend
 ```
 
 #### REMOVE (8 files)
@@ -429,13 +455,14 @@ export const features = {
 
 ```
 /content/news/                     ❌ REMOVE - Not needed
-/content/blog/                     ✅ KEEP - Insights content
+/content/blog/                     ✅ KEEP - Insights content (managed via CMS)
 /content/pages/                    ❌ REMOVE - Not needed
 /content/settings/                 ❌ REMOVE - Not needed
 /content/sprint/                   ✅ KEEP - 30-day sprint content
+/public/admin/                     ✅ KEEP - Decap CMS admin UI
 ```
 
-**Alternative:** If removing Decap CMS, could convert blog to static markdown files only.
+**Decision:** Keep Decap CMS for non-technical blog management.
 
 ---
 
@@ -467,72 +494,73 @@ payments               ⚠️  DEPENDS - Book purchases
 
 ## Environment Variables - Cleanup
 
-### KEEP
+### KEEP - Required Variables
 
 ```bash
 # Database
-DATABASE_URL
-DATABASE_AUTH_TOKEN
+DATABASE_URL                        ✅ KEEP
+DATABASE_AUTH_TOKEN                 ✅ KEEP
 
 # Auth
-NEXTAUTH_URL
-NEXTAUTH_SECRET
+NEXTAUTH_URL                        ✅ KEEP
+NEXTAUTH_SECRET                     ✅ KEEP
 
-# Email (choose one)
-RESEND_API_KEY
-# OR
-GMAIL_USER
-GMAIL_CLIENT_ID
-GMAIL_CLIENT_SECRET
-GMAIL_REFRESH_TOKEN
+# Email (Decision: Gmail SMTP)
+GMAIL_USER                          ✅ KEEP
+GMAIL_CLIENT_ID                     ✅ KEEP
+GMAIL_CLIENT_SECRET                 ✅ KEEP
+GMAIL_REFRESH_TOKEN                 ✅ KEEP
+
+# Stripe (Decision: Keep integration)
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY  ✅ KEEP
+STRIPE_SECRET_KEY                   ✅ KEEP
+STRIPE_WEBHOOK_SECRET               ✅ KEEP
+
+# Bunny Stream (Decision: Keep)
+BUNNY_LIBRARY_ID                    ✅ KEEP
+BUNNY_API_KEY                       ✅ KEEP
+BUNNY_CDN_HOSTNAME                  ✅ KEEP
+
+# CMS (Decision: Keep Decap)
+GITHUB_CLIENT_ID                    ✅ KEEP
+GITHUB_CLIENT_SECRET                ✅ KEEP
 
 # Feature Flags
-NODE_ENV
+NODE_ENV                            ✅ KEEP
 ```
 
-### OPTIONAL (Depending on Decisions)
-
-```bash
-# Stripe (if book uses integrated checkout)
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-STRIPE_SECRET_KEY
-STRIPE_WEBHOOK_SECRET
-
-# Bunny Stream (if sprint uses video streaming)
-BUNNY_LIBRARY_ID
-BUNNY_API_KEY
-BUNNY_CDN_HOSTNAME
-```
-
-### REMOVE
+### REMOVE - Unused Variables
 
 ```bash
 # AI Chat
-ANTHROPIC_API_KEY
+ANTHROPIC_API_KEY                   ❌ REMOVE
 
-# CMS
-GITHUB_CLIENT_ID
-GITHUB_CLIENT_SECRET
+# Resend (not using)
+RESEND_API_KEY                      ❌ REMOVE
 
-# Feature Flags (old)
-NEXT_PUBLIC_ENABLE_AI
+# Old feature flags
+NEXT_PUBLIC_ENABLE_AI               ❌ REMOVE
 ```
 
 ---
 
 ## Dependencies to Remove from package.json
 
-### Can Remove (21 packages)
+### Can Remove (Based on Decisions)
 
 ```json
 {
-  "@anthropic-ai/sdk": "REMOVE - No AI chat",
-  "react-markdown": "REMOVE - If ContentRenderer simplified",
-  "remark": "MAYBE REMOVE - Used for blog, but could use simpler parser",
-  "remark-html": "MAYBE REMOVE - Same as above",
-  "hls.js": "KEEP IF sprint uses Bunny videos, else REMOVE",
-  "@stripe/stripe-js": "KEEP IF book checkout, else REMOVE",
-  "stripe": "KEEP IF book checkout, else REMOVE"
+  "@anthropic-ai/sdk": "❌ REMOVE - No AI chat",
+  "resend": "❌ REMOVE - Using Gmail SMTP instead",
+  "react-email": "⚠️  REVIEW - May still use for templates with Gmail",
+
+  "hls.js": "✅ KEEP - Sprint uses Bunny videos",
+  "@stripe/stripe-js": "✅ KEEP - Book checkout",
+  "stripe": "✅ KEEP - Payment processing",
+
+  "gray-matter": "✅ KEEP - CMS markdown parsing",
+  "remark": "✅ KEEP - Blog content rendering",
+  "remark-html": "✅ KEEP - Markdown to HTML"
 }
 ```
 
@@ -564,22 +592,31 @@ NEXT_PUBLIC_ENABLE_AI
 ### Directories to COMPLETELY Remove
 
 ```
-/src/app/courses/                      DELETE ENTIRE DIRECTORY
-/src/app/offers/                       DELETE ENTIRE DIRECTORY
-/src/app/news/                         DELETE ENTIRE DIRECTORY
-/src/app/pricing/                      DELETE ENTIRE DIRECTORY
-/src/app/api/courses/                  DELETE ENTIRE DIRECTORY
-/src/app/api/chat/                     DELETE ENTIRE DIRECTORY
-/src/app/api/cms-auth/                 DELETE ENTIRE DIRECTORY
-/src/app/api/cms-callback/             DELETE ENTIRE DIRECTORY
-/src/app/api/dev/                      DELETE ENTIRE DIRECTORY
-/src/contexts/CourseContext.tsx        DELETE FILE
-/src/contexts/ChatContext.tsx          DELETE FILE
-/src/lib/rag/                          DELETE ENTIRE DIRECTORY
-/src/components/ui/                    DELETE 70+ UNUSED COMPONENTS
-/content/news/                         DELETE ENTIRE DIRECTORY
-/content/pages/                        DELETE ENTIRE DIRECTORY
-/public/admin/                         DELETE (Decap CMS)
+/src/app/courses/                      ❌ DELETE ENTIRE DIRECTORY
+/src/app/offers/                       ❌ DELETE ENTIRE DIRECTORY
+/src/app/news/                         ❌ DELETE ENTIRE DIRECTORY
+/src/app/pricing/                      ❌ DELETE ENTIRE DIRECTORY
+/src/app/api/courses/                  ❌ DELETE ENTIRE DIRECTORY
+/src/app/api/chat/                     ❌ DELETE ENTIRE DIRECTORY
+/src/app/api/ask/                      ❌ DELETE ENTIRE DIRECTORY
+/src/app/api/dev/                      ❌ DELETE ENTIRE DIRECTORY
+/src/contexts/CourseContext.tsx        ❌ DELETE FILE
+/src/contexts/ChatContext.tsx          ❌ DELETE FILE
+/src/lib/rag/                          ❌ DELETE ENTIRE DIRECTORY
+/src/components/ui/                    ⚠️  DELETE 70+ UNUSED COMPONENTS (selective)
+/content/news/                         ❌ DELETE ENTIRE DIRECTORY
+/content/pages/                        ❌ DELETE ENTIRE DIRECTORY
+```
+
+### Directories to KEEP (Based on Decisions)
+
+```
+/src/app/api/cms-auth/                 ✅ KEEP - CMS OAuth
+/src/app/api/cms-callback/             ✅ KEEP - CMS callback
+/src/app/api/video/                    ✅ KEEP - Bunny Stream
+/src/app/api/videos/                   ✅ KEEP - Video metadata
+/src/app/api/stripe/                   ✅ KEEP - Payments
+/public/admin/                         ✅ KEEP - Decap CMS admin UI
 ```
 
 ---
@@ -615,55 +652,32 @@ const links = [
 
 ---
 
-## Decision Matrix
+## Decision Matrix - FINALIZED
 
-### Critical Decisions Needed Before Removal
+### Critical Decisions - All Made ✅
 
-| Feature | Keep? | Depends On | Impact |
-|---------|-------|------------|--------|
-| **Video Streaming** | ⚠️ | How sprint videos are delivered | High - affects video APIs, Bunny integration |
-| **Stripe Integration** | ⚠️ | Book checkout flow | Medium - affects payment APIs |
-| **Email Provider** | ⚠️ | Resend vs Gmail SMTP | Low - affects one library |
-| **Decap CMS** | ⚠️ | Blog management workflow | High - affects content APIs, admin UI |
-| **Course Content** | ❌ | N/A - Remove | High - major simplification |
-| **AI Chat** | ❌ | N/A - Remove | High - major simplification |
+| Feature | Decision | Impact | Rationale |
+|---------|----------|--------|-----------|
+| **Video Streaming** | ✅ KEEP Bunny Stream | High | Already implemented, professional streaming |
+| **Stripe Integration** | ✅ KEEP Full Integration | Medium | Branded checkout experience needed |
+| **Email Provider** | ✅ Gmail SMTP | Low | Already configured |
+| **Decap CMS** | ✅ KEEP | High | Non-technical blog editing required |
+| **Course Content** | ❌ REMOVE | High | Major simplification - not in scope |
+| **AI Chat** | ❌ REMOVE | High | Major simplification - not in scope |
 
-### Recommended Decisions
+### Implementation Summary
 
-**Video Delivery for Sprint:**
-- **Option A (Recommended):** Keep Bunny Stream for professional delivery
-  - Keep: `/src/lib/bunny.ts`, video token APIs, `VideoPlayer.tsx`
-  - Pros: Professional streaming, analytics, security
-  - Cons: Monthly cost (~$10-30)
+**KEEP Infrastructure:**
+- Bunny Stream (video delivery)
+- Stripe (checkout + webhooks)
+- Decap CMS (blog management)
+- Gmail SMTP (email delivery)
+- GitHub OAuth (for CMS access)
 
-- **Option B:** Use YouTube embeds
-  - Remove all video infrastructure
-  - Pros: Free, simple
-  - Cons: Less control, ads (unless paid), privacy concerns
-
-**Book Checkout:**
-- **Option A (Recommended):** External Stripe checkout (Stripe Payment Links)
-  - Remove: All checkout APIs, webhook handler
-  - Keep: Simple redirect to Stripe-hosted checkout
-  - Pros: Simpler, PCI compliant by default
-  - Cons: Less customization
-
-- **Option B:** Integrated Stripe checkout
-  - Keep: `/src/lib/stripe.ts`, checkout APIs
-  - Pros: Branded experience
-  - Cons: More code to maintain
-
-**Blog Management:**
-- **Option A (Recommended):** Keep Decap CMS
-  - Keep: CMS admin, auth APIs, content APIs
-  - Pros: Non-technical content editing
-  - Cons: OAuth setup, admin UI to maintain
-
-- **Option B:** Static markdown files only
-  - Remove: All CMS infrastructure
-  - Add: Manual blog post creation via Git commits
-  - Pros: Simpler codebase
-  - Cons: Technical skill required for blog posts
+**REMOVE Infrastructure:**
+- Course platform
+- AI chat (Claude API)
+- Resend (email provider)
 
 ---
 
@@ -889,4 +903,99 @@ Start with removing the `/docs/` folder and unused UI components - low risk, hig
 
 ---
 
-**Next Steps:** Review decisions matrix and get stakeholder approval before proceeding.
+**Next Steps:**
+1. ✅ Decisions finalized (Bunny Stream, Stripe, Gmail SMTP, Decap CMS - all KEEP)
+2. Create backup branch
+3. Begin Phase 1: Remove unused files
+4. Follow implementation plan
+
+---
+
+## Updated Impact Estimates (Based on Final Decisions)
+
+### Code Reduction (Revised)
+- **Files:** 180 → ~95 (47% reduction, less aggressive due to keeping infrastructure)
+- **Lines of Code:** ~15,000 → ~8,000 (47% reduction)
+- **Dependencies:** 80 → ~60 packages (25% reduction)
+- **API Routes:** 25 → ~18 (28% reduction - keeping video, CMS, payment APIs)
+
+### Features Kept vs Removed
+
+**KEEPING (Infrastructure):**
+- ✅ Bunny Stream video delivery
+- ✅ Stripe payment integration
+- ✅ Decap CMS admin
+- ✅ Gmail SMTP email
+- ✅ GitHub OAuth
+- ✅ Sprint video player
+- ✅ Blog management
+
+**REMOVING (Features):**
+- ❌ Course platform (largest removal)
+- ❌ AI Chat (second largest)
+- ❌ News section
+- ❌ Individual offer pages
+- ❌ Settings page
+- ❌ Support ticketing
+- ❌ Complex progress tracking
+
+### Infrastructure Cost Summary
+
+**Monthly Costs (All Kept):**
+- Bunny Stream: $10-30/month
+- Vercel: $0-20/month (hobby to pro)
+- Turso: $0-29/month (starter to scaler)
+- Gmail: Free (workspace included)
+- Stripe: Transaction fees only
+- GitHub: Free (for OAuth)
+
+**Total Estimated: $10-80/month** depending on usage tiers
+
+### Performance Impact (Revised)
+- **Build Time:** 4.0s → ~2.5s (37% faster)
+- **Bundle Size:** ~400KB → ~250KB (37% smaller)
+- **Maintained Complexity:** Video infrastructure adds ~50KB to bundle
+
+### Final Simplification Score
+
+**Before:** Full-featured course platform with AI
+**After:** Streamlined sprint + blog + book platform with professional infrastructure
+
+**Complexity Reduction: 7/10** (Good balance of simplification while keeping quality infrastructure)
+
+---
+
+## Action Items Summary
+
+### Immediate Next Steps
+1. ✅ **Decisions Made** - All 4 critical decisions finalized
+2. **Create Backup** - Full branch backup required
+3. **Environment Check** - Verify all required env vars are set
+4. **Database Review** - Plan schema simplification
+
+### Implementation Checklist
+- [ ] Create backup branch: `backup/full-codebase-2025-01-05`
+- [ ] Push backup to remote
+- [ ] Create work branch: `simplify/mvp-scope`
+- [ ] Remove course platform files (Phase 2)
+- [ ] Remove AI chat files (Phase 2)
+- [ ] Remove unused UI components (Phase 2)
+- [ ] Update dependencies (Phase 3)
+- [ ] Simplify contexts and providers (Phase 4)
+- [ ] Update navigation (Phase 4)
+- [ ] Database schema changes (Phase 5)
+- [ ] Testing and QA (Phase 6)
+- [ ] Documentation updates (Phase 7)
+
+### Risk Mitigation
+✅ **Backup strategy in place**
+✅ **Phased approach planned**
+✅ **No breaking changes to kept features**
+✅ **All infrastructure decisions made**
+
+---
+
+**Last Updated:** 2025-01-05 (Decisions Finalized)
+**Status:** Ready for Implementation
+**Estimated Effort:** 10-15 hours
+**Risk Level:** Low-Medium (with proper backup)
