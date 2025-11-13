@@ -94,15 +94,46 @@ export function TursoAdapter(client: Client): Adapter {
     async updateUser(user) {
       const now = Math.floor(Date.now() / 1000);
 
+      console.log('[Turso Adapter] updateUser called:', {
+        id: user.id,
+        email: user.email || '(NULL)',
+        name: user.name || '(NULL)',
+        emailVerified: user.emailVerified,
+      });
+
+      // Fetch existing user to preserve fields not being updated
+      const existingResult = await client.execute({
+        sql: `SELECT * FROM users WHERE id = ?`,
+        args: [user.id],
+      });
+
+      if (!existingResult.rows[0]) {
+        throw new Error(`[Turso Adapter] Cannot update non-existent user: ${user.id}`);
+      }
+
+      const existing = existingResult.rows[0];
+
+      // Preserve existing values if new values are null/undefined
+      const email = user.email ?? existing.email;
+      const name = user.name ?? existing.name;
+      const image = user.image ?? existing.image;
+
+      console.log('[Turso Adapter] updateUser preserving values:', {
+        email: email || '(NULL)',
+        name: name || '(NULL)',
+        existingEmail: existing.email || '(NULL)',
+        existingName: existing.name || '(NULL)',
+      });
+
       await client.execute({
         sql: `UPDATE users
               SET name = ?, email = ?, email_verified = ?, image = ?, updated_at = ?
               WHERE id = ?`,
         args: [
-          user.name ?? null,
-          user.email ?? null,
+          name,
+          email,
           user.emailVerified ? Math.floor(user.emailVerified.getTime() / 1000) : null,
-          user.image ?? null,
+          image,
           now,
           user.id,
         ],
@@ -113,7 +144,15 @@ export function TursoAdapter(client: Client): Adapter {
         args: [user.id],
       });
 
-      return mapRowToUser(result.rows[0]);
+      const updated = mapRowToUser(result.rows[0]);
+
+      console.log('[Turso Adapter] updateUser result:', {
+        id: updated.id,
+        email: updated.email || '(NULL)',
+        name: updated.name || '(NULL)',
+      });
+
+      return updated;
     },
 
     /**
