@@ -1,15 +1,41 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Spotlight } from "@/components/ui/spotlight";
 import { IconAlertCircle } from "@tabler/icons-react";
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 function ErrorContent() {
   const searchParams = useSearchParams();
   const error = searchParams.get("error");
+  const router = useRouter();
+  const { data: session, status } = useSession();
+  const [isChecking, setIsChecking] = useState(true);
+
+  // If verification error but user is already authenticated, redirect to app
+  useEffect(() => {
+    if (status === "loading") return;
+
+    if (error === "Verification" && status === "authenticated") {
+      console.log('[Error Page] User already authenticated, redirecting to app');
+      router.push("/app/profile");
+      return;
+    }
+
+    setIsChecking(false);
+  }, [error, status, router]);
+
+  // Show loading while checking auth status for verification errors
+  if (isChecking && error === "Verification") {
+    return (
+      <main className="relative bg-black min-h-screen flex items-center justify-center">
+        <div className="text-gray-400">Checking authentication...</div>
+      </main>
+    );
+  }
 
   const errorMessages: Record<string, { title: string; description: string }> = {
     Configuration: {
@@ -21,8 +47,8 @@ function ErrorContent() {
       description: "You do not have permission to sign in. Please contact support if you believe this is an error.",
     },
     Verification: {
-      title: "Verification Link Expired",
-      description: "The verification link has expired. Please request a new one.",
+      title: "Verification Link Issue",
+      description: "This magic link has already been used or has expired. If you just signed in successfully, you can close this page and access your account. Otherwise, please request a new sign-in link.",
     },
     OAuthSignin: {
       title: "OAuth Sign-In Error",
