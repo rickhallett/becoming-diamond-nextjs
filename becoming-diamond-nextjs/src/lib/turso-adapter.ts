@@ -28,26 +28,83 @@ export function TursoAdapter(client: Client): Adapter {
       const id = crypto.randomUUID();
       const now = Math.floor(Date.now() / 1000);
 
-      await client.execute({
-        sql: `INSERT INTO users (id, name, email, email_verified, image, created_at, updated_at)
-              VALUES (?, ?, ?, ?, ?, ?, ?)`,
-        args: [
-          id,
-          user.name ?? null,
-          user.email,
-          user.emailVerified ? Math.floor(user.emailVerified.getTime() / 1000) : null,
-          user.image ?? null,
-          now,
-          now,
-        ],
+      // For magic link users without a name, derive from email
+      const name = user.name ?? (user.email ? user.email.split('@')[0] : null);
+
+      // Validate required fields
+      if (!user.email) {
+        throw new Error('[Turso Adapter] Cannot create user without email');
+      }
+
+      console.log('[Turso Adapter] createUser called:', { email: user.email, name });
+
+      const args = [
+        id,
+        name,
+        user.email,
+        user.emailVerified ? Math.floor(user.emailVerified.getTime() / 1000) : null,
+        user.image ?? null,
+        now,
+        now,
+      ];
+
+      console.log('[Turso Adapter] createUser args:', {
+        id,
+        name,
+        email: user.email,
+        args: args.map((arg, i) => `[${i}]: ${arg === null ? 'NULL' : typeof arg === 'object' ? JSON.stringify(arg) : arg}`),
       });
 
+      const insertResult = await client.execute({
+        sql: `INSERT INTO users (id, name, email, email_verified, image, created_at, updated_at)
+              VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        args,
+      });
+
+      console.log('[Turso Adapter] createUser INSERT result:', {
+        rowsAffected: insertResult.rowsAffected,
+        id,
+        email: user.email
+      });
+
+      // Verify the insert worked
       const result = await client.execute({
         sql: `SELECT * FROM users WHERE id = ?`,
         args: [id],
       });
 
-      return mapRowToUser(result.rows[0]);
+      if (!result.rows[0]) {
+        throw new Error(`[Turso Adapter] User not found after insert: ${id}`);
+      }
+
+      const createdUser = mapRowToUser(result.rows[0]);
+
+      // Validate created user data
+      if (!createdUser.email) {
+        console.error('[Turso Adapter] CRITICAL: Created user has NULL email!', {
+          userId: id,
+          insertedEmail: user.email,
+          insertedName: name,
+          retrievedUser: createdUser,
+          rowData: result.rows[0],
+        });
+
+        // Delete the corrupt user immediately
+        await client.execute({
+          sql: `DELETE FROM users WHERE id = ?`,
+          args: [id],
+        });
+
+        throw new Error(`[Turso Adapter] Created user validation failed: NULL email. User deleted. Original email: ${user.email}`);
+      }
+
+      console.log('[Turso Adapter] createUser success:', {
+        id: createdUser.id,
+        email: createdUser.email,
+        name: createdUser.name
+      });
+
+      return createdUser;
     },
 
     /**
@@ -66,12 +123,30 @@ export function TursoAdapter(client: Client): Adapter {
      * Retrieves a user by their email address
      */
     async getUserByEmail(email) {
+      console.log('[Turso Adapter] getUserByEmail called:', email);
       const result = await client.execute({
         sql: `SELECT * FROM users WHERE email = ?`,
         args: [email],
       });
 
-      return result.rows[0] ? mapRowToUser(result.rows[0]) : null;
+      const found = result.rows[0] ? mapRowToUser(result.rows[0]) : null;
+
+      if (found) {
+        console.log('[Turso Adapter] getUserByEmail result:', {
+          id: found.id,
+          email: found.email || '(NULL)',
+          name: found.name || '(NULL)',
+        });
+
+        // Validate data integrity
+        if (!found.email) {
+          console.error('[Turso Adapter] WARNING: Found user with NULL email!', found);
+        }
+      } else {
+        console.log('[Turso Adapter] getUserByEmail result: Not found');
+      }
+
+      return found;
     },
 
     /**
@@ -312,13 +387,31 @@ export function TursoAdapter(client: Client): Adapter {
      * Uses (and deletes) a verification token
      */
     async useVerificationToken({ identifier, token }) {
+      console.log('[Turso Adapter] useVerificationToken called:', { identifier, token: token.substring(0, 8) + '...' });
+
       const result = await client.execute({
         sql: `SELECT * FROM verification_tokens
               WHERE identifier = ? AND token = ?`,
         args: [identifier, token],
       });
 
-      if (!result.rows[0]) return null;
+      if (!result.rows[0]) {
+        console.log('[Turso Adapter] useVerificationToken: Token not found (already used or expired)');
+        return null;
+      }
+
+      const row = result.rows[0];
+      const expires = new Date((row.expires as number) * 1000);
+
+      // Check if token is expired
+      if (expires < new Date()) {
+        console.log('[Turso Adapter] useVerificationToken: Token expired');
+        await client.execute({
+          sql: `DELETE FROM verification_tokens WHERE identifier = ? AND token = ?`,
+          args: [identifier, token],
+        });
+        return null;
+      }
 
       // Delete the token (one-time use)
       await client.execute({
@@ -327,12 +420,12 @@ export function TursoAdapter(client: Client): Adapter {
         args: [identifier, token],
       });
 
-      const row = result.rows[0];
+      console.log('[Turso Adapter] useVerificationToken: Token consumed successfully');
 
       return {
         identifier: row.identifier as string,
         token: row.token as string,
-        expires: new Date((row.expires as number) * 1000),
+        expires,
       };
     },
   };
