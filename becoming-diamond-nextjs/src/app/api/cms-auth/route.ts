@@ -22,14 +22,25 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  // Add CORS headers for CMS to call this endpoint
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  };
+
   try {
+    console.log('POST /api/cms-auth - CMS is exchanging code for token');
     const body = await request.json();
     const { code, provider } = body;
 
+    console.log('Received from CMS:', { code: code ? 'present' : 'missing', provider });
+
     if (provider !== 'github' || !code) {
+      console.error('Invalid request:', { provider, code: !!code });
       return NextResponse.json(
         { error: 'Invalid request' },
-        { status: 400 }
+        { status: 400, headers }
       );
     }
 
@@ -52,7 +63,7 @@ export async function POST(request: NextRequest) {
     if (tokenData.error) {
       return NextResponse.json(
         { error: tokenData.error_description || 'Authentication failed' },
-        { status: 401 }
+        { status: 401, headers }
       );
     }
 
@@ -66,6 +77,8 @@ export async function POST(request: NextRequest) {
 
     const userData = await userResponse.json();
 
+    console.log('Returning token to CMS for user:', userData.login);
+
     return NextResponse.json({
       token: tokenData.access_token,
       provider: 'github',
@@ -75,12 +88,24 @@ export async function POST(request: NextRequest) {
         email: userData.email,
         avatar_url: userData.avatar_url,
       },
-    });
+    }, { headers });
   } catch (error) {
     await log.error('OAuth authentication failed', 'OAuth', error);
     return NextResponse.json(
       { error: 'Internal server error' },
-      { status: 500 }
+      { status: 500, headers }
     );
   }
+}
+
+// Handle CORS preflight
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+    },
+  });
 }

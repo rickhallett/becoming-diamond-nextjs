@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID || '';
+const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET || '';
+
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const code = searchParams.get('code');
@@ -7,6 +10,37 @@ export async function GET(request: NextRequest) {
 
   if (!code) {
     return new NextResponse('Missing authorization code', { status: 400 });
+  }
+
+  console.log('Callback received code, exchanging for token...');
+
+  // Exchange code for token immediately in callback
+  let token = '';
+  try {
+    const tokenResponse = await fetch('https://github.com/login/oauth/access_token', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        client_id: GITHUB_CLIENT_ID,
+        client_secret: GITHUB_CLIENT_SECRET,
+        code,
+      }),
+    });
+
+    const tokenData = await tokenResponse.json();
+
+    if (tokenData.error || !tokenData.access_token) {
+      throw new Error(tokenData.error_description || 'Failed to get access token');
+    }
+
+    token = tokenData.access_token;
+    console.log('Token obtained successfully in callback');
+  } catch (error) {
+    console.error('Token exchange failed in callback:', error);
+    return new NextResponse('Authentication failed', { status: 500 });
   }
 
   // Return HTML that sends the code back to the CMS opener window via postMessage
@@ -38,28 +72,48 @@ export async function GET(request: NextRequest) {
         </div>
         <script>
           (function() {
-            function sendMessage() {
+            const token = "${token}";
+            const provider = "github";
+
+            if (!window.opener) {
+              console.error('No window.opener found!');
+              return;
+            }
+
+            console.log('Step 1: Notifying parent we are authorizing...');
+
+            // Step 1: Send authorizing message to parent
+            window.opener.postMessage("authorizing:" + provider, "*");
+
+            // Step 2: Wait for acknowledgment from parent
+            function receiveMessage(event) {
+              console.log('Step 2: Received acknowledgment from parent:', event.data);
+
+              // Step 3: Send token back to the acknowledged origin
               const data = {
-                code: "${code}",
-                state: "${state || ''}",
-                provider: "github"
+                token: token,
+                provider: provider
               };
 
-              // Send to opener window
-              if (window.opener) {
-                window.opener.postMessage(
-                  'authorization:github:success:' + JSON.stringify(data),
-                  window.location.origin
-                );
-              }
+              const message = 'authorization:' + provider + ':success:' + JSON.stringify(data);
 
-              // Auto-close after sending
+              console.log('Step 3: Sending token to origin:', event.origin);
+              window.opener.postMessage(message, event.origin);
+
+              // Clean up listener
+              window.removeEventListener("message", receiveMessage, false);
+
+              // Close popup after successful auth
               setTimeout(function() {
+                console.log('Authentication complete, closing popup...');
                 window.close();
               }, 1000);
             }
 
-            sendMessage();
+            // Listen for acknowledgment
+            window.addEventListener("message", receiveMessage, false);
+
+            console.log('Waiting for parent acknowledgment...');
           })();
         </script>
       </body>
