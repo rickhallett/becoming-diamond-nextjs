@@ -35,6 +35,9 @@ export interface FeatureFlags {
   // Sprint Features
   sprintWatchPlaylist: boolean;
 
+  // Authentication Features
+  githubAuth: boolean;
+
   // Future Features
   communityForum: boolean;
   liveEvents: boolean;
@@ -82,6 +85,9 @@ export const FEATURES: FeatureFlags = {
   // Sprint Features
   sprintWatchPlaylist: false,
 
+  // Authentication Features
+  githubAuth: false,
+
   // Future Features - Disabled
   communityForum: false,
   liveEvents: false,
@@ -125,4 +131,9 @@ export const AUTH_CONFIG = {
    * Users will be directed here after completing authentication flow
    */
   successRedirectUri: '/app/profile',
+
+  /**
+   * GitHub OAuth feature flag
+   */
+  githubAuth: FEATURES.githubAuth,
 } as const;
