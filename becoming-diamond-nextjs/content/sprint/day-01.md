@@ -1,11 +1,11 @@
 ---
 day: 1
-title: "Set Your Baseline"
-subtitle: "If your baseline doesn't change… nothing does."
+title: Set Your Baseline Tiger
+subtitle: If your baseline doesn't change… nothing does.
 published: true
-duration: "15 minutes"
-difficulty: "Beginner"
-video: "4a151e6b-7911-41b9-b1ef-c6fa00bafaa5"
+duration: 15 minutes
+difficulty: Beginner
+video: 4a151e6b-7911-41b9-b1ef-c6fa00bafaa5
 ---
 
 # Set Your Baseline
