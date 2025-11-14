@@ -4,7 +4,7 @@
       "id": "test-user-001",
       "name": "Test User",
       "email": "test@example.com",
-      "avatar": "/profile-placeholder.webp",
+      "avatar": "/profile-placeholder-2.webp",
       "bio": "",
       "location": "",
       "website": "",
@@ -19,7 +19,7 @@
       "id": "test-user-002",
       "name": "John Diamond",
       "email": "john@example.com",
-      "avatar": "/profile-placeholder.webp",
+      "avatar": "/profile-placeholder-2.webp",
       "bio": "On a journey to becoming diamond. Committed to daily growth and transformation.",
       "location": "San Francisco, CA",
       "website": "https://johndiamond.com",
@@ -34,7 +34,7 @@
       "id": "test-user-003",
       "name": "Sarah Masters",
       "email": "sarah@example.com",
-      "avatar": "/profile-placeholder.webp",
+      "avatar": "/profile-placeholder-2.webp",
       "bio": "Diamond mindset achieved. Helping others on their journey.",
       "location": "New York, NY",
       "website": "https://sarahmasters.com",
@@ -122,8 +122,8 @@
     "userAuthKey": "user_auth_v1",
     "userProfileKey": "user_profile_v1",
     "testAuth": "{\"isAuthenticated\":true,\"userId\":\"test-user-001\",\"loginMethod\":\"test\",\"loginTimestamp\":1704067200000}",
-    "testProfile": "{\"id\":\"test-user-001\",\"name\":\"Test User\",\"email\":\"test@example.com\",\"avatar\":\"/profile-placeholder.webp\",\"bio\":\"\",\"location\":\"\",\"website\":\"\",\"joinedDate\":\"2025-01-01T00:00:00.000Z\",\"currentPR\":1,\"completedPRs\":[],\"level\":\"Initiate\",\"xp\":0,\"streak\":0}",
+    "testProfile": "{\"id\":\"test-user-001\",\"name\":\"Test User\",\"email\":\"test@example.com\",\"avatar\":\"/profile-placeholder-2.webp\",\"bio\":\"\",\"location\":\"\",\"website\":\"\",\"joinedDate\":\"2025-01-01T00:00:00.000Z\",\"currentPR\":1,\"completedPRs\":[],\"level\":\"Initiate\",\"xp\":0,\"streak\":0}",
     "activeUserAuth": "{\"isAuthenticated\":true,\"userId\":\"test-user-002\",\"loginMethod\":\"test\",\"loginTimestamp\":1704067200000}",
-    "activeUserProfile": "{\"id\":\"test-user-002\",\"name\":\"John Diamond\",\"email\":\"john@example.com\",\"avatar\":\"/profile-placeholder.webp\",\"bio\":\"On a journey to becoming diamond. Committed to daily growth and transformation.\",\"location\":\"San Francisco, CA\",\"website\":\"https://johndiamond.com\",\"joinedDate\":\"2024-10-01T00:00:00.000Z\",\"currentPR\":3,\"completedPRs\":[1,2],\"level\":\"Practitioner\",\"xp\":350,\"streak\":15}"
+    "activeUserProfile": "{\"id\":\"test-user-002\",\"name\":\"John Diamond\",\"email\":\"john@example.com\",\"avatar\":\"/profile-placeholder-2.webp\",\"bio\":\"On a journey to becoming diamond. Committed to daily growth and transformation.\",\"location\":\"San Francisco, CA\",\"website\":\"https://johndiamond.com\",\"joinedDate\":\"2024-10-01T00:00:00.000Z\",\"currentPR\":3,\"completedPRs\":[1,2],\"level\":\"Practitioner\",\"xp\":350,\"streak\":15}"
   }
 }
