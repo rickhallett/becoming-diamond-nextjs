@@ -6,7 +6,7 @@ const config = {
   backend: {
     name: 'github',
     repo: 'rickhallett/becoming-diamond-nextjs',
-    branch: 'main',
+    branch: 'cms-staging',
     base_url: window.location.origin,
     auth_endpoint: 'api/cms-auth'
   },
