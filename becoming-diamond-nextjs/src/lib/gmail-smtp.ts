@@ -86,7 +86,8 @@ function getManifestoAttachment(): {
     );
 
     if (!fs.existsSync(manifestoPath)) {
-      await log.error("Diamond Manifesto PDF not found", {
+      // Fire and forget - don't block on logging
+      log.error("Diamond Manifesto PDF not found", {
         context: "EMAIL",
         path: manifestoPath,
         timestamp: new Date().toISOString(),
@@ -99,7 +100,8 @@ function getManifestoAttachment(): {
       path: manifestoPath,
     };
   } catch (error) {
-    await log.error("Failed to load Diamond Manifesto for attachment", {
+    // Fire and forget - don't block on logging
+    log.error("Failed to load Diamond Manifesto for attachment", {
       context: "EMAIL",
       error: error instanceof Error ? error.message : String(error),
       timestamp: new Date().toISOString(),
@@ -293,8 +295,9 @@ export async function sendAdminNotification(params: {
     return;
   }
 
+  const { email, referrer, landingPage } = params;
+
   try {
-    const { email, referrer, landingPage } = params;
 
     const subject = `New Lead: ${email}`;
     const html = `

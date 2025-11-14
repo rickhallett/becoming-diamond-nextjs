@@ -40,7 +40,7 @@ export class ErrorBoundary extends Component<Props, State> {
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <h2 className="text-xl text-white mb-2">Something went wrong</h2>
-            <p className="text-gray-400 mb-4">We've been notified and will fix it soon.</p>
+            <p className="text-gray-400 mb-4">We&rsquo;ve been notified and will fix it soon.</p>
             <button
               onClick={() => this.setState({ hasError: false })}
               className="px-4 py-2 bg-primary rounded-lg hover:bg-primary/80 transition"

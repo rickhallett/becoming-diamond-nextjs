@@ -13,8 +13,8 @@
  * await log.error('Error occurred', { error: err.message, timestamp: new Date().toISOString() });
  */
 
-import { Logger } from '@axiomhq/logging';
-import { AxiomJSTransport, ConsoleTransport } from '@axiomhq/logging/transports';
+import { Logger, AxiomJSTransport, ConsoleTransport } from '@axiomhq/logging';
+import { Axiom } from '@axiomhq/js';
 import { nextJsFormatters } from '@axiomhq/nextjs';
 
 // Configuration from environment variables
@@ -24,26 +24,28 @@ const axiomConfig = {
   orgId: process.env.AXIOM_ORG_ID,
 };
 
-// Create transports array
-const transports = [];
+// Create transports - always start with console transport (required minimum)
+const consoleTransport = new ConsoleTransport();
 
 // Add Axiom transport if token is configured
-if (axiomConfig.token) {
-  transports.push(
-    new AxiomJSTransport({
-      token: axiomConfig.token,
+const axiomTransport = axiomConfig.token
+  ? new AxiomJSTransport({
+      axiom: new Axiom({
+        token: axiomConfig.token,
+        orgId: axiomConfig.orgId,
+      }),
       dataset: axiomConfig.dataset,
-      orgId: axiomConfig.orgId,
     })
-  );
-}
+  : null;
 
-// Always add console transport for local development and debugging
-transports.push(new ConsoleTransport());
+// Build transports array with at least one transport (console)
+const transports = axiomTransport
+  ? [axiomTransport, consoleTransport]
+  : [consoleTransport];
 
 // Create singleton logger instance
 export const log = new Logger({
-  transports,
+  transports: transports as [ConsoleTransport, ...typeof transports],
   formatters: nextJsFormatters,
 });
 
