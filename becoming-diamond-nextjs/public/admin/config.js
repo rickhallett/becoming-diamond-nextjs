@@ -12,7 +12,7 @@ const config = {
   },
 
   // Media files will be stored in the repo under public/uploads
-  media_folder: 'public/uploads',
+  media_folder: 'becoming-diamond-nextjs/public/uploads',
   public_folder: '/uploads',
 
   collections: [
@@ -20,7 +20,7 @@ const config = {
     {
       name: 'news',
       label: 'News Updates',
-      folder: 'content/news',
+      folder: 'becoming-diamond-nextjs/content/news',
       create: true,
       slug: '{{year}}-{{month}}-{{day}}-{{slug}}',
       fields: [
@@ -38,7 +38,7 @@ const config = {
     {
       name: 'blog',
       label: 'Blog Posts',
-      folder: 'content/blog',
+      folder: 'becoming-diamond-nextjs/content/blog',
       create: true,
       slug: '{{year}}-{{month}}-{{day}}-{{slug}}',
       fields: [
@@ -62,7 +62,7 @@ const config = {
         {
           label: 'About Page',
           name: 'about',
-          file: 'content/pages/about.md',
+          file: 'becoming-diamond-nextjs/content/pages/about.md',
           fields: [
             { label: 'Title', name: 'title', widget: 'string' },
             { label: 'Body', name: 'body', widget: 'markdown' }
@@ -71,7 +71,7 @@ const config = {
         {
           label: 'Contact Page',
           name: 'contact',
-          file: 'content/pages/contact.md',
+          file: 'becoming-diamond-nextjs/content/pages/contact.md',
           fields: [
             { label: 'Title', name: 'title', widget: 'string' },
             { label: 'Email', name: 'email', widget: 'string' },
@@ -87,12 +87,21 @@ const config = {
     {
       name: 'sprint',
       label: '30 Day Sprint',
-      folder: 'content/sprint',
+      folder: 'becoming-diamond-nextjs/content/sprint',
       create: true,
       slug: 'day-{{day}}',
       identifier_field: 'day',
       fields: [
-        { label: 'Day Number', name: 'day', widget: 'number', min: 1, max: 30 },
+        {
+          label: 'Day Number',
+          name: 'day',
+          widget: 'select',
+          options: [
+            '01', '02', '03', '04', '05', '06', '07', '08', '09', '10',
+            '11', '12', '13', '14', '15', '16', '17', '18', '19', '20',
+            '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'
+          ]
+        },
         { label: 'Title', name: 'title', widget: 'string' },
         { label: 'Subtitle', name: 'subtitle', widget: 'string' },
         { label: 'Published', name: 'published', widget: 'boolean', default: true },
@@ -111,7 +120,7 @@ const config = {
         {
           label: 'General Settings',
           name: 'general',
-          file: 'content/settings/general.yml',
+          file: 'becoming-diamond-nextjs/content/settings/general.yml',
           fields: [
             { label: 'Site Title', name: 'title', widget: 'string' },
             { label: 'Site Description', name: 'description', widget: 'text' },
