@@ -43,7 +43,7 @@ export function TursoAdapter(client: Client): Adapter {
         name,
         user.email,
         user.emailVerified ? Math.floor(user.emailVerified.getTime() / 1000) : null,
-        user.image ?? null,
+        user.image ?? '/profile-placeholder-2.webp',
         now,
         now,
       ];
@@ -191,7 +191,7 @@ export function TursoAdapter(client: Client): Adapter {
       // Preserve existing values if new values are null/undefined
       const email = user.email ?? existing.email;
       const name = user.name ?? existing.name;
-      const image = user.image ?? existing.image;
+      const image = user.image ?? existing.image ?? '/profile-placeholder-2.webp';
 
       console.log('[Turso Adapter] updateUser preserving values:', {
         email: email || '(NULL)',

@@ -111,18 +111,17 @@ export default function ProfilePage() {
                     <div className="bg-secondary/30 border border-white/10 rounded-xl p-6 h-full flex flex-col">
                         {/* Avatar */}
                         <div className="relative w-32 h-32 mx-auto mb-4 group cursor-pointer">
-                            {user.avatar && !imageError ? (
-                                <img
-                                    src={user.avatar}
-                                    alt={user.name}
-                                    className="w-full h-full rounded-full object-cover"
-                                    onError={() => setImageError(true)}
-                                />
-                            ) : (
-                                <div className="w-full h-full rounded-full bg-gradient-to-br from-primary/40 to-primary/10 flex items-center justify-center text-4xl font-light">
-                                    {user.name.split(' ').map(n => n[0]).join('').toUpperCase()}
-                                </div>
-                            )}
+                            <img
+                                src={user.avatar && !imageError ? user.avatar : '/profile-placeholder-2.webp'}
+                                alt={user.name}
+                                className="w-full h-full rounded-full object-cover"
+                                onError={(e) => {
+                                    // Prevent infinite loop if placeholder also fails
+                                    const target = e.target as HTMLImageElement;
+                                    if (target.src.includes('profile-placeholder-2.webp')) return;
+                                    setImageError(true);
+                                }}
+                            />
                             <div className="absolute inset-0 rounded-full bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                 <IconCamera className="w-8 h-8 text-white" />
                             </div>

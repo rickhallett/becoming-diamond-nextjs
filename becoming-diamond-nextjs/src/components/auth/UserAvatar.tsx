@@ -23,33 +23,17 @@ export function UserAvatar({ className = "", size = 40 }: UserAvatarProps) {
     );
   }
 
-  if (session.user.image) {
-    return (
-      <div className={`relative rounded-full overflow-hidden ${className}`} style={{ width: size, height: size }}>
-        <Image
-          src={session.user.image}
-          alt={session.user.name || "User"}
-          fill
-          className="object-cover"
-        />
-      </div>
-    );
-  }
-
-  // Fallback to initials
-  const initials = session.user.name
-    ?.split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2) || session.user.email?.[0]?.toUpperCase() || "U";
+  // Use user image or fallback to placeholder avatar
+  const imageSrc = session.user.image || '/profile-placeholder-2.webp';
 
   return (
-    <div
-      className={`rounded-full bg-primary/20 flex items-center justify-center text-primary font-medium ${className}`}
-      style={{ width: size, height: size, fontSize: size * 0.4 }}
-    >
-      {initials}
+    <div className={`relative rounded-full overflow-hidden ${className}`} style={{ width: size, height: size }}>
+      <Image
+        src={imageSrc}
+        alt={session.user.name || "User"}
+        fill
+        className="object-cover"
+      />
     </div>
   );
 }
