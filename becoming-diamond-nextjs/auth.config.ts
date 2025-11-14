@@ -20,6 +20,15 @@ export const authConfig = {
       const isLoggedIn = !!auth?.user;
       const isOnMemberPortal = nextUrl.pathname.startsWith("/app");
       const isOnAuthPage = nextUrl.pathname.startsWith("/auth");
+      const isOnDocs = nextUrl.pathname.startsWith("/docs-site");
+      const userEmail = auth?.user?.email;
+
+      // Protect /docs-site/* routes (only support@becomingdiamond.com)
+      if (isOnDocs) {
+        if (userEmail === "support@becomingdiamond.com") return true;
+        // Redirect unauthorized users (including other logged-in users)
+        return Response.redirect(new URL("/", nextUrl));
+      }
 
       // Protect /app/* routes
       if (isOnMemberPortal) {
