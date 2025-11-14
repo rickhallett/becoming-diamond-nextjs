@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/auth';
 import crypto from 'crypto';
-import { log } from '@axiomhq/nextjs';
+import { log } from '@/lib/axiom-logger';
 
 const BUNNY_LIBRARY_ID = process.env.BUNNY_STREAM_LIBRARY_ID!;
 const BUNNY_API_KEY = process.env.BUNNY_STREAM_API_KEY!;

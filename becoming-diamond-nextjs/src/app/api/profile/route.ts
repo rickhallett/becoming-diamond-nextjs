@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/auth';
 import { getTursoClient } from '@/lib/turso-adapter';
-import { log } from '@axiomhq/nextjs';
+import { log } from '@/lib/axiom-logger';
 
 const turso = getTursoClient();
 

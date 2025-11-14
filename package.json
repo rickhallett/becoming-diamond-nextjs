@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@axiomhq/logging": "^0.2.2",
     "@axiomhq/nextjs": "^0.1.6"
   }
 }

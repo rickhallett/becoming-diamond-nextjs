@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useSession } from 'next-auth/react';
 import { storage, STORAGE_KEYS } from '@/lib/storage';
-import { log } from '@axiomhq/nextjs';
+import { log } from '@/lib/axiom-logger';
 
 // User profile interface
 export interface UserProfile {

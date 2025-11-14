@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 import { render } from "@react-email/render";
 import { WelcomeEmail } from "@/emails/welcome-email";
-import { log } from '@axiomhq/nextjs';
+import { log } from '@/lib/axiom-logger';
 import fs from "fs";
 import path from "path";
 

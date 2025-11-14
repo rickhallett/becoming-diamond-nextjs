@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { nanoid } from "nanoid";
-import { log } from '@axiomhq/nextjs';
+import { log } from '@/lib/axiom-logger';
 import { sendWelcomeEmail } from "@/lib/gmail-smtp";
 
 // Dynamic route config for Next.js 15

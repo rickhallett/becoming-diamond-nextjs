@@ -13,7 +13,7 @@ import { TursoAdapter, getTursoClient } from "@/lib/turso-adapter";
 import { FEATURES } from "@/config/features";
 import { GMAIL_SMTP_CONFIG } from "@/lib/gmail-smtp";
 import type { Provider } from "next-auth/providers";
-import { log } from '@axiomhq/nextjs';
+import { log } from '@/lib/axiom-logger';
 
 const turso = getTursoClient();
 

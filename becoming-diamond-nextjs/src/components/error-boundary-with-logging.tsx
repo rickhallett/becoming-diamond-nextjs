@@ -2,7 +2,7 @@
 
 import { ReactNode } from 'react';
 import { ErrorBoundary } from './error-boundary';
-import { log } from '@axiomhq/nextjs';
+import { log } from '@/lib/axiom-logger';
 
 interface Props {
   children: ReactNode;
