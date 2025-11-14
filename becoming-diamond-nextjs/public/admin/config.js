@@ -2,11 +2,23 @@
 // Automatically detects environment and sets correct base_url
 // Note: CMS_MANUAL_INIT is set in index.html before this script loads
 
+// Environment detection
+const isProduction = window.location.hostname !== 'localhost' &&
+                     window.location.hostname !== '127.0.0.1';
+
+// Branch strategy:
+// - Development (localhost): cms-staging (allows safe testing before merge)
+// - Production (live domain): main (immediate publishing for content editors)
+const targetBranch = isProduction ? 'main' : 'cms-staging';
+
+console.log(`Decap CMS Environment: ${isProduction ? 'PRODUCTION' : 'DEVELOPMENT'}`);
+console.log(`Target branch: ${targetBranch}`);
+
 const config = {
   backend: {
     name: 'github',
     repo: 'rickhallett/becoming-diamond-nextjs',
-    branch: 'cms-staging',
+    branch: targetBranch,
     base_url: window.location.origin,
     auth_endpoint: 'api/cms-auth'
   },

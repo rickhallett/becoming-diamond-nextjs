@@ -1,32 +1,71 @@
-# Decap CMS Development Workflow
+# Decap CMS Workflow Guide
 
 **Date**: 2025-11-14
 **Status**: Active
 
 ## Overview
 
-This document describes the workflow for testing Decap CMS changes in a local development environment. Since Decap CMS commits directly to GitHub (bypassing local git), we use a staging branch strategy to safely test content changes before they reach production.
+This document describes how the Decap CMS works in both development and production environments. The CMS automatically detects which environment it's running in and adjusts its behavior accordingly.
 
-## Branch Strategy
+## Environment-Based Workflow
 
-- **`cms-staging`** - CMS writes all content changes here
-- **`main`** - Production branch (deploys to live site)
+### Automatic Environment Detection
 
-The CMS is configured to commit to `cms-staging` branch instead of `main`, allowing you to test changes locally before merging to production.
+The CMS detects the environment based on hostname:
 
-## Configuration
+- **Development** (`localhost` / `127.0.0.1`): Commits to `cms-staging` branch
+- **Production** (your live domain): Commits to `main` branch
 
-The CMS backend is configured in `public/admin/config.js`:
+This is configured in `public/admin/config.js`:
 
 ```javascript
+// Environment detection
+const isProduction = window.location.hostname !== 'localhost' &&
+                     window.location.hostname !== '127.0.0.1';
+
+// Branch strategy:
+// - Development (localhost): cms-staging (allows safe testing before merge)
+// - Production (live domain): main (immediate publishing for content editors)
+const targetBranch = isProduction ? 'main' : 'cms-staging';
+
 backend: {
   name: 'github',
   repo: 'rickhallett/becoming-diamond-nextjs',
-  branch: 'cms-staging',  // CMS commits go here
+  branch: targetBranch,  // Automatically switches based on environment
   base_url: window.location.origin,
   auth_endpoint: 'api/cms-auth'
 }
 ```
+
+### Branch Strategy
+
+- **`cms-staging`** - Development testing (local changes only)
+- **`main`** - Production content (goes live immediately)
+
+## Production Workflow (Content Editors)
+
+When content editors publish changes on the **live site**:
+
+1. Navigate to `https://your-domain.com/admin`
+2. Authenticate with GitHub
+3. Create/edit content
+4. Click **"Publish"**
+5. ✅ Changes commit directly to `main` branch
+6. ✅ Site automatically redeploys (Vercel/Netlify)
+7. ✅ Changes live in ~2 minutes
+
+**No developer intervention required** - editors can publish immediately.
+
+### Rollback Protection
+
+Even though production publishes immediately, you can rollback any change:
+
+- All changes are tracked in git history
+- Quick revert: 30 seconds (see [Rollback Guide](./cms-rollback-guide.md))
+- Restore old versions: Any content can be recovered
+- Full audit trail: Know who changed what and when
+
+**See**: [`docs/cms-rollback-guide.md`](./cms-rollback-guide.md) for complete rollback procedures
 
 ## Development Workflow
 
@@ -212,8 +251,64 @@ See Decap CMS documentation for local backend setup details.
 4. **Use descriptive CMS commit messages**: They show up in git history
 5. **Clean up test content**: Delete test entries before merging to main
 
+## Workflow Comparison
+
+| Aspect | Development (localhost) | Production (live site) |
+|--------|------------------------|----------------------|
+| **Target Branch** | `cms-staging` | `main` |
+| **Publish Speed** | Manual merge required | Immediate (2 min deploy) |
+| **Testing** | Pull and test locally | Live immediately |
+| **Risk** | Zero (isolated testing) | Low (rollback available) |
+| **Best For** | New features, bulk changes, testing | Day-to-day content updates |
+
+## Key Benefits
+
+✅ **Development Safety**: Test CMS changes locally without affecting production
+✅ **Production Speed**: Content editors can publish immediately
+✅ **Rollback Ready**: All changes tracked in git, easy to revert
+✅ **No Configuration**: Environment detection is automatic
+✅ **Clear Separation**: Development testing vs. production publishing
+
+## Support Scenarios
+
+### Scenario 1: Content Editor Makes a Mistake
+
+**Problem**: Editor accidentally publishes wrong content to production
+
+**Solution**: Use git revert (30 seconds)
+
+```bash
+git revert HEAD --no-edit
+git push origin main
+```
+
+**See**: [Rollback Guide - Quick Revert](./cms-rollback-guide.md#quick-revert-last-commit)
+
+### Scenario 2: Need to Test Major Content Restructure
+
+**Problem**: Planning to restructure sprint content, want to test first
+
+**Solution**: Use development workflow
+
+1. Test on `localhost:3003/admin` (writes to `cms-staging`)
+2. Pull and verify: `git pull origin cms-staging`
+3. Test thoroughly on local dev server
+4. Merge when ready: `git merge cms-staging`
+
+### Scenario 3: Urgent Content Fix Needed
+
+**Problem**: Production has error, need immediate fix
+
+**Solution**: Use production CMS for speed
+
+1. Editor logs into `your-domain.com/admin`
+2. Makes fix and publishes
+3. Live in ~2 minutes
+4. If fix causes issues, revert immediately
+
 ## Related Documentation
 
+- **[CMS Rollback Guide](./cms-rollback-guide.md)** - Complete rollback procedures and recovery strategies
 - `/docs/cms-config-sprint-slug-fix.md` - CMS path configuration details
 - `/docs/specs/sprint-cms-migration.md` - Sprint CMS migration plan
 - `public/admin/config.js` - CMS configuration file
