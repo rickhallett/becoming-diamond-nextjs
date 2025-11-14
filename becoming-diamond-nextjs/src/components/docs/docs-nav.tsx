@@ -84,17 +84,19 @@ function NavItemComponent({ item, level = 0 }: { item: NavItem; level?: number }
       <div className="mb-2">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="flex w-full items-center gap-2 px-3 py-2 text-sm font-medium text-neutral-300 hover:text-white transition-colors"
+          className="flex w-full items-center gap-2 px-3 py-2 text-sm font-semibold text-neutral-300 hover:text-white transition-all duration-200 rounded-lg hover:bg-neutral-900/30 group"
         >
-          {isOpen ? (
-            <IconChevronDown className="h-4 w-4" />
-          ) : (
-            <IconChevronRight className="h-4 w-4" />
-          )}
+          <div className="text-primary transition-transform group-hover:scale-110">
+            {isOpen ? (
+              <IconChevronDown className="h-4 w-4" />
+            ) : (
+              <IconChevronRight className="h-4 w-4" />
+            )}
+          </div>
           {item.title}
         </button>
-        {isOpen && (
-          <div className="ml-4 space-y-1 mt-1">
+        {isOpen && item.items && (
+          <div className="ml-4 space-y-1 mt-1 border-l-2 border-neutral-800/50 pl-2">
             {item.items.map((child, index) => (
               <NavItemComponent key={index} item={child} level={level + 1} />
             ))}
@@ -107,13 +109,16 @@ function NavItemComponent({ item, level = 0 }: { item: NavItem; level?: number }
   return (
     <Link
       href={item.href || "#"}
-      className={`block px-3 py-2 text-sm rounded-lg transition-colors ${
+      className={`block px-3 py-2 text-sm rounded-lg transition-all duration-200 group relative ${
         isActive
-          ? "bg-primary/10 text-primary font-medium"
-          : "text-neutral-400 hover:text-white hover:bg-neutral-900"
+          ? "bg-gradient-to-r from-primary/20 to-cyan-500/10 text-primary font-medium border-l-2 border-primary"
+          : "text-neutral-400 hover:text-white hover:bg-neutral-900/50 hover:translate-x-1"
       }`}
     >
-      {item.title}
+      <span className="relative z-10">{item.title}</span>
+      {!isActive && (
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 rounded-lg transition-opacity" />
+      )}
     </Link>
   );
 }

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import { DocsPage } from "@/components/docs/docs-page";
 import { FutureEnhancement } from "@/components/docs/future-enhancement";
 import Link from "next/link";
