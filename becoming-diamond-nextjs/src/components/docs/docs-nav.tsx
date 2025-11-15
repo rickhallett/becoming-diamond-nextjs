@@ -17,6 +17,10 @@ const navigation: NavItem[] = [
     href: "/docs-site",
   },
   {
+    title: "Platform Overview",
+    href: "/docs-site/overview",
+  },
+  {
     title: "User Guide",
     items: [
       {
@@ -49,6 +53,14 @@ const navigation: NavItem[] = [
         href: "/docs-site/admin/blog-management",
       },
       {
+        title: "Book Sales",
+        href: "/docs-site/admin/book-sales",
+      },
+      {
+        title: "Lead Management",
+        href: "/docs-site/admin/lead-management",
+      },
+      {
         title: "Rollback Procedures",
         href: "/docs-site/admin/rollback",
       },
@@ -70,6 +82,10 @@ const navigation: NavItem[] = [
         href: "/docs-site/technical/specs",
       },
     ],
+  },
+  {
+    title: "Support",
+    href: "/docs-site/support",
   },
 ];
 
