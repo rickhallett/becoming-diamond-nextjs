@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { isDayAccessible, isDayCompleted, getProgressStats, resetProgress } from '@/lib/sprint-progress';
+import { getProgress, resetProgress } from '@/lib/sprint-progress';
 import ProgressBar from '@/components/sprint/ProgressBar';
 import DayCard from '@/components/sprint/DayCard';
 import { motion } from 'framer-motion';
@@ -22,38 +22,32 @@ interface DayData {
 
 export default function SprintDashboardPage() {
   const [days, setDays] = useState<DayData[]>([]);
-  const [stats, setStats] = useState<Awaited<ReturnType<typeof getProgressStats>> | null>(null);
+  const [stats, setStats] = useState<{ completedDays: number; totalDays: number } | null>(null);
   const [loading, setLoading] = useState(true);
   const [completedDays, setCompletedDays] = useState<Set<number>>(new Set());
-  const [accessibleDays, setAccessibleDays] = useState<Set<number>>(new Set());
+  const [currentDay, setCurrentDay] = useState<number>(1);
 
   useEffect(() => {
     async function loadData() {
       try {
-        const response = await fetch('/api/sprint/days');
-        const data = await response.json();
-        const daysData = data.days || [];
+        // Fetch days and progress in parallel
+        const [daysResponse, progress] = await Promise.all([
+          fetch('/api/sprint/days'),
+          getProgress()
+        ]);
+
+        const daysData = (await daysResponse.json()).days || [];
         setDays(daysData);
 
-        const progressStats = await getProgressStats();
-        setStats(progressStats);
-
-        // Pre-calculate which days are completed and accessible
-        const completed = new Set<number>();
-        const accessible = new Set<number>();
-
-        for (const day of daysData) {
-          const dayNumber = day.frontmatter.day as number;
-          if (await isDayCompleted(dayNumber)) {
-            completed.add(dayNumber);
-          }
-          if (await isDayAccessible(dayNumber)) {
-            accessible.add(dayNumber);
-          }
-        }
-
+        // Calculate stats and sets directly from progress object (no additional API calls)
+        const completed = new Set(progress.completedDays);
         setCompletedDays(completed);
-        setAccessibleDays(accessible);
+        setCurrentDay(progress.currentDay);
+
+        setStats({
+          completedDays: progress.totalDaysCompleted,
+          totalDays: 30
+        });
       } catch (error) {
         log.error('Error loading sprint days:', 'App', error);
       } finally {
@@ -162,7 +156,7 @@ export default function SprintDashboardPage() {
                   subtitle={day.frontmatter.subtitle as string}
                   duration={(day.frontmatter.duration as string) || '15 minutes'}
                   isCompleted={completedDays.has(dayNumber)}
-                  isAccessible={accessibleDays.has(dayNumber)}
+                  isAccessible={dayNumber === 1 || dayNumber <= currentDay}
                   index={dayIndex}
                 />
               );
