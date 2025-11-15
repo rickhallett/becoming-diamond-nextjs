@@ -16,11 +16,45 @@ npm run build
 ```
 Creates production build with Turbopack. Note: `prebuild` script automatically copies Decap CMS assets to `public/admin/`
 
-### Linting
+### Testing
+```bash
+npm test              # Run all tests with Vitest
+npm run test:unit     # Run unit tests only
+npm run test:integration  # Run integration tests
+npm run test:ui       # Open Vitest UI
+npm run test:coverage # Run tests with coverage report
+npm run test:watch    # Run tests in watch mode
+
+npm run test:e2e       # Run Playwright E2E tests
+npm run test:e2e:ui    # Open Playwright UI mode
+npm run test:e2e:debug # Debug E2E tests
+npm run test:e2e:headed  # Run E2E with browser visible
+npm run test:e2e:report  # Show E2E test report
+```
+
+### Linting & Code Quality
 ```bash
 npm run lint        # Run ESLint
 npm run lint:fix    # Auto-fix linting issues
 npm run lint:next   # Run Next.js linter
+npm run knip        # Detect unused files/dependencies
+```
+
+### Database
+```bash
+npm run db:migrate  # Run database migrations
+```
+
+### Cleanup
+```bash
+npm run cleanup:knip          # Preview cleanup (dry run)
+npm run cleanup:knip:execute  # Execute cleanup of unused code
+```
+See `docs/knip-cleanup-checklist.md` for interactive cleanup management.
+
+### Utility Scripts
+```bash
+npm run test:auth   # Test authentication setup
 ```
 
 ## Architecture Overview
@@ -30,6 +64,7 @@ npm run lint:next   # Run Next.js linter
 This is a **Next.js 15 MVP application** focused on core features with a **simplified hybrid rendering strategy**:
 - **Public pages** (landing, blog, book): Server-side rendered (SSR) and statically generated (SSG)
 - **Member portal** (`/app/*`): Client-side rendered (CSR) with NextAuth protected routes
+- **Admin portal** (`/app/admin/*`): Admin-only pages for lead management (email-based access control)
 - **CMS integration**: Decap CMS with GitHub backend for blog content management
 
 **MVP Scope** (Simplified January 2025):
@@ -37,6 +72,7 @@ This is a **Next.js 15 MVP application** focused on core features with a **simpl
 - ✅ **Blog (Insights)**: Content management via Decap CMS
 - ✅ **Book Sales**: Digital product sales with Stripe integration
 - ✅ **Lead Generation**: Email collection via Gmail SMTP
+- ✅ **Admin Tools**: Lead management dashboard (admin-only)
 - ❌ **Removed**: Course platform, AI chat (DiamondMindAI), News section, Settings, Support ticketing
 
 **Architectural Pattern**: Layered architecture with clear separation:
@@ -51,10 +87,12 @@ This is a **Next.js 15 MVP application** focused on core features with a **simpl
 - `src/app/` - Next.js App Router pages (routing via file system)
   - `page.tsx` - Public landing page (client component, SSR)
   - `app/` - Protected member portal (NextAuth authentication required)
-    - `layout.tsx` - Sidebar layout with simplified navigation
+    - `layout.tsx` - Sidebar layout with admin detection and conditional navigation
     - `page.tsx` - Dashboard with sprint stats and user progress
     - `sprint/` - 30-day sprint pages and video player
     - `profile/` - User profile management
+    - `admin/` - Admin-only pages (email-based access control)
+      - `leads/` - Lead management dashboard
   - `auth/` - Authentication pages (NextAuth magic link + OAuth flow)
   - `blog/` - Dynamic routes for blog content ([slug])
     - `[slug]/page.tsx` - Individual blog post pages (SSG with `generateStaticParams`)
@@ -71,11 +109,21 @@ This is a **Next.js 15 MVP application** focused on core features with a **simpl
   - `utils.ts` - Tailwind class merging utility (cn)
 - `src/hooks/` - Custom React hooks (e.g., `use-outside-click.tsx`)
 - `content/` - Git-based content storage (managed by Decap CMS)
-  - `news/`, `blog/`, `pages/`, `settings/` - Markdown files with frontmatter
+  - `blog/`, `pages/`, `settings/` - Markdown files with frontmatter
+  - `sprint/` - 30-day sprint content (day-01.md through day-30.md)
 - `public/admin/` - Decap CMS admin interface
   - `config.yml` - CMS configuration (collections, fields, GitHub backend)
   - `index.html` - CMS entry point
   - `decap-cms.js` - CMS bundle (copied from node_modules on build)
+- `scripts/` - Utility scripts
+  - `cleanup-from-checklist.ts` - Automated cleanup based on knip analysis
+  - `migrate-db.ts` - Database migration runner
+  - `test-auth-setup.ts` - Authentication testing
+  - Various admin/debug scripts for database queries
+- `docs/` - Documentation
+  - `specs/` - Feature specifications and planning documents
+  - `guides/` - Developer guides and handoff documentation
+  - `knip-cleanup-*.md` - Code cleanup checklists and reports
 
 ### Technology Stack
 
@@ -92,6 +140,34 @@ This is a **Next.js 15 MVP application** focused on core features with a **simpl
 - **Payments:** Stripe for book sales and product purchases
 - **Email:** Gmail SMTP via Nodemailer for transactional emails
 - **Content Processing:** Gray-matter for frontmatter, Remark for markdown to HTML
+- **Testing:** Vitest (unit/integration), Playwright (E2E), React Testing Library
+- **Code Quality:** ESLint, Knip (unused code detection)
+- **Logging:** Axiom (structured logging and monitoring)
+
+### Admin Access Control
+
+**Pattern**: Email-based admin detection without separate roles table
+
+Admin users are identified by email address in the member portal layout:
+```typescript
+// src/app/app/layout.tsx
+const isAdmin = session?.user?.email === 'support@becomingdiamond.com';
+```
+
+**Navigation items** have an `adminOnly` flag:
+```typescript
+{ name: "Lead Management", href: "/app/admin/leads", icon: IconUsers, adminOnly: true }
+```
+
+**Admin Features:**
+- Lead management dashboard (`/app/admin/leads`)
+- Admin-only navigation items (conditionally rendered)
+- Email-based access control (no database roles needed for MVP)
+
+**Future Considerations:**
+- Move admin check to database role when scaling beyond single admin
+- Add middleware protection for admin routes
+- Implement audit logging for admin actions
 
 ### Content Management System (Decap CMS)
 
@@ -105,6 +181,7 @@ The project uses **Decap CMS** (formerly Netlify CMS) for content management:
 
 **Content Collections:**
 - `blog/` - Blog posts (Insights) with author, categories, tags, published status
+- `sprint/` - 30-day sprint lessons with video IDs and metadata
 - `pages/` - Static pages (privacy, terms) - file-based collection
 - `settings/` - Site configuration (general settings, social media) - YAML format
 
@@ -112,6 +189,7 @@ The project uses **Decap CMS** (formerly Netlify CMS) for content management:
 ```
 content/
 ├── blog/YYYY-MM-DD-slug.md      # Markdown with YAML frontmatter
+├── sprint/day-01.md through day-30.md  # Sprint lessons
 ├── pages/[name].md              # Static page content
 └── settings/general.yml         # Site-wide settings
 ```
@@ -148,7 +226,7 @@ content/
 **CMS Workflow:**
 1. Editor accesses `/admin` (static HTML page)
 2. Decap CMS loads from `/admin/decap-cms.js` (copied via prebuild script)
-3. OAuth authentication via `/api/auth` (GitHub)
+3. OAuth authentication via `/api/cms-auth` (GitHub)
 4. Editor creates/edits content through CMS UI
 5. CMS commits changes to GitHub repository
 6. Next.js rebuilds pages on next deployment
@@ -178,13 +256,13 @@ Custom rules in `eslint.config.mjs`:
 
 **API Routes:**
 
-1. **`/api/auth` (GET)** - OAuth Initiation
+1. **`/api/cms-auth` (GET)** - OAuth Initiation for Decap CMS
    - Query param: `provider=github`
    - Redirects to GitHub authorization URL
    - Includes `client_id`, `redirect_uri`, and `scope` (repo, user)
    - Redirect target: `{origin}/api/callback`
 
-2. **`/api/auth` (POST)** - Token Exchange
+2. **`/api/cms-auth` (POST)** - Token Exchange
    - Receives: `{ code, provider }`
    - Exchanges authorization code for access token
    - Fetches user info from GitHub API
@@ -199,24 +277,22 @@ Custom rules in `eslint.config.mjs`:
 **Authentication Flow:**
 ```
 1. User clicks "Login with GitHub" in Decap CMS (/admin)
-2. CMS opens popup to /api/auth?provider=github
+2. CMS opens popup to /api/cms-auth?provider=github
 3. Server redirects popup to GitHub OAuth authorize page
 4. User authorizes on GitHub
 5. GitHub redirects to /api/callback?code=XXX
 6. Callback page sends code via postMessage to parent window
-7. CMS receives code and calls /api/auth (POST) to exchange for token
+7. CMS receives code and calls /api/cms-auth (POST) to exchange for token
 8. CMS uses token for GitHub API operations
 ```
 
 **Environment Variables Required:**
-- `GITHUB_CLIENT_ID` - GitHub OAuth App Client ID
-- `GITHUB_CLIENT_SECRET` - GitHub OAuth App Client Secret
+- `GITHUB_CLIENT_ID` - GitHub OAuth App Client ID (for Decap CMS)
+- `GITHUB_CLIENT_SECRET` - GitHub OAuth App Client Secret (for Decap CMS)
+- `AUTH_GITHUB_ID` - GitHub OAuth for member authentication (separate app)
+- `AUTH_GITHUB_SECRET` - GitHub OAuth secret for member authentication
 
-**Security Considerations:**
-- OAuth secrets stored in environment variables
-- Origin validation in postMessage receiver
-- Token never exposed to client-side code (except in CMS context)
-- CMS operations require valid GitHub token
+**Note**: Decap CMS and member authentication use **separate GitHub OAuth apps** with different callback URLs.
 
 ### Landing Page Architecture
 
@@ -246,7 +322,7 @@ The main landing page (`src/app/page.tsx`) demonstrates advanced React patterns:
 
 ### Member Portal Architecture
 
-**Pattern**: Protected SPA with shared layout
+**Pattern**: Protected SPA with shared layout and admin detection
 
 **Layout Structure** (`/app/*/`):
 - **Shared Layout** (`src/app/app/layout.tsx`) - Client Component
@@ -255,13 +331,15 @@ The main landing page (`src/app/page.tsx`) demonstrates advanced React patterns:
   - Logo, navigation items, logout button
   - `usePathname()` hook for active route detection
   - Uses Tabler Icons for UI icons
+  - **Admin Detection**: Checks `session?.user?.email === 'support@becomingdiamond.com'`
+  - **Conditional Navigation**: Filters items based on `adminOnly` flag and feature flags
 
 **Navigation Items (Simplified MVP):**
 ```typescript
 [
-  { name: "Dashboard", href: "/app", icon: IconHome, feature: 'dashboard' },
-  { name: "30 Day Sprint", href: "/app/sprint", icon: IconRocket, feature: null },
-  { name: "Profile", href: "/app/profile", icon: IconUser, feature: null },
+  { name: "30 Day Sprint", href: "/app/sprint", icon: IconRocket, feature: null, adminOnly: false },
+  { name: "Profile", href: "/app/profile", icon: IconUser, feature: null, adminOnly: false },
+  { name: "Lead Management", href: "/app/admin/leads", icon: IconUsers, feature: null, adminOnly: true },
 ]
 ```
 
@@ -271,11 +349,12 @@ The main landing page (`src/app/page.tsx`) demonstrates advanced React patterns:
 - `sprint/day/[day]/page.tsx` - Individual day lessons with video player
 - `sprint/watch/page.tsx` - Continuous video playlist mode
 - `profile/page.tsx` - User profile management and sprint achievements
+- `admin/leads/page.tsx` - Lead management (admin-only)
 
 **State Management:**
 - User state via React Context (`UserContext`) with session integration
 - Local component state with `useState` for UI interactions
-- Sprint progress tracking with localStorage and database sync
+- Sprint progress tracking with localStorage (planned: database sync)
 - NextAuth session management for authentication state
 
 **Design System:**
@@ -322,7 +401,7 @@ Build Process → getContentByType() → gray-matter → remark → HTML
                                             React Components → User
 ```
 
-**Static Generation Flow** (News/Blog):
+**Static Generation Flow** (Blog):
 ```
 Build Time:
   → generateStaticParams() reads all markdown files
@@ -385,6 +464,13 @@ CMS Login → OAuth Popup → GitHub Authorization → Callback
 4. **`/api/stripe/webhooks`**
    - `POST`: Handle Stripe payment webhooks for book purchases
 
+5. **`/api/cms-auth`**
+   - `GET`: Initiate GitHub OAuth for Decap CMS
+   - `POST`: Exchange authorization code for token
+
+6. **`/api/callback`**
+   - `GET`: OAuth callback handler for Decap CMS
+
 **API Patterns:**
 - Environment variables for secrets (NextAuth, Stripe, Gmail, Turso)
 - Error handling with appropriate HTTP status codes
@@ -394,8 +480,48 @@ CMS Login → OAuth Popup → GitHub Authorization → Callback
 
 **Future Expansion (Post-MVP):**
 - `/api/video/[videoId]/token` - Video streaming token generation for Bunny Stream
-- `/api/sprint/progress` - Sprint progress tracking and completion
+- `/api/sprint/progress` - Sprint progress tracking and completion (in planning - see docs/specs/sprint-progress-database-migration.md)
 - `/api/achievements` - User achievement system
+
+### Testing Infrastructure
+
+**Unit & Integration Tests** (Vitest):
+- Location: `src/test/unit/` and `src/test/integration/`
+- Framework: Vitest with React Testing Library
+- Coverage: Available via `npm run test:coverage`
+- UI Mode: Interactive test runner via `npm run test:ui`
+
+**E2E Tests** (Playwright):
+- Framework: Playwright with accessibility testing (@axe-core/playwright)
+- Commands: `test:e2e`, `test:e2e:ui`, `test:e2e:debug`, `test:e2e:headed`
+- Reports: Available via `npm run test:e2e:report`
+
+**Test Structure:**
+```
+src/test/
+├── unit/           # Component and utility tests
+├── integration/    # API and integration tests
+└── fixtures/       # Test data and mocks
+```
+
+### Code Maintenance Tools
+
+**Knip** - Unused Code Detection:
+- Configuration: `knip.json`
+- Detects: Unused files, exports, dependencies, unresolved imports
+- Run: `npm run knip`
+
+**Automated Cleanup**:
+- Interactive checklist: `docs/knip-cleanup-checklist.md`
+- Preview: `npm run cleanup:knip` (dry run, safe)
+- Execute: `npm run cleanup:knip:execute` (performs deletions)
+- Script: `scripts/cleanup-from-checklist.ts`
+- Features:
+  - Checkbox-based selection (check to KEEP, uncheck to DELETE)
+  - Automatic backups before deletion (`.cleanup-backup/`)
+  - Detailed logging (`cleanup-log.txt`)
+  - 5-second safety countdown
+- Documentation: `scripts/README-cleanup.md`, `docs/knip-cleanup-summary.md`
 
 ### Architectural Decisions and Trade-offs
 
@@ -432,11 +558,11 @@ CMS Login → OAuth Popup → GitHub Authorization → Callback
    - **Trade-off**: Email delivery dependency (Gmail SMTP), session management complexity
    - **Implementation**: Custom Turso adapter for session storage, conditional GitHub OAuth via feature flags
 
-6. **Monolithic Landing Page Component**
-   - **Current**: 1000+ line `page.tsx` with all sections inline
-   - **Trade-off**: Harder to maintain, difficult to test individual sections
-   - **Opportunity**: Could extract sections into separate components
-   - **Benefit of current approach**: Single file shows complete page structure
+6. **Email-based Admin Access Control**
+   - **Chosen**: Simple email check (`support@becomingdiamond.com`) for admin detection
+   - **Rationale**: Single admin user for MVP, no need for complex RBAC
+   - **Trade-off**: Hardcoded email address, not scalable for multiple admins
+   - **Future**: Move to database-backed roles when scaling
 
 7. **Turbopack for Development and Build**
    - **Chosen**: `--turbopack` flag for both dev and build
@@ -454,7 +580,7 @@ CMS Login → OAuth Popup → GitHub Authorization → Callback
 
 **Performance Considerations:**
 - Dynamic imports for code-splitting (Globe, World components)
-- Static generation for content pages (news articles)
+- Static generation for content pages (blog articles)
 - CSS-in-JS with Tailwind (minimal runtime overhead)
 - Image optimization: **NOT YET IMPLEMENTED** (using `<img>` instead of `next/image`)
 - Font optimization: Using next/font (Geist Sans, Geist Mono)
@@ -462,10 +588,11 @@ CMS Login → OAuth Popup → GitHub Authorization → Callback
 **Security Considerations:**
 - OAuth secrets in environment variables (not committed to Git)
 - Origin validation in postMessage handlers
-- XSS protection: React's automatic escaping (except `dangerouslySetInnerHTML` in news pages)
+- XSS protection: React's automatic escaping (except `dangerouslySetInnerHTML` in blog pages)
 - CSRF: No protection implemented (not needed for public site, required for authenticated actions)
 - Content Security Policy: Not configured
 - Rate limiting: Not implemented
+- Admin access: Email-based (suitable for single admin MVP)
 
 ### Rendering Strategy by Route (Simplified MVP)
 
@@ -478,6 +605,7 @@ CMS Login → OAuth Popup → GitHub Authorization → Callback
 | `/collective` | SSR (Client Component) | Marketing page with animations |
 | `/program` | SSR (Client Component) | Marketing page with animations |
 | `/app/*` | CSR (Client-Side) | Protected content, user-specific data, interactive UI |
+| `/app/admin/*` | CSR (Client-Side) | Admin-only, email-based access control |
 | `/admin` | Static HTML | Decap CMS single-page application |
 | `/api/*` | Server-Side | API endpoints, NextAuth handlers, webhooks |
 
@@ -495,7 +623,7 @@ CMS Login → OAuth Popup → GitHub Authorization → Callback
 2. **Database Integration**
    - Turso (libSQL) database for user data
    - Custom adapter for NextAuth sessions
-   - User profiles, sprint progress tracking
+   - User profiles, sprint progress tracking (localStorage - migration planned)
    - Feature flags for conditional functionality
 
 3. **Core API Layer**
@@ -509,13 +637,27 @@ CMS Login → OAuth Popup → GitHub Authorization → Callback
    - localStorage for sprint progress persistence
    - NextAuth session management
 
+5. **Admin Tools**
+   - Email-based admin detection
+   - Lead management dashboard
+   - Admin-only navigation items
+
+6. **Testing Infrastructure**
+   - Vitest for unit/integration tests
+   - Playwright for E2E tests
+   - React Testing Library
+
+7. **Code Maintenance**
+   - Knip for unused code detection
+   - Automated cleanup scripts
+   - Interactive cleanup checklist
+
 **Post-MVP Enhancements:**
 
 1. **Testing Infrastructure** (Priority: High)
-   - Unit tests: Vitest or Jest
-   - Component tests: React Testing Library
-   - E2E tests: Playwright or Cypress
-   - API tests for authentication and payment flows
+   - Expand test coverage
+   - Add API tests for authentication and payment flows
+   - Performance testing
 
 2. **Performance Optimization** (Priority: Medium)
    - Replace `<img>` with `next/image` for optimization
@@ -524,7 +666,7 @@ CMS Login → OAuth Popup → GitHub Authorization → Callback
    - Optimize 3D component loading and rendering
 
 3. **Monitoring & Analytics** (Priority: High)
-   - Add error tracking (Sentry)
+   - Axiom integration completed (structured logging)
    - Add analytics (Plausible, Vercel Analytics)
    - Implement performance monitoring
    - Add structured logging for API routes
@@ -538,11 +680,24 @@ CMS Login → OAuth Popup → GitHub Authorization → Callback
      - Enhanced VideoPlayer component with security
    - **Documentation**: See `/docs/specs/video-integration-simplified.md`
 
-5. **Sprint Progress Sync** (Priority: High)
-   - Database sync for localStorage progress data
-   - Completion tracking API
-   - Cross-device progress synchronization
-   - Achievement system integration
+5. **Sprint Progress Database Migration** (Priority: High, In Planning)
+   - **Current**: localStorage (device-specific, no sync)
+   - **Target**: Turso database (cross-device sync, persistent)
+   - **Effort**: 4-5 hours (simplified - no live users to migrate)
+   - **Benefits**: Cross-device synchronization, persistent storage, analytics foundation
+   - **Documentation**: See `/docs/specs/sprint-progress-database-migration.md`
+   - **Key Changes**:
+     - Database table with indexes
+     - Three API endpoints (GET, complete-day, reset)
+     - Refactor client library to async
+     - Update 4 components for async operations
+     - Remove localStorage code
+
+6. **Admin Tools Enhancement** (Priority: Medium)
+   - Move admin check to database roles (when scaling)
+   - Add middleware protection for admin routes
+   - Implement audit logging for admin actions
+   - Add more admin dashboards (users, analytics)
 
 ## Development Notes
 
@@ -564,6 +719,12 @@ Uses new inline `@theme` syntax in `globals.css` rather than separate `tailwind.
 3. Use `getContentByType()` or `getContentBySlug()` to fetch in pages
 4. Published status controlled via `published` frontmatter field
 
+### Sprint Content Structure
+Sprint lessons are markdown files in `content/sprint/`:
+- Named `day-01.md` through `day-30.md`
+- Frontmatter includes: day, title, subtitle, duration, difficulty, video ID
+- Video IDs reference Bunny Stream videos (planned: token-based auth)
+
 ## Quick Reference Guide
 
 ### Common Development Tasks
@@ -572,7 +733,14 @@ Uses new inline `@theme` syntax in `globals.css` rather than separate `tailwind.
 1. Create `src/app/app/[page-name]/page.tsx`
 2. Add route to navigation in `src/app/app/layout.tsx` navItems array
 3. Add icon import from `@tabler/icons-react`
-4. Use consistent styling with existing pages (black bg, primary accent)
+4. Set `adminOnly: false` (or `true` for admin pages)
+5. Use consistent styling with existing pages (black bg, primary accent)
+
+**Creating an Admin-Only Page:**
+1. Create page in `src/app/app/admin/[page-name]/page.tsx`
+2. Add to navItems with `adminOnly: true`
+3. Admin detection automatically handled by layout
+4. Future: Add middleware protection for server-side enforcement
 
 **Creating a New Content Type:**
 1. Create directory in `content/[type]/`
@@ -604,11 +772,11 @@ Uses new inline `@theme` syntax in `globals.css` rather than separate `tailwind.
 
 **Working with Content:**
 ```typescript
-// Fetch all news items
-const news = await getContentByType('news');
+// Fetch all blog items
+const blog = await getContentByType('blog');
 
 // Fetch single item
-const article = await getContentBySlug('news', slug);
+const article = await getContentBySlug('blog', slug);
 
 // Access frontmatter
 article.frontmatter.title
@@ -619,11 +787,47 @@ article.frontmatter.thumbnail
 <div dangerouslySetInnerHTML={{ __html: article.content }} />
 ```
 
+**Running Tests:**
+```bash
+# Unit tests
+npm run test:unit
+
+# Integration tests
+npm run test:integration
+
+# E2E tests (headless)
+npm run test:e2e
+
+# E2E tests (with browser visible)
+npm run test:e2e:headed
+
+# Test coverage
+npm run test:coverage
+```
+
+**Code Cleanup:**
+```bash
+# Analyze unused code
+npm run knip
+
+# Preview cleanup (dry run)
+npm run cleanup:knip
+
+# Review checklist
+code docs/knip-cleanup-checklist.md
+
+# Execute cleanup (after review)
+npm run cleanup:knip:execute
+```
+
 **Environment Variables:**
 - Create `.env.local` file (not committed to Git)
 - Required variables:
   - `GITHUB_CLIENT_ID` - For Decap CMS OAuth
   - `GITHUB_CLIENT_SECRET` - For Decap CMS OAuth
+  - `AUTH_GITHUB_ID` - For member authentication (separate app)
+  - `AUTH_GITHUB_SECRET` - For member authentication
+  - See README.md for complete list
 - Access in code: `process.env.VARIABLE_NAME`
 - Prefix with `NEXT_PUBLIC_` for client-side access
 
@@ -631,9 +835,10 @@ article.frontmatter.thumbnail
 
 **Important Files:**
 - `/CLAUDE.md` - This architecture documentation
+- `/README.md` - Setup and environment variable guide
 - `/src/app/page.tsx` - Landing page (1000+ lines)
-- `/src/app/app/layout.tsx` - Member portal layout with sidebar
-- `/src/app/api/auth/route.ts` - OAuth authentication
+- `/src/app/app/layout.tsx` - Member portal layout with sidebar and admin detection
+- `/src/app/api/cms-auth/route.ts` - OAuth authentication for Decap CMS
 - `/src/lib/content.ts` - Content management API
 - `/src/app/globals.css` - Tailwind config and theme
 - `/public/admin/config.yml` - Decap CMS configuration
@@ -641,6 +846,8 @@ article.frontmatter.thumbnail
 - `/tsconfig.json` - TypeScript configuration
 - `/eslint.config.mjs` - ESLint rules
 - `/next.config.ts` - Next.js configuration (minimal)
+- `/knip.json` - Knip configuration for unused code detection
+- `/docs/knip-cleanup-checklist.md` - Interactive cleanup checklist
 
 ### Debugging Tips
 
@@ -665,7 +872,7 @@ article.frontmatter.thumbnail
 4. **CMS not loading**
    - Check `/admin/decap-cms.js` exists (run prebuild script)
    - Verify `config.yml` syntax
-   - Ensure GitHub OAuth is configured
+   - Ensure GitHub OAuth is configured (separate from member auth)
    - Check browser console for errors
 
 5. **Build errors with Turbopack**
@@ -673,6 +880,11 @@ article.frontmatter.thumbnail
    - Check for TypeScript errors with `npm run lint:next`
    - Ensure all dependencies are installed
    - Verify Node version compatibility
+
+6. **Admin navigation not appearing**
+   - Check session user email matches `support@becomingdiamond.com`
+   - Verify navigation item has `adminOnly: true`
+   - Check session is loaded (`useSession` hook)
 
 **Development Server Issues:**
 - Default port: 3003 (configured in package.json)
@@ -705,9 +917,10 @@ article.frontmatter.thumbnail
 7. Types and interfaces
 8. CSS imports (if any)
 
-**Git Commit Messages (when using CMS):**
-- Decap CMS creates commits like: "Create news/2024-10-01-article-title.md"
-- Manual commits should be descriptive: "feat: add courses page", "fix: authentication bug"
+**Git Commit Messages:**
+- Use conventional commits: `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `test:`
+- Decap CMS creates commits like: "Create blog/2024-10-01-article-title.md"
+- Manual commits should be descriptive: "feat: add lead management dashboard", "fix: authentication bug"
 
 ### Performance Best Practices
 
@@ -756,9 +969,9 @@ article.frontmatter.thumbnail
 **Content Creator Workflow**:
 1. Upload video via Bunny dashboard (drag & drop)
 2. Copy video GUID from Bunny
-3. Add to course markdown: `{{video:abc123-def456}}`
+3. Add to sprint markdown: video field in frontmatter
 4. Decap CMS saves content
-5. Video automatically renders in course slides
+5. Video automatically renders in sprint pages
 
 **Technical Components to Build**:
 ```typescript
@@ -776,7 +989,7 @@ src/components/VideoPlayer.tsx
 
 // Markdown Parser Enhancement (70 lines)
 src/lib/course-parser.ts
-  - Regex to extract {{video:ID}} syntax
+  - Regex to extract video IDs from frontmatter
   - Replace with VideoPlayer component
   - Support optional parameters (autoplay, poster)
 ```
@@ -791,19 +1004,6 @@ BUNNY_LIBRARY_ID=your-library-id
 BUNNY_API_KEY=your-api-key
 BUNNY_CDN_HOSTNAME=your-cdn-hostname
 ```
-
-**Why This Approach**:
-- Avoids building complex admin UI (saves 5+ days development)
-- Leverages professional video platform (encoding, CDN, analytics)
-- Minimal maintenance burden (no custom video infrastructure)
-- Easy platform migration (abstracted video service layer)
-- Low training overhead for content creators
-
-**Alternative Approaches Considered**:
-- Custom admin UI with upload widget (rejected: high complexity)
-- Self-hosted with AWS S3 + CloudFront (rejected: high DevOps burden)
-- YouTube embedded (rejected: ads, privacy concerns, no control)
-- Mux (rejected: 5x higher cost)
 
 **Documentation**:
 - `/docs/specs/video-integration-simplified.md` - Implementation guide (80% scope reduction)
