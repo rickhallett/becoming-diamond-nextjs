@@ -69,7 +69,7 @@ class Logger {
   private async writeLog(level: LogLevel, message: string, context?: string, data?: unknown): Promise<void> {
     // Client-side: fall back to console in development
     if (!this.isServer) {
-      if (process.env.NODE_ENV === 'development') {
+      if (typeof process !== 'undefined' && process.env?.NODE_ENV === 'development') {
         const prefix = context ? `[${context}]` : '';
         console[level === 'debug' ? 'log' : level](`${prefix} ${message}`, data || '');
       }
@@ -124,7 +124,7 @@ class Logger {
    * Log debug message (only in development)
    */
   async debug(message: string, context?: string, data?: unknown): Promise<void> {
-    if (process.env.NODE_ENV === 'development') {
+    if (typeof process !== 'undefined' && process.env?.NODE_ENV === 'development') {
       await this.writeLog('debug', message, context, data);
     }
   }
