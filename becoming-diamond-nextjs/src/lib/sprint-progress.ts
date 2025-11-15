@@ -1,13 +1,11 @@
 /**
- * Sprint Progress Management (Phase 1 - localStorage)
+ * Sprint Progress Management (Phase 2 - API-based)
  *
- * This module handles progress tracking for the 30 Day Sprint using localStorage.
- * In Phase 2, this will be migrated to a database backend.
+ * This module handles progress tracking for the 30 Day Sprint using API calls.
+ * All functions are async and interact with the database via API endpoints.
  */
 
 import { logSync as log } from '@/lib/logger';
-
-const STORAGE_KEY = 'sprint_progress_v1';
 
 export interface SprintProgress {
   sprintId: string;
@@ -21,6 +19,9 @@ export interface SprintProgress {
   createdAt: string;
   updatedAt: string;
 }
+
+// In-memory cache for performance
+let cachedProgress: SprintProgress | null = null;
 
 /**
  * Initializes a new sprint progress object
@@ -42,159 +43,125 @@ function initializeProgress(): SprintProgress {
 }
 
 /**
- * Gets the current sprint progress from localStorage
+ * Gets the current sprint progress from API
  */
-export function getProgress(): SprintProgress {
-  if (typeof window === 'undefined') {
-    return initializeProgress();
-  }
-
+export async function getProgress(): Promise<SprintProgress> {
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (!stored) {
-      return initializeProgress();
+    const response = await fetch('/api/sprint/progress', {
+      credentials: 'include'
+    });
+
+    if (!response.ok) {
+      if (response.status === 401) {
+        log.error('Unauthorized - user not logged in', 'Lib');
+        return initializeProgress();
+      }
+      throw new Error(`API error: ${response.status}`);
     }
 
-    const progress = JSON.parse(stored) as SprintProgress;
+    const data = await response.json();
 
-    // Update last access date
-    progress.lastAccessDate = new Date().toISOString();
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+    if (data.progress) {
+      cachedProgress = data.progress;
+      return data.progress;
+    }
 
-    return progress;
+    // Initialize new progress for first-time users
+    const initialized = initializeProgress();
+    cachedProgress = initialized;
+    return initialized;
   } catch (error) {
-    log.error('Error reading sprint progress:', 'Lib', error);
+    log.error('Failed to fetch progress from server', 'Lib', error);
+
+    // Return cached version if available
+    if (cachedProgress) {
+      return cachedProgress;
+    }
+
+    // Last resort: return initialized progress
     return initializeProgress();
-  }
-}
-
-/**
- * Saves sprint progress to localStorage
- */
-export function saveProgress(progress: SprintProgress): void {
-  if (typeof window === 'undefined') return;
-
-  try {
-    progress.updatedAt = new Date().toISOString();
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
-  } catch (error) {
-    log.error('Error saving sprint progress:', 'Lib', error);
   }
 }
 
 /**
  * Marks a day as complete and updates progress
  */
-export function markDayComplete(dayNumber: number): SprintProgress {
-  const progress = getProgress();
+export async function markDayComplete(dayNumber: number): Promise<SprintProgress> {
+  try {
+    const response = await fetch('/api/sprint/progress/complete-day', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ dayNumber })
+    });
 
-  // Don't allow marking days that are not accessible yet
-  if (dayNumber > progress.currentDay) {
-    throw new Error(`Day ${dayNumber} is not yet accessible. Complete Day ${progress.currentDay} first.`);
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || 'Failed to complete day');
+    }
+
+    if (!data.success) {
+      throw new Error(data.error || 'Failed to complete day');
+    }
+
+    // Update cache
+    cachedProgress = data.progress;
+    return data.progress;
+  } catch (error) {
+    log.error('Failed to mark day complete', 'Lib', error);
+    throw error; // Re-throw so UI can handle
   }
-
-  // Don't re-complete already completed days
-  if (progress.completedDays.includes(dayNumber)) {
-    return progress;
-  }
-
-  // Mark as in progress if this is the first day
-  if (progress.status === 'not_started') {
-    progress.status = 'in_progress';
-  }
-
-  // Add to completed days
-  progress.completedDays.push(dayNumber);
-  progress.completedDays.sort((a, b) => a - b);
-
-  // Update stats
-  progress.totalDaysCompleted = progress.completedDays.length;
-  progress.completionPercentage = (progress.totalDaysCompleted / 30) * 100;
-
-  // Update current day to next incomplete day
-  if (dayNumber === progress.currentDay && dayNumber < 30) {
-    progress.currentDay = dayNumber + 1;
-  }
-
-  // Mark as completed if all 30 days are done
-  if (progress.totalDaysCompleted === 30) {
-    progress.status = 'completed';
-  }
-
-  saveProgress(progress);
-  return progress;
 }
 
 /**
  * Checks if a day is accessible (completed previous day or is day 1)
  */
-export function isDayAccessible(dayNumber: number): boolean {
+export async function isDayAccessible(dayNumber: number): Promise<boolean> {
   if (dayNumber === 1) return true;
 
-  const progress = getProgress();
+  const progress = await getProgress();
   return dayNumber <= progress.currentDay;
 }
 
 /**
  * Checks if a day is completed
  */
-export function isDayCompleted(dayNumber: number): boolean {
-  const progress = getProgress();
+export async function isDayCompleted(dayNumber: number): Promise<boolean> {
+  const progress = await getProgress();
   return progress.completedDays.includes(dayNumber);
 }
 
 /**
- * Resets all sprint progress (for testing or restart)
+ * Resets all sprint progress
  */
-export function resetProgress(): void {
-  if (typeof window === 'undefined') return;
-
+export async function resetProgress(): Promise<void> {
   try {
-    localStorage.removeItem(STORAGE_KEY);
-  } catch (error) {
-    log.error('Error resetting sprint progress:', 'Lib', error);
-  }
-}
+    const response = await fetch('/api/sprint/progress/reset', {
+      method: 'POST',
+      credentials: 'include'
+    });
 
-/**
- * Exports progress data for backup
- */
-export function exportProgress(): string {
-  const progress = getProgress();
-  return JSON.stringify(progress, null, 2);
-}
-
-/**
- * Imports progress data from backup
- */
-export function importProgress(jsonData: string): boolean {
-  try {
-    const progress = JSON.parse(jsonData) as SprintProgress;
-
-    // Validate the data structure
-    if (!progress.sprintId || !Array.isArray(progress.completedDays)) {
-      throw new Error('Invalid progress data format');
+    if (!response.ok) {
+      throw new Error('Failed to reset progress');
     }
 
-    saveProgress(progress);
-    return true;
+    cachedProgress = null;
   } catch (error) {
-    log.error('Error importing sprint progress:', 'Lib', error);
-    return false;
+    log.error('Failed to reset progress', 'Lib', error);
+    throw error;
   }
 }
 
 /**
  * Calculates the current streak (consecutive days completed)
  */
-export function calculateStreak(): number {
-  const progress = getProgress();
-
-  if (progress.completedDays.length === 0) {
+export function calculateStreak(completedDays: number[]): number {
+  if (completedDays.length === 0) {
     return 0;
   }
 
-  const sortedDays = [...progress.completedDays].sort((a, b) => a - b);
+  const sortedDays = [...completedDays].sort((a, b) => a - b);
   let streak = 1;
 
   // Count consecutive days from the end
@@ -212,8 +179,8 @@ export function calculateStreak(): number {
 /**
  * Gets progress statistics
  */
-export function getProgressStats() {
-  const progress = getProgress();
+export async function getProgressStats() {
+  const progress = await getProgress();
 
   return {
     totalDays: 30,
@@ -222,9 +189,16 @@ export function getProgressStats() {
     completionPercentage: progress.completionPercentage,
     currentDay: progress.currentDay,
     status: progress.status,
-    streak: calculateStreak(),
+    streak: calculateStreak(progress.completedDays),
     daysInProgress: progress.status === 'in_progress'
       ? Math.ceil((new Date().getTime() - new Date(progress.enrollmentDate).getTime()) / (1000 * 60 * 60 * 24))
       : 0,
   };
+}
+
+/**
+ * Clears the in-memory cache (useful for logout)
+ */
+export function clearCache(): void {
+  cachedProgress = null;
 }

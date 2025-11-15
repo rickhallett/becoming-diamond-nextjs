@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { isDayAccessible, isDayCompleted, getProgressStats, resetProgress } from '@/lib/sprint-progress';
+import { getProgress, resetProgress } from '@/lib/sprint-progress';
 import ProgressBar from '@/components/sprint/ProgressBar';
 import DayCard from '@/components/sprint/DayCard';
 import { motion } from 'framer-motion';
@@ -22,16 +22,32 @@ interface DayData {
 
 export default function SprintDashboardPage() {
   const [days, setDays] = useState<DayData[]>([]);
-  const [stats, setStats] = useState<ReturnType<typeof getProgressStats> | null>(null);
+  const [stats, setStats] = useState<{ completedDays: number; totalDays: number } | null>(null);
   const [loading, setLoading] = useState(true);
+  const [completedDays, setCompletedDays] = useState<Set<number>>(new Set());
+  const [currentDay, setCurrentDay] = useState<number>(1);
 
   useEffect(() => {
     async function loadData() {
       try {
-        const response = await fetch('/api/sprint/days');
-        const data = await response.json();
-        setDays(data.days || []);
-        setStats(getProgressStats());
+        // Fetch days and progress in parallel
+        const [daysResponse, progress] = await Promise.all([
+          fetch('/api/sprint/days'),
+          getProgress()
+        ]);
+
+        const daysData = (await daysResponse.json()).days || [];
+        setDays(daysData);
+
+        // Calculate stats and sets directly from progress object (no additional API calls)
+        const completed = new Set(progress.completedDays);
+        setCompletedDays(completed);
+        setCurrentDay(progress.currentDay);
+
+        setStats({
+          completedDays: progress.totalDaysCompleted,
+          totalDays: 30
+        });
       } catch (error) {
         log.error('Error loading sprint days:', 'App', error);
       } finally {
@@ -42,10 +58,15 @@ export default function SprintDashboardPage() {
     loadData();
   }, []);
 
-  const handleReset = () => {
+  const handleReset = async () => {
     if (confirm('Reset all sprint progress? This will take you back to Day 1.')) {
-      resetProgress();
-      window.location.reload();
+      try {
+        await resetProgress();
+        window.location.reload();
+      } catch (error) {
+        log.error('Error resetting progress:', 'App', error);
+        alert('Failed to reset progress. Please try again.');
+      }
     }
   };
 
@@ -134,8 +155,8 @@ export default function SprintDashboardPage() {
                   title={day.frontmatter.title}
                   subtitle={day.frontmatter.subtitle as string}
                   duration={(day.frontmatter.duration as string) || '15 minutes'}
-                  isCompleted={isDayCompleted(dayNumber)}
-                  isAccessible={isDayAccessible(dayNumber)}
+                  isCompleted={completedDays.has(dayNumber)}
+                  isAccessible={dayNumber === 1 || dayNumber <= currentDay}
                   index={dayIndex}
                 />
               );

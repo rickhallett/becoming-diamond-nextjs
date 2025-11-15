@@ -1,7 +1,7 @@
 ---
 day: 1
 title: Set Your Baseline
-subtitle: If your baseline doesn't change… nothing does. Boobs.
+subtitle: If your baseline doesn't change… nothing does.
 published: true
 duration: 15 minutes
 difficulty: Beginner

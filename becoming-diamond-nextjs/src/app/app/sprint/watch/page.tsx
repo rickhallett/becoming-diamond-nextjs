@@ -10,7 +10,7 @@ import {
   IconArrowLeft,
 } from '@tabler/icons-react';
 import Link from 'next/link';
-import { isDayCompleted } from '@/lib/sprint-progress';
+import { getProgress } from '@/lib/sprint-progress';
 
 interface VideoItem {
   day: number;
@@ -50,15 +50,14 @@ export default function SprintWatchPage() {
   const [completedDays, setCompletedDays] = useState<Set<number>>(new Set());
 
   useEffect(() => {
-    setMounted(true);
-    // Load completed days
-    const completed = new Set<number>();
-    for (let day = 1; day <= 22; day++) {
-      if (isDayCompleted(day)) {
-        completed.add(day);
-      }
+    async function loadCompletedDays() {
+      setMounted(true);
+      // Fetch progress once and extract completed days
+      const progress = await getProgress();
+      const completed = new Set(progress.completedDays);
+      setCompletedDays(completed);
     }
-    setCompletedDays(completed);
+    loadCompletedDays();
   }, []);
 
   const handleVideoEnded = () => {
