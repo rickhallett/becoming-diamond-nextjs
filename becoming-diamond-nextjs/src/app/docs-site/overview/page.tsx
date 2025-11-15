@@ -139,7 +139,7 @@ export default function OverviewPage() {
       <h3>Book Sales</h3>
       <p>
         Revenue is primarily generated through sales of The Diamond Manifesto book. When
-        visitors purchase the book ($47):
+        visitors purchase the book ($14.99):
       </p>
       <ol>
         <li>Payment is processed securely through Stripe</li>

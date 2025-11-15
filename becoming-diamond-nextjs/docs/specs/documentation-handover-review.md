@@ -55,7 +55,7 @@ This document reviews the completeness of the Becoming Diamond documentation sit
 **Missing**:
 - How to view orders/purchases in Stripe Dashboard
 - How book fulfillment works (digital download delivery)
-- What happens after someone purchases ($47 book)
+- What happens after someone purchases ($14.99 book)
 - How to update book price or product details
 - Where to find sales reports and revenue data
 - Customer support for failed purchases

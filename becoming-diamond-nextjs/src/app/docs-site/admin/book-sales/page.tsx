@@ -17,7 +17,7 @@ export default function BookSalesPage() {
 
       <h2>Overview</h2>
       <p>
-        The Diamond Manifesto book is sold as a digital download for $47 through the platform's
+        The Diamond Manifesto book is sold as a digital download for $14.99 through the platform's
         book sales page. All payment processing, order management, and revenue tracking is
         handled through <strong>Stripe</strong>, a secure payment platform.
       </p>
@@ -29,7 +29,7 @@ export default function BookSalesPage() {
       <ol>
         <li>Customer visits the <Link href="/book" className="text-primary hover:underline">/book</Link> page</li>
         <li>Customer clicks "Purchase Now" and enters payment information</li>
-        <li>Stripe processes the payment securely ($47 charge)</li>
+        <li>Stripe processes the payment securely ($14.99 charge)</li>
         <li>Upon successful payment:
           <ul>
             <li>Customer is redirected to a success page</li>
@@ -85,7 +85,7 @@ export default function BookSalesPage() {
         <li>You'll see a list of all transactions, including:
           <ul>
             <li>Date and time of purchase</li>
-            <li>Amount ($47)</li>
+            <li>Amount ($14.99)</li>
             <li>Customer email</li>
             <li>Payment status (Succeeded, Failed, Refunded)</li>
             <li>Payment method (card type, last 4 digits)</li>
@@ -268,7 +268,7 @@ export default function BookSalesPage() {
         <li>Click <strong>"Refund payment"</strong> in the top right</li>
         <li>Enter the refund amount:
           <ul>
-            <li>Full refund: $47.00</li>
+            <li>Full refund: $14.99</li>
             <li>Partial refund: Enter custom amount</li>
           </ul>
         </li>
@@ -289,7 +289,7 @@ export default function BookSalesPage() {
 
       <h3>Changing the Book Price</h3>
       <p>
-        To change the book price from $47 to a different amount:
+        To change the book price from $14.99 to a different amount:
       </p>
       <ol>
         <li>In Stripe Dashboard, go to <strong>"Products"</strong> in the left sidebar</li>
