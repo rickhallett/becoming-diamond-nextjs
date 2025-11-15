@@ -16,6 +16,8 @@ interface Lead {
   email_status: string | null;
 }
 
+const ADMIN_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL || "support@becomingdiamond.com";
+
 export default function LeadsAdminPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -30,7 +32,7 @@ export default function LeadsAdminPage() {
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/auth/signin");
-    } else if (status === "authenticated" && session?.user?.email !== "support@becomingdiamond.com") {
+    } else if (status === "authenticated" && session?.user?.email !== ADMIN_EMAIL) {
       router.push("/app");
     }
   }, [status, session, router]);
@@ -58,7 +60,7 @@ export default function LeadsAdminPage() {
   };
 
   useEffect(() => {
-    if (status === "authenticated" && session?.user?.email === "support@becomingdiamond.com") {
+    if (status === "authenticated" && session?.user?.email === ADMIN_EMAIL) {
       fetchLeads();
     }
   }, [status, session, page]);
@@ -99,7 +101,7 @@ export default function LeadsAdminPage() {
     );
   }
 
-  if (status === "unauthenticated" || session?.user?.email !== "support@becomingdiamond.com") {
+  if (status === "unauthenticated" || session?.user?.email !== ADMIN_EMAIL) {
     return null;
   }
 

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "support@becomingdiamond.com";
+
 // Wrapper API for leads that checks NextAuth session
 // This allows the admin UI to access leads without exposing the API key
 export async function GET(request: NextRequest) {
@@ -8,7 +10,7 @@ export async function GET(request: NextRequest) {
     // Check authentication
     const session = await auth();
 
-    if (!session?.user?.email || session.user.email !== "support@becomingdiamond.com") {
+    if (!session?.user?.email || session.user.email !== ADMIN_EMAIL) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
         { status: 401 }

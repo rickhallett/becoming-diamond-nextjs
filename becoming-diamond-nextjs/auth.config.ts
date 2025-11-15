@@ -8,6 +8,8 @@
 import type { NextAuthConfig } from "next-auth";
 import { AUTH_CONFIG } from "@/config/features";
 
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "support@becomingdiamond.com";
+
 export const authConfig = {
   pages: {
     signIn: "/auth/signin",
@@ -23,9 +25,9 @@ export const authConfig = {
       const isOnDocs = nextUrl.pathname.startsWith("/docs-site");
       const userEmail = auth?.user?.email;
 
-      // Protect /docs-site/* routes (only support@becomingdiamond.com)
+      // Protect /docs-site/* routes (only admin email)
       if (isOnDocs) {
-        if (userEmail === "support@becomingdiamond.com") return true;
+        if (userEmail === ADMIN_EMAIL) return true;
         // Redirect unauthorized users (including other logged-in users)
         return Response.redirect(new URL("/", nextUrl));
       }
