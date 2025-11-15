@@ -48,23 +48,19 @@ export default function CMSOverviewPage() {
         can edit content through the CMS.
       </p>
 
-      <h2>CMS Workflow</h2>
+      <h2>Publishing Workflow</h2>
       <p>
-        The CMS operates on an environment-based workflow:
+        When you save changes in the CMS, they are committed to GitHub and automatically
+        deployed to the live site within 2-3 minutes.
       </p>
 
-      <ul>
-        <li>
-          <strong>Development (localhost)</strong>: Changes commit to <code>cms-staging</code> branch for testing
-        </li>
-        <li>
-          <strong>Production (live site)</strong>: Changes commit directly to <code>main</code> branch and go live immediately
-        </li>
-      </ul>
-
-      <p>
-        This allows you to test content changes locally before they affect the live site.
-      </p>
+      <div className="bg-primary/10 border border-primary/30 rounded-lg p-4 my-4">
+        <p className="text-sm text-neutral-300">
+          <strong>Important:</strong> Changes go live immediately after deployment.
+          Use the "Published" toggle on blog posts and sprint days to save drafts
+          without making them visible to users.
+        </p>
+      </div>
 
       <h2>Content Collections</h2>
       <p>The CMS manages several content types:</p>

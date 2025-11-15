@@ -121,15 +121,8 @@ export default function SprintManagementPage() {
       <ol>
         <li>Click "Save" in the top-right corner</li>
         <li>The CMS will commit your changes to GitHub</li>
-        <li>
-          In <strong>production</strong>, changes go directly to the <code className="px-2 py-1 bg-neutral-900 rounded text-sm">main</code> branch
-          and are live immediately after deployment
-        </li>
-        <li>
-          In <strong>development</strong> (localhost), changes go to the{" "}
-          <code className="px-2 py-1 bg-neutral-900 rounded text-sm">cms-staging</code> branch
-          for testing before merging
-        </li>
+        <li>Changes are automatically deployed to the live site within 2-3 minutes</li>
+        <li>Use the "Published" toggle to save drafts without making them visible to users</li>
       </ol>
 
       <h2>Markdown Formatting Guide</h2>
@@ -200,8 +193,8 @@ export default function SprintManagementPage() {
         <li><strong>Brevity</strong>: Users have 15-20 minutes per day; keep content focused</li>
         <li><strong>Action-oriented</strong>: Always include specific steps the user can take</li>
         <li><strong>Progressive difficulty</strong>: Earlier days should be Beginner, later days can be Advanced</li>
-        <li><strong>Test in staging</strong>: Use localhost to preview changes before publishing to production</li>
-        <li><strong>Version control</strong>: All changes are tracked in Git; you can always roll back (see Rollback Procedures)</li>
+        <li><strong>Use draft status</strong>: Set "Published" to false while working to avoid publishing incomplete content</li>
+        <li><strong>Version control</strong>: All changes are tracked in Git; you can always roll back with developer assistance (see Rollback Procedures)</li>
       </ul>
 
       <h2>Common Issues</h2>
@@ -223,9 +216,9 @@ export default function SprintManagementPage() {
       </p>
       <ul>
         <li>Check that you clicked "Save" (not just "Preview")</li>
-        <li>Wait 2-3 minutes for Vercel to rebuild and deploy</li>
+        <li>Wait 2-3 minutes for the site to rebuild and deploy</li>
         <li>Clear your browser cache or try incognito mode</li>
-        <li>Verify you're on the production site (not localhost)</li>
+        <li>Verify the "Published" toggle is set to true</li>
       </ul>
 
       <h3>Markdown Not Rendering</h3>

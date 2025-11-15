@@ -80,7 +80,7 @@ export default function ProfileManagementPage() {
       <ul>
         <li>Uses your Google account avatar if you logged in with Google OAuth</li>
         <li>Uses a default placeholder if no avatar is available</li>
-        <li>Shows a camera icon overlay on hover (feature in development)</li>
+        <li>Shows a camera icon overlay on hover</li>
       </ul>
 
       <FutureEnhancement>

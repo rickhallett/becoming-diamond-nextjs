@@ -178,13 +178,7 @@ export default function BlogManagementPage() {
         <li>Set "Published" to <strong>true</strong> when ready to go live</li>
         <li>Click "Save" in the top-right corner</li>
         <li>The CMS commits your changes to GitHub</li>
-        <li>
-          In <strong>production</strong>, the post goes live immediately after deployment (2-3 minutes)
-        </li>
-        <li>
-          In <strong>development</strong> (localhost), changes save to the{" "}
-          <code className="px-2 py-1 bg-neutral-900 rounded text-sm">cms-staging</code> branch for testing
-        </li>
+        <li>The post is automatically deployed to the live site within 2-3 minutes</li>
       </ol>
 
       <h2>Editing an Existing Post</h2>
