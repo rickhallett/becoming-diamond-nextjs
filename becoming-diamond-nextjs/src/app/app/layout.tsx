@@ -10,7 +10,8 @@ import {
     IconUser,
     IconMenu2,
     IconX,
-    IconSparkles
+    IconSparkles,
+    IconUsers
 } from "@tabler/icons-react";
 import { SignOutButton } from "@/components/auth/SignOutButton";
 import { UserAvatar } from "@/components/auth/UserAvatar";
@@ -22,15 +23,21 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const { data: session } = useSession();
 
+    // Check if user is admin
+    const isAdmin = session?.user?.email === 'support@becomingdiamond.com';
+
     // Define all possible navigation items
     const allNavItems = [
-        { name: "30 Day Sprint", href: "/app/sprint", icon: IconRocket, feature: null },
-        { name: "Profile", href: "/app/profile", icon: IconUser, feature: null },
+        { name: "30 Day Sprint", href: "/app/sprint", icon: IconRocket, feature: null, adminOnly: false },
+        { name: "Profile", href: "/app/profile", icon: IconUser, feature: null, adminOnly: false },
+        { name: "Lead Management", href: "/app/admin/leads", icon: IconUsers, feature: null, adminOnly: true },
     ];
 
-    // Filter navigation items based on feature flags
+    // Filter navigation items based on feature flags and admin status
     const navItems = allNavItems.filter(item => {
-        // If no feature flag is set, always show the item
+        // Check admin-only items
+        if (item.adminOnly && !isAdmin) return false;
+        // If no feature flag is set, show the item
         if (item.feature === null) return true;
         // Otherwise, check if the feature is enabled
         return FEATURES[item.feature];
