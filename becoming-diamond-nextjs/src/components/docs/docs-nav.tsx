@@ -89,7 +89,15 @@ const navigation: NavItem[] = [
   },
 ];
 
-function NavItemComponent({ item, level = 0 }: { item: NavItem; level?: number }) {
+function NavItemComponent({
+  item,
+  level = 0,
+  onNavigate
+}: {
+  item: NavItem;
+  level?: number;
+  onNavigate?: () => void;
+}) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(true);
   const hasChildren = item.items && item.items.length > 0;
@@ -114,7 +122,12 @@ function NavItemComponent({ item, level = 0 }: { item: NavItem; level?: number }
         {isOpen && item.items && (
           <div className="ml-4 space-y-1 mt-1 border-l-2 border-neutral-800/50 pl-2">
             {item.items.map((child, index) => (
-              <NavItemComponent key={index} item={child} level={level + 1} />
+              <NavItemComponent
+                key={index}
+                item={child}
+                level={level + 1}
+                onNavigate={onNavigate}
+              />
             ))}
           </div>
         )}
@@ -125,6 +138,7 @@ function NavItemComponent({ item, level = 0 }: { item: NavItem; level?: number }
   return (
     <Link
       href={item.href || "#"}
+      onClick={onNavigate}
       className={`block px-3 py-2 text-sm rounded-lg transition-all duration-200 group relative ${
         isActive
           ? "bg-gradient-to-r from-primary/20 to-cyan-500/10 text-primary font-medium border-l-2 border-primary"
@@ -139,11 +153,11 @@ function NavItemComponent({ item, level = 0 }: { item: NavItem; level?: number }
   );
 }
 
-export function DocsNav() {
+export function DocsNav({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <nav className="space-y-1">
       {navigation.map((item, index) => (
-        <NavItemComponent key={index} item={item} />
+        <NavItemComponent key={index} item={item} onNavigate={onNavigate} />
       ))}
     </nav>
   );
