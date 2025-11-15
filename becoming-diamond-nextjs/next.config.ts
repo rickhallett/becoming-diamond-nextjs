@@ -26,12 +26,15 @@ const nextConfig: NextConfig = {
   },
 
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
+    // Keep console.error and console.warn for error tracking
+    removeConsole: process.env.NODE_ENV === 'production' ? {
+      exclude: ['error', 'warn'],
+    } : false,
   },
 
   experimental: {
     // optimizeCss: true, // Disabled - causes build errors with document manipulation
-    optimizePackageImports: ['@tabler/icons-react', 'framer-motion']
+    optimizePackageImports: ['@tabler/icons-react', 'framer-motion'],
   },
 
   reactStrictMode: true,

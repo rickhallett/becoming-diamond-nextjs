@@ -56,11 +56,24 @@ function getBrowserName(): string {
  */
 async function sendToAxiom(event: ErrorEvent): Promise<void> {
   try {
+    // Log to console first (will appear in Vercel logs)
+    console.error('[CLIENT ERROR CAPTURED]', {
+      message: event.error_message,
+      type: event.error_type,
+      pathname: event.pathname,
+      is_mobile: event.is_mobile,
+      is_ios: event.is_ios,
+      is_android: event.is_android,
+      browser: event.browser,
+    });
+
     // Only send in production to avoid noise in development
     if (typeof process !== 'undefined' && process.env?.NODE_ENV === 'development') {
-      console.error('[DEV] Error would be sent to Axiom:', event);
+      console.error('[DEV] Full error event:', event);
       return;
     }
+
+    console.error('[AXIOM] Sending error to /api/log/error');
 
     const response = await fetch('/api/log/error', {
       method: 'POST',
@@ -73,11 +86,15 @@ async function sendToAxiom(event: ErrorEvent): Promise<void> {
     });
 
     if (!response.ok) {
-      console.error('Failed to send error to Axiom:', response.status);
+      console.error('[AXIOM] Failed to send error:', response.status, response.statusText);
+      const errorText = await response.text();
+      console.error('[AXIOM] Response body:', errorText);
+    } else {
+      console.error('[AXIOM] Error logged successfully');
     }
   } catch (err) {
-    // Silently fail - we don't want error tracking to cause more errors
-    console.error('Error tracking failed:', err);
+    // Log failure - we need to see if error tracking itself is failing
+    console.error('[AXIOM] Error tracking failed:', err);
   }
 }
 
@@ -122,8 +139,11 @@ export function trackError(error: Error, context?: ErrorContext): void {
 export function initializeErrorTracking(): void {
   if (typeof window === 'undefined') return;
 
+  console.error('[ERROR TRACKING] Initializing client-side error handlers');
+
   // Track unhandled errors
   window.addEventListener('error', (event) => {
+    console.error('[ERROR TRACKING] Unhandled error caught:', event.message);
     trackError(event.error || new Error(event.message), {
       source: 'window.onerror',
       filename: event.filename,
@@ -134,6 +154,7 @@ export function initializeErrorTracking(): void {
 
   // Track unhandled promise rejections
   window.addEventListener('unhandledrejection', (event) => {
+    console.error('[ERROR TRACKING] Unhandled rejection caught:', event.reason);
     trackError(
       event.reason instanceof Error
         ? event.reason
@@ -156,6 +177,7 @@ export function initializeErrorTracking(): void {
       message.includes('hydration') ||
       message.includes('did not match')
     ) {
+      console.error('[ERROR TRACKING] Hydration error detected:', message);
       trackError(new Error(message), {
         source: 'console.error',
         type: 'hydration',
@@ -165,4 +187,6 @@ export function initializeErrorTracking(): void {
 
     originalConsoleError.apply(console, args);
   };
+
+  console.error('[ERROR TRACKING] Initialization complete');
 }
