@@ -27,7 +27,7 @@ export default function ArchitecturePage() {
             technology stack, design patterns, and development workflows.
           </p>
           <Link
-            href="https://github.com/rickhallett/becoming-diamond-nextjs/blob/main/CLAUDE.md"
+            href="https://github.com/rickhallett/becoming-diamond-nextjs/blob/main/becoming-diamond-nextjs/CLAUDE.md"
             className="text-sm text-primary hover:underline"
             target="_blank"
           >

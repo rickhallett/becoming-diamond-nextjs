@@ -2,7 +2,7 @@
 import { DocsPage } from "@/components/docs/docs-page";
 import Link from "next/link";
 
-const GITHUB_BASE = "https://github.com/rickhallett/becoming-diamond-nextjs/blob/main/docs/specs";
+const GITHUB_BASE = "https://github.com/rickhallett/becoming-diamond-nextjs/blob/main/becoming-diamond-nextjs/docs/specs";
 
 export default function TechnicalSpecificationsPage() {
   return (
@@ -242,7 +242,7 @@ export default function TechnicalSpecificationsPage() {
         <p className="text-sm text-neutral-400">
           <strong>Browse all specifications:</strong>{" "}
           <Link
-            href="https://github.com/rickhallett/becoming-diamond-nextjs/tree/main/docs/specs"
+            href="https://github.com/rickhallett/becoming-diamond-nextjs/tree/main/becoming-diamond-nextjs/docs/specs"
             className="text-primary hover:underline"
             target="_blank"
           >
