@@ -1,8 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "cd becoming-diamond-nextjs && npm run build",
-  "devCommand": "cd becoming-diamond-nextjs && npm run dev",
-  "installCommand": "cd becoming-diamond-nextjs && npm install",
+  "buildCommand": "cd becoming-diamond-nextjs && bun run build",
+  "devCommand": "cd becoming-diamond-nextjs && bun run dev",
+  "installCommand": "cd becoming-diamond-nextjs && bun install",
   "framework": "nextjs",
   "outputDirectory": "becoming-diamond-nextjs/.next"
 }
