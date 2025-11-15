@@ -84,25 +84,12 @@ export default function CMSOverviewPage() {
         </div>
 
         <div className="border border-neutral-800 rounded-lg p-4">
-          <h3 className="text-lg font-semibold mb-2">Blog Posts</h3>
+          <h3 className="text-lg font-semibold mb-2">Blog Posts (Insights)</h3>
           <p className="text-sm text-neutral-400 mb-2">
-            Create and publish blog posts with author info, featured images, categories, and tags.
+            Create and publish blog posts with author info, featured images, categories, and tags. Displayed on the website under "Insights" navigation.
           </p>
           <Link
-            href="/docs-site/admin/blog-news"
-            className="text-sm text-primary hover:underline"
-          >
-            Learn more →
-          </Link>
-        </div>
-
-        <div className="border border-neutral-800 rounded-lg p-4">
-          <h3 className="text-lg font-semibold mb-2">News Updates</h3>
-          <p className="text-sm text-neutral-400 mb-2">
-            Post news updates and announcements with thumbnails and publication dates.
-          </p>
-          <Link
-            href="/docs-site/admin/blog-news"
+            href="/docs-site/admin/blog-management"
             className="text-sm text-primary hover:underline"
           >
             Learn more →
@@ -154,10 +141,10 @@ export default function CMSOverviewPage() {
           - Learn how to edit sprint days
         </li>
         <li>
-          <Link href="/docs-site/admin/blog-news" className="text-primary hover:underline">
-            Blog & News Management
+          <Link href="/docs-site/admin/blog-management" className="text-primary hover:underline">
+            Blog Management
           </Link>{" "}
-          - Publishing articles
+          - Publishing blog posts (Insights)
         </li>
         <li>
           <Link href="/docs-site/admin/rollback" className="text-primary hover:underline">

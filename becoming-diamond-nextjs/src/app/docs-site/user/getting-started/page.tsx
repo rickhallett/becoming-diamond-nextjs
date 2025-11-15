@@ -53,6 +53,7 @@ export default function UserGettingStartedPage() {
       <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-4 my-4">
         <p className="text-sm text-neutral-400">
           <strong>Try it:</strong>{" "}
+          {/* CLAUDE TODO: this links to a page that just says "Loading dashboard..." - this should be redirected by the auth guard */}
           <Link href="/app" className="text-primary hover:underline" target="_blank">
             Open your dashboard →
           </Link>

@@ -28,25 +28,7 @@ const config = {
   public_folder: '/uploads',
 
   collections: [
-    // News Updates Collection
-    {
-      name: 'news',
-      label: 'News Updates',
-      folder: 'becoming-diamond-nextjs/content/news',
-      create: true,
-      slug: '{{year}}-{{month}}-{{day}}-{{slug}}',
-      fields: [
-        { label: 'Title', name: 'title', widget: 'string' },
-        { label: 'Date', name: 'date', widget: 'datetime' },
-        { label: 'Featured Image', name: 'thumbnail', widget: 'image', required: false },
-        { label: 'Description', name: 'description', widget: 'text' },
-        { label: 'Body', name: 'body', widget: 'markdown' },
-        { label: 'Tags', name: 'tags', widget: 'list', required: false },
-        { label: 'Published', name: 'published', widget: 'boolean', default: true }
-      ]
-    },
-
-    // Blog Posts Collection
+    // Blog Posts Collection (displayed as "Insights" on website)
     {
       name: 'blog',
       label: 'Blog Posts',
@@ -63,35 +45,6 @@ const config = {
         { label: 'Categories', name: 'categories', widget: 'list' },
         { label: 'Tags', name: 'tags', widget: 'list' },
         { label: 'Published', name: 'published', widget: 'boolean', default: true }
-      ]
-    },
-
-    // Pages Collection
-    {
-      name: 'pages',
-      label: 'Pages',
-      files: [
-        {
-          label: 'About Page',
-          name: 'about',
-          file: 'becoming-diamond-nextjs/content/pages/about.md',
-          fields: [
-            { label: 'Title', name: 'title', widget: 'string' },
-            { label: 'Body', name: 'body', widget: 'markdown' }
-          ]
-        },
-        {
-          label: 'Contact Page',
-          name: 'contact',
-          file: 'becoming-diamond-nextjs/content/pages/contact.md',
-          fields: [
-            { label: 'Title', name: 'title', widget: 'string' },
-            { label: 'Email', name: 'email', widget: 'string' },
-            { label: 'Phone', name: 'phone', widget: 'string', required: false },
-            { label: 'Address', name: 'address', widget: 'text', required: false },
-            { label: 'Body', name: 'body', widget: 'markdown' }
-          ]
-        }
       ]
     },
 

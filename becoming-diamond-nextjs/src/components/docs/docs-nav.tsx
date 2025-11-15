@@ -45,8 +45,8 @@ const navigation: NavItem[] = [
         href: "/docs-site/admin/sprint-management",
       },
       {
-        title: "Blog & News",
-        href: "/docs-site/admin/blog-news",
+        title: "Blog Management",
+        href: "/docs-site/admin/blog-management",
       },
       {
         title: "Rollback Procedures",
