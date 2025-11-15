@@ -17,18 +17,39 @@ import {
 } from '@tabler/icons-react';
 
 export default function SprintOverviewPage() {
-  const [stats, setStats] = useState<ReturnType<typeof getProgressStats> | null>(null);
+  const [stats, setStats] = useState<Awaited<ReturnType<typeof getProgressStats>> | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    setMounted(true);
-    setStats(getProgressStats());
+    async function loadProgress() {
+      setMounted(true);
+      try {
+        const progressStats = await getProgressStats();
+        setStats(progressStats);
+      } catch (err) {
+        setError('Failed to load progress. Please try again.');
+        console.error('Error loading progress:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadProgress();
   }, []);
 
-  if (!mounted || !stats) {
+  if (!mounted || loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-gray-400">Loading...</div>
+      </div>
+    );
+  }
+
+  if (error || !stats) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-red-400">{error || 'Failed to load progress'}</div>
       </div>
     );
   }

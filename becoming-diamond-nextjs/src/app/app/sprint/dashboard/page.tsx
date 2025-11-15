@@ -22,16 +22,38 @@ interface DayData {
 
 export default function SprintDashboardPage() {
   const [days, setDays] = useState<DayData[]>([]);
-  const [stats, setStats] = useState<ReturnType<typeof getProgressStats> | null>(null);
+  const [stats, setStats] = useState<Awaited<ReturnType<typeof getProgressStats>> | null>(null);
   const [loading, setLoading] = useState(true);
+  const [completedDays, setCompletedDays] = useState<Set<number>>(new Set());
+  const [accessibleDays, setAccessibleDays] = useState<Set<number>>(new Set());
 
   useEffect(() => {
     async function loadData() {
       try {
         const response = await fetch('/api/sprint/days');
         const data = await response.json();
-        setDays(data.days || []);
-        setStats(getProgressStats());
+        const daysData = data.days || [];
+        setDays(daysData);
+
+        const progressStats = await getProgressStats();
+        setStats(progressStats);
+
+        // Pre-calculate which days are completed and accessible
+        const completed = new Set<number>();
+        const accessible = new Set<number>();
+
+        for (const day of daysData) {
+          const dayNumber = day.frontmatter.day as number;
+          if (await isDayCompleted(dayNumber)) {
+            completed.add(dayNumber);
+          }
+          if (await isDayAccessible(dayNumber)) {
+            accessible.add(dayNumber);
+          }
+        }
+
+        setCompletedDays(completed);
+        setAccessibleDays(accessible);
       } catch (error) {
         log.error('Error loading sprint days:', 'App', error);
       } finally {
@@ -42,10 +64,15 @@ export default function SprintDashboardPage() {
     loadData();
   }, []);
 
-  const handleReset = () => {
+  const handleReset = async () => {
     if (confirm('Reset all sprint progress? This will take you back to Day 1.')) {
-      resetProgress();
-      window.location.reload();
+      try {
+        await resetProgress();
+        window.location.reload();
+      } catch (error) {
+        log.error('Error resetting progress:', 'App', error);
+        alert('Failed to reset progress. Please try again.');
+      }
     }
   };
 
@@ -134,8 +161,8 @@ export default function SprintDashboardPage() {
                   title={day.frontmatter.title}
                   subtitle={day.frontmatter.subtitle as string}
                   duration={(day.frontmatter.duration as string) || '15 minutes'}
-                  isCompleted={isDayCompleted(dayNumber)}
-                  isAccessible={isDayAccessible(dayNumber)}
+                  isCompleted={completedDays.has(dayNumber)}
+                  isAccessible={accessibleDays.has(dayNumber)}
                   index={dayIndex}
                 />
               );

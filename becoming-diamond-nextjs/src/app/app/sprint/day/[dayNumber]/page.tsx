@@ -50,8 +50,8 @@ export default function SprintDayPage() {
     async function loadDay() {
       try {
         // Check accessibility first
-        const accessible = isDayAccessible(dayNumber);
-        const completed = isDayCompleted(dayNumber);
+        const accessible = await isDayAccessible(dayNumber);
+        const completed = await isDayCompleted(dayNumber);
 
         setIsAccessible(accessible);
         setIsCompleted(completed);
@@ -83,19 +83,20 @@ export default function SprintDayPage() {
     }
   }, [dayNumber, router]);
 
-  const handleMarkComplete = () => {
+  const handleMarkComplete = async () => {
     try {
       setCompleting(true);
-      markDayComplete(dayNumber);
+      const progress = await markDayComplete(dayNumber);
       setIsCompleted(true);
 
       // Calculate streak and show celebration modal
-      const streak = calculateStreak();
+      const streak = calculateStreak(progress.completedDays);
       setStreakCount(streak);
       setShowModal(true);
-      setCompleting(false);
     } catch (error) {
       log.error('Error marking day complete:', 'App', error);
+      alert('Failed to mark day complete. Please try again.');
+    } finally {
       setCompleting(false);
     }
   };
@@ -160,7 +161,7 @@ export default function SprintDayPage() {
           <span className="text-sm text-gray-500 px-3">
             Day {dayNumber} of 30
           </span>
-          {hasNext && isDayCompleted(dayNumber) && (
+          {hasNext && isCompleted && (
             <Link
               href={`/app/sprint/day/${dayNumber + 1}`}
               className="p-2 text-gray-400 hover:text-primary transition-colors"

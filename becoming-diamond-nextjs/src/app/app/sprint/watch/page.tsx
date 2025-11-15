@@ -50,15 +50,18 @@ export default function SprintWatchPage() {
   const [completedDays, setCompletedDays] = useState<Set<number>>(new Set());
 
   useEffect(() => {
-    setMounted(true);
-    // Load completed days
-    const completed = new Set<number>();
-    for (let day = 1; day <= 22; day++) {
-      if (isDayCompleted(day)) {
-        completed.add(day);
+    async function loadCompletedDays() {
+      setMounted(true);
+      // Load completed days
+      const completed = new Set<number>();
+      for (let day = 1; day <= 22; day++) {
+        if (await isDayCompleted(day)) {
+          completed.add(day);
+        }
       }
+      setCompletedDays(completed);
     }
-    setCompletedDays(completed);
+    loadCompletedDays();
   }, []);
 
   const handleVideoEnded = () => {
