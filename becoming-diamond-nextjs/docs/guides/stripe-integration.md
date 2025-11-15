@@ -4,12 +4,12 @@ Complete guide for the Stripe-powered book purchase functionality.
 
 ## Overview
 
-The book sales section is fully integrated with Stripe Checkout for processing $47 book purchases.
+The book sales section is fully integrated with Stripe Checkout for processing $14.99 book purchases.
 
 **Product Details:**
 - Product ID: `prod_T9jYQj5hLB9gYw`
 - Price ID: `price_1SDQ50RVLr5O3VREdsw5inuj`
-- Price: $47 (discounted from $77)
+- Price: $14.99
 - Book: "Turning Snowflakes into Diamonds" by Michael Dugan
 
 ---
@@ -47,7 +47,7 @@ The product and price are already configured in your Stripe account:
 1. Go to **Products** → Click on "Turning Snowflakes into Diamonds"
 2. Confirm Product ID matches: `prod_T9jYQj5hLB9gYw`
 3. Under Pricing, confirm Price ID matches: `price_1SDQ50RVLr5O3VREdsw5inuj`
-4. Verify price is $47.00 USD
+4. Verify price is $14.99 USD
 
 ---
 
@@ -68,7 +68,7 @@ The product and price are already configured in your Stripe account:
 
 3. Navigate to the book section on your landing page
 
-4. Click "Buy Now - $47"
+4. Click "Buy Now - $14.99"
 
 5. Use Stripe's test card numbers:
    - Success: `4242 4242 4242 4242`
@@ -381,5 +381,5 @@ Before going live:
 - Product: Turning Snowflakes into Diamonds
 - Product ID: `prod_T9jYQj5hLB9gYw`
 - Price ID: `price_1SDQ50RVLr5O3VREdsw5inuj`
-- Amount: $47.00 USD
+- Amount: $14.99 USD
 - Status: ✅ Ready to use

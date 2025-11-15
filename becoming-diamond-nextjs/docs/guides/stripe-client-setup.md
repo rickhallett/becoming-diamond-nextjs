@@ -1,6 +1,6 @@
 # Stripe Account Setup Guide for Clients
 
-This guide will walk you through setting up your Stripe account to accept payments for your book "Turning Snowflakes into Diamonds" ($47). You'll provide your developer with the necessary information to connect the website to your payment account.
+This guide will walk you through setting up your Stripe account to accept payments for your book "Turning Snowflakes into Diamonds" ($14.99). You'll provide your developer with the necessary information to connect the website to your payment account.
 
 No technical experience required - just follow each step carefully.
 
@@ -346,7 +346,7 @@ Before accepting real customer payments, verify:
 - ✅ Identity verification complete (if required)
 - ✅ Business details filled in
 - ✅ Tax settings configured
-- ✅ Product created with correct price ($47)
+- ✅ Product created with correct price ($14.99)
 - ✅ Email notifications enabled
 - ✅ Developer has tested in Test mode
 - ✅ You understand how to view payments in dashboard

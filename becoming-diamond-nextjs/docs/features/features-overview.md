@@ -210,12 +210,12 @@ Becoming Diamond is a modern web application built with Next.js 15 that combines
   - Book cover image asset
   - Social proof with testimonials
   - Urgency indicators (limited time offer)
-  - Price display: $47 (discounted from $77)
+  - Price display: $14.99
   - Stripe Checkout integration
   - Mobile-responsive design
 
 **Product Details:**
-- Price: $47 USD
+- Price: $14.99 USD
 - Product ID: `prod_T9jYQj5hLB9gYw`
 - Price ID: `price_1SDQ50RVLr5O3VREdsw5inuj`
 
@@ -630,7 +630,7 @@ DATABASE_AUTH_TOKEN=<turso-token>
 
 1. **Book Sales**
    - Product: "Turning Snowflakes into Diamonds"
-   - Price: $47 (discounted from $77)
+   - Price: $14.99
    - Stripe Checkout integration
    - Success/cancel page redirects
 
@@ -646,7 +646,7 @@ DATABASE_AUTH_TOKEN=<turso-token>
 {
   productId: "prod_T9jYQj5hLB9gYw",
   priceId: "price_1SDQ50RVLr5O3VREdsw5inuj",
-  amount: 4700, // $47.00
+  amount: 1499, // $14.99
   currency: "usd"
 }
 ```
@@ -1065,7 +1065,7 @@ LEADS_API_SECRET=your-admin-secret # for admin endpoints
 
 ### Phase 8: E-Commerce Expansion
 
-- ✅ Book sales ($47) - Complete
+- ✅ Book sales ($14.99) - Complete
 - 🔨 Program tier payments
   - Recorded Version ($97)
   - Full Program ($497)

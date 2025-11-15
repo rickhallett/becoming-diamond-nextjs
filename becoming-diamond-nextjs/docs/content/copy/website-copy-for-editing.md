@@ -183,7 +183,7 @@
 ### Book Sales Section
 
 **Badge:**
-> Limited Time: Save $30
+> Special Price
 
 **Book Title:**
 > Turning **Snowflakes**
@@ -196,9 +196,7 @@
 > by Michael Dugan
 
 **Pricing:**
-- **Sale Price:** $47
-- **Original Price:** $77 (crossed out)
-- **Save:** $30
+- **Price:** $14.99
 
 **Section Heading:**
 > What You'll Discover:
@@ -221,7 +219,7 @@
    - Master the one thing machines will never replace: human presence
 
 **Primary CTA:**
-- Buy Now - $47
+- Buy Now - $14.99
 
 **Secondary CTA:**
 - Read Free Sample
