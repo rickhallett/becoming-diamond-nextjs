@@ -263,19 +263,19 @@ export function Globe({ globeConfig, data }: WorldProps) {
 }
 
 export function WebGLRendererConfig() {
-  const { gl, size } = useThree();
+  const { gl } = useThree();
 
   useEffect(() => {
-    gl.setPixelRatio(window.devicePixelRatio);
-    gl.setSize(size.width, size.height);
+    // Only set clear color once, size is handled by Canvas automatically
     gl.setClearColor(0xffaaff, 0);
-  }, [gl, size]);
+  }, [gl]);
 
   return null;
 }
 
 export function World(props: WorldProps) {
   const { globeConfig } = props;
+  const [hasWebGLError, setHasWebGLError] = useState(false);
 
   // Memoize scene and camera to prevent recreation on every render
   const scene = useState(() => {
@@ -286,11 +286,62 @@ export function World(props: WorldProps) {
 
   const camera = useState(() => new PerspectiveCamera(50, aspect, 180, 1800))[0];
 
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      // Dispose scene resources
+      scene.traverse((object: any) => {
+        if (object.geometry) {
+          object.geometry.dispose();
+        }
+        if (object.material) {
+          if (Array.isArray(object.material)) {
+            object.material.forEach((material: any) => material.dispose());
+          } else {
+            object.material.dispose();
+          }
+        }
+      });
+    };
+  }, [scene]);
+
+  if (hasWebGLError) {
+    return (
+      <div className="w-full h-full flex items-center justify-center bg-black/20 rounded-lg border border-white/10">
+        <div className="text-center p-8 max-w-md">
+          <div className="text-4xl mb-4">🌍</div>
+          <h3 className="text-xl font-semibold text-white mb-2">
+            Global Community
+          </h3>
+          <p className="text-gray-400 text-sm">
+            Thousands of leaders across six continents are transforming pressure into clarity.
+            The movement is growing.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <Canvas
       scene={scene}
       camera={camera}
       style={{ width: '100%', height: '100%' }}
+      onCreated={({ gl }) => {
+        // Optimize WebGL settings to reduce memory usage
+        gl.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      }}
+      gl={{
+        // Prevent context loss and optimize performance
+        preserveDrawingBuffer: false,
+        antialias: false,
+        alpha: true,
+        powerPreference: 'high-performance',
+      }}
+      onError={(error) => {
+        console.error('[Globe] WebGL Error:', error);
+        setHasWebGLError(true);
+      }}
     >
       <WebGLRendererConfig />
       <ambientLight color={globeConfig.ambientLight} intensity={0.6} />
