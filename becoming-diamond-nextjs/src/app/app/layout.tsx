@@ -64,10 +64,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                             <div className="absolute inset-0 bg-primary/20 rounded-lg blur-md"></div>
                         </div>
                         <div>
-                            <h1 className="text-lg font-light tracking-wide">
+                            <h1 className="text-lg md:text-xl lg:text-lg font-light tracking-wide">
                                 BECOMING <span className="text-primary font-normal">DIAMOND</span>
                             </h1>
-                            <p className="text-xs text-gray-500">Member Portal</p>
+                            <p className="text-xs md:text-sm lg:text-xs text-gray-500">Member Portal</p>
                         </div>
                     </Link>
                 </div>
@@ -92,7 +92,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                                         <div className="absolute left-0 w-1 h-8 bg-primary rounded-r-full" />
                                     )}
                                     <Icon className="w-5 h-5 flex-shrink-0" />
-                                    <span className="font-light">{item.name}</span>
+                                    <span className="font-light text-sm md:text-base">{item.name}</span>
                                 </div>
                             </Link>
                         );
@@ -106,10 +106,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                         <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-white/5">
                             <UserAvatar size={40} />
                             <div className="flex-1 min-w-0">
-                                <p className="text-sm font-medium text-white truncate">
+                                <p className="text-sm md:text-base font-medium text-white truncate">
                                     {session.user.name || "Member"}
                                 </p>
-                                <p className="text-xs text-gray-500 truncate">
+                                <p className="text-xs md:text-sm text-gray-500 truncate">
                                     {session.user.email}
                                 </p>
                             </div>
@@ -123,12 +123,12 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
             {/* Mobile Header */}
             <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-sm border-b border-white/10">
-                <div className="flex items-center justify-between p-4">
+                <div className="flex items-center justify-between p-3 sm:p-4">
                     <Link href="/app" className="flex items-center gap-2">
                         <div className="w-8 h-8 bg-gradient-to-br from-primary/40 to-primary/10 rounded-lg flex items-center justify-center">
                             <IconSparkles className="w-5 h-5 text-primary" />
                         </div>
-                        <span className="text-sm font-light">
+                        <span className="text-sm font-light hidden min-[360px]:inline">
                             BECOMING <span className="text-primary">DIAMOND</span>
                         </span>
                     </Link>
@@ -167,10 +167,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                                     <div className="absolute inset-0 bg-primary/20 rounded-lg blur-md"></div>
                                 </div>
                                 <div>
-                                    <h1 className="text-lg font-light tracking-wide">
+                                    <h1 className="text-lg md:text-xl font-light tracking-wide">
                                         BECOMING <span className="text-primary font-normal">DIAMOND</span>
                                     </h1>
-                                    <p className="text-xs text-gray-500">Member Portal</p>
+                                    <p className="text-xs md:text-sm text-gray-500">Member Portal</p>
                                 </div>
                             </Link>
                         </div>
@@ -195,7 +195,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                                                 <div className="absolute left-0 w-1 h-8 bg-primary rounded-r-full" />
                                             )}
                                             <Icon className="w-6 h-6 flex-shrink-0" />
-                                            <span className="font-light">{item.name}</span>
+                                            <span className="font-light text-sm md:text-base">{item.name}</span>
                                         </div>
                                     </Link>
                                 );
@@ -209,10 +209,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                                 <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-white/5">
                                     <UserAvatar size={40} />
                                     <div className="flex-1 min-w-0">
-                                        <p className="text-sm font-medium text-white truncate">
+                                        <p className="text-sm md:text-base font-medium text-white truncate">
                                             {session.user.name || "Member"}
                                         </p>
-                                        <p className="text-xs text-gray-500 truncate">
+                                        <p className="text-xs md:text-sm text-gray-500 truncate">
                                             {session.user.email}
                                         </p>
                                     </div>
