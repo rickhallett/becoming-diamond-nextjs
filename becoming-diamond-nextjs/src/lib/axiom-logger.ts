@@ -2,8 +2,8 @@
  * Centralized Axiom Logger Configuration
  *
  * This module provides a singleton logger instance configured with:
- * - Server-side: AxiomJSTransport (Axiom cloud) + ConsoleTransport
- * - Client-side: ConsoleTransport only (browser-safe)
+ * - Server-side: AxiomJSTransport (Axiom cloud only, no console)
+ * - Client-side: Silent no-op (browser-safe)
  * - Next.js formatters: Adds Next.js-specific context
  *
  * Usage:
@@ -13,18 +13,24 @@
  * await log.error('Error occurred', { error: err.message, timestamp: new Date().toISOString() });
  */
 
-import { Logger, ConsoleTransport } from '@axiomhq/logging';
+import { Logger } from '@axiomhq/logging';
 
 // Detect if we're in a browser environment
 const isBrowser = typeof window !== 'undefined';
 
+// No-op transport for browser environment
+class NoOpTransport {
+  async log() {
+    // Silent - do nothing
+  }
+}
+
 // Create logger with environment-appropriate configuration
 function createLogger() {
-  // Browser environment: Console only (no Node.js APIs)
+  // Browser environment: No-op transport (silent)
   if (isBrowser) {
-    const consoleTransport = new ConsoleTransport();
     return new Logger({
-      transports: [consoleTransport],
+      transports: [new NoOpTransport() as any],
     });
   }
 
@@ -43,8 +49,6 @@ function createLogger() {
       orgId: process.env.AXIOM_ORG_ID,
     };
 
-    const consoleTransport = new ConsoleTransport();
-
     // Add Axiom transport if token is configured
     const axiomTransport = axiomConfig.token
       ? new AxiomJSTransport({
@@ -56,20 +60,17 @@ function createLogger() {
         })
       : null;
 
-    const transports = axiomTransport
-      ? [axiomTransport, consoleTransport]
-      : [consoleTransport];
+    // Only use Axiom transport, no console
+    const transports = axiomTransport ? [axiomTransport] : [new NoOpTransport() as any];
 
     return new Logger({
       transports: transports as [any, ...any[]],
       formatters: nextJsFormatters,
     });
-  } catch (error) {
-    // Fallback to console-only if server imports fail
-    console.warn('Failed to initialize Axiom logger, using console only:', error);
-    const consoleTransport = new ConsoleTransport();
+  } catch {
+    // Fallback to no-op if server imports fail
     return new Logger({
-      transports: [consoleTransport],
+      transports: [new NoOpTransport() as any],
     });
   }
 }

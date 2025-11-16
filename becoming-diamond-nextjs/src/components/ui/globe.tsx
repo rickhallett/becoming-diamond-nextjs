@@ -276,12 +276,20 @@ export function WebGLRendererConfig() {
 
 export function World(props: WorldProps) {
   const { globeConfig } = props;
-  const scene = new Scene();
-  scene.fog = new Fog(0xffffff, 400, 2000);
+
+  // Memoize scene and camera to prevent recreation on every render
+  const scene = useState(() => {
+    const s = new Scene();
+    s.fog = new Fog(0xffffff, 400, 2000);
+    return s;
+  })[0];
+
+  const camera = useState(() => new PerspectiveCamera(50, aspect, 180, 1800))[0];
+
   return (
     <Canvas
       scene={scene}
-      camera={new PerspectiveCamera(50, aspect, 180, 1800)}
+      camera={camera}
       style={{ width: '100%', height: '100%' }}
     >
       <WebGLRendererConfig />
