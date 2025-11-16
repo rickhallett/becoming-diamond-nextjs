@@ -125,21 +125,21 @@
 
   /* TNITD Typography System - Ultrathink */
   h1 {
-    font-size: clamp(3.5rem, 8vw, 6rem);
+    font-size: clamp(3rem, 8vw, 6rem);
     font-weight: 100;
     letter-spacing: -0.02em;
     line-height: 0.95;
   }
 
   h2 {
-    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-size: clamp(2rem, 5vw, 3.5rem);
     font-weight: 200;
     letter-spacing: -0.01em;
     line-height: 1.1;
   }
 
   h3 {
-    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
     font-weight: 200;
     letter-spacing: -0.01em;
     line-height: 1.2;
@@ -147,7 +147,7 @@
 
   p,
   .body-text {
-    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    font-size: clamp(1.125rem, 2vw, 1.25rem);
     font-weight: 300;
     line-height: 1.7;
   }

@@ -57,11 +57,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 {/* Logo */}
                 <div className="p-6 border-b border-white/10">
                     <Link href="/app" className="flex items-center gap-3">
-                        <div className="relative">
-                            <div className="w-10 h-10 bg-gradient-to-br from-primary/40 to-primary/10 rounded-lg flex items-center justify-center">
-                                <IconSparkles className="w-6 h-6 text-primary" />
-                            </div>
-                            <div className="absolute inset-0 bg-primary/20 rounded-lg blur-md"></div>
+                        <div className="w-10 h-10 bg-gradient-to-br from-primary/40 to-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <IconSparkles className="w-6 h-6 text-primary" />
                         </div>
                         <div>
                             <h1 className="text-lg md:text-xl lg:text-lg font-light tracking-wide">
@@ -160,11 +157,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                         {/* Logo */}
                         <div className="p-6 border-b border-white/10">
                             <Link href="/app" className="flex items-center gap-3" onClick={() => setIsSidebarOpen(false)}>
-                                <div className="relative">
-                                    <div className="w-10 h-10 bg-gradient-to-br from-primary/40 to-primary/10 rounded-lg flex items-center justify-center">
-                                        <IconSparkles className="w-6 h-6 text-primary" />
-                                    </div>
-                                    <div className="absolute inset-0 bg-primary/20 rounded-lg blur-md"></div>
+                                <div className="w-10 h-10 bg-gradient-to-br from-primary/40 to-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <IconSparkles className="w-6 h-6 text-primary" />
                                 </div>
                                 <div>
                                     <h1 className="text-lg md:text-xl font-light tracking-wide">
