@@ -317,13 +317,13 @@ export default function LandingPage() {
                         quote: "This isn’t about products. It’s about presence. The clarity, the energy, the tools—they stay with you long after the class ends.",
                         name: "James M.",
                         designation: "Entrepreneur",
-                        src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=600&h=600&fit=crop"
+                        src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&h=600&fit=crop"
                     },
                     {
                         quote: "This wasn’t just motivation. It was a transformation from the inside out.",
                         name: "Misty U.",
                         designation: "Finance Professional",
-                        src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&h=600&fit=crop"
+                        src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=600&h=600&fit=crop"
                     },
                     {
                         quote: "Michael’s training gave me my confidence back—not just at work, but in life. This was bigger than sales. This was soul work.",
