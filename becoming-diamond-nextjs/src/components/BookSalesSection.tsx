@@ -127,8 +127,8 @@ export function BookSalesSection({ className }: BookSalesSectionProps) {
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-          className="flex justify-center mb-8"
+          viewport={{ once: true, margin: "0px 0px -100px 0px" }}
+          className="flex justify-center mb-8 will-change-[transform,opacity]"
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-yellow-500/20 to-yellow-600/20 border border-yellow-500/30">
             <span className="relative flex h-2 w-2">
@@ -148,8 +148,8 @@ export function BookSalesSection({ className }: BookSalesSectionProps) {
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="relative"
+            viewport={{ once: true, margin: "0px 0px -100px 0px" }}
+            className="relative will-change-[transform,opacity]"
           >
             <div className="relative group">
               {/* Glow Effect Behind Book */}
@@ -198,7 +198,7 @@ export function BookSalesSection({ className }: BookSalesSectionProps) {
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.5, duration: 0.5 }}
-                viewport={{ once: true }}
+                viewport={{ once: true, margin: "0px 0px -100px 0px" }}
                 className="absolute -bottom-6 -right-6 bg-secondary/90 backdrop-blur-sm border border-primary/30 rounded-xl p-4 shadow-xl"
               >
                 <div className="text-xs text-gray-400 mb-1">Readers say:</div>
@@ -219,7 +219,7 @@ export function BookSalesSection({ className }: BookSalesSectionProps) {
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "0px 0px -100px 0px" }}
             className="space-y-6"
           >
             {/* Title & Subtitle */}
@@ -228,7 +228,7 @@ export function BookSalesSection({ className }: BookSalesSectionProps) {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
-                viewport={{ once: true }}
+                viewport={{ once: true, margin: "0px 0px -100px 0px" }}
                 className="text-4xl md:text-5xl lg:text-6xl font-light mb-4"
               >
                 Turning <span className="text-primary">Snowflakes</span>
@@ -240,7 +240,7 @@ export function BookSalesSection({ className }: BookSalesSectionProps) {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                viewport={{ once: true }}
+                viewport={{ once: true, margin: "0px 0px -100px 0px" }}
                 className="text-xl md:text-2xl text-gray-400 font-light mb-2"
               >
                 Turn Pressure Into Power in the Age of AI
@@ -250,7 +250,7 @@ export function BookSalesSection({ className }: BookSalesSectionProps) {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                viewport={{ once: true }}
+                viewport={{ once: true, margin: "0px 0px -100px 0px" }}
                 className="text-lg text-gray-500 italic"
               >
                 by Michael Dugan
@@ -262,7 +262,7 @@ export function BookSalesSection({ className }: BookSalesSectionProps) {
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "0px 0px -100px 0px" }}
               className="flex items-baseline gap-4"
             >
               <div className="text-5xl md:text-6xl font-light text-primary">
@@ -279,7 +279,7 @@ export function BookSalesSection({ className }: BookSalesSectionProps) {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "0px 0px -100px 0px" }}
               className="space-y-3"
             >
               <h3 className="text-xl font-normal text-white mb-4">
@@ -318,7 +318,7 @@ export function BookSalesSection({ className }: BookSalesSectionProps) {
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.4, delay: 0.5 + index * 0.1 }}
-                  viewport={{ once: true }}
+                  viewport={{ once: true, margin: "0px 0px -100px 0px" }}
                   className="flex items-start gap-3 p-3 rounded-lg hover:bg-secondary/30 transition-colors"
                 >
                   <span className="text-2xl flex-shrink-0">{benefit.icon}</span>
@@ -335,7 +335,7 @@ export function BookSalesSection({ className }: BookSalesSectionProps) {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.9 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "0px 0px -100px 0px" }}
               className="space-y-4 pt-4"
             >
               {/* Primary CTA */}
@@ -386,7 +386,7 @@ export function BookSalesSection({ className }: BookSalesSectionProps) {
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 1.1 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "0px 0px -100px 0px" }}
               className="pt-4 border-t border-white/10"
             >
               <div className="flex items-center gap-6 text-sm text-gray-400">
@@ -418,7 +418,7 @@ export function BookSalesSection({ className }: BookSalesSectionProps) {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "0px 0px -100px 0px" }}
           className="mt-16 pt-12 border-t border-white/10"
         >
           <div className="grid md:grid-cols-3 gap-8 text-center">
@@ -444,7 +444,7 @@ export function BookSalesSection({ className }: BookSalesSectionProps) {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
-                viewport={{ once: true }}
+                viewport={{ once: true, margin: "0px 0px -100px 0px" }}
                 className="bg-secondary/30 backdrop-blur-sm border border-white/10 rounded-xl p-6"
               >
                 <div className="flex justify-center mb-3">

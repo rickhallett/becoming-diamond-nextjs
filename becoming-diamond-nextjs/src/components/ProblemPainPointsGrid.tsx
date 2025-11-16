@@ -37,8 +37,8 @@ export function ProblemPainPointsGrid({
                     initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
-                    viewport={{ once: true, amount: 0.3 }}
-                    className="text-center mb-16"
+                    viewport={{ once: true, amount: 0.2, margin: "0px 0px -100px 0px" }}
+                    className="text-center mb-16 will-change-[transform,opacity]"
                 >
                     <h2 className="mb-6">{title}</h2>
                     <p className="text-xl text-gray-300 max-w-3xl mx-auto">
@@ -53,8 +53,8 @@ export function ProblemPainPointsGrid({
                             initial={{ opacity: 0 }}
                             whileInView={{ opacity: 1 }}
                             transition={{ duration: 0.6, delay: index * 0.1 }}
-                            viewport={{ once: true }}
-                            className="bg-secondary/50 backdrop-blur-sm border border-white/10 rounded-lg p-6 hover:border-primary/50 transition-all"
+                            viewport={{ once: true, margin: "0px 0px -50px 0px" }}
+                            className="bg-secondary/50 backdrop-blur-sm border border-white/10 rounded-lg p-6 hover:border-primary/50 transition-all will-change-[opacity]"
                         >
                             <h3 className="text-xl mb-3 font-normal">{item.title}</h3>
                             <p className="text-gray-400 text-base">{item.description}</p>
@@ -67,8 +67,8 @@ export function ProblemPainPointsGrid({
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         transition={{ duration: 0.8 }}
-                        viewport={{ once: true }}
-                        className="text-center"
+                        viewport={{ once: true, margin: "0px 0px -100px 0px" }}
+                        className="text-center will-change-[opacity]"
                     >
                         <blockquote className="text-2xl md:text-3xl font-light italic text-gray-300 max-w-4xl mx-auto">
                             {quote.text}

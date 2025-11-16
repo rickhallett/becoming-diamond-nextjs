@@ -40,14 +40,14 @@ export function HeroSection({
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/50 to-black z-[1]" />
 
             <motion.div
-                className="relative z-10 text-center px-6 max-w-6xl mx-auto pt-20"
+                className="relative z-10 text-center px-6 max-w-6xl mx-auto pt-20 will-change-[transform,opacity]"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: [0.645, 0.045, 0.355, 1] }}
             >
                 {badge && (
                     <motion.div
-                        className="inline-block mb-6 px-4 py-2 border border-primary/30 rounded-full text-sm text-primary"
+                        className="inline-block mb-6 px-4 py-2 border border-primary/30 rounded-full text-sm text-primary will-change-[transform,opacity]"
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 0.2 }}
