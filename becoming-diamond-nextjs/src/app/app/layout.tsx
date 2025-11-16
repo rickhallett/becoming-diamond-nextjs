@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import {
     IconHome,
@@ -144,16 +145,27 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             </div>
 
             {/* Mobile Sidebar */}
-            {isSidebarOpen && (
-                <>
-                    {/* Backdrop */}
-                    <div
-                        onClick={() => setIsSidebarOpen(false)}
-                        className="lg:hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-40"
-                    />
+            <AnimatePresence>
+                {isSidebarOpen && (
+                    <>
+                        {/* Backdrop */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            onClick={() => setIsSidebarOpen(false)}
+                            className="lg:hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-40"
+                        />
 
-                    {/* Sidebar */}
-                    <aside className="lg:hidden fixed left-0 top-0 bottom-0 w-72 bg-gradient-to-b from-secondary/50 to-black border-r border-white/10 z-50 overflow-y-auto">
+                        {/* Sidebar */}
+                        <motion.aside
+                            initial={{ x: "-100%" }}
+                            animate={{ x: 0 }}
+                            exit={{ x: "-100%" }}
+                            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                            className="lg:hidden fixed left-0 top-0 bottom-0 w-72 bg-gradient-to-b from-secondary/50 to-black border-r border-white/10 z-50 overflow-y-auto"
+                        >
                         {/* Logo */}
                         <div className="p-6 border-b border-white/10 bg-black">
                             <Link href="/app" className="flex items-center gap-3" onClick={() => setIsSidebarOpen(false)}>
@@ -216,10 +228,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                             {/* Logout Button */}
                             <SignOutButton className="w-full justify-start text-red-400 hover:bg-red-400/10" />
                         </div>
-                    </aside>
+                    </motion.aside>
                 </>
-            )
-            }
+            )}
+            </AnimatePresence>
 
             {/* Main Content */}
             <main className="flex-1 lg:ml-72">
