@@ -55,7 +55,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             {/* Desktop Sidebar */}
             <aside className="hidden lg:flex lg:flex-col w-72 bg-gradient-to-b from-secondary/50 to-black border-r border-white/10 fixed h-full z-40">
                 {/* Logo */}
-                <div className="p-6 border-b border-white/10">
+                <div className="p-6 border-b border-white/10 bg-black">
                     <Link href="/app" className="flex items-center gap-3">
                         <div className="w-10 h-10 bg-gradient-to-br from-primary/40 to-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
                             <IconSparkles className="w-6 h-6 text-primary" />
@@ -155,7 +155,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                     {/* Sidebar */}
                     <aside className="lg:hidden fixed left-0 top-0 bottom-0 w-72 bg-gradient-to-b from-secondary/50 to-black border-r border-white/10 z-50 overflow-y-auto">
                         {/* Logo */}
-                        <div className="p-6 border-b border-white/10">
+                        <div className="p-6 border-b border-white/10 bg-black">
                             <Link href="/app" className="flex items-center gap-3" onClick={() => setIsSidebarOpen(false)}>
                                 <div className="w-10 h-10 bg-gradient-to-br from-primary/40 to-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
                                     <IconSparkles className="w-6 h-6 text-primary" />
