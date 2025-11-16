@@ -57,7 +57,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             <aside className="hidden lg:flex lg:flex-col w-72 bg-gradient-to-b from-secondary/50 to-black border-r border-white/10 fixed h-full z-40">
                 {/* Logo */}
                 <div className="p-6 border-b border-white/10 bg-black">
-                    <Link href="/app" className="flex items-center gap-3">
+                    <Link href="/app/profile" className="flex items-center gap-3">
                         <div className="w-10 h-10 bg-gradient-to-br from-primary/40 to-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
                             <IconSparkles className="w-6 h-6 text-primary" />
                         </div>
@@ -122,7 +122,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             {/* Mobile Header */}
             <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-sm border-b border-white/10">
                 <div className="flex items-center justify-between p-3 sm:p-4">
-                    <Link href="/app" className="flex items-center gap-2">
+                    <Link href="/app/profile" className="flex items-center gap-2">
                         <div className="w-8 h-8 bg-gradient-to-br from-primary/40 to-primary/10 rounded-lg flex items-center justify-center">
                             <IconSparkles className="w-5 h-5 text-primary" />
                         </div>
@@ -168,7 +168,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                         >
                         {/* Logo */}
                         <div className="p-6 border-b border-white/10 bg-black">
-                            <Link href="/app" className="flex items-center gap-3" onClick={() => setIsSidebarOpen(false)}>
+                            <Link href="/app/profile" className="flex items-center gap-3" onClick={() => setIsSidebarOpen(false)}>
                                 <div className="w-10 h-10 bg-gradient-to-br from-primary/40 to-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
                                     <IconSparkles className="w-6 h-6 text-primary" />
                                 </div>
