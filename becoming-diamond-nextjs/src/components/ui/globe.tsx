@@ -86,13 +86,39 @@ export function Globe({ globeConfig, data }: WorldProps) {
     ...globeConfig,
   };
 
-  // Initialize globe only once
+  // Initialize globe only once with proper cleanup
   useEffect(() => {
     if (!globeRef.current && groupRef.current) {
       globeRef.current = new ThreeGlobe();
       (groupRef.current as any).add(globeRef.current);
       setIsInitialized(true);
     }
+
+    // Cleanup WebGL resources on unmount
+    return () => {
+      if (globeRef.current) {
+        // Dispose of all geometries and materials to prevent GPU memory leak
+        globeRef.current.traverse((object: any) => {
+          if (object.geometry) {
+            object.geometry.dispose();
+          }
+          if (object.material) {
+            if (Array.isArray(object.material)) {
+              object.material.forEach((material: any) => material.dispose());
+            } else {
+              object.material.dispose();
+            }
+          }
+        });
+
+        // Remove from scene
+        if (groupRef.current) {
+          (groupRef.current as any).remove(globeRef.current);
+        }
+
+        globeRef.current = null;
+      }
+    };
   }, []);
 
   // Build material when globe is initialized or when relevant props change

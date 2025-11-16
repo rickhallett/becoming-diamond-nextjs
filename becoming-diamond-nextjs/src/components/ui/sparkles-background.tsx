@@ -39,6 +39,8 @@ export function SparklesBackground() {
             });
         }
 
+        let animationId: number;
+
         const animate = () => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -74,7 +76,7 @@ export function SparklesBackground() {
                 ctx.shadowBlur = 0;
             });
 
-            requestAnimationFrame(animate);
+            animationId = requestAnimationFrame(animate);
         };
 
         animate();
@@ -87,6 +89,8 @@ export function SparklesBackground() {
         window.addEventListener("resize", handleResize);
 
         return () => {
+            // Cancel animation frame to prevent CPU leak
+            cancelAnimationFrame(animationId);
             window.removeEventListener("resize", handleResize);
         };
     }, []);

@@ -56,6 +56,7 @@ export const InfiniteMovingCards = ({
   const addAnimation = useCallback(() => {
     if (containerRef.current && scrollerRef.current) {
       const scrollerContent = Array.from(scrollerRef.current.children);
+      const originalCount = scrollerContent.length;
 
       scrollerContent.forEach((item) => {
         const duplicatedItem = item.cloneNode(true);
@@ -67,11 +68,22 @@ export const InfiniteMovingCards = ({
       getDirection();
       getSpeed();
       setStart(true);
+
+      return originalCount;
     }
+    return 0;
   }, [getDirection, getSpeed]);
 
   useEffect(() => {
-    addAnimation();
+    const originalCount = addAnimation();
+
+    return () => {
+      // Remove cloned nodes on cleanup to prevent DOM memory leak
+      if (scrollerRef.current && originalCount > 0) {
+        const children = Array.from(scrollerRef.current.children);
+        children.slice(originalCount).forEach(node => node.remove());
+      }
+    };
   }, [addAnimation]);
 
   return (

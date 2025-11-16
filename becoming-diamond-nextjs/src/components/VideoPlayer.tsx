@@ -21,6 +21,9 @@ export function VideoPlayer({
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    let hls: Hls | null = null;
+    let cleanup: (() => void) | null = null;
+
     async function initPlayer() {
       try {
         // Check for test auth in localStorage
@@ -43,22 +46,22 @@ export function VideoPlayer({
 
         // Initialize HLS
         if (Hls.isSupported()) {
-          const hls = new Hls();
+          hls = new Hls();
           hls.loadSource(streamUrl);
           hls.attachMedia(video);
           hls.on(Hls.Events.MANIFEST_PARSED, () => {
             setLoading(false);
             if (autoplay) video.play();
           });
-
-          return () => hls.destroy();
         } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
           // Safari native HLS
           video.src = streamUrl;
-          video.addEventListener('loadedmetadata', () => {
+          const handler = () => {
             setLoading(false);
             if (autoplay) video.play();
-          });
+          };
+          video.addEventListener('loadedmetadata', handler);
+          cleanup = () => video.removeEventListener('loadedmetadata', handler);
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Unknown error');
@@ -67,6 +70,17 @@ export function VideoPlayer({
     }
 
     initPlayer();
+
+    return () => {
+      // Cleanup HLS instance to prevent memory leak
+      if (hls) {
+        hls.destroy();
+      }
+      // Cleanup Safari event listener
+      if (cleanup) {
+        cleanup();
+      }
+    };
   }, [videoId, autoplay]);
 
   // Track progress
