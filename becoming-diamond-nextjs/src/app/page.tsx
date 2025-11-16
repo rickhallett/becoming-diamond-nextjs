@@ -14,7 +14,6 @@ import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { LeadMagnetSection } from "@/components/LeadMagnetSection";
 import { BookSalesSection } from "@/components/BookSalesSection";
 import { SectionHeader } from "@/components/SectionHeader";
-import { SafeGlobeWrapper } from "@/components/safe-globe-wrapper";
 import { IconCheck } from "@tabler/icons-react";
 
 const World = dynamic(() => import("@/components/ui/globe").then((m) => m.World), {
@@ -135,9 +134,7 @@ export default function LandingPage() {
                         subtitle="Thousands of leaders, entrepreneurs, and change-makers across six continents are turning pressure into clarity. The movement is growing. Your place is waiting."
                     />
                     <div className="relative w-full h-[600px]">
-                        <SafeGlobeWrapper>
-                            <World data={sampleArcs} globeConfig={globeConfig} />
-                        </SafeGlobeWrapper>
+                        <World data={sampleArcs} globeConfig={globeConfig} />
                     </div>
                 </div>
             </section>
