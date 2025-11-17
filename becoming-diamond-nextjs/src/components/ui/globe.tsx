@@ -86,13 +86,39 @@ export function Globe({ globeConfig, data }: WorldProps) {
     ...globeConfig,
   };
 
-  // Initialize globe only once
+  // Initialize globe only once with proper cleanup
   useEffect(() => {
     if (!globeRef.current && groupRef.current) {
       globeRef.current = new ThreeGlobe();
       (groupRef.current as any).add(globeRef.current);
       setIsInitialized(true);
     }
+
+    // Cleanup WebGL resources on unmount
+    return () => {
+      if (globeRef.current) {
+        // Dispose of all geometries and materials to prevent GPU memory leak
+        globeRef.current.traverse((object: any) => {
+          if (object.geometry) {
+            object.geometry.dispose();
+          }
+          if (object.material) {
+            if (Array.isArray(object.material)) {
+              object.material.forEach((material: any) => material.dispose());
+            } else {
+              object.material.dispose();
+            }
+          }
+        });
+
+        // Remove from scene
+        if (groupRef.current) {
+          (groupRef.current as any).remove(globeRef.current);
+        }
+
+        globeRef.current = null;
+      }
+    };
   }, []);
 
   // Build material when globe is initialized or when relevant props change
@@ -237,26 +263,80 @@ export function Globe({ globeConfig, data }: WorldProps) {
 }
 
 export function WebGLRendererConfig() {
-  const { gl, size } = useThree();
+  const { gl } = useThree();
 
   useEffect(() => {
-    gl.setPixelRatio(window.devicePixelRatio);
-    gl.setSize(size.width, size.height);
+    // Only set clear color once, size is handled by Canvas automatically
     gl.setClearColor(0xffaaff, 0);
-  }, [gl, size]);
+  }, [gl]);
 
   return null;
 }
 
 export function World(props: WorldProps) {
   const { globeConfig } = props;
-  const scene = new Scene();
-  scene.fog = new Fog(0xffffff, 400, 2000);
+  const [hasWebGLError, setHasWebGLError] = useState(false);
+
+  // Memoize scene and camera to prevent recreation on every render
+  const scene = useState(() => {
+    const s = new Scene();
+    s.fog = new Fog(0xffffff, 400, 2000);
+    return s;
+  })[0];
+
+  const camera = useState(() => new PerspectiveCamera(50, aspect, 180, 1800))[0];
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      // Dispose scene resources
+      scene.traverse((object: any) => {
+        if (object.geometry) {
+          object.geometry.dispose();
+        }
+        if (object.material) {
+          if (Array.isArray(object.material)) {
+            object.material.forEach((material: any) => material.dispose());
+          } else {
+            object.material.dispose();
+          }
+        }
+      });
+    };
+  }, [scene]);
+
+  if (hasWebGLError) {
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        <div className="text-center max-w-2xl">
+          <p className="text-xl md:text-2xl font-light text-gray-300">
+            Thousands of leaders across six continents are transforming pressure into clarity. The movement is growing.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <Canvas
       scene={scene}
-      camera={new PerspectiveCamera(50, aspect, 180, 1800)}
+      camera={camera}
       style={{ width: '100%', height: '100%' }}
+      onCreated={({ gl }) => {
+        // Optimize WebGL settings to reduce memory usage
+        gl.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      }}
+      gl={{
+        // Prevent context loss and optimize performance
+        preserveDrawingBuffer: false,
+        antialias: false,
+        alpha: true,
+        powerPreference: 'high-performance',
+      }}
+      onError={(error) => {
+        console.error('[Globe] WebGL Error:', error);
+        setHasWebGLError(true);
+      }}
     >
       <WebGLRendererConfig />
       <ambientLight color={globeConfig.ambientLight} intensity={0.6} />

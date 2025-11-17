@@ -35,10 +35,13 @@ export const AnimatedTestimonials = ({
 
   useEffect(() => {
     if (autoplay) {
-      const interval = setInterval(handleNext, 5000);
+      // Use inline function to avoid dependency on handleNext
+      const interval = setInterval(() => {
+        setActive((prev) => (prev + 1) % testimonials.length);
+      }, 5000);
       return () => clearInterval(interval);
     }
-  }, [autoplay, handleNext]);
+  }, [autoplay, testimonials.length]);
 
   // Precompute rotation values to prevent hydration mismatch
   const rotations = useMemo(() => {
