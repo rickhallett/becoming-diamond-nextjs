@@ -3,6 +3,8 @@
  *
  * Implements the NextAuth Adapter interface to work with Turso's LibSQL database.
  * Handles user accounts, sessions, and verification tokens.
+ *
+ * Enhanced with comprehensive Axiom logging for authentication flow monitoring.
  */
 
 import type {
@@ -13,6 +15,7 @@ import type {
   VerificationToken,
 } from "next-auth/adapters";
 import { createClient, type Client } from "@libsql/client";
+import { log } from "@/lib/axiom-logger";
 
 /**
  * Creates a NextAuth adapter for Turso database
@@ -25,6 +28,7 @@ export function TursoAdapter(client: Client): Adapter {
      * Creates a new user in the database
      */
     async createUser(user) {
+      const startTime = Date.now();
       const id = crypto.randomUUID();
       const now = Math.floor(Date.now() / 1000);
 
@@ -33,78 +37,107 @@ export function TursoAdapter(client: Client): Adapter {
 
       // Validate required fields
       if (!user.email) {
+        await log.error('Adapter: createUser validation failed', {
+          component: 'TursoAdapter',
+          method: 'createUser',
+          error: 'Email is required',
+          timestamp: new Date().toISOString(),
+        });
         throw new Error('[Turso Adapter] Cannot create user without email');
       }
 
-      console.log('[Turso Adapter] createUser called:', { email: user.email, name });
-
-      const args = [
-        id,
-        name,
-        user.email,
-        user.emailVerified ? Math.floor(user.emailVerified.getTime() / 1000) : null,
-        user.image ?? '/profile-placeholder-2.webp',
-        now,
-        now,
-      ];
-
-      console.log('[Turso Adapter] createUser args:', {
-        id,
-        name,
-        email: user.email,
-        args: args.map((arg, i) => `[${i}]: ${arg === null ? 'NULL' : typeof arg === 'object' ? JSON.stringify(arg) : arg}`),
+      await log.info('Adapter: createUser started', {
+        component: 'TursoAdapter',
+        method: 'createUser',
+        emailDomain: user.email.split('@')[1] || 'unknown',
+        hasName: !!user.name,
+        hasImage: !!user.image,
+        emailVerified: !!user.emailVerified,
+        timestamp: new Date().toISOString(),
       });
 
-      const insertResult = await client.execute({
-        sql: `INSERT INTO users (id, name, email, email_verified, image, created_at, updated_at)
-              VALUES (?, ?, ?, ?, ?, ?, ?)`,
-        args,
-      });
+      try {
+        const args = [
+          id,
+          name,
+          user.email,
+          user.emailVerified ? Math.floor(user.emailVerified.getTime() / 1000) : null,
+          user.image ?? '/profile-placeholder-2.webp',
+          now,
+          now,
+        ];
 
-      console.log('[Turso Adapter] createUser INSERT result:', {
-        rowsAffected: insertResult.rowsAffected,
-        id,
-        email: user.email
-      });
-
-      // Verify the insert worked
-      const result = await client.execute({
-        sql: `SELECT * FROM users WHERE id = ?`,
-        args: [id],
-      });
-
-      if (!result.rows[0]) {
-        throw new Error(`[Turso Adapter] User not found after insert: ${id}`);
-      }
-
-      const createdUser = mapRowToUser(result.rows[0]);
-
-      // Validate created user data
-      if (!createdUser.email) {
-        console.error('[Turso Adapter] CRITICAL: Created user has NULL email!', {
-          userId: id,
-          insertedEmail: user.email,
-          insertedName: name,
-          retrievedUser: createdUser,
-          rowData: result.rows[0],
+        const insertResult = await client.execute({
+          sql: `INSERT INTO users (id, name, email, email_verified, image, created_at, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?)`,
+          args,
         });
 
-        // Delete the corrupt user immediately
-        await client.execute({
-          sql: `DELETE FROM users WHERE id = ?`,
+        // Verify the insert worked
+        const result = await client.execute({
+          sql: `SELECT * FROM users WHERE id = ?`,
           args: [id],
         });
 
-        throw new Error(`[Turso Adapter] Created user validation failed: NULL email. User deleted. Original email: ${user.email}`);
+        if (!result.rows[0]) {
+          await log.error('Adapter: createUser verification failed', {
+            component: 'TursoAdapter',
+            method: 'createUser',
+            error: 'User not found after insert',
+            userId: id,
+            rowsAffected: insertResult.rowsAffected,
+            timestamp: new Date().toISOString(),
+          });
+          throw new Error(`[Turso Adapter] User not found after insert: ${id}`);
+        }
+
+        const createdUser = mapRowToUser(result.rows[0]);
+
+        // Validate created user data
+        if (!createdUser.email) {
+          await log.error('Adapter: createUser data corruption detected', {
+            component: 'TursoAdapter',
+            method: 'createUser',
+            error: 'Created user has NULL email',
+            userId: id,
+            insertedEmailDomain: user.email.split('@')[1],
+            timestamp: new Date().toISOString(),
+          });
+
+          // Delete the corrupt user immediately
+          await client.execute({
+            sql: `DELETE FROM users WHERE id = ?`,
+            args: [id],
+          });
+
+          throw new Error(`[Turso Adapter] Created user validation failed: NULL email. User deleted.`);
+        }
+
+        const duration = Date.now() - startTime;
+        await log.info('Adapter: createUser success', {
+          component: 'TursoAdapter',
+          method: 'createUser',
+          userId: createdUser.id,
+          emailDomain: createdUser.email.split('@')[1],
+          hasName: !!createdUser.name,
+          durationMs: duration,
+          timestamp: new Date().toISOString(),
+        });
+
+        return createdUser;
+      } catch (error) {
+        const duration = Date.now() - startTime;
+        await log.error('Adapter: createUser failed', {
+          component: 'TursoAdapter',
+          method: 'createUser',
+          emailDomain: user.email.split('@')[1],
+          error: error instanceof Error ? error.message : String(error),
+          stack: error instanceof Error ? error.stack : undefined,
+          durationMs: duration,
+          timestamp: new Date().toISOString(),
+        });
+        throw error;
       }
-
-      console.log('[Turso Adapter] createUser success:', {
-        id: createdUser.id,
-        email: createdUser.email,
-        name: createdUser.name
-      });
-
-      return createdUser;
     },
 
     /**
@@ -123,30 +156,69 @@ export function TursoAdapter(client: Client): Adapter {
      * Retrieves a user by their email address
      */
     async getUserByEmail(email) {
-      console.log('[Turso Adapter] getUserByEmail called:', email);
-      const result = await client.execute({
-        sql: `SELECT * FROM users WHERE email = ?`,
-        args: [email],
+      const startTime = Date.now();
+
+      await log.debug('Adapter: getUserByEmail started', {
+        component: 'TursoAdapter',
+        method: 'getUserByEmail',
+        emailDomain: email ? email.split('@')[1] : 'unknown',
+        timestamp: new Date().toISOString(),
       });
 
-      const found = result.rows[0] ? mapRowToUser(result.rows[0]) : null;
-
-      if (found) {
-        console.log('[Turso Adapter] getUserByEmail result:', {
-          id: found.id,
-          email: found.email || '(NULL)',
-          name: found.name || '(NULL)',
+      try {
+        const result = await client.execute({
+          sql: `SELECT * FROM users WHERE email = ?`,
+          args: [email],
         });
 
-        // Validate data integrity
-        if (!found.email) {
-          console.error('[Turso Adapter] WARNING: Found user with NULL email!', found);
-        }
-      } else {
-        console.log('[Turso Adapter] getUserByEmail result: Not found');
-      }
+        const found = result.rows[0] ? mapRowToUser(result.rows[0]) : null;
+        const duration = Date.now() - startTime;
 
-      return found;
+        if (found) {
+          // Validate data integrity
+          if (!found.email) {
+            await log.error('Adapter: getUserByEmail data corruption', {
+              component: 'TursoAdapter',
+              method: 'getUserByEmail',
+              error: 'Found user has NULL email',
+              userId: found.id,
+              durationMs: duration,
+              timestamp: new Date().toISOString(),
+            });
+          }
+
+          await log.debug('Adapter: getUserByEmail success', {
+            component: 'TursoAdapter',
+            method: 'getUserByEmail',
+            userId: found.id,
+            emailDomain: email.split('@')[1],
+            hasName: !!found.name,
+            durationMs: duration,
+            timestamp: new Date().toISOString(),
+          });
+        } else {
+          await log.debug('Adapter: getUserByEmail not found', {
+            component: 'TursoAdapter',
+            method: 'getUserByEmail',
+            emailDomain: email.split('@')[1],
+            durationMs: duration,
+            timestamp: new Date().toISOString(),
+          });
+        }
+
+        return found;
+      } catch (error) {
+        const duration = Date.now() - startTime;
+        await log.error('Adapter: getUserByEmail failed', {
+          component: 'TursoAdapter',
+          method: 'getUserByEmail',
+          emailDomain: email ? email.split('@')[1] : 'unknown',
+          error: error instanceof Error ? error.message : String(error),
+          durationMs: duration,
+          timestamp: new Date().toISOString(),
+        });
+        throw error;
+      }
     },
 
     /**
@@ -167,67 +239,89 @@ export function TursoAdapter(client: Client): Adapter {
      * Updates an existing user
      */
     async updateUser(user) {
+      const startTime = Date.now();
       const now = Math.floor(Date.now() / 1000);
 
-      console.log('[Turso Adapter] updateUser called:', {
-        id: user.id,
-        email: user.email || '(NULL)',
-        name: user.name || '(NULL)',
-        emailVerified: user.emailVerified,
+      await log.info('Adapter: updateUser started', {
+        component: 'TursoAdapter',
+        method: 'updateUser',
+        userId: user.id,
+        hasEmail: !!user.email,
+        hasName: !!user.name,
+        emailVerified: !!user.emailVerified,
+        timestamp: new Date().toISOString(),
       });
 
-      // Fetch existing user to preserve fields not being updated
-      const existingResult = await client.execute({
-        sql: `SELECT * FROM users WHERE id = ?`,
-        args: [user.id],
-      });
+      try {
+        // Fetch existing user to preserve fields not being updated
+        const existingResult = await client.execute({
+          sql: `SELECT * FROM users WHERE id = ?`,
+          args: [user.id],
+        });
 
-      if (!existingResult.rows[0]) {
-        throw new Error(`[Turso Adapter] Cannot update non-existent user: ${user.id}`);
+        if (!existingResult.rows[0]) {
+          await log.error('Adapter: updateUser user not found', {
+            component: 'TursoAdapter',
+            method: 'updateUser',
+            userId: user.id,
+            error: 'Cannot update non-existent user',
+            timestamp: new Date().toISOString(),
+          });
+          throw new Error(`[Turso Adapter] Cannot update non-existent user: ${user.id}`);
+        }
+
+        const existing = existingResult.rows[0];
+
+        // Preserve existing values if new values are null/undefined
+        const email = user.email ?? existing.email;
+        const name = user.name ?? existing.name;
+        const image = user.image ?? existing.image ?? '/profile-placeholder-2.webp';
+
+        await client.execute({
+          sql: `UPDATE users
+                SET name = ?, email = ?, email_verified = ?, image = ?, updated_at = ?
+                WHERE id = ?`,
+          args: [
+            name,
+            email,
+            user.emailVerified ? Math.floor(user.emailVerified.getTime() / 1000) : null,
+            image,
+            now,
+            user.id,
+          ],
+        });
+
+        const result = await client.execute({
+          sql: `SELECT * FROM users WHERE id = ?`,
+          args: [user.id],
+        });
+
+        const updated = mapRowToUser(result.rows[0]);
+        const duration = Date.now() - startTime;
+
+        await log.info('Adapter: updateUser success', {
+          component: 'TursoAdapter',
+          method: 'updateUser',
+          userId: updated.id,
+          emailDomain: updated.email ? updated.email.split('@')[1] : 'unknown',
+          hasName: !!updated.name,
+          durationMs: duration,
+          timestamp: new Date().toISOString(),
+        });
+
+        return updated;
+      } catch (error) {
+        const duration = Date.now() - startTime;
+        await log.error('Adapter: updateUser failed', {
+          component: 'TursoAdapter',
+          method: 'updateUser',
+          userId: user.id,
+          error: error instanceof Error ? error.message : String(error),
+          durationMs: duration,
+          timestamp: new Date().toISOString(),
+        });
+        throw error;
       }
-
-      const existing = existingResult.rows[0];
-
-      // Preserve existing values if new values are null/undefined
-      const email = user.email ?? existing.email;
-      const name = user.name ?? existing.name;
-      const image = user.image ?? existing.image ?? '/profile-placeholder-2.webp';
-
-      console.log('[Turso Adapter] updateUser preserving values:', {
-        email: email || '(NULL)',
-        name: name || '(NULL)',
-        existingEmail: existing.email || '(NULL)',
-        existingName: existing.name || '(NULL)',
-      });
-
-      await client.execute({
-        sql: `UPDATE users
-              SET name = ?, email = ?, email_verified = ?, image = ?, updated_at = ?
-              WHERE id = ?`,
-        args: [
-          name,
-          email,
-          user.emailVerified ? Math.floor(user.emailVerified.getTime() / 1000) : null,
-          image,
-          now,
-          user.id,
-        ],
-      });
-
-      const result = await client.execute({
-        sql: `SELECT * FROM users WHERE id = ?`,
-        args: [user.id],
-      });
-
-      const updated = mapRowToUser(result.rows[0]);
-
-      console.log('[Turso Adapter] updateUser result:', {
-        id: updated.id,
-        email: updated.email || '(NULL)',
-        name: updated.name || '(NULL)',
-      });
-
-      return updated;
     },
 
     /**
@@ -289,55 +383,127 @@ export function TursoAdapter(client: Client): Adapter {
      * Creates a new session for a user
      */
     async createSession(session) {
+      const startTime = Date.now();
       const id = crypto.randomUUID();
 
-      await client.execute({
-        sql: `INSERT INTO sessions (id, session_token, user_id, expires)
-              VALUES (?, ?, ?, ?)`,
-        args: [
-          id,
-          session.sessionToken,
-          session.userId,
-          Math.floor(session.expires.getTime() / 1000),
-        ],
+      await log.info('Adapter: createSession started', {
+        component: 'TursoAdapter',
+        method: 'createSession',
+        userId: session.userId,
+        expiresAt: session.expires.toISOString(),
+        timestamp: new Date().toISOString(),
       });
 
-      return session as AdapterSession;
+      try {
+        await client.execute({
+          sql: `INSERT INTO sessions (id, session_token, user_id, expires)
+                VALUES (?, ?, ?, ?)`,
+          args: [
+            id,
+            session.sessionToken,
+            session.userId,
+            Math.floor(session.expires.getTime() / 1000),
+          ],
+        });
+
+        const duration = Date.now() - startTime;
+        await log.info('Adapter: createSession success', {
+          component: 'TursoAdapter',
+          method: 'createSession',
+          userId: session.userId,
+          sessionId: id,
+          durationMs: duration,
+          timestamp: new Date().toISOString(),
+        });
+
+        return session as AdapterSession;
+      } catch (error) {
+        const duration = Date.now() - startTime;
+        await log.error('Adapter: createSession failed', {
+          component: 'TursoAdapter',
+          method: 'createSession',
+          userId: session.userId,
+          error: error instanceof Error ? error.message : String(error),
+          durationMs: duration,
+          timestamp: new Date().toISOString(),
+        });
+        throw error;
+      }
     },
 
     /**
      * Retrieves a session and its associated user
      */
     async getSessionAndUser(sessionToken) {
-      const result = await client.execute({
-        sql: `SELECT
-                s.id as session_id,
-                s.session_token,
-                s.user_id,
-                s.expires as session_expires,
-                u.id,
-                u.name,
-                u.email,
-                u.email_verified,
-                u.image
-              FROM sessions s
-              JOIN users u ON s.user_id = u.id
-              WHERE s.session_token = ?`,
-        args: [sessionToken],
+      const startTime = Date.now();
+
+      await log.debug('Adapter: getSessionAndUser started', {
+        component: 'TursoAdapter',
+        method: 'getSessionAndUser',
+        timestamp: new Date().toISOString(),
       });
 
-      if (!result.rows[0]) return null;
+      try {
+        const result = await client.execute({
+          sql: `SELECT
+                  s.id as session_id,
+                  s.session_token,
+                  s.user_id,
+                  s.expires as session_expires,
+                  u.id,
+                  u.name,
+                  u.email,
+                  u.email_verified,
+                  u.image
+                FROM sessions s
+                JOIN users u ON s.user_id = u.id
+                WHERE s.session_token = ?`,
+          args: [sessionToken],
+        });
 
-      const row = result.rows[0];
+        const duration = Date.now() - startTime;
 
-      return {
-        session: {
-          sessionToken: row.session_token as string,
+        if (!result.rows[0]) {
+          await log.warn('Adapter: getSessionAndUser not found or expired', {
+            component: 'TursoAdapter',
+            method: 'getSessionAndUser',
+            durationMs: duration,
+            timestamp: new Date().toISOString(),
+          });
+          return null;
+        }
+
+        const row = result.rows[0];
+        const user = mapRowToUser(row);
+
+        await log.debug('Adapter: getSessionAndUser success', {
+          component: 'TursoAdapter',
+          method: 'getSessionAndUser',
           userId: row.user_id as string,
-          expires: new Date((row.session_expires as number) * 1000),
-        },
-        user: mapRowToUser(row),
-      };
+          sessionExpires: new Date((row.session_expires as number) * 1000).toISOString(),
+          durationMs: duration,
+          timestamp: new Date().toISOString(),
+        });
+
+        return {
+          session: {
+            sessionToken: row.session_token as string,
+            userId: row.user_id as string,
+            expires: new Date((row.session_expires as number) * 1000),
+          },
+          user,
+        };
+      } catch (error) {
+        const duration = Date.now() - startTime;
+        await log.error('Adapter: getSessionAndUser failed', {
+          component: 'TursoAdapter',
+          method: 'getSessionAndUser',
+          error: error instanceof Error ? error.message : String(error),
+          durationMs: duration,
+          timestamp: new Date().toISOString(),
+        });
+        throw error;
+      }
     },
 
     /**
@@ -387,46 +553,91 @@ export function TursoAdapter(client: Client): Adapter {
      * Uses (and deletes) a verification token
      */
     async useVerificationToken({ identifier, token }) {
-      console.log('[Turso Adapter] useVerificationToken called:', { identifier, token: token.substring(0, 8) + '...' });
+      const startTime = Date.now();
 
-      const result = await client.execute({
-        sql: `SELECT * FROM verification_tokens
-              WHERE identifier = ? AND token = ?`,
-        args: [identifier, token],
+      await log.info('Adapter: useVerificationToken started', {
+        component: 'TursoAdapter',
+        method: 'useVerificationToken',
+        identifierDomain: identifier.includes('@') ? identifier.split('@')[1] : 'unknown',
+        tokenPreview: token.substring(0, 8) + '...',
+        timestamp: new Date().toISOString(),
       });
 
-      if (!result.rows[0]) {
-        console.log('[Turso Adapter] useVerificationToken: Token not found (already used or expired)');
-        return null;
-      }
-
-      const row = result.rows[0];
-      const expires = new Date((row.expires as number) * 1000);
-
-      // Check if token is expired
-      if (expires < new Date()) {
-        console.log('[Turso Adapter] useVerificationToken: Token expired');
-        await client.execute({
-          sql: `DELETE FROM verification_tokens WHERE identifier = ? AND token = ?`,
+      try {
+        const result = await client.execute({
+          sql: `SELECT * FROM verification_tokens
+                WHERE identifier = ? AND token = ?`,
           args: [identifier, token],
         });
-        return null;
+
+        if (!result.rows[0]) {
+          const duration = Date.now() - startTime;
+          await log.warn('Adapter: useVerificationToken not found', {
+            component: 'TursoAdapter',
+            method: 'useVerificationToken',
+            identifierDomain: identifier.includes('@') ? identifier.split('@')[1] : 'unknown',
+            reason: 'Token not found (already used or invalid)',
+            durationMs: duration,
+            timestamp: new Date().toISOString(),
+          });
+          return null;
+        }
+
+        const row = result.rows[0];
+        const expires = new Date((row.expires as number) * 1000);
+
+        // Check if token is expired
+        if (expires < new Date()) {
+          await client.execute({
+            sql: `DELETE FROM verification_tokens WHERE identifier = ? AND token = ?`,
+            args: [identifier, token],
+          });
+
+          const duration = Date.now() - startTime;
+          await log.warn('Adapter: useVerificationToken expired', {
+            component: 'TursoAdapter',
+            method: 'useVerificationToken',
+            identifierDomain: identifier.includes('@') ? identifier.split('@')[1] : 'unknown',
+            expiredAt: expires.toISOString(),
+            durationMs: duration,
+            timestamp: new Date().toISOString(),
+          });
+          return null;
+        }
+
+        // Delete the token (one-time use)
+        await client.execute({
+          sql: `DELETE FROM verification_tokens
+                WHERE identifier = ? AND token = ?`,
+          args: [identifier, token],
+        });
+
+        const duration = Date.now() - startTime;
+        await log.info('Adapter: useVerificationToken success', {
+          component: 'TursoAdapter',
+          method: 'useVerificationToken',
+          identifierDomain: identifier.includes('@') ? identifier.split('@')[1] : 'unknown',
+          durationMs: duration,
+          timestamp: new Date().toISOString(),
+        });
+
+        return {
+          identifier: row.identifier as string,
+          token: row.token as string,
+          expires,
+        };
+      } catch (error) {
+        const duration = Date.now() - startTime;
+        await log.error('Adapter: useVerificationToken failed', {
+          component: 'TursoAdapter',
+          method: 'useVerificationToken',
+          identifierDomain: identifier.includes('@') ? identifier.split('@')[1] : 'unknown',
+          error: error instanceof Error ? error.message : String(error),
+          durationMs: duration,
+          timestamp: new Date().toISOString(),
+        });
+        throw error;
       }
-
-      // Delete the token (one-time use)
-      await client.execute({
-        sql: `DELETE FROM verification_tokens
-              WHERE identifier = ? AND token = ?`,
-        args: [identifier, token],
-      });
-
-      console.log('[Turso Adapter] useVerificationToken: Token consumed successfully');
-
-      return {
-        identifier: row.identifier as string,
-        token: row.token as string,
-        expires,
-      };
     },
   };
 }
