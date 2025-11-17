@@ -307,15 +307,10 @@ export function World(props: WorldProps) {
 
   if (hasWebGLError) {
     return (
-      <div className="w-full h-full flex items-center justify-center bg-black/20 rounded-lg border border-white/10">
-        <div className="text-center p-8 max-w-md">
-          <div className="text-4xl mb-4">🌍</div>
-          <h3 className="text-xl font-semibold text-white mb-2">
-            Global Community
-          </h3>
-          <p className="text-gray-400 text-sm">
-            Thousands of leaders across six continents are transforming pressure into clarity.
-            The movement is growing.
+      <div className="w-full h-full flex items-center justify-center">
+        <div className="text-center max-w-2xl">
+          <p className="text-xl md:text-2xl font-light text-gray-300">
+            Thousands of leaders across six continents are transforming pressure into clarity. The movement is growing.
           </p>
         </div>
       </div>

@@ -907,6 +907,10 @@ npm run cleanup:knip:execute
 - Use named exports for related utilities
 - Add "use client" directive when needed
 
+**Code Style:**
+- **NEVER use emojis** in code, UI components, error messages, or fallback content
+- Keep all text professional and clean without decorative symbols
+
 **Import Order Convention (Recommended):**
 1. React imports
 2. Next.js imports
