@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/auth';
 import { getTursoClient } from '@/lib/turso-adapter';
 import { log } from '@/lib/axiom-logger';
+import { transformDatabaseToProfile, validateProfileUpdates } from '@/lib/profile-helpers';
 
 const turso = getTursoClient();
 
@@ -61,32 +62,8 @@ export async function GET() {
       timestamp: new Date().toISOString(),
     });
 
-    // Parse completed_prs JSON string to array
-    let completedPRs: number[] = [];
-    if (profileData?.completed_prs) {
-      try {
-        completedPRs = JSON.parse(profileData.completed_prs as string);
-      } catch (e) {
-        console.error('Failed to parse completed_prs:', e);
-      }
-    }
-
-    // Transform to UserProfile format
-    const profile = {
-      id: user.id as string,
-      name: (user.name as string) || (user.email as string)?.split('@')[0] || 'User',
-      email: (user.email as string) || '',
-      avatar: (user.image as string) || '/profile-placeholder-2.webp',
-      bio: (profileData?.bio as string) || '',
-      location: (profileData?.location as string) || '',
-      website: (profileData?.website as string) || '',
-      joinedDate: new Date((user.created_at as number) * 1000).toISOString(),
-      currentPR: (profileData?.current_pr as number) || 1,
-      completedPRs,
-      level: (profileData?.level as string) || 'Initiate',
-      xp: (profileData?.xp as number) || 0,
-      streak: (profileData?.streak as number) || 0,
-    };
+    // Transform database records to UserProfile format
+    const profile = transformDatabaseToProfile(user, profileData || null);
 
     await log.info('Profile returned successfully', {
       userId: profile.id,
@@ -132,6 +109,20 @@ export async function PUT(request: NextRequest) {
       fieldsToUpdate: Object.keys(updates),
       timestamp: new Date().toISOString(),
     });
+
+    // Validate update fields
+    const validation = validateProfileUpdates(updates);
+    if (!validation.valid) {
+      await log.warn('Profile update validation failed', {
+        userId,
+        error: validation.error,
+        timestamp: new Date().toISOString(),
+      });
+      return NextResponse.json(
+        { error: validation.error },
+        { status: 400 }
+      );
+    }
 
     // Update name in users table if provided
     if (updates.name !== undefined) {
@@ -230,33 +221,10 @@ export async function PUT(request: NextRequest) {
       args: [userId],
     });
 
-    const profileData = profileResult.rows[0] || {};
+    const profileData = profileResult.rows[0] || null;
 
-    // Parse completed_prs JSON string to array
-    let completedPRs: number[] = [];
-    if (profileData.completed_prs) {
-      try {
-        completedPRs = JSON.parse(profileData.completed_prs as string);
-      } catch (e) {
-        console.error('Failed to parse completed_prs:', e);
-      }
-    }
-
-    const profile = {
-      id: user.id as string,
-      name: (user.name as string) || (user.email as string)?.split('@')[0] || 'User',
-      email: (user.email as string) || '',
-      avatar: (user.image as string) || '/profile-placeholder-2.webp',
-      bio: (profileData.bio as string) || '',
-      location: (profileData.location as string) || '',
-      website: (profileData.website as string) || '',
-      joinedDate: new Date((user.created_at as number) * 1000).toISOString(),
-      currentPR: (profileData.current_pr as number) || 1,
-      completedPRs,
-      level: (profileData.level as string) || 'Initiate',
-      xp: (profileData.xp as number) || 0,
-      streak: (profileData.streak as number) || 0,
-    };
+    // Transform database records to UserProfile format
+    const profile = transformDatabaseToProfile(user, profileData);
 
     return NextResponse.json({ profile });
   } catch (error) {
