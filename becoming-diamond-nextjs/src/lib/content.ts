@@ -3,6 +3,7 @@ import path from 'path';
 import matter from 'gray-matter';
 import { remark } from 'remark';
 import html from 'remark-html';
+import { sanitizeHtml } from './sanitize';
 
 const contentDirectory = path.join(process.cwd(), 'content');
 
@@ -67,8 +68,12 @@ async function markdownToHtml(markdown: string): Promise<string> {
   const result = await remark().use(html).process(markdown);
   const htmlContent = result.toString();
 
-  // Then replace video placeholders in the HTML output
-  return replaceVideoPlaceholders(htmlContent);
+  // Replace video placeholders in the HTML output
+  const withVideos = replaceVideoPlaceholders(htmlContent);
+
+  // Sanitize HTML to prevent XSS attacks
+  // Even though content comes from our CMS, defense in depth is important
+  return sanitizeHtml(withVideos);
 }
 
 export async function getContentByType(type: string): Promise<ContentItem[]> {
