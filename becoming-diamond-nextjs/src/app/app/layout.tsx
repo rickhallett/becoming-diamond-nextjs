@@ -6,7 +6,6 @@ import { useSession } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import {
-    IconHome,
     IconRocket,
     IconUser,
     IconMenu2,

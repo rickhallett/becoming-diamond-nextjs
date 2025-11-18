@@ -32,7 +32,7 @@ export function LeadMagnetSection({
     liabilityText = "I understand that this program provides educational content and coaching guidance. I acknowledge that results vary and that I am responsible for my own implementation and outcomes.",
     liabilityRequired = true,
 }: LeadMagnetSectionProps) {
-    const router = useRouter();
+    const _router = useRouter();
     const [email, setEmail] = useState('');
     const [consent, setConsent] = useState(false);
     const [noLiabilityAccepted, setNoLiabilityAccepted] = useState(false);

@@ -60,7 +60,7 @@ export default function SprintWatchPage() {
     loadCompletedDays();
   }, []);
 
-  const handleVideoEnded = () => {
+  const _handleVideoEnded = () => {
     // Auto-advance to next video
     if (currentIndex < VIDEO_PLAYLIST.length - 1) {
       setCurrentIndex(currentIndex + 1);

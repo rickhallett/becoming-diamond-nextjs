@@ -30,11 +30,11 @@ export async function POST(request: NextRequest) {
   };
 
   try {
-    console.log('POST /api/cms-auth - CMS is exchanging code for token');
+    console.warn('POST /api/cms-auth - CMS is exchanging code for token');
     const body = await request.json();
     const { code, provider } = body;
 
-    console.log('Received from CMS:', { code: code ? 'present' : 'missing', provider });
+    console.warn('Received from CMS:', { code: code ? 'present' : 'missing', provider });
 
     if (provider !== 'github' || !code) {
       console.error('Invalid request:', { provider, code: !!code });
@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
 
     const userData = await userResponse.json();
 
-    console.log('Returning token to CMS for user:', userData.login);
+    console.warn('Returning token to CMS for user:', userData.login);
 
     return NextResponse.json({
       token: tokenData.access_token,

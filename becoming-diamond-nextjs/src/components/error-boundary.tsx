@@ -66,7 +66,7 @@ export class ErrorBoundary extends Component<Props, State> {
           // Silent fail
         });
       }
-    } catch (error) {
+    } catch {
       this.setState({ webglSupported: false });
     }
   }

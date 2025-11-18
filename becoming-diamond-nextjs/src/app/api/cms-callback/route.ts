@@ -6,13 +6,13 @@ const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET || '';
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const code = searchParams.get('code');
-  const state = searchParams.get('state');
+  const _state = searchParams.get('state');
 
   if (!code) {
     return new NextResponse('Missing authorization code', { status: 400 });
   }
 
-  console.log('Callback received code, exchanging for token...');
+  console.warn('Callback received code, exchanging for token...');
 
   // Exchange code for token immediately in callback
   let token = '';
@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
     }
 
     token = tokenData.access_token;
-    console.log('Token obtained successfully in callback');
+    console.warn('Token obtained successfully in callback');
   } catch (error) {
     console.error('Token exchange failed in callback:', error);
     return new NextResponse('Authentication failed', { status: 500 });

@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
     });
 
     // Create or update user in database
-    const userResult = await turso.execute({
+    const _userResult = await turso.execute({
       sql: `INSERT INTO users (id, name, email, email_verified, image)
             VALUES (?, ?, ?, ?, ?)
             ON CONFLICT(id) DO UPDATE SET
@@ -82,7 +82,7 @@ export async function POST(request: NextRequest) {
       path: "/",
     });
 
-    console.log(`[Test Session] Created session with cookie: ${cookieName}`);
+    console.warn(`[Test Session] Created session with cookie: ${cookieName}`);
     return response;
   } catch (error) {
     console.error("[Test Session] Error:", error);

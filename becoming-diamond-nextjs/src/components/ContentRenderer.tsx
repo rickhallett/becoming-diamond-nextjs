@@ -44,7 +44,7 @@ export function ContentRenderer({ html, className = '' }: ContentRendererProps) 
       rootsRef.current.forEach((root) => {
         try {
           root.unmount();
-        } catch (e) {
+        } catch {
           // Ignore unmount errors
         }
       });
@@ -79,7 +79,7 @@ export function ContentRenderer({ html, className = '' }: ContentRendererProps) 
       rootsRef.current.forEach((root) => {
         try {
           root.unmount();
-        } catch (e) {
+        } catch {
           // Ignore unmount errors
         }
       });

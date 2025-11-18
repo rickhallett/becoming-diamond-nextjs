@@ -23,5 +23,21 @@
     "public",
     ".turbo",
     "src/components/ui/"
+  ],
+  "overrides": [
+    {
+      "files": ["src/test/**/*.ts", "src/test/**/*.tsx"],
+      "rules": {
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unused-vars": "off",
+        "no-console": "off"
+      }
+    },
+    {
+      "files": ["src/emails/**/*.tsx"],
+      "rules": {
+        "@next/next/no-page-custom-font": "off"
+      }
+    }
   ]
 }

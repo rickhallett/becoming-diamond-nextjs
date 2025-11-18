@@ -9,7 +9,7 @@ import StatsCard from '@/components/sprint/StatsCard';
 import { FEATURES } from '@/config/features';
 import {
   IconTrophy,
-  IconFlame,
+
   IconTarget,
   IconCalendar,
   IconArrowRight,
@@ -141,28 +141,24 @@ export default function SprintOverviewPage() {
                 value={stats.completedDays}
                 subtitle={`${stats.remainingDays} remaining`}
                 icon={<IconCheck size={32} />}
-                delay={0.3}
               />
               <StatsCard
                 title="Current Day"
                 value={stats.currentDay}
                 subtitle="of 30 days"
                 icon={<IconTarget size={32} />}
-                delay={0.4}
               />
               <StatsCard
                 title="Completion"
                 value={`${Math.round(stats.completionPercentage)}%`}
                 subtitle="overall progress"
                 icon={<IconTrophy size={32} />}
-                delay={0.5}
               />
               <StatsCard
                 title="Days Active"
                 value={stats.daysInProgress}
                 subtitle="since enrollment"
                 icon={<IconCalendar size={32} />}
-                delay={0.6}
               />
             </div>
           </div>

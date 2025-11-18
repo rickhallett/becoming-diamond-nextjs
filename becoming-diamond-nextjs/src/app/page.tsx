@@ -5,7 +5,6 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 import { CardSpotlight } from "@/components/ui/card-spotlight";
-import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { HeroSection } from "@/components/HeroSection";

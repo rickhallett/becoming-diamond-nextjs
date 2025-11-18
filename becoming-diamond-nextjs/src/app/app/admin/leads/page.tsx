@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -38,7 +38,7 @@ export default function LeadsAdminPage() {
   }, [status, session, router]);
 
   // Fetch leads
-  const fetchLeads = async () => {
+  const fetchLeads = useCallback(async () => {
     setLoading(true);
     setError(null);
 
@@ -57,7 +57,7 @@ export default function LeadsAdminPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [page]);
 
   useEffect(() => {
     if (status === "authenticated" && session?.user?.email === ADMIN_EMAIL) {

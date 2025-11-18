@@ -1,14 +1,12 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { LampContainer } from "@/components/ui/lamp";
 import { Timeline } from "@/components/ui/timeline";
 import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input";
 import { EvervaultCard } from "@/components/ui/evervault-card";
-import { isFeatureEnabled } from "@/config/features";
 
 export default function CollectivePage() {
   return (

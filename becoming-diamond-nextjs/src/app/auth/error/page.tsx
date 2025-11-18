@@ -12,7 +12,7 @@ function ErrorContent() {
   const searchParams = useSearchParams();
   const error = searchParams.get("error");
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const [isChecking, setIsChecking] = useState(true);
 
   // If verification error but user is already authenticated, redirect to app
@@ -20,7 +20,7 @@ function ErrorContent() {
     if (status === "loading") return;
 
     if (error === "Verification" && status === "authenticated") {
-      console.log('[Error Page] User already authenticated, redirecting to app');
+      console.warn('[Error Page] User already authenticated, redirecting to app');
       router.push("/app/profile");
       return;
     }

@@ -12,11 +12,11 @@ import {
 } from '@react-email/components';
 
 interface WelcomeEmailProps {
-  email: string;
+  email?: string;
   unsubscribeUrl: string;
 }
 
-export function WelcomeEmail({ email, unsubscribeUrl }: WelcomeEmailProps) {
+export function WelcomeEmail({ email: _email, unsubscribeUrl }: WelcomeEmailProps) {
   // Construct base URL with Vercel auto-detection support
   // Priority: NEXT_PUBLIC_BASE_URL > VERCEL_URL (auto-provided by Vercel) > localhost fallback
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL

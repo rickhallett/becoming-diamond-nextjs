@@ -8,7 +8,6 @@ interface StatsCardProps {
   value: string | number;
   subtitle?: string;
   icon?: ReactNode;
-  delay?: number;
 }
 
 export default function StatsCard({
@@ -16,7 +15,6 @@ export default function StatsCard({
   value,
   subtitle,
   icon,
-  delay = 0,
 }: StatsCardProps) {
   return (
     <motion.div

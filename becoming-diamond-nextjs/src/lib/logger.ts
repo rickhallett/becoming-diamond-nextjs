@@ -71,6 +71,7 @@ class Logger {
     if (!this.isServer) {
       if (typeof process !== 'undefined' && process.env?.NODE_ENV === 'development') {
         const prefix = context ? `[${context}]` : '';
+        // eslint-disable-next-line no-console
         console[level === 'debug' ? 'log' : level](`${prefix} ${message}`, data || '');
       }
       return;
@@ -95,6 +96,7 @@ class Logger {
     } catch (error) {
       // Fallback to console if file writing fails
       console.error('Failed to write to log file:', error);
+      // eslint-disable-next-line no-console
       console[level](`[${context}] ${message}`, data || '');
     }
   }

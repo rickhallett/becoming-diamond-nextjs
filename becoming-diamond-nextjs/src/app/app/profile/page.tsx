@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { IconEdit, IconCheck, IconX, IconCamera, IconMail, IconMapPin, IconBriefcase } from "@tabler/icons-react";
 import { useUser } from "@/contexts/UserContext";
-import { FEATURES } from "@/config/features";
 
 export default function ProfilePage() {
     const router = useRouter();
