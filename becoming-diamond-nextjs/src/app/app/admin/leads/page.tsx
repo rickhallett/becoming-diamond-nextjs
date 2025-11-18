@@ -63,7 +63,7 @@ export default function LeadsAdminPage() {
     if (status === "authenticated" && session?.user?.email === ADMIN_EMAIL) {
       fetchLeads();
     }
-  }, [status, session, page]);
+  }, [status, session, page, fetchLeads]);
 
   // Export to CSV
   const handleExport = async () => {
@@ -225,11 +225,10 @@ export default function LeadsAdminPage() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       {lead.email_status && (
                         <span
-                          className={`px-2 py-1 text-xs rounded-full ${
-                            lead.email_status === "sent"
+                          className={`px-2 py-1 text-xs rounded-full ${lead.email_status === "sent"
                               ? "bg-green-500/20 text-green-400"
                               : "bg-red-500/20 text-red-400"
-                          }`}
+                            }`}
                         >
                           {lead.email_status}
                         </span>

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { nanoid } from "nanoid";
-import { log } from '@/lib/axiom-logger';
+import { log } from "@/lib/axiom-logger";
 import { sendWelcomeEmail } from "@/lib/gmail-smtp";
 
 // Dynamic route config for Next.js 15
@@ -15,20 +15,20 @@ function checkRateLimit(ip: string): boolean {
 
   if (!limit || now > limit.resetAt) {
     rateLimitMap.set(ip, { count: 1, resetAt: now + 60000 }); // 1 minute
-    log.debug('Rate limit: New window', {
-      component: 'LeadCapture',
-      event: 'rate_limit_check',
+    log.debug("Rate limit: New window", {
+      component: "LeadCapture",
+      event: "rate_limit_check",
       ipAddress: ip,
-      result: 'allowed',
+      result: "allowed",
       timestamp: new Date().toISOString(),
     });
     return true;
   }
 
   if (limit.count >= 5) {
-    log.warn('Rate limit: Exceeded', {
-      component: 'LeadCapture',
-      event: 'rate_limit_exceeded',
+    log.warn("Rate limit: Exceeded", {
+      component: "LeadCapture",
+      event: "rate_limit_exceeded",
       ipAddress: ip,
       attemptCount: limit.count,
       windowResetAt: new Date(limit.resetAt).toISOString(),
@@ -102,13 +102,13 @@ export async function POST(request: NextRequest) {
     });
 
     if (duplicateCheck.rows.length > 0) {
-      await log.warn('Duplicate lead submission blocked', {
-        component: 'LeadCapture',
-        event: 'duplicate_submission',
-        emailDomain: email.split('@')[1],
+      await log.warn("Duplicate lead submission blocked", {
+        component: "LeadCapture",
+        event: "duplicate_submission",
+        emailDomain: email.split("@")[1],
         ipAddress: ip,
         existingLeadId: duplicateCheck.rows[0].id,
-        timeWindow: '24h',
+        timeWindow: "24h",
         timestamp: new Date().toISOString(),
       });
 
@@ -157,14 +157,14 @@ export async function POST(request: NextRequest) {
     });
 
     // Log successful lead capture
-    await log.info('Lead captured successfully', {
-      component: 'LeadCapture',
-      event: 'lead_captured',
+    await log.info("Lead captured successfully", {
+      component: "LeadCapture",
+      event: "lead_captured",
       leadId: id,
-      emailDomain: email.split('@')[1],
-      referrer: referrer || 'direct',
+      emailDomain: email.split("@")[1],
+      referrer: referrer || "direct",
       landingPage,
-      userAgent: userAgent || 'unknown',
+      userAgent: userAgent || "unknown",
       ipAddress: ip,
       consentGiven: true,
       timestamp: new Date().toISOString(),
@@ -216,7 +216,8 @@ export async function POST(request: NextRequest) {
       await log.error("Email sending error", {
         context: "EMAIL",
         email,
-        error: emailError instanceof Error ? emailError.message : String(emailError),
+        error:
+          emailError instanceof Error ? emailError.message : String(emailError),
         leadId: id,
         timestamp: new Date().toISOString(),
       });
@@ -262,11 +263,11 @@ export async function GET(request: NextRequest) {
     const adminKey = process.env.ADMIN_API_KEY;
 
     if (!authHeader || authHeader !== `Bearer ${adminKey}`) {
-      await log.warn('Unauthorized lead export attempt', {
-        component: 'LeadExport',
-        event: 'unauthorized_access',
-        ipAddress: request.headers.get("x-forwarded-for") || 'unknown',
-        userAgent: request.headers.get("user-agent") || 'unknown',
+      await log.warn("Unauthorized lead export attempt", {
+        component: "LeadExport",
+        event: "unauthorized_access",
+        ipAddress: request.headers.get("x-forwarded-for") || "unknown",
+        userAgent: request.headers.get("user-agent") || "unknown",
         timestamp: new Date().toISOString(),
       });
 
@@ -276,16 +277,19 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    await log.info('Admin lead export started', {
-      component: 'LeadExport',
-      event: 'export_started',
+    const url = new URL(request.url);
+
+    await log.info("Admin lead export started", {
+      component: "LeadExport",
+      event: "export_started",
       format: url.searchParams.get("format") || "json",
-      hasDateFilter: !!(url.searchParams.get("startDate") || url.searchParams.get("endDate")),
+      hasDateFilter: !!(
+        url.searchParams.get("startDate") || url.searchParams.get("endDate")
+      ),
       timestamp: new Date().toISOString(),
     });
 
     // Parse query parameters
-    const url = new URL(request.url);
     const startDate = url.searchParams.get("startDate");
     const endDate = url.searchParams.get("endDate");
     const status = url.searchParams.get("status");
