@@ -17,6 +17,7 @@ import { SignOutButton } from "@/components/auth/SignOutButton";
 import { UserAvatar } from "@/components/auth/UserAvatar";
 import { FEATURES } from "@/config/features";
 import { ErrorBoundaryWithLogging } from "@/components/error-boundary-with-logging";
+import { isAdminUser } from "@/lib/auth-helpers";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
@@ -24,7 +25,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     const { data: session } = useSession();
 
     // Check if user is admin
-    const isAdmin = session?.user?.email === 'support@becomingdiamond.com';
+    const isAdmin = isAdminUser(session?.user?.email);
 
     // Define all possible navigation items
     const allNavItems = [
