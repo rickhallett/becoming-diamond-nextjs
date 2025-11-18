@@ -3,14 +3,10 @@ import { nanoid } from "nanoid";
 import { log } from "@/lib/axiom-logger";
 import { sendWelcomeEmail } from "@/lib/gmail-smtp";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { validate, leadCaptureSchema, formatValidationErrors } from "@/lib/validation";
 
 // Dynamic route config for Next.js 15
 export const dynamic = "force-dynamic";
-
-function validateEmail(email: string): boolean {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-}
 
 export async function POST(request: NextRequest) {
   try {
@@ -52,33 +48,28 @@ export async function POST(request: NextRequest) {
       timestamp: new Date().toISOString(),
     });
 
-    // Parse request body
+    // Parse and validate request body
     const body = await request.json();
-    const { email, consentGiven, noLiabilityAccepted } = body;
+    const validation = validate(leadCaptureSchema, body);
 
-    // Validate email
-    if (!email || !validateEmail(email)) {
+    if (!validation.valid) {
+      await log.warn("Lead capture validation failed", {
+        component: "LeadCapture",
+        event: "validation_failed",
+        errors: formatValidationErrors(validation.errors),
+        timestamp: new Date().toISOString(),
+      });
+
       return NextResponse.json(
-        { success: false, error: "Invalid email address" },
+        {
+          success: false,
+          error: formatValidationErrors(validation.errors),
+        },
         { status: 400 }
       );
     }
 
-    // Validate consent
-    if (!consentGiven) {
-      return NextResponse.json(
-        { success: false, error: "Consent required to subscribe" },
-        { status: 400 }
-      );
-    }
-
-    // Validate liability acceptance
-    if (!noLiabilityAccepted) {
-      return NextResponse.json(
-        { success: false, error: "Terms acknowledgment required" },
-        { status: 400 }
-      );
-    }
+    const { email, consentGiven, noLiabilityAccepted } = validation.data;
 
     // Check for duplicate within 24 hours
     // TODO: why is this 24 hours?
