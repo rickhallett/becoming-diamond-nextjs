@@ -11,20 +11,20 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ videoId: string }> }
 ) {
-  // Check authentication (NextAuth session or test auth)
+  // Check authentication - MUST have valid NextAuth session
   const session = await auth();
-  const testAuthHeader = request.headers.get('x-test-auth');
   const { videoId } = await params;
 
   await log.info('Video token request', {
     videoId,
     userId: session?.user?.id || 'unauthenticated',
     hasSession: !!session,
-    isTestAuth: !!testAuthHeader,
     timestamp: new Date().toISOString(),
   });
 
-  if (!session && !testAuthHeader) {
+  // Security: Only allow authenticated users with valid sessions
+  // Client-side authentication checks are NOT secure
+  if (!session || !session.user) {
     await log.warn('Unauthorized video token request', {
       videoId,
       ipAddress: request.headers.get('x-forwarded-for') || 'unknown',

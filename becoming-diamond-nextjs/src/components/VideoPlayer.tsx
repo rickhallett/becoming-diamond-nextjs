@@ -26,18 +26,8 @@ export function VideoPlayer({
 
     async function initPlayer() {
       try {
-        // Check for test auth in localStorage
-        const testAuth = typeof window !== 'undefined'
-          ? localStorage.getItem('bd_user_auth')
-          : null;
-
-        // Fetch signed stream URL
-        const headers: HeadersInit = {};
-        if (testAuth) {
-          headers['x-test-auth'] = 'true';
-        }
-
-        const response = await fetch(`/api/video/${videoId}/token`, { headers });
+        // Fetch signed stream URL (authentication is handled server-side via NextAuth session)
+        const response = await fetch(`/api/video/${videoId}/token`);
         if (!response.ok) throw new Error('Failed to load video');
 
         const { streamUrl } = await response.json();
