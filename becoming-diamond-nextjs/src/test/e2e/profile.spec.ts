@@ -63,7 +63,7 @@ async function clearUserData(page: Page) {
 test.describe('profile management features', () => {
   test.describe('6.1 Profile Page Display', () => {
     // TODO: Fix profile info display
-test.skip('displays profile information for authenticated user', async ({ page }) => {
+test.skip('displays profile information for authenticated user', async ({ page }) => {
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
       await page.waitForLoadState('domcontentloaded');
@@ -87,7 +87,7 @@ test.describe('profile management features', () => {
     });
 
     // TODO: Fix avatar display
-test.skip('displays profile avatar', async ({ page }) => {
+test.skip('displays profile avatar', async ({ page }) => {
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
       await page.waitForLoadState('domcontentloaded');
@@ -105,7 +105,7 @@ test.describe('profile management features', () => {
     });
 
     // TODO: Fix statistics section
-test.skip('displays statistics section', async ({ page }) => {
+test.skip('displays statistics section', async ({ page }) => {
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
       await page.waitForLoadState('domcontentloaded');
@@ -126,7 +126,7 @@ test.describe('profile management features', () => {
     });
 
     // TODO: Fix account date display
-test.skip('displays account created date', async ({ page }) => {
+test.skip('displays account created date', async ({ page }) => {
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
       await page.waitForLoadState('domcontentloaded');
@@ -137,7 +137,7 @@ test.describe('profile management features', () => {
     });
 
     // TODO: Fix edit button display
-test.skip('displays edit profile button', async ({ page }) => {
+test.skip('displays edit profile button', async ({ page }) => {
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
       await page.waitForLoadState('domcontentloaded');
@@ -149,7 +149,7 @@ test.describe('profile management features', () => {
     });
 
     // TODO: Fix loading state
-test.skip('shows loading state while fetching profile', async ({ page }) => {
+test.skip('shows loading state while fetching profile', async ({ page }) => {
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
 
@@ -163,7 +163,7 @@ test.describe('profile management features', () => {
     });
 
     // TODO: Fix personal info section
-test.skip('displays personal information section', async ({ page }) => {
+test.skip('displays personal information section', async ({ page }) => {
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
       await page.waitForLoadState('domcontentloaded');
@@ -183,7 +183,7 @@ test.describe('profile management features', () => {
 
   test.describe('6.2 Profile Editing', () => {
     // TODO: Fix edit mode activation
-test.skip('enables editing mode when Edit button clicked', async ({ page }) => {
+test.skip('enables editing mode when Edit button clicked', async ({ page }) => {
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
       await page.waitForLoadState('domcontentloaded');
@@ -207,7 +207,7 @@ test.describe('profile management features', () => {
     });
 
     // TODO: Fix name field update
-test.skip('updates name field successfully', async ({ page }) => {
+test.skip('updates name field successfully', async ({ page }) => {
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
       await page.waitForLoadState('domcontentloaded');
@@ -237,7 +237,7 @@ test.describe('profile management features', () => {
     });
 
     // TODO: Fix all fields update
-test.skip('updates all profile fields', async ({ page }) => {
+test.skip('updates all profile fields', async ({ page }) => {
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
       await page.waitForLoadState('domcontentloaded');
@@ -273,7 +273,7 @@ test.describe('profile management features', () => {
     });
 
     // TODO: Fix cancel functionality
-test.skip('cancels editing without saving changes', async ({ page }) => {
+test.skip('cancels editing without saving changes', async ({ page }) => {
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
       await page.waitForLoadState('domcontentloaded');
@@ -304,7 +304,7 @@ test.describe('profile management features', () => {
     });
 
     // TODO: Fix immediate UI update
-test.skip('displays updated information immediately', async ({ page }) => {
+test.skip('displays updated information immediately', async ({ page }) => {
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
       await page.waitForLoadState('domcontentloaded');
@@ -328,7 +328,7 @@ test.describe('profile management features', () => {
 
   test.describe('6.3 Avatar Upload', () => {
     // TODO: Fix avatar hover state
-test.skip('displays change avatar indicator on hover', async ({ page }) => {
+test.skip('displays change avatar indicator on hover', async ({ page }) => {
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
       await page.waitForLoadState('domcontentloaded');
@@ -348,7 +348,7 @@ test.describe('profile management features', () => {
     });
 
     // TODO: Fix avatar styling
-test.skip('avatar displays with correct styling', async ({ page }) => {
+test.skip('avatar displays with correct styling', async ({ page }) => {
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
       await page.waitForLoadState('domcontentloaded');
@@ -381,7 +381,7 @@ test.describe('profile management features', () => {
     });
 
     // TODO: Fix fallback initials
-test.skip('displays fallback initials when no avatar', async ({ page }) => {
+test.skip('displays fallback initials when no avatar', async ({ page }) => {
       await setUserAuth(page, 'newUser');
       await page.goto('/app/profile');
       await page.waitForLoadState('domcontentloaded');
@@ -394,7 +394,7 @@ test.describe('profile management features', () => {
 
   test.describe('6.4 Progress Statistics', () => {
     // TODO: Fix completion stats
-test.skip('displays course completion statistics', async ({ page }) => {
+test.skip('displays course completion statistics', async ({ page }) => {
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
       await page.waitForLoadState('domcontentloaded');
@@ -410,7 +410,7 @@ test.describe('profile management features', () => {
     });
 
     // TODO: Fix sprint stats
-test.skip('displays sprint progress statistics', async ({ page }) => {
+test.skip('displays sprint progress statistics', async ({ page }) => {
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
       await page.waitForLoadState('domcontentloaded');
@@ -422,7 +422,7 @@ test.describe('profile management features', () => {
     });
 
     // TODO: Fix XP display
-test.skip('displays XP points and level', async ({ page }) => {
+test.skip('displays XP points and level', async ({ page }) => {
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
       await page.waitForLoadState('domcontentloaded');
@@ -440,7 +440,7 @@ test.describe('profile management features', () => {
     });
 
     // TODO: Fix achievements section
-test.skip('shows achievements section when enabled', async ({ page }) => {
+test.skip('shows achievements section when enabled', async ({ page }) => {
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
       await page.waitForLoadState('domcontentloaded');
@@ -460,7 +460,7 @@ test.describe('profile management features', () => {
     });
 
     // TODO: Fix new user stats
-test.skip('statistics update correctly for new user', async ({ page }) => {
+test.skip('statistics update correctly for new user', async ({ page }) => {
       await setUserAuth(page, 'newUser');
       await page.goto('/app/profile');
       await page.waitForLoadState('domcontentloaded');
@@ -478,7 +478,7 @@ test.describe('profile management features', () => {
     });
 
     // TODO: Fix days active calculation
-test.skip('displays days since joining calculation', async ({ page }) => {
+test.skip('displays days since joining calculation', async ({ page }) => {
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
       await page.waitForLoadState('domcontentloaded');
@@ -495,7 +495,7 @@ test.describe('profile management features', () => {
 
   test.describe('6.5 Form Validation', () => {
     // TODO: Fix empty name validation
-test.skip('prevents saving with empty name', async ({ page }) => {
+test.skip('prevents saving with empty name', async ({ page }) => {
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
       await page.waitForLoadState('domcontentloaded');
@@ -525,7 +525,7 @@ test.describe('profile management features', () => {
     });
 
     // TODO: Fix URL validation
-test.skip('validates website URL format', async ({ page }) => {
+test.skip('validates website URL format', async ({ page }) => {
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
       await page.waitForLoadState('domcontentloaded');
@@ -548,7 +548,7 @@ test.describe('profile management features', () => {
     });
 
     // TODO: Fix valid URL acceptance
-test.skip('accepts valid website URLs', async ({ page }) => {
+test.skip('accepts valid website URLs', async ({ page }) => {
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
       await page.waitForLoadState('domcontentloaded');
@@ -572,7 +572,7 @@ test.describe('profile management features', () => {
     });
 
     // TODO: Fix partial data submission
-test.skip('handles form submission with partial data', async ({ page }) => {
+test.skip('handles form submission with partial data', async ({ page }) => {
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
       await page.waitForLoadState('domcontentloaded');
@@ -597,7 +597,7 @@ test.describe('profile management features', () => {
     });
 
     // TODO: Fix validation feedback
-test.skip('displays validation feedback immediately', async ({ page }) => {
+test.skip('displays validation feedback immediately', async ({ page }) => {
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
       await page.waitForLoadState('domcontentloaded');
@@ -619,7 +619,7 @@ test.describe('profile management features', () => {
 
   test.describe('6.6 Data Persistence', () => {
     // TODO: Fix reload persistence
-test.skip('persists profile changes across page reload', async ({ page }) => {
+test.skip('persists profile changes across page reload', async ({ page }) => {
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
       await page.waitForLoadState('domcontentloaded');
@@ -646,7 +646,7 @@ test.describe('profile management features', () => {
     });
 
     // TODO: Fix logout persistence
-test.skip('persists profile changes across logout and login', async ({ page }) => {
+test.skip('persists profile changes across logout and login', async ({ page }) => {
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
       await page.waitForLoadState('domcontentloaded');
@@ -676,7 +676,7 @@ test.describe('profile management features', () => {
     });
 
     // TODO: Fix data consistency
-test.skip('maintains data consistency between views', async ({ page }) => {
+test.skip('maintains data consistency between views', async ({ page }) => {
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
       await page.waitForLoadState('domcontentloaded');
@@ -707,7 +707,7 @@ test.describe('profile management features', () => {
     });
 
     // TODO: Fix concurrent updates
-test.skip('handles concurrent updates gracefully', async ({ page }) => {
+test.skip('handles concurrent updates gracefully', async ({ page }) => {
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
       await page.waitForLoadState('domcontentloaded');
@@ -736,7 +736,7 @@ test.describe('profile management features', () => {
     });
 
     // TODO: Fix failed update recovery
-test.skip('recovers from failed update', async ({ page }) => {
+test.skip('recovers from failed update', async ({ page }) => {
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
       await page.waitForLoadState('domcontentloaded');
@@ -768,7 +768,7 @@ test.describe('profile management features', () => {
     });
 
     // TODO: Fix multi-session sync
-test.skip('syncs data across multiple sessions', async ({ page }) => {
+test.skip('syncs data across multiple sessions', async ({ page }) => {
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
       await page.waitForLoadState('domcontentloaded');
@@ -801,7 +801,7 @@ test.describe('profile management features', () => {
 
   test.describe('6.7 Mobile Responsiveness', () => {
     // TODO: Fix mobile profile
-test.skip('profile page adapts to mobile viewport', async ({ page }) => {
+test.skip('profile page adapts to mobile viewport', async ({ page }) => {
       await page.setViewportSize({ width: 375, height: 667 });
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
@@ -821,7 +821,7 @@ test.describe('profile management features', () => {
     });
 
     // TODO: Fix mobile fields
-test.skip('form fields are accessible on mobile', async ({ page }) => {
+test.skip('form fields are accessible on mobile', async ({ page }) => {
       await page.setViewportSize({ width: 375, height: 667 });
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
@@ -844,7 +844,7 @@ test.describe('profile management features', () => {
     });
 
     // TODO: Fix mobile stats grid
-test.skip('statistics grid adapts to mobile layout', async ({ page }) => {
+test.skip('statistics grid adapts to mobile layout', async ({ page }) => {
       await page.setViewportSize({ width: 375, height: 667 });
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
@@ -862,7 +862,7 @@ test.describe('profile management features', () => {
     });
 
     // TODO: Fix mobile avatar
-test.skip('avatar and profile header adapt to mobile', async ({ page }) => {
+test.skip('avatar and profile header adapt to mobile', async ({ page }) => {
       await page.setViewportSize({ width: 375, height: 667 });
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');
@@ -879,7 +879,7 @@ test.describe('profile management features', () => {
     });
 
     // TODO: Fix mobile touch
-test.skip('touch interactions work correctly on mobile', async ({ page }) => {
+test.skip('touch interactions work correctly on mobile', async ({ page }) => {
       await page.setViewportSize({ width: 375, height: 667 });
       await setUserAuth(page, 'activeUser');
       await page.goto('/app/profile');

@@ -79,7 +79,7 @@ test.describe('Course Interactions', () => {
 
   test.describe('3.1 Course Slide Navigation', () => {
     // TODO: Fix slide navigation
-test.skip('should navigate through slides using next button', async ({ page }) => {
+test.skip('should navigate through slides using next button', async ({ page }) => {
       await setupCourseSession(page);
 
       // Get initial slide index
@@ -99,7 +99,7 @@ test.describe('Course Interactions', () => {
     });
 
     // TODO: Fix previous button navigation
-test.skip('should navigate backward using previous button', async ({ page }) => {
+test.skip('should navigate backward using previous button', async ({ page }) => {
       await setupCourseSession(page);
 
       // Navigate to second slide first
@@ -122,7 +122,7 @@ test.describe('Course Interactions', () => {
     });
 
     // TODO: Fix first slide button state
-test.skip('should disable previous button on first slide', async ({ page }) => {
+test.skip('should disable previous button on first slide', async ({ page }) => {
       await setupCourseSession(page);
 
       // On first slide, previous button should be disabled
@@ -131,7 +131,7 @@ test.describe('Course Interactions', () => {
     });
 
     // TODO: Fix last slide button state
-test.skip('should disable next button on last slide', async ({ page }) => {
+test.skip('should disable next button on last slide', async ({ page }) => {
       await setupCourseSession(page);
 
       // Navigate to last slide
@@ -151,7 +151,7 @@ test.describe('Course Interactions', () => {
     });
 
     // TODO: Fix keyboard navigation
-test.skip('should navigate with keyboard arrow keys', async ({ page }) => {
+test.skip('should navigate with keyboard arrow keys', async ({ page }) => {
       await setupCourseSession(page);
 
       const initialIndex = await getCurrentSlideIndex(page);
@@ -174,7 +174,7 @@ test.describe('Course Interactions', () => {
     });
 
     // TODO: Fix space bar navigation
-test.skip('should navigate with space bar', async ({ page }) => {
+test.skip('should navigate with space bar', async ({ page }) => {
       await setupCourseSession(page);
 
       const initialIndex = await getCurrentSlideIndex(page);
@@ -204,7 +204,7 @@ test.describe('Course Interactions', () => {
 
   test.describe('3.2 Slide Completion Marking', () => {
     // TODO: Fix slide completion
-test.skip('should mark slide as complete when button clicked', async ({ page }) => {
+test.skip('should mark slide as complete when button clicked', async ({ page }) => {
       await setupCourseSession(page);
 
       // Find Mark Complete button
@@ -225,7 +225,7 @@ test.describe('Course Interactions', () => {
     });
 
     // TODO: Fix sidebar completion status
-test.skip('should show completion status in sidebar', async ({ page }) => {
+test.skip('should show completion status in sidebar', async ({ page }) => {
       await setupCourseSession(page);
 
       // Mark current slide complete
@@ -247,7 +247,7 @@ test.describe('Course Interactions', () => {
     });
 
     // TODO: Fix progress bar update
-test.skip('should update progress bar when slide completed', async ({ page }) => {
+test.skip('should update progress bar when slide completed', async ({ page }) => {
       await setupCourseSession(page);
 
       // Get initial progress value
@@ -272,7 +272,7 @@ test.describe('Course Interactions', () => {
     });
 
     // TODO: Fix completion persistence
-test.skip('should persist completion status', async ({ page }) => {
+test.skip('should persist completion status', async ({ page }) => {
       await setupCourseSession(page);
 
       // Mark slide complete
@@ -297,7 +297,7 @@ test.describe('Course Interactions', () => {
     });
 
     // TODO: Fix completed slide state
-test.skip('should not allow unmarking completed slide', async ({ page }) => {
+test.skip('should not allow unmarking completed slide', async ({ page }) => {
       await setupCourseSession(page);
 
       // Mark slide complete
@@ -315,7 +315,7 @@ test.describe('Course Interactions', () => {
 
   test.describe('3.3 Course Progress Persistence', () => {
     // TODO: Fix progress localStorage save
-test.skip('should save progress to localStorage', async ({ page }) => {
+test.skip('should save progress to localStorage', async ({ page }) => {
       await setupCourseSession(page);
 
       // Mark slide complete
@@ -336,7 +336,7 @@ test.describe('Course Interactions', () => {
     });
 
     // TODO: Fix progress restoration
-test.skip('should restore progress on browser reopen', async ({ page, context }) => {
+test.skip('should restore progress on browser reopen', async ({ page, context }) => {
       await setupCourseSession(page);
 
       // Navigate to slide 3 and mark slides complete
@@ -379,7 +379,7 @@ test.describe('Course Interactions', () => {
     });
 
     // TODO: Fix tab close progress
-test.skip('should maintain progress across tab close and reopen', async ({ page }) => {
+test.skip('should maintain progress across tab close and reopen', async ({ page }) => {
       await setupCourseSession(page);
 
       // Complete first slide
@@ -416,7 +416,7 @@ test.describe('Course Interactions', () => {
     });
 
     // TODO: Fix progress calculation
-test.skip('should calculate progress percentage accurately', async ({ page }) => {
+test.skip('should calculate progress percentage accurately', async ({ page }) => {
       await setupCourseSession(page);
 
       // Get total slides
@@ -492,7 +492,7 @@ test.describe('Course Interactions', () => {
 
   test.describe('3.6 Resume Course', () => {
     // TODO: Fix resume option display
-test.skip('should show resume option for in-progress course', async ({ page }) => {
+test.skip('should show resume option for in-progress course', async ({ page }) => {
       // Set up in-progress state
       await page.goto(courseViewerUrl);
       await page.waitForLoadState('domcontentloaded');
@@ -519,7 +519,7 @@ test.describe('Course Interactions', () => {
     });
 
     // TODO: Fix resume functionality
-test.skip('should resume from last viewed slide', async ({ page }) => {
+test.skip('should resume from last viewed slide', async ({ page }) => {
       // Set up progress at specific slide
       await page.goto(courseViewerUrl);
       await page.waitForLoadState('domcontentloaded');
@@ -555,7 +555,7 @@ test.describe('Course Interactions', () => {
 
   test.describe('3.7 Course Sidebar Navigation', () => {
     // TODO: Fix sidebar slide display
-test.skip('should display all slides in sidebar', async ({ page }) => {
+test.skip('should display all slides in sidebar', async ({ page }) => {
       await setupCourseSession(page);
 
       // Check if sidebar is visible (desktop view)

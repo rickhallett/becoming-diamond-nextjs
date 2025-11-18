@@ -122,7 +122,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
 
   test.describe('5.1 Chat Interface Rendering', () => {
     // TODO: Fix chat interface rendering - elements not found
-test.skip('should load chat interface with all required elements', async ({ page }) => {
+test.skip('should load chat interface with all required elements', async ({ page }) => {
       await setupChatSession(page);
 
       // Header with DiamondMindAI branding
@@ -148,7 +148,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix welcome message display
-test.skip('should display welcome message on first visit', async ({ page }) => {
+test.skip('should display welcome message on first visit', async ({ page }) => {
       await setupChatSession(page, true);
 
       // Welcome message should be visible
@@ -161,7 +161,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix suggested prompts rendering
-test.skip('should show suggested prompts when no messages', async ({ page }) => {
+test.skip('should show suggested prompts when no messages', async ({ page }) => {
       await setupChatSession(page, true);
 
       // Suggested prompts should be visible
@@ -172,7 +172,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix prompt click handler
-test.skip('should populate input when suggested prompt clicked', async ({ page }) => {
+test.skip('should populate input when suggested prompt clicked', async ({ page }) => {
       await setupChatSession(page, true);
 
       const firstPrompt = chatFixtures.suggestedPrompts[0];
@@ -186,7 +186,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix brain icon rendering
-test.skip('should show brain icon for DiamondMindAI', async ({ page }) => {
+test.skip('should show brain icon for DiamondMindAI', async ({ page }) => {
       await setupChatSession(page);
 
       // Brain icon should be visible in header
@@ -195,7 +195,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix sidebar rendering
-test.skip('should show sidebar with sessions list', async ({ page }) => {
+test.skip('should show sidebar with sessions list', async ({ page }) => {
       await setupChatSession(page);
 
       // Desktop: Sidebar should be visible
@@ -214,7 +214,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
 
   test.describe('5.2 Message Sending', () => {
     // TODO: Fix message sending functionality
-test.skip('should send message and display in chat', async ({ page }) => {
+test.skip('should send message and display in chat', async ({ page }) => {
       await setupChatSession(page, true);
       await mockAIResponse(page, 'Mocked AI response');
 
@@ -239,7 +239,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix input field clearing
-test.skip('should clear input field after sending', async ({ page }) => {
+test.skip('should clear input field after sending', async ({ page }) => {
       await setupChatSession(page, true);
       await mockAIResponse(page, 'Response');
 
@@ -257,7 +257,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix timestamp display
-test.skip('should display timestamp with message', async ({ page }) => {
+test.skip('should display timestamp with message', async ({ page }) => {
       await setupChatSession(page, true);
       await mockAIResponse(page, 'Response');
 
@@ -270,7 +270,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix send button state management
-test.skip('should disable send button when input is empty', async ({ page }) => {
+test.skip('should disable send button when input is empty', async ({ page }) => {
       await setupChatSession(page);
 
       const input = page.locator('input[placeholder*="Ask a question"]');
@@ -284,7 +284,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix whitespace validation
-test.skip('should not send message with only whitespace', async ({ page }) => {
+test.skip('should not send message with only whitespace', async ({ page }) => {
       await setupChatSession(page);
 
       const input = page.locator('input[placeholder*="Ask a question"]');
@@ -298,7 +298,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix Enter key handler
-test.skip('should allow sending with Enter key', async ({ page }) => {
+test.skip('should allow sending with Enter key', async ({ page }) => {
       await setupChatSession(page, true);
       await mockAIResponse(page, 'Response');
 
@@ -316,7 +316,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix user icon display
-test.skip('should show user icon for user messages', async ({ page }) => {
+test.skip('should show user icon for user messages', async ({ page }) => {
       await setupChatSession(page, true);
       await mockAIResponse(page, 'Response');
 
@@ -331,7 +331,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
 
   test.describe('5.3 AI Response Display', () => {
     // TODO: Fix loading indicator
-test.skip('should show loading indicator while waiting for response', async ({ page }) => {
+test.skip('should show loading indicator while waiting for response', async ({ page }) => {
       await setupChatSession(page, true);
 
       // Don't mock response to see loading state
@@ -347,7 +347,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix AI response styling
-test.skip('should display AI response with assistant styling', async ({ page }) => {
+test.skip('should display AI response with assistant styling', async ({ page }) => {
       await setupChatSession(page, true);
 
       const mockResponse = chatFixtures.mockMessages.assistantResponse1.content;
@@ -366,7 +366,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix response alignment
-test.skip('should display response aligned to left', async ({ page }) => {
+test.skip('should display response aligned to left', async ({ page }) => {
       await setupChatSession(page, true);
 
       const mockResponse = 'Test AI response';
@@ -390,7 +390,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix markdown rendering
-test.skip('should render markdown formatting in response', async ({ page }) => {
+test.skip('should render markdown formatting in response', async ({ page }) => {
       await setupChatSession(page, true);
 
       const mockResponse = chatFixtures.mockMessages.markdownExample.content;
@@ -413,7 +413,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix streaming animation
-test.skip('should show streaming effect with typewriter animation', async ({ page }) => {
+test.skip('should show streaming effect with typewriter animation', async ({ page }) => {
       await setupChatSession(page, true);
 
       // Long response to see streaming
@@ -436,7 +436,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix API call handling
-test.skip('should handle API call to /api/ask endpoint', async ({ page }) => {
+test.skip('should handle API call to /api/ask endpoint', async ({ page }) => {
       await setupChatSession(page, true);
 
       // Monitor API calls
@@ -460,7 +460,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
 
   test.describe('5.4 Chat History Persistence', () => {
     // TODO: Fix localStorage persistence
-test.skip('should save messages to localStorage', async ({ page }) => {
+test.skip('should save messages to localStorage', async ({ page }) => {
       await setupChatSession(page, true);
       await mockAIResponse(page, 'Response');
 
@@ -477,7 +477,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix message persistence on refresh
-test.skip('should persist messages after page refresh', async ({ page }) => {
+test.skip('should persist messages after page refresh', async ({ page }) => {
       await setupChatSession(page, true);
       await mockAIResponse(page, 'Response 1');
 
@@ -495,7 +495,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix conversation persistence
-test.skip('should maintain conversation after browser reopen', async ({ page, context }) => {
+test.skip('should maintain conversation after browser reopen', async ({ page, context }) => {
       await setupChatSession(page, true);
       await mockAIResponse(page, 'Response');
 
@@ -519,7 +519,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix scroll position restoration
-test.skip('should restore scroll position for long conversations', async ({ page }) => {
+test.skip('should restore scroll position for long conversations', async ({ page }) => {
       await setupChatSession(page, true);
 
       // Create multiple messages to enable scrolling
@@ -555,7 +555,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix message count display
-test.skip('should show message count in session history', async ({ page }) => {
+test.skip('should show message count in session history', async ({ page }) => {
       await setupChatSession(page, true);
       await mockAIResponse(page, 'Response');
 
@@ -576,7 +576,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
 
   test.describe('5.5 Error Handling', () => {
     // TODO: Fix API error handling
-test.skip('should display error message when API fails', async ({ page }) => {
+test.skip('should display error message when API fails', async ({ page }) => {
       await setupChatSession(page, true);
       await mockNetworkError(page);
 
@@ -589,7 +589,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix offline error handling
-test.skip('should show error message when offline', async ({ page, context }) => {
+test.skip('should show error message when offline', async ({ page, context }) => {
       await setupChatSession(page, true);
 
       // Simulate offline
@@ -607,7 +607,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix retry functionality
-test.skip('should allow retry after error', async ({ page }) => {
+test.skip('should allow retry after error', async ({ page }) => {
       await setupChatSession(page, true);
 
       // First call fails
@@ -641,7 +641,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix empty response handling
-test.skip('should handle empty API response gracefully', async ({ page }) => {
+test.skip('should handle empty API response gracefully', async ({ page }) => {
       await setupChatSession(page, true);
 
       await page.route('**/api/ask', async (route) => {
@@ -663,7 +663,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
 
   test.describe('5.6 Loading States', () => {
     // TODO: Fix send button disable during processing
-test.skip('should disable send button while processing', async ({ page }) => {
+test.skip('should disable send button while processing', async ({ page }) => {
       await setupChatSession(page, true);
 
       const input = page.locator('input[placeholder*="Ask a question"]');
@@ -677,7 +677,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix typing indicator animation
-test.skip('should show typing indicator with animated dots', async ({ page }) => {
+test.skip('should show typing indicator with animated dots', async ({ page }) => {
       await setupChatSession(page, true);
 
       await sendMessage(page, 'Test question');
@@ -690,7 +690,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix duplicate send prevention
-test.skip('should prevent duplicate message sends', async ({ page }) => {
+test.skip('should prevent duplicate message sends', async ({ page }) => {
       await setupChatSession(page, true);
 
       // Track API calls
@@ -723,7 +723,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix UI re-enable after response
-test.skip('should re-enable UI after response received', async ({ page }) => {
+test.skip('should re-enable UI after response received', async ({ page }) => {
       await setupChatSession(page, true);
       await mockAIResponse(page, 'Response');
 
@@ -739,7 +739,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix typing indicator hide
-test.skip('should hide typing indicator when response complete', async ({ page }) => {
+test.skip('should hide typing indicator when response complete', async ({ page }) => {
       await setupChatSession(page, true);
       await mockAIResponse(page, 'Complete response');
 
@@ -757,7 +757,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
 
   test.describe('5.7 Markdown Support', () => {
     // TODO: Fix bold text rendering
-test.skip('should render bold text in responses', async ({ page }) => {
+test.skip('should render bold text in responses', async ({ page }) => {
       await setupChatSession(page, true);
 
       const mockResponse = 'This is **bold text** in the response.';
@@ -772,7 +772,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix list rendering
-test.skip('should render lists in responses', async ({ page }) => {
+test.skip('should render lists in responses', async ({ page }) => {
       await setupChatSession(page, true);
 
       const mockResponse = '1. First item\n2. Second item\n3. Third item';
@@ -788,7 +788,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix code block rendering
-test.skip('should render code blocks with syntax highlighting', async ({ page }) => {
+test.skip('should render code blocks with syntax highlighting', async ({ page }) => {
       await setupChatSession(page, true);
 
       const mockResponse = '```javascript\nconst x = 42;\nconsole.log(x);\n```';
@@ -803,7 +803,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix link rendering
-test.skip('should render links as clickable', async ({ page }) => {
+test.skip('should render links as clickable', async ({ page }) => {
       await setupChatSession(page, true);
 
       const mockResponse = 'Check out [this link](https://example.com) for more info.';
@@ -818,7 +818,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix line break preservation
-test.skip('should preserve line breaks in formatted text', async ({ page }) => {
+test.skip('should preserve line breaks in formatted text', async ({ page }) => {
       await setupChatSession(page, true);
 
       const mockResponse = 'Line one\n\nLine two\n\nLine three';
@@ -835,7 +835,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix mixed markdown handling
-test.skip('should handle mixed markdown formatting', async ({ page }) => {
+test.skip('should handle mixed markdown formatting', async ({ page }) => {
       await setupChatSession(page, true);
 
       const mockResponse = chatFixtures.mockMessages.markdownExample.content;
@@ -854,7 +854,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix user message markdown escaping
-test.skip('should not render markdown in user messages', async ({ page }) => {
+test.skip('should not render markdown in user messages', async ({ page }) => {
       await setupChatSession(page, true);
       await mockAIResponse(page, 'Response');
 
@@ -876,7 +876,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
 
   test.describe('5.8 Long Conversation Scrolling', () => {
     // TODO: Fix auto-scroll functionality
-test.skip('should auto-scroll to bottom when new message arrives', async ({ page }) => {
+test.skip('should auto-scroll to bottom when new message arrives', async ({ page }) => {
       await setupChatSession(page, true);
 
       // Send multiple messages
@@ -901,7 +901,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix scroll performance
-test.skip('should maintain scroll performance with many messages', async ({ page }) => {
+test.skip('should maintain scroll performance with many messages', async ({ page }) => {
       await setupChatSession(page, true);
 
       // Create many messages quickly
@@ -925,7 +925,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix manual scrolling
-test.skip('should allow manual scrolling during conversation', async ({ page }) => {
+test.skip('should allow manual scrolling during conversation', async ({ page }) => {
       await setupChatSession(page, true);
 
       // Create several messages
@@ -946,7 +946,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix message display completeness
-test.skip('should show all messages in conversation', async ({ page }) => {
+test.skip('should show all messages in conversation', async ({ page }) => {
       await setupChatSession(page, true);
 
       const messageCount = 5;
@@ -965,7 +965,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix rapid message handling
-test.skip('should handle rapid message sending', async ({ page }) => {
+test.skip('should handle rapid message sending', async ({ page }) => {
       await setupChatSession(page, true);
 
       // Send messages in quick succession
@@ -988,7 +988,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
 
   test.describe('Session Management', () => {
     // TODO: Fix new conversation creation
-test.skip('should create new conversation session', async ({ page }) => {
+test.skip('should create new conversation session', async ({ page }) => {
       await setupChatSession(page);
 
       const viewportSize = page.viewportSize();
@@ -1009,7 +1009,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix session list display
-test.skip('should show session list in sidebar', async ({ page }) => {
+test.skip('should show session list in sidebar', async ({ page }) => {
       await setupChatSession(page);
       await mockAIResponse(page, 'Response');
 
@@ -1028,7 +1028,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix session switching
-test.skip('should allow switching between sessions', async ({ page }) => {
+test.skip('should allow switching between sessions', async ({ page }) => {
       await setupChatSession(page, true);
 
       // Create first session
@@ -1061,7 +1061,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix conversation deletion
-test.skip('should allow deleting conversation', async ({ page }) => {
+test.skip('should allow deleting conversation', async ({ page }) => {
       await setupChatSession(page, true);
       await mockAIResponse(page, 'Response');
 
@@ -1092,7 +1092,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix session title generation
-test.skip('should auto-generate session title from first message', async ({ page }) => {
+test.skip('should auto-generate session title from first message', async ({ page }) => {
       await setupChatSession(page, true);
       await mockAIResponse(page, 'Response');
 
@@ -1113,7 +1113,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
 
   test.describe('Mobile Responsiveness', () => {
     // TODO: Fix mobile menu toggle
-test.skip('should show mobile menu toggle on mobile', async ({ page }) => {
+test.skip('should show mobile menu toggle on mobile', async ({ page }) => {
       // Set mobile viewport
       await page.setViewportSize({ width: 375, height: 667 });
       await setupChatSession(page);
@@ -1124,7 +1124,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix mobile sidebar open
-test.skip('should open sidebar when mobile menu clicked', async ({ page }) => {
+test.skip('should open sidebar when mobile menu clicked', async ({ page }) => {
       await page.setViewportSize({ width: 375, height: 667 });
       await setupChatSession(page);
 
@@ -1139,7 +1139,7 @@ test.describe('Chat/DiamondMindAI Interactions', () => {
     });
 
     // TODO: Fix mobile send button display
-test.skip('should hide Send text on mobile, show icon only', async ({ page }) => {
+test.skip('should hide Send text on mobile, show icon only', async ({ page }) => {
       await page.setViewportSize({ width: 375, height: 667 });
       await setupChatSession(page);
 

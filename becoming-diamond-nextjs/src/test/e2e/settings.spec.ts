@@ -76,7 +76,7 @@ async function clearSettingsFromLocalStorage(page: Page): Promise<void> {
 test.describe('settings features', () => {
   test.describe('7.1 Settings Page Navigation', () => {
     // TODO: Fix settings navigation
-test.skip('user navigates to settings page successfully', async ({ page }) => {
+test.skip('user navigates to settings page successfully', async ({ page }) => {
       await navigateToSettings(page);
 
       // Verify settings page loads
@@ -88,7 +88,7 @@ test.describe('settings features', () => {
     });
 
     // TODO: Fix sections visibility
-test.skip('all settings sections visible', async ({ page }) => {
+test.skip('all settings sections visible', async ({ page }) => {
       await navigateToSettings(page);
 
       // Verify all tab buttons are visible
@@ -99,7 +99,7 @@ test.describe('settings features', () => {
     });
 
     // TODO: Fix values population
-test.skip('current settings values populated on load', async ({ page }) => {
+test.skip('current settings values populated on load', async ({ page }) => {
       await navigateToSettings(page);
 
       // Wait for page to fully load
@@ -161,7 +161,7 @@ test.describe('settings features', () => {
 
   test.describe('7.2 Notification Preferences', () => {
     // TODO: Fix email toggle
-test.skip('user toggles email notification checkbox', async ({ page }) => {
+test.skip('user toggles email notification checkbox', async ({ page }) => {
       await navigateToSettings(page);
       await page.waitForTimeout(1000); // Wait for default tab content
 
@@ -177,7 +177,7 @@ test.describe('settings features', () => {
     });
 
     // TODO: Fix push toggle
-test.skip('user toggles push notification checkbox', async ({ page }) => {
+test.skip('user toggles push notification checkbox', async ({ page }) => {
       await navigateToSettings(page);
       await page.waitForTimeout(1000); // Wait for default tab content
 
@@ -193,7 +193,7 @@ test.describe('settings features', () => {
     });
 
     // TODO: Fix course reminders toggle
-test.skip('user toggles course reminders', async ({ page }) => {
+test.skip('user toggles course reminders', async ({ page }) => {
       await navigateToSettings(page);
       await page.waitForTimeout(1000); // Wait for default tab content
 
@@ -209,7 +209,7 @@ test.describe('settings features', () => {
     });
 
     // TODO: Fix community updates toggle
-test.skip('user toggles community updates', async ({ page }) => {
+test.skip('user toggles community updates', async ({ page }) => {
       await navigateToSettings(page);
       await page.waitForTimeout(1000); // Wait for default tab content
 
@@ -225,7 +225,7 @@ test.describe('settings features', () => {
     });
 
     // TODO: Fix independent toggles
-test.skip('multiple notification toggles work independently', async ({ page }) => {
+test.skip('multiple notification toggles work independently', async ({ page }) => {
       await navigateToSettings(page);
       await page.waitForTimeout(1000); // Wait for default tab content
 
@@ -294,7 +294,7 @@ test.describe('settings features', () => {
 
   test.describe('7.4 Account Settings', () => {
     // TODO: Fix appearance access
-test.skip('appearance settings are accessible', async ({ page }) => {
+test.skip('appearance settings are accessible', async ({ page }) => {
       await navigateToSettings(page);
       await clickSettingsTab(page, 'Appearance');
 
@@ -305,7 +305,7 @@ test.describe('settings features', () => {
     });
 
     // TODO: Fix dark mode toggle
-test.skip('user toggles dark mode setting', async ({ page }) => {
+test.skip('user toggles dark mode setting', async ({ page }) => {
       await navigateToSettings(page);
       await clickSettingsTab(page, 'Appearance');
 
@@ -328,7 +328,7 @@ test.describe('settings features', () => {
     });
 
     // TODO: Fix theme display
-test.skip('theme color options are displayed', async ({ page }) => {
+test.skip('theme color options are displayed', async ({ page }) => {
       await navigateToSettings(page);
       await clickSettingsTab(page, 'Appearance');
 
@@ -339,7 +339,7 @@ test.describe('settings features', () => {
     });
 
     // TODO: Fix theme selection
-test.skip('user can select different theme colors', async ({ page }) => {
+test.skip('user can select different theme colors', async ({ page }) => {
       await navigateToSettings(page);
       await clickSettingsTab(page, 'Appearance');
 
@@ -381,7 +381,7 @@ test.describe('settings features', () => {
 
   test.describe('7.5 Form Validation', () => {
     // TODO: Fix password form access
-test.skip('password change form is accessible', async ({ page }) => {
+test.skip('password change form is accessible', async ({ page }) => {
       await navigateToSettings(page);
       await clickSettingsTab(page, 'Security');
 
@@ -397,7 +397,7 @@ test.describe('settings features', () => {
     });
 
     // TODO: Fix password input
-test.skip('password fields accept input', async ({ page }) => {
+test.skip('password fields accept input', async ({ page }) => {
       await navigateToSettings(page);
       await clickSettingsTab(page, 'Security');
 
@@ -443,7 +443,7 @@ test.describe('settings features', () => {
     });
 
     // TODO: Fix password button
-test.skip('update password button is clickable', async ({ page }) => {
+test.skip('update password button is clickable', async ({ page }) => {
       await navigateToSettings(page);
       await clickSettingsTab(page, 'Security');
 
@@ -540,7 +540,7 @@ test.describe('settings features', () => {
     });
 
     // TODO: Fix navigation persistence
-test.skip('settings page state persists during navigation', async ({ page }) => {
+test.skip('settings page state persists during navigation', async ({ page }) => {
       await navigateToSettings(page);
       await clickSettingsTab(page, 'Notifications');
 
@@ -565,7 +565,7 @@ test.describe('settings features', () => {
 
   test.describe('7.8 Additional Settings Features', () => {
     // TODO: Fix 2FA section
-test.skip('two-factor authentication section is visible', async ({ page }) => {
+test.skip('two-factor authentication section is visible', async ({ page }) => {
       await navigateToSettings(page);
       await clickSettingsTab(page, 'Security');
 
@@ -579,7 +579,7 @@ test.describe('settings features', () => {
     });
 
     // TODO: Fix sessions display
-test.skip('active sessions section displays current session', async ({ page }) => {
+test.skip('active sessions section displays current session', async ({ page }) => {
       await navigateToSettings(page);
       await clickSettingsTab(page, 'Security');
 
@@ -591,7 +591,7 @@ test.describe('settings features', () => {
     });
 
     // TODO: Fix billing info
-test.skip('billing subscription information is displayed', async ({ page }) => {
+test.skip('billing subscription information is displayed', async ({ page }) => {
       await navigateToSettings(page);
       await clickSettingsTab(page, 'Billing');
 
@@ -603,7 +603,7 @@ test.describe('settings features', () => {
     });
 
     // TODO: Fix payment method display
-test.skip('payment method information is displayed', async ({ page }) => {
+test.skip('payment method information is displayed', async ({ page }) => {
       await navigateToSettings(page);
       await clickSettingsTab(page, 'Billing');
 
@@ -619,7 +619,7 @@ test.describe('settings features', () => {
     });
 
     // TODO: Fix billing history
-test.skip('billing history is displayed', async ({ page }) => {
+test.skip('billing history is displayed', async ({ page }) => {
       await navigateToSettings(page);
       await clickSettingsTab(page, 'Billing');
 
@@ -636,7 +636,7 @@ test.describe('settings features', () => {
     });
 
     // TODO: Fix mobile responsiveness
-test.skip('settings page is responsive on mobile', async ({ page }) => {
+test.skip('settings page is responsive on mobile', async ({ page }) => {
       // Set mobile viewport
       await page.setViewportSize({ width: 375, height: 667 });
       await navigateToSettings(page);
