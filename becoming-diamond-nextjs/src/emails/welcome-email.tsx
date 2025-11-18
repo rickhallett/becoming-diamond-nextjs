@@ -300,6 +300,3 @@ const smallText = {
   fontSize: '14px',
   marginTop: '12px',
 };
-
-// Default export for preview
-export default WelcomeEmail;

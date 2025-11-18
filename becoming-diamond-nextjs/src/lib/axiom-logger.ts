@@ -77,6 +77,3 @@ function createLogger() {
 
 // Create singleton logger instance
 export const log = createLogger();
-
-// Export typed methods for convenience
-export default log;
