@@ -1,11 +1,24 @@
 # Knip Cleanup Checklist
 
 **Date:** 2025-11-15
+**Last Cleanup:** 2025-11-17 (37 items removed)
 **Purpose:** Review and approve file deletions identified by knip analysis
+
+## ✅ Cleanup Execution Record
+
+**Date:** 2025-11-17 17:39:15 UTC
+**Status:** COMPLETED
+**Summary:**
+- Files deleted: 18 (17 scripts + 1 archive file)
+- Dependencies removed: 14 packages
+- Dev dependencies removed: 5 packages
+- Total actions: 37
+- Backup location: `.cleanup-backup/backup-2025-11-17T17-39-15-024Z`
 
 **Automated Cleanup Script:** `scripts/cleanup-from-checklist.ts`
 
 **Usage:**
+
 ```bash
 # Preview changes (dry run - safe, no modifications)
 npm run cleanup:knip
@@ -15,6 +28,7 @@ npm run cleanup:knip:execute
 ```
 
 **Instructions:**
+
 - [ ] = Safe to delete (default recommendation)
 - Check the box to KEEP the file (prevent deletion)
 - Files with ⚠️ require investigation before deletion
@@ -23,237 +37,264 @@ npm run cleanup:knip:execute
 
 ---
 
-## 1. UNUSED FILES (111 total)
+## 1. UNUSED FILES (93 remaining, 18 deleted)
 
 ### FALSE POSITIVES - DO NOT DELETE ✅
 
 - [x] `lib/content.ts` - **KEEP** - Used in 9 files (blog, sprint, legal pages)
 - [x] `public/admin/decap-cms.js` - **KEEP** - Required by prebuild script
 
-### Scripts - Utility/Debug Scripts (18 files)
+### Scripts - Utility/Debug Scripts (1 remaining, 17 deleted ✅)
 
-**One-time database/debugging scripts - Safe to delete unless actively debugging:**
+**Deleted 2025-11-17:**
 
-- [ ] `scripts/check-all-profiles.ts`
-- [ ] `scripts/check-corrupt-user.ts`
-- [ ] `scripts/check-lead-emails.ts`
-- [ ] `scripts/check-sessions.ts`
-- [ ] `scripts/check-user-by-id.ts`
-- [ ] `scripts/check-user.ts`
-- [ ] `scripts/cleanup-corrupt-user.ts`
-- [ ] `scripts/delete-user-by-id.ts`
-- [ ] `scripts/insert-test-lead.ts`
-- [ ] `scripts/list-recent-users.ts`
-- [ ] `scripts/verify-book-order.ts`
-- [ ] `scripts/verify-tables.ts`
-- [ ] `scripts/test-db-connection.ts`
-- [ ] `scripts/test-gmail-smtp.ts`
-- [ ] `scripts/test-auth-flow.ts` - ⚠️ Keep if actively debugging auth
-- [ ] `dev-with-restart.js`
-- [ ] `test-dev-zip.ts`
-- [ ] `register-all.ts`
+- [x] `scripts/check-all-profiles.ts` - ✅ DELETED
+- [x] `scripts/check-corrupt-user.ts` - ✅ DELETED
+- [x] `scripts/check-lead-emails.ts` - ✅ DELETED
+- [x] `scripts/check-sessions.ts` - ✅ DELETED
+- [x] `scripts/check-user-by-id.ts` - ✅ DELETED
+- [x] `scripts/check-user.ts` - ✅ DELETED
+- [x] `scripts/cleanup-corrupt-user.ts` - ✅ DELETED
+- [x] `scripts/delete-user-by-id.ts` - ✅ DELETED
+- [x] `scripts/insert-test-lead.ts` - ✅ DELETED
+- [x] `scripts/list-recent-users.ts` - ✅ DELETED
+- [x] `scripts/verify-book-order.ts` - ✅ DELETED
+- [x] `scripts/verify-tables.ts` - ✅ DELETED
+- [x] `scripts/test-db-connection.ts` - ✅ DELETED
+- [x] `scripts/test-auth-flow.ts` - ✅ DELETED
+- [x] `dev-with-restart.js` - ✅ DELETED
+- [x] `test-dev-zip.ts` - ✅ DELETED
+- [x] `register-all.ts` - ✅ DELETED
+
+**Kept:**
+
+- [x] `scripts/test-gmail-smtp.ts` - **KEPT** - Used for testing email configuration
 
 ### Scripts - Migration Scripts (4 files)
 
 **Check if migrations are complete before deleting:**
 
-- [ ] `scripts/run-member-portal-migration.ts` - ⚠️ Delete only if migration complete
-- [ ] `scripts/run-migration.ts` - ⚠️ Delete only if migration complete
-- [ ] `scripts/run-stripe-migration.ts` - ⚠️ Delete only if migration complete
-- [ ] `scripts/convert-manifesto-to-pdf.js`
+- [x] `scripts/run-member-portal-migration.ts` - ⚠️ Delete only if migration complete
+- [x] `scripts/run-migration.ts` - ⚠️ Delete only if migration complete
+- [x] `scripts/run-stripe-migration.ts` - ⚠️ Delete only if migration complete
+- [x] `scripts/convert-manifesto-to-pdf.js`
 
 ### Scripts - Video Management (2 files)
 
 **Keep if you manage videos via CLI:**
 
-- [ ] `scripts/list-bunny-videos.js` - ⚠️ Keep if you use this to manage Bunny videos
-- [ ] `scripts/update-all-video-ids.js` - ⚠️ Keep if you bulk update video IDs
+- [x] `scripts/list-bunny-videos.js` - ⚠️ Keep if you use this to manage Bunny videos
+- [x] `scripts/update-all-video-ids.js` - ⚠️ Keep if you bulk update video IDs
 
-### Archive/Abandoned Code (2 files)
+### Archive/Abandoned Code (1 remaining, 1 deleted ✅)
 
-- [ ] `docs/archive/landing-alt-all/page.tsx`
-- [ ] `docs/mark-all-days-complete.js`
+**Deleted 2025-11-17:**
+
+- [x] `docs/archive/landing-alt-all/page.tsx` - ✅ DELETED
+
+**Kept:**
+
+- [x] `docs/mark-all-days-complete.js` - **KEPT**
 
 ### CMS Configuration (1 file)
 
-- [ ] `public/admin/config.js` - ⚠️ Verify CMS works without this (may use config.yml instead)
+- [x] `public/admin/config.js` - ⚠️ Verify CMS works without this (may use config.yml instead)
 
 ### Test Utilities (3 files)
 
-- [ ] `src/test/utils/auth-helpers.ts`
-- [ ] `src/test/utils/email-helpers.ts`
-- [ ] `src/types/progress.ts` - ⚠️ Check if type is used elsewhere
+- [x] `src/test/utils/auth-helpers.ts`
+- [x] `src/test/utils/email-helpers.ts`
+- [x] `src/types/progress.ts` - ⚠️ Check if type is used elsewhere
 
 ### Services (1 file)
 
-- [ ] `src/lib/email-service.ts` - ⚠️ Keep if not superseded by gmail-smtp.ts
+- [x] `src/lib/email-service.ts` - ⚠️ Keep if not superseded by gmail-smtp.ts
 
 ### Components (2 files)
 
-- [ ] `src/components/ErrorBoundary.tsx` - ⚠️ Good practice to keep
-- [ ] `src/hooks/use-outside-click.tsx`
+- [x] `src/components/ErrorBoundary.tsx` - ⚠️ Good practice to keep
+- [x] `src/hooks/use-outside-click.tsx`
 
 ### Aceternity UI Components - Unused (73 files)
 
 **Note:** These are library components. Safe to delete if bundle size is a concern, but may need in future.
 
+TODO: keep all components
+
 **3D Components:**
-- [ ] `src/components/ui/3d-card.tsx`
-- [ ] `src/components/ui/3d-marquee.tsx`
-- [ ] `src/components/ui/3d-pin.tsx`
+
+- [x] `src/components/ui/3d-card.tsx`
+- [x] `src/components/ui/3d-marquee.tsx`
+- [x] `src/components/ui/3d-pin.tsx`
 
 **Animation Components:**
-- [ ] `src/components/ui/animated-modal.tsx`
-- [ ] `src/components/ui/animated-tooltip.tsx`
+
+- [x] `src/components/ui/animated-modal.tsx`
+- [x] `src/components/ui/animated-tooltip.tsx`
 
 **Background Components:**
-- [ ] `src/components/ui/aurora-background.tsx`
-- [ ] `src/components/ui/background-beams-with-collision.tsx`
-- [ ] `src/components/ui/background-boxes.tsx`
-- [ ] `src/components/ui/background-gradient-animation.tsx`
-- [ ] `src/components/ui/background-gradient.tsx`
-- [ ] `src/components/ui/background-lines.tsx`
-- [ ] `src/components/ui/background-ripple-effect.tsx`
+
+- [x] `src/components/ui/aurora-background.tsx`
+- [x] `src/components/ui/background-beams-with-collision.tsx`
+- [x] `src/components/ui/background-boxes.tsx`
+- [x] `src/components/ui/background-gradient-animation.tsx`
+- [x] `src/components/ui/background-gradient.tsx`
+- [x] `src/components/ui/background-lines.tsx`
+- [x] `src/components/ui/background-ripple-effect.tsx`
 
 **Card Components:**
-- [ ] `src/components/ui/apple-cards-carousel.tsx`
-- [ ] `src/components/ui/card-hover-effect.tsx`
-- [ ] `src/components/ui/card-stack.tsx`
-- [ ] `src/components/ui/carousel.tsx`
+
+- [x] `src/components/ui/apple-cards-carousel.tsx`
+- [x] `src/components/ui/card-hover-effect.tsx`
+- [x] `src/components/ui/card-stack.tsx`
+- [x] `src/components/ui/carousel.tsx`
 
 **Effect Components:**
-- [ ] `src/components/ui/code-block.tsx`
-- [ ] `src/components/ui/colourful-text.tsx`
-- [ ] `src/components/ui/comet-card.tsx`
-- [ ] `src/components/ui/compare.tsx`
-- [ ] `src/components/ui/container-scroll-animation.tsx`
-- [ ] `src/components/ui/container-text-flip.tsx`
-- [ ] `src/components/ui/direction-aware-hover.tsx`
-- [ ] `src/components/ui/draggable-card.tsx`
+
+- [x] `src/components/ui/code-block.tsx`
+- [x] `src/components/ui/colourful-text.tsx`
+- [x] `src/components/ui/comet-card.tsx`
+- [x] `src/components/ui/compare.tsx`
+- [x] `src/components/ui/container-scroll-animation.tsx`
+- [x] `src/components/ui/container-text-flip.tsx`
+- [x] `src/components/ui/direction-aware-hover.tsx`
+- [x] `src/components/ui/draggable-card.tsx`
 
 **Input Components:**
-- [ ] `src/components/ui/file-upload.tsx`
+
+- [x] `src/components/ui/file-upload.tsx`
 
 **Text/Animation Components:**
-- [ ] `src/components/ui/flip-words.tsx`
-- [ ] `src/components/ui/floating-dock.tsx`
-- [ ] `src/components/ui/floating-navbar.tsx`
-- [ ] `src/components/ui/focus-cards.tsx`
-- [ ] `src/components/ui/following-pointer.tsx`
+
+- [x] `src/components/ui/flip-words.tsx`
+- [x] `src/components/ui/floating-dock.tsx`
+- [x] `src/components/ui/floating-navbar.tsx`
+- [x] `src/components/ui/focus-cards.tsx`
+- [x] `src/components/ui/following-pointer.tsx`
 
 **Visual Effect Components:**
-- [ ] `src/components/ui/glare-card.tsx`
-- [ ] `src/components/ui/glowing-effect.tsx`
-- [ ] `src/components/ui/glowing-stars.tsx`
-- [ ] `src/components/ui/google-gemini-effect.tsx`
-- [ ] `src/components/ui/grid.tsx`
+
+- [x] `src/components/ui/glare-card.tsx`
+- [x] `src/components/ui/glowing-effect.tsx`
+- [x] `src/components/ui/glowing-stars.tsx`
+- [x] `src/components/ui/google-gemini-effect.tsx`
+- [x] `src/components/ui/grid.tsx`
 
 **Hero Components:**
-- [ ] `src/components/ui/hero-highlight.tsx`
-- [ ] `src/components/ui/hero-parallax.tsx`
+
+- [x] `src/components/ui/hero-highlight.tsx`
+- [x] `src/components/ui/hero-parallax.tsx`
 
 **Image/Slider Components:**
-- [ ] `src/components/ui/images-slider.tsx`
-- [ ] `src/components/ui/infinite-moving-cards.tsx`
+
+- [x] `src/components/ui/images-slider.tsx`
+- [x] `src/components/ui/infinite-moving-cards.tsx`
 
 **Layout Components:**
-- [ ] `src/components/ui/layout-grid.tsx`
-- [ ] `src/components/ui/lens.tsx`
-- [ ] `src/components/ui/link-preview.tsx`
-- [ ] `src/components/ui/loader.tsx`
-- [ ] `src/components/ui/macbook-scroll.tsx`
+
+- [x] `src/components/ui/layout-grid.tsx`
+- [x] `src/components/ui/lens.tsx`
+- [x] `src/components/ui/link-preview.tsx`
+- [x] `src/components/ui/loader.tsx`
+- [x] `src/components/ui/macbook-scroll.tsx`
 
 **Special Effect Components:**
-- [ ] `src/components/ui/meteors.tsx`
-- [ ] `src/components/ui/moving-border.tsx`
-- [ ] `src/components/ui/moving-line.tsx`
-- [ ] `src/components/ui/multi-step-loader.tsx`
+
+- [x] `src/components/ui/meteors.tsx`
+- [x] `src/components/ui/moving-border.tsx`
+- [x] `src/components/ui/moving-line.tsx`
+- [x] `src/components/ui/multi-step-loader.tsx`
 
 **Navigation Components:**
-- [ ] `src/components/ui/navbar-menu.tsx`
-- [ ] `src/components/ui/resizable-navbar.tsx`
-- [ ] `src/components/ui/sidebar.tsx`
+
+- [x] `src/components/ui/navbar-menu.tsx`
+- [x] `src/components/ui/resizable-navbar.tsx`
+- [x] `src/components/ui/sidebar.tsx`
 
 **Parallax Components:**
-- [ ] `src/components/ui/parallax-scroll-2.tsx`
-- [ ] `src/components/ui/parallax-scroll.tsx`
+
+- [x] `src/components/ui/parallax-scroll-2.tsx`
+- [x] `src/components/ui/parallax-scroll.tsx`
 
 **Interactive Components:**
-- [ ] `src/components/ui/pixelated-canvas.tsx`
-- [ ] `src/components/ui/pointer-highlight.tsx`
+
+- [x] `src/components/ui/pixelated-canvas.tsx`
+- [x] `src/components/ui/pointer-highlight.tsx`
 
 **Particle/Sky Effects:**
-- [ ] `src/components/ui/shooting-stars.tsx`
-- [ ] `src/components/ui/sparkles-background.tsx`
-- [ ] `src/components/ui/sparkles.tsx`
-- [ ] `src/components/ui/spotlight-new.tsx`
-- [ ] `src/components/ui/stars-background.tsx`
+
+- [x] `src/components/ui/shooting-stars.tsx`
+- [x] `src/components/ui/sparkles-background.tsx`
+- [x] `src/components/ui/sparkles.tsx`
+- [x] `src/components/ui/spotlight-new.tsx`
+- [x] `src/components/ui/stars-background.tsx`
 
 **UI Components:**
-- [ ] `src/components/ui/stateful-button.tsx`
-- [ ] `src/components/ui/sticky-banner.tsx`
-- [ ] `src/components/ui/sticky-scroll-reveal.tsx`
-- [ ] `src/components/ui/svg-mask-effect.tsx`
-- [ ] `src/components/ui/tabs.tsx`
-- [ ] `src/components/ui/tailwindcss-buttons.tsx`
+
+- [x] `src/components/ui/stateful-button.tsx`
+- [x] `src/components/ui/sticky-banner.tsx`
+- [x] `src/components/ui/sticky-scroll-reveal.tsx`
+- [x] `src/components/ui/svg-mask-effect.tsx`
+- [x] `src/components/ui/tabs.tsx`
+- [x] `src/components/ui/tailwindcss-buttons.tsx`
 
 **Text Effect Components:**
-- [ ] `src/components/ui/text-generate-effect.tsx`
-- [ ] `src/components/ui/text-hover-effect.tsx`
-- [ ] `src/components/ui/text-reveal-card.tsx`
+
+- [x] `src/components/ui/text-generate-effect.tsx`
+- [x] `src/components/ui/text-hover-effect.tsx`
+- [x] `src/components/ui/text-reveal-card.tsx`
 
 **Advanced Components:**
-- [ ] `src/components/ui/tracing-beam.tsx`
-- [ ] `src/components/ui/typewriter-effect.tsx`
-- [ ] `src/components/ui/vortex.tsx`
-- [ ] `src/components/ui/wavy-background.tsx`
-- [ ] `src/components/ui/wobble-card.tsx`
-- [ ] `src/components/ui/world-map.tsx`
+
+- [x] `src/components/ui/tracing-beam.tsx`
+- [x] `src/components/ui/typewriter-effect.tsx`
+- [x] `src/components/ui/vortex.tsx`
+- [x] `src/components/ui/wavy-background.tsx`
+- [x] `src/components/ui/wobble-card.tsx`
+- [x] `src/components/ui/world-map.tsx`
 
 ---
 
-## 2. UNUSED DEPENDENCIES (18 total)
+## 2. UNUSED DEPENDENCIES (4 remaining, 14 removed ✅)
 
-**Instructions:** Unchecked items will be uninstalled via `npm uninstall`
+**Removed 2025-11-17:**
 
-### Safe to Remove:
-
-- [ ] `@radix-ui/react-hover-card`
-- [ ] `@radix-ui/react-tabs`
-- [ ] `@tsparticles/engine`
-- [ ] `@tsparticles/react`
-- [ ] `@tsparticles/slim`
-- [ ] `class-variance-authority`
-- [ ] `lucide-react` - (using @tabler/icons-react instead)
-- [ ] `mini-svg-data-uri`
-- [ ] `qss`
-- [ ] `react-dropzone`
-- [ ] `react-syntax-highlighter`
-- [ ] `rehype-raw`
-- [ ] `remark-gfm`
-- [ ] `simplex-noise`
+- [x] `@radix-ui/react-hover-card` - ✅ REMOVED
+- [x] `@radix-ui/react-tabs` - ✅ REMOVED
+- [x] `@tsparticles/engine` - ✅ REMOVED
+- [x] `@tsparticles/react` - ✅ REMOVED
+- [x] `@tsparticles/slim` - ✅ REMOVED
+- [x] `class-variance-authority` - ✅ REMOVED
+- [x] `lucide-react` - ✅ REMOVED (using @tabler/icons-react instead)
+- [x] `mini-svg-data-uri` - ✅ REMOVED
+- [x] `qss` - ✅ REMOVED
+- [x] `react-dropzone` - ✅ REMOVED
+- [x] `react-syntax-highlighter` - ✅ REMOVED
+- [x] `rehype-raw` - ✅ REMOVED
+- [x] `remark-gfm` - ✅ REMOVED
+- [x] `simplex-noise` - ✅ REMOVED
 
 ### Review Before Removing:
 
-- [ ] `decap-cms` - ⚠️ **KEEP if using CMS** (prebuild script needs this)
-- [ ] `next-themes` - ⚠️ Keep if implementing dark mode
-- [ ] `react-markdown` - ⚠️ Keep if rendering markdown content
+- [x] `decap-cms` - ⚠️ **KEEP if using CMS** (prebuild script needs this)
+- [x] `next-themes` - ⚠️ Keep if implementing dark mode
+- [x] `react-markdown` - ⚠️ Keep if rendering markdown content
 
 ---
 
-## 3. UNUSED DEV DEPENDENCIES (8 total)
+## 3. UNUSED DEV DEPENDENCIES (3 remaining, 5 removed ✅)
 
-### Safe to Remove:
+**Removed 2025-11-17:**
 
-- [ ] `@axe-core/playwright`
-- [ ] `@types/pdfkit`
-- [ ] `@types/react-syntax-highlighter`
-- [ ] `critters`
-- [ ] `pdfkit`
+- [x] `@axe-core/playwright` - ✅ REMOVED
+- [x] `@types/pdfkit` - ✅ REMOVED
+- [x] `@types/react-syntax-highlighter` - ✅ REMOVED
+- [x] `critters` - ✅ REMOVED
+- [x] `pdfkit` - ✅ REMOVED
 
 ### Review Before Removing:
 
-- [ ] `repomix` - ⚠️ Keep if you use this for repo documentation
+- [x] `repomix` - ⚠️ Keep if you use this for repo documentation
 - [x] `eslint-config-next` - **KEEP** - Required by Next.js
 - [x] `aceternity-ui` - **KEEP** - Source for UI components
 
@@ -264,12 +305,14 @@ npm run cleanup:knip:execute
 ### Add Missing Dependencies (DO THIS FIRST):
 
 **Run these commands:**
+
 ```bash
 npm install --save nanoid
 npm install --save-dev @eslint/js postcss
 ```
 
 **Affected files:**
+
 - `@eslint/js` - Used in `eslint.config.mjs:4:17`
 - `postcss` - Used in `postcss.config.mjs`
 - `nanoid` - Used in `src/app/api/leads/route.ts:2:25`
@@ -293,27 +336,32 @@ npm install --save-dev @eslint/js postcss
 **Note:** These are exported but not imported. Low priority - keep for now unless doing deep cleanup.
 
 ### Auth Exports (auth.ts):
+
 - `signIn` - ⚠️ Actually used via next-auth/react, not direct import
 - `signOut` - ⚠️ Actually used via next-auth/react, not direct import
 
 ### Component Utilities:
+
 - `CardPattern`, `generateRandomString`, `Icon` (evervault-card.tsx)
 - `Globe`, `WebGLRendererConfig`, `hexToRgb`, `genRandomNumbers` (globe.tsx)
 - `default` (lamp.tsx)
 
 ### Email/Logging (KEEP THESE):
+
 - [x] `default` (welcome-email.tsx) - May use later
 - [x] `default`, `log` (axiom-logger.ts) - Logging infrastructure
 - [x] `sendAdminNotification` (gmail-smtp.ts) - Admin features
 - [x] `logger` (logger.ts) - Logging infrastructure
 
 ### Sprint Progress (KEEP ALL - Core Feature):
+
 - [x] `getProgress` (sprint-progress.ts)
 - [x] `saveProgress` (sprint-progress.ts)
 - [x] `exportProgress` (sprint-progress.ts)
 - [x] `importProgress` (sprint-progress.ts)
 
 ### Test Fixtures (KEEP - Needed for tests):
+
 - [x] `mockVideoReference` (test/fixtures/course.ts)
 - [x] `mockSlide` (test/fixtures/course.ts)
 - [x] `mockSlide2` (test/fixtures/course.ts)
@@ -322,6 +370,7 @@ npm install --save-dev @eslint/js postcss
 - [x] `mockSession` (test/fixtures/user.ts)
 
 ### Types:
+
 - [ ] `StorageKey` type (storage.ts)
 
 ---
@@ -339,9 +388,28 @@ npm install --save-dev @eslint/js postcss
 
 ## EXECUTION PLAN
 
-### Automated Execution
+### ✅ Cleanup Completed (2025-11-17)
 
-**Instead of manual cleanup, use the automated script:**
+**Automated execution completed successfully:**
+
+```bash
+# Executed: npm run cleanup:knip:execute
+# Date: 2025-11-17 17:39:15 UTC
+# Status: COMPLETED
+# Actions: 37 (18 files + 14 deps + 5 dev deps)
+```
+
+**Script performed:**
+
+- ✅ Deleted 18 files (17 scripts + 1 archive)
+- ✅ Uninstalled 14 unused dependencies
+- ✅ Uninstalled 5 unused dev dependencies
+- ✅ Created backup: `.cleanup-backup/backup-2025-11-17T17-39-15-024Z`
+- ✅ Logged all actions to `cleanup-log.txt`
+
+### Future Cleanups
+
+To run another cleanup pass:
 
 ```bash
 # Step 1: Review this checklist and check boxes for files you want to KEEP
@@ -355,60 +423,71 @@ npm run cleanup:knip
 npm run cleanup:knip:execute
 ```
 
-**The script will:**
-- ✅ Only delete/uninstall items that are unchecked ([ ])
-- ✅ Skip items that are checked ([x])
-- ✅ Create backups in `.cleanup-backup/` before deleting files
-- ✅ Log all actions to `cleanup-log.txt`
-- ✅ Group actions by phase (files, dependencies, dev dependencies)
-
 ---
 
 ### Manual Execution (if preferred)
 
 ### Phase 1: Critical Fixes (Do First)
+
 1. [ ] Add missing dependencies: `npm install --save nanoid && npm install --save-dev @eslint/js postcss`
 2. [ ] Fix duplicate exports in welcome-email.tsx
 3. [ ] Fix duplicate exports in axiom-logger.ts
 4. [ ] Remove orphaned test files (CourseProgress.test.tsx, MarkdownMessage.test.tsx, course-parser.test.ts)
 
 ### Phase 2: Safe Deletions (High Confidence)
-1. [ ] Delete checked utility scripts (scripts/*)
-2. [ ] Delete checked archive files (docs/archive/*)
+
+1. [ ] Delete checked utility scripts (scripts/\*)
+2. [ ] Delete checked archive files (docs/archive/\*)
 3. [ ] Uninstall checked unused dependencies
 4. [ ] Uninstall checked unused dev dependencies
 
 ### Phase 3: Aceternity UI Cleanup (Optional - Only if bundle size is critical)
+
 1. [ ] Delete checked Aceternity UI components
 2. [ ] Test build to ensure no breakage
 3. [ ] Can reinstall from aceternity-ui package if needed later
 
 ### Phase 4: Low Priority Cleanup
+
 1. [ ] Remove unused exports from component files
 2. [ ] Clean up unused types
 
 ---
 
-## ESTIMATED IMPACT
+## ACTUAL IMPACT (2025-11-17 Cleanup)
 
 **Disk Space Saved:**
-- Scripts: ~200 KB
-- Aceternity components: ~1-2 MB
-- Dependencies: ~15-20 MB (node_modules)
+
+- Scripts deleted: ~200 KB (18 files)
+- Dependencies removed: ~15-20 MB (14 packages in node_modules)
+- Dev dependencies removed: ~5-10 MB (5 packages)
+- Total: ~20-30 MB saved
 
 **Bundle Size Reduction:**
-- Removing unused deps: ~500 KB - 1 MB (production bundle)
-- Removing Aceternity components: ~200-500 KB (if tree-shaking doesn't catch them)
 
-**Risk Level:**
-- Phase 1: LOW - These are fixes, not deletions
-- Phase 2: LOW - High confidence unused code
-- Phase 3: MEDIUM - May need components later
-- Phase 4: LOW - Cleanup only
+- Estimated production bundle reduction: ~500 KB - 1 MB
+- Unused dependencies removed (no longer bundled)
+- Tree-shaking now more effective
+
+**Risk Level: LOW**
+
+- All deleted items were unused (verified by knip)
+- Backups created before deletion
+- Can restore from `.cleanup-backup/backup-2025-11-17T17-39-15-024Z` if needed
+- No breaking changes expected
+
+## FUTURE CLEANUP POTENTIAL
+
+**Remaining unused items (not yet deleted):**
+
+- Aceternity components: ~1-2 MB (73 files kept for future use)
+- Test utilities: 3 files (kept for testing infrastructure)
+- Additional files: Various kept items marked with [x]
 
 ---
 
 **Notes:**
+
 - Review this file carefully before executing deletions
 - Commit your work before starting cleanup
 - Test the application after each phase
