@@ -1,0 +1,107 @@
+Documentation Migration Log
+Timestamp: 2025-11-18T22:03:46.331911
+============================================================
+
+Successfully moved: 89 files
+  ✓ docs/codebase-simplification-analysis.md
+  ✓ docs/architecture/documentation-strategy-analysis.md
+  ✓ docs/specs/email-provider-migration-analysis.md
+  ✓ docs/specs/ai/turso-vector-migration-analysis.md
+  ✓ docs/specs/video/video-hosting-analysis.md
+  ✓ docs/specs/blog/author-pages.prd.md
+  ✓ docs/specs/book-purchasing.prd.md
+  ✓ docs/specs/decap-cms-enhancements.prd.md
+  ✓ docs/specs/diamondmind-ai-public-chat.prd.md
+  ✓ docs/planning/lead-capture-turso.md
+  ✓ docs/planning/offer-stack-rebrand.md
+  ✓ docs/specs/integrations/resend-lead-email-integration.prd.md
+  ✓ docs/planning/sprints/30-day-sprint-main.md
+  ✓ docs/planning/sprints/30-day-sprint-phase-1.md
+  ✓ docs/planning/sprints/30-day-sprint-phase-2.md
+  ✓ docs/planning/sprints/30-day-sprint-phase-3.md
+  ✓ docs/specs/sprint-gamification-delivery-strategy.md
+  ✓ docs/architecture/documentation-implementation-plan.md
+  ✓ docs/features/features-overview.md
+  ✓ docs/planning/member-portal-data-persistence.md
+  ✓ docs/specs/sprint-video-narrative-extraction.prd.md
+  ✓ docs/specs/sprint-progress-database-migration.md
+  ✓ docs/specs/testing-strategy.md
+  ✓ docs/planning/tnitd-website.md
+  ✓ docs/specs/ai/diamond-rag.md
+  ✓ docs/specs/ai/rag-setup.md
+  ✓ docs/specs/auth-magic-link-double-request-issue.md
+  ✓ docs/specs/cms-managed-copy-analysis-agentic.md
+  ✓ docs/specs/cms-managed-copy-analysis.md
+  ✓ docs/specs/sprint-cms-migration.md
+  ✓ docs/specs/aceternity-ui-cleanup.prd.md
+  ✓ docs/specs/video/video-integration-plan.md
+  ✓ docs/specs/video/video-integration-simplified.md
+  ✓ docs/client-handover-services-guide.md
+  ✓ docs/guides/developer-handoff-guide.md
+  ✓ docs/guides/stripe-client-setup.md
+  ✓ docs/guides/auth-setup.md
+  ✓ docs/guides/cms-setup.md
+  ✓ docs/guides/gmail-smtp-setup.md
+  ✓ docs/guides/resend-setup.md
+  ✓ docs/guides/stripe-setup-guide.md
+  ✓ docs/cms-rollback-guide.md
+  ✓ docs/cms-workflow.md
+  ✓ docs/content/book/turning-snowflakes-into-diamonds.md
+  ✓ docs/content/copy/copy-diff-suggested-1.md
+  ✓ docs/content/copy/seed-copy-1.md
+  ✓ docs/content/copy/seed-copy-2.md
+  ✓ docs/content/copy/seed-copy-3.md
+  ✓ docs/content/copy/website-copy-for-editing.md
+  ✓ docs/reports/auth-url-environment-variables-analysis.md
+  ✓ docs/browser-memory-leak-analysis.md
+  ✓ docs/reports/zombie-code-analysis-2025-11-04.md
+  ✓ docs/reports/database-table-usage-survey.md
+  ✓ docs/reports/documentation-audit-2025-10-16.md
+  ✓ docs/reports/axiom-logging-implementation-report.md
+  ✓ docs/reports/bunny-credentials-update-2025-10-16.md
+  ✓ docs/cms-config-sprint-slug-fix.md
+  ✓ docs/reports/diamond-manifesto-delivery-implementation.md
+  ✓ docs/knip-cleanup-summary.md
+  ✓ docs/reports/member-portal-db-migration-2025-11-04.md
+  ✓ docs/implementation-summary-mobile-tablet-animations.md
+  ✓ docs/reports/observability-error-tracking-plan.md
+  ✓ docs/specs/performance/performance-optimization-report.md
+  ✓ docs/specs/integrations/resend-implementation-summary.md
+  ✓ docs/reports/stripe-integration-setup-complete.md
+  ✓ docs/reports/stripe-webhook-implementation-2025-11-03.md
+  ✓ docs/guides/sprint-e2e-testing.md
+  ✓ docs/knip-cleanup-checklist.md
+  ✓ docs/reports/e2e-test-implementation-final-report.md
+  ✓ docs/reports/mobile-bug-quickstart.md
+  ✓ docs/reports/observability-executive-summary.md
+  ✓ docs/reports/phase-1-unit-tests-summary.md
+  ✓ docs/reports/phase-2-component-tests-outline.md
+  ✓ docs/reports/phase-2-component-tests-summary.md
+  ✓ docs/test-suite-cleanup-summary.md
+  ✓ docs/test-suite-status-report.md
+  ✓ docs/reports/wave-1-authentication-tests-implementation.md
+  ✓ docs/reports/wave-2-parallel-implementation-complete.md
+  ✓ docs/reports/wave-2-sprint-e2e-tests-summary.md
+  ✓ docs/reports/wave-3-parallel-implementation-complete.md
+  ✓ docs/reports/wave-3-profile-tests-debugging-guide.md
+  ✓ docs/reports/wave-3-profile-tests-implementation-summary.md
+  ✓ docs/reports/wave-4-parallel-implementation-complete.md
+  ✓ docs/reports/wave-5-parallel-implementation-complete.md
+  ✓ docs/reports/wave-6-cms-implementation-complete.md
+  ✓ docs/reports/dev-update-17-oct.md
+  ✓ docs/reports/session-2025-11-04-summary.md
+  ✓ docs/reports/weekly-update-2025-11-13.md
+  ✓ docs/specs/documentation-handover-review.md
+
+Failed: 0 files
+
+Skipped (not found): 1 files
+  - mark-all-days-complete.js
+
+Empty directories removed: 6
+  - docs/architecture
+  - docs/specs/ai
+  - docs/specs/blog
+  - docs/specs/integrations
+  - docs/specs/video
+  - docs/features
