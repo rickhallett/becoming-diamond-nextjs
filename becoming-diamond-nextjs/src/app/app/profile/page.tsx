@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { IconEdit, IconCheck, IconX, IconCamera, IconMail, IconMapPin, IconBriefcase } from "@tabler/icons-react";
@@ -110,16 +111,12 @@ export default function ProfilePage() {
                     <div className="bg-secondary/30 border border-white/10 rounded-xl p-6 h-full flex flex-col">
                         {/* Avatar */}
                         <div className="relative w-32 h-32 mx-auto mb-4 group cursor-pointer">
-                            <img
+                            <Image
                                 src={user.avatar && !imageError ? user.avatar : '/profile-placeholder-2.webp'}
                                 alt={user.name}
-                                className="w-full h-full rounded-full object-cover"
-                                onError={(e) => {
-                                    // Prevent infinite loop if placeholder also fails
-                                    const target = e.target as HTMLImageElement;
-                                    if (target.src.includes('profile-placeholder-2.webp')) return;
-                                    setImageError(true);
-                                }}
+                                fill
+                                className="rounded-full object-cover"
+                                onError={() => setImageError(true)}
                             />
                             <div className="absolute inset-0 rounded-full bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                 <IconCamera className="w-8 h-8 text-white" />

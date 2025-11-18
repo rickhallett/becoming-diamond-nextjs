@@ -1,5 +1,6 @@
 import { getContentByType } from "@/lib/content";
 import Link from "next/link";
+import Image from "next/image";
 import { Spotlight } from "@/components/ui/spotlight";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { Navigation } from "@/components/Navigation";
@@ -82,10 +83,11 @@ export default async function BlogPage() {
                     {/* Thumbnail */}
                     {post.frontmatter.thumbnail && (
                       <div className="relative h-48 overflow-hidden">
-                        <img
+                        <Image
                           src={post.frontmatter.thumbnail}
                           alt={post.frontmatter.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                       </div>

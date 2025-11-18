@@ -1,6 +1,7 @@
 import { getContentBySlug, getContentByType } from "@/lib/content";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { Spotlight } from "@/components/ui/spotlight";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { Navigation } from "@/components/Navigation";
@@ -85,10 +86,12 @@ export default async function BlogPostPage({ params }: PageProps) {
       <section className="relative min-h-[50vh] flex items-end overflow-hidden">
         {post.frontmatter.thumbnail && (
           <>
-            <img
+            <Image
               src={post.frontmatter.thumbnail}
               alt={post.frontmatter.title}
-              className="absolute inset-0 w-full h-full object-cover opacity-40"
+              fill
+              className="object-cover opacity-40"
+              priority
             />
             <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/70 to-black z-[1]" />
           </>
@@ -256,10 +259,11 @@ export default async function BlogPostPage({ params }: PageProps) {
                   <div className="group bg-secondary/50 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden hover:border-primary/50 transition-all duration-300 h-full">
                     {relatedPost.frontmatter.thumbnail && (
                       <div className="relative h-40 overflow-hidden">
-                        <img
+                        <Image
                           src={relatedPost.frontmatter.thumbnail}
                           alt={relatedPost.frontmatter.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                       </div>
