@@ -32,7 +32,9 @@ const providers: Provider[] = [
   Google({
     clientId: process.env.AUTH_GOOGLE_ID!,
     clientSecret: process.env.AUTH_GOOGLE_SECRET!,
-    allowDangerousEmailAccountLinking: true,
+    // Disabled dangerous account linking for security
+    // Users must manually link accounts through account settings
+    allowDangerousEmailAccountLinking: false,
   }),
 ];
 
@@ -42,7 +44,9 @@ if (FEATURES.githubAuth) {
     GitHub({
       clientId: process.env.AUTH_GITHUB_ID!,
       clientSecret: process.env.AUTH_GITHUB_SECRET!,
-      allowDangerousEmailAccountLinking: true,
+      // Disabled dangerous account linking for security
+      // Users must manually link accounts through account settings
+      allowDangerousEmailAccountLinking: false,
     })
   );
 }
