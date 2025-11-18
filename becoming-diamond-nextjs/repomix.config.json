@@ -4,8 +4,7 @@
     "maxFileSize": 52428800
   },
   "output": {
-    "filePath": "repomix-output.xml",
-    "style": "xml",
+    "style": "markdown",
     "parsableStyle": true,
     "fileSummary": true,
     "directoryStructure": true,
