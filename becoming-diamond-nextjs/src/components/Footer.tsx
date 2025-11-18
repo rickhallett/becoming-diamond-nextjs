@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export function Footer() {
     return (
@@ -51,10 +52,12 @@ export function Footer() {
                         rel="noopener noreferrer"
                         className="flex flex-col items-center gap-1 z-20 group lg:absolute lg:bottom-6 lg:right-6"
                     >
-                        <img
+                        <Image
                             src="/0.png"
                             alt="Oceanheart AI"
-                            className="w-10 h-10 opacity-60"
+                            width={40}
+                            height={40}
+                            className="opacity-60"
                         />
                         <p className="text-xs text-gray-600 text-center">
                             Built with <span className="group-hover:text-pink-400 group-hover:drop-shadow-[0_0_8px_rgba(236,72,153,0.6)] transition-all">love</span> by

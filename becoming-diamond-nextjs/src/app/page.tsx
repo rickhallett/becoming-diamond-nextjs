@@ -2,6 +2,7 @@
 "use client";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import dynamic from "next/dynamic";
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 import { CardSpotlight } from "@/components/ui/card-spotlight";
@@ -211,11 +212,12 @@ export default function LandingPage() {
                                 title="The Diamond Operating System"
                                 description="Converts pressure into clarity, chaos into calm. You don't just react better—you lead better. You become the person people trust in crisis."
                                 header={
-                                    <div className="flex h-full min-h-[6rem] w-full flex-1 items-center justify-center rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5">
-                                        <img
+                                    <div className="flex h-full min-h-[6rem] w-full flex-1 items-center justify-center rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5 relative">
+                                        <Image
                                             src="https://images.unsplash.com/photo-1534224039826-c7a0eda0e6b3?q=80&w=800&h=400&fit=crop"
                                             alt="Meditation and consciousness"
-                                            className="w-full h-full object-cover opacity-60"
+                                            fill
+                                            className="object-cover opacity-60"
                                         />
                                     </div>
                                 }
@@ -232,11 +234,12 @@ export default function LandingPage() {
                                 title="Swiss Army Knife"
                                 description="Real-time emotional regulation. Get back to center instantly, no matter what's happening. Body, Breath, Brain tools."
                                 header={
-                                    <div className="flex h-full min-h-[6rem] w-full flex-1 items-center justify-center rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5">
-                                        <img
+                                    <div className="flex h-full min-h-[6rem] w-full flex-1 items-center justify-center rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5 relative">
+                                        <Image
                                             src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800&h=400&fit=crop"
                                             alt="Centered presence"
-                                            className="w-full h-full object-cover opacity-60"
+                                            fill
+                                            className="object-cover opacity-60"
                                         />
                                     </div>
                                 }
@@ -252,11 +255,12 @@ export default function LandingPage() {
                                 title="ART & ART² Protocols"
                                 description="Clears emotional static and reclaims your power. Transform fear, anger, and doubt into intentional action."
                                 header={
-                                    <div className="flex h-full min-h-[6rem] w-full flex-1 items-center justify-center rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5">
-                                        <img
+                                    <div className="flex h-full min-h-[6rem] w-full flex-1 items-center justify-center rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5 relative">
+                                        <Image
                                             src="https://images.unsplash.com/photo-1499209974431-9dddcece7f88?q=80&w=800&h=400&fit=crop"
                                             alt="Energy and transformation"
-                                            className="w-full h-full object-cover opacity-60"
+                                            fill
+                                            className="object-cover opacity-60"
                                         />
                                     </div>
                                 }
@@ -272,11 +276,12 @@ export default function LandingPage() {
                                 title="The Diamond Sprint"
                                 description="30-Day Practice that installs new habits and baseline identity. Build unshakable confidence through consistent action."
                                 header={
-                                    <div className="flex h-full min-h-[6rem] w-full flex-1 items-center justify-center rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5">
-                                        <img
+                                    <div className="flex h-full min-h-[6rem] w-full flex-1 items-center justify-center rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5 relative">
+                                        <Image
                                             src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=800&h=400&fit=crop"
                                             alt="Journey and elevation"
-                                            className="w-full h-full object-cover opacity-60"
+                                            fill
+                                            className="object-cover opacity-60"
                                         />
                                     </div>
                                 }
