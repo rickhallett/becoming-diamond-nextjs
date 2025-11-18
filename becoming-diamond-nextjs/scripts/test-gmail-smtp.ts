@@ -24,15 +24,22 @@ async function testGmailSMTP() {
   const cleanPassword = GMAIL_APP_PASSWORD.replace(/[\s"']/g, "");
   console.log(`Cleaned password length: ${cleanPassword.length} chars`);
 
-  // Create transporter
+  // Create transporter matching production config (port 465 SSL)
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
+    port: 465,
+    secure: true, // SSL
     auth: {
       user: GMAIL_USER,
       pass: cleanPassword,
     },
+    tls: {
+      servername: "smtp.gmail.com",
+      rejectUnauthorized: true,
+    },
+    connectionTimeout: 60000,
+    greetingTimeout: 30000,
+    socketTimeout: 120000,
     debug: true,
     logger: true,
   });
@@ -80,8 +87,9 @@ async function testGmailSMTP() {
     } else if (error.code === "ETIMEDOUT" || error.code === "ECONNECTION") {
       console.log("Connection failed. Check:");
       console.log("  1. Is your internet connection working?");
-      console.log("  2. Is port 587 blocked by firewall?");
+      console.log("  2. Is port 465 (SSL) blocked by firewall?");
       console.log("  3. Try a different network");
+      console.log("  4. DNS resolution working? Try: nslookup smtp.gmail.com");
     } else {
       console.log("Unknown error. Check Gmail SMTP settings and try again.");
     }

@@ -27,15 +27,15 @@ interface EmailResult {
 /**
  * Gmail SMTP Configuration
  *
- * DNS Workaround: Uses direct IP (173.194.76.108) instead of smtp.gmail.com
- * to avoid ETIMEOUT errors in some network environments.
+ * Uses smtp.gmail.com hostname for proper DNS resolution and load balancing.
+ * Configured with extended timeouts for reliable email delivery.
  *
  * This configuration is used by both:
  * - NextAuth magic link emails
  * - Newsletter welcome emails
  */
 export const GMAIL_SMTP_CONFIG = {
-  host: "173.194.76.108", // Direct IP to bypass DNS timeout issue
+  host: "smtp.gmail.com", // Use proper hostname for DNS resolution and load balancing
   port: 465,
   secure: true, // Use SSL
   tls: {
