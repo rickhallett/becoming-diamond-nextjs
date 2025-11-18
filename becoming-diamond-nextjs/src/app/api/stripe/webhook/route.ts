@@ -3,11 +3,41 @@ import Stripe from 'stripe';
 import { turso } from '@/lib/turso';
 import { log } from '@/lib/axiom-logger';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY_TEST || process.env.STRIPE_SECRET_KEY || '', {
+/**
+ * Validates that required Stripe credentials are present.
+ * Implements fail-fast pattern to prevent silent misconfiguration.
+ *
+ * @throws {Error} If required Stripe credentials are missing
+ */
+function validateStripeCredentials(): { secretKey: string; webhookSecret: string } {
+  const secretKey = process.env.STRIPE_SECRET_KEY_TEST || process.env.STRIPE_SECRET_KEY;
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET_TEST || process.env.STRIPE_WEBHOOK_SECRET;
+
+  if (!secretKey || secretKey.trim() === '') {
+    throw new Error(
+      'STRIPE_SECRET_KEY or STRIPE_SECRET_KEY_TEST is not configured. ' +
+      'Please set this environment variable. See README.md for setup instructions.'
+    );
+  }
+
+  if (!webhookSecret || webhookSecret.trim() === '') {
+    throw new Error(
+      'STRIPE_WEBHOOK_SECRET or STRIPE_WEBHOOK_SECRET_TEST is not configured. ' +
+      'Please set this environment variable. See README.md for setup instructions.'
+    );
+  }
+
+  return { secretKey, webhookSecret };
+}
+
+// Validate credentials at module load time (fail-fast)
+const credentials = validateStripeCredentials();
+
+const stripe = new Stripe(credentials.secretKey, {
   apiVersion: '2025-10-29.clover',
 });
 
-const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET_TEST || process.env.STRIPE_WEBHOOK_SECRET || '';
+const WEBHOOK_SECRET = credentials.webhookSecret;
 
 /**
  * Grant course access to user after successful payment
@@ -155,15 +185,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  if (!WEBHOOK_SECRET) {
-    await log.error('Stripe webhook secret not configured', {
-      timestamp: new Date().toISOString(),
-    });
-    return NextResponse.json(
-      { error: 'Webhook secret not configured' },
-      { status: 500 }
-    );
-  }
+  // WEBHOOK_SECRET is validated at module load time, no need for runtime check
 
   let event: Stripe.Event;
 
