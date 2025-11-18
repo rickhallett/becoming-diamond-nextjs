@@ -39,6 +39,7 @@ export function PointerHighlight({
       if (containerRef.current) {
         resizeObserver.unobserve(containerRef.current);
       }
+      resizeObserver.disconnect();
     };
   }, []);
 

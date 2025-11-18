@@ -92,6 +92,7 @@ export const StarsBackground: React.FC<StarBackgroundProps> = ({
       if (canvasRef.current) {
         resizeObserver.unobserve(canvasRef.current);
       }
+      resizeObserver.disconnect();
     };
   }, [generateStars]);
 
