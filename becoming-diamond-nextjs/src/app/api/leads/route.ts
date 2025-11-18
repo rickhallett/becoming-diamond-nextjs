@@ -6,7 +6,23 @@ import { sendWelcomeEmail } from "@/lib/gmail-smtp";
 // Dynamic route config for Next.js 15
 export const dynamic = "force-dynamic";
 
-// Rate limiting map (in production, use Redis or similar)
+/**
+ * IMPORTANT: This in-memory rate limiting does NOT work in serverless environments.
+ *
+ * In serverless platforms (Vercel, AWS Lambda, etc.), each function invocation is
+ * stateless and may run in a different container. The Map is recreated for each
+ * instance, making rate limiting ineffective across requests.
+ *
+ * PRODUCTION SOLUTION REQUIRED:
+ * - Migrate to Vercel KV (Redis): https://vercel.com/docs/storage/vercel-kv
+ * - Or use Upstash Redis: https://upstash.com/
+ *
+ * CURRENT MITIGATION:
+ * - Database duplicate check prevents email spam (24-hour window)
+ * - This provides basic protection but not true rate limiting
+ *
+ * TODO: Implement distributed rate limiting before production deployment
+ */
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 
 function checkRateLimit(ip: string): boolean {
