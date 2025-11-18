@@ -2,60 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { nanoid } from "nanoid";
 import { log } from "@/lib/axiom-logger";
 import { sendWelcomeEmail } from "@/lib/gmail-smtp";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 // Dynamic route config for Next.js 15
 export const dynamic = "force-dynamic";
-
-/**
- * IMPORTANT: This in-memory rate limiting does NOT work in serverless environments.
- *
- * In serverless platforms (Vercel, AWS Lambda, etc.), each function invocation is
- * stateless and may run in a different container. The Map is recreated for each
- * instance, making rate limiting ineffective across requests.
- *
- * PRODUCTION SOLUTION REQUIRED:
- * - Migrate to Vercel KV (Redis): https://vercel.com/docs/storage/vercel-kv
- * - Or use Upstash Redis: https://upstash.com/
- *
- * CURRENT MITIGATION:
- * - Database duplicate check prevents email spam (24-hour window)
- * - This provides basic protection but not true rate limiting
- *
- * TODO: Implement distributed rate limiting before production deployment
- */
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const limit = rateLimitMap.get(ip);
-
-  if (!limit || now > limit.resetAt) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + 60000 }); // 1 minute
-    log.debug("Rate limit: New window", {
-      component: "LeadCapture",
-      event: "rate_limit_check",
-      ipAddress: ip,
-      result: "allowed",
-      timestamp: new Date().toISOString(),
-    });
-    return true;
-  }
-
-  if (limit.count >= 5) {
-    log.warn("Rate limit: Exceeded", {
-      component: "LeadCapture",
-      event: "rate_limit_exceeded",
-      ipAddress: ip,
-      attemptCount: limit.count,
-      windowResetAt: new Date(limit.resetAt).toISOString(),
-      timestamp: new Date().toISOString(),
-    });
-    return false;
-  }
-
-  limit.count++;
-  return true;
-}
 
 function validateEmail(email: string): boolean {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -67,17 +17,40 @@ export async function POST(request: NextRequest) {
     // Lazy import turso to avoid build-time initialization
     const { turso } = await import("@/lib/turso");
 
-    // Rate limiting
+    // Rate limiting (5 requests per minute)
     const ip =
       request.headers.get("x-forwarded-for") ||
       request.headers.get("x-real-ip") ||
       "unknown";
-    if (!checkRateLimit(ip)) {
+
+    const rateLimitResult = await checkRateLimit(`leads:${ip}`, 5, 60000);
+
+    if (!rateLimitResult.allowed) {
+      const retryAfter = Math.ceil((rateLimitResult.resetAt - Date.now()) / 1000);
+
+      await log.warn("Rate limit: Exceeded", {
+        component: "LeadCapture",
+        event: "rate_limit_exceeded",
+        ipAddress: ip,
+        remaining: rateLimitResult.remaining,
+        resetAt: new Date(rateLimitResult.resetAt).toISOString(),
+        timestamp: new Date().toISOString(),
+      });
+
       return NextResponse.json(
         { success: false, error: "Too many requests. Please try again later." },
-        { status: 429, headers: { "Retry-After": "60" } }
+        { status: 429, headers: { "Retry-After": retryAfter.toString() } }
       );
     }
+
+    await log.debug("Rate limit: Check passed", {
+      component: "LeadCapture",
+      event: "rate_limit_check",
+      ipAddress: ip,
+      remaining: rateLimitResult.remaining,
+      result: "allowed",
+      timestamp: new Date().toISOString(),
+    });
 
     // Parse request body
     const body = await request.json();
