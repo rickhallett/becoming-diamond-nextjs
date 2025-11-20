@@ -6,6 +6,11 @@
  * Runs SQL migration files from the migrations/ directory
  * in order (based on filename sorting).
  *
+ * Features:
+ * - Tracks applied migrations in _migrations table
+ * - Only runs migrations that haven't been applied
+ * - Records timestamp of each migration
+ *
  * Usage:
  *   npm run db:migrate
  */
@@ -38,6 +43,19 @@ async function runMigrations() {
 
   console.log("🔄 Starting database migrations...\n");
 
+  // Create migrations tracking table if it doesn't exist
+  await turso.execute(`
+    CREATE TABLE IF NOT EXISTS _migrations (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT UNIQUE NOT NULL,
+      applied_at INTEGER NOT NULL
+    )
+  `);
+
+  // Get already applied migrations
+  const appliedResult = await turso.execute("SELECT name FROM _migrations ORDER BY name");
+  const appliedMigrations = new Set(appliedResult.rows.map(row => row.name as string));
+
   // Get migration files
   const migrationsDir = path.join(process.cwd(), "migrations");
 
@@ -53,10 +71,25 @@ async function runMigrations() {
     return;
   }
 
-  console.log(`Found ${files.length} migration file(s):\n`);
+  // Filter out already applied migrations
+  const pendingMigrations = files.filter(file => !appliedMigrations.has(file));
 
-  // Run each migration file
+  console.log(`Found ${files.length} migration file(s), ${pendingMigrations.length} pending:\n`);
+
+  if (pendingMigrations.length === 0) {
+    console.log("✅ All migrations already applied!");
+    return;
+  }
+
+  // Show status of all migrations
   for (const file of files) {
+    const status = appliedMigrations.has(file) ? "✓ applied" : "○ pending";
+    console.log(`  ${status}: ${file}`);
+  }
+  console.log("");
+
+  // Run pending migrations
+  for (const file of pendingMigrations) {
     console.log(`📄 Running migration: ${file}`);
 
     const filePath = path.join(migrationsDir, file);
@@ -86,6 +119,12 @@ async function runMigrations() {
         process.exit(1);
       }
     }
+
+    // Record successful migration
+    await turso.execute({
+      sql: "INSERT INTO _migrations (name, applied_at) VALUES (?, ?)",
+      args: [file, Date.now()],
+    });
 
     console.log(`   ✓ Executed ${statementCount} statement(s)\n`);
   }
