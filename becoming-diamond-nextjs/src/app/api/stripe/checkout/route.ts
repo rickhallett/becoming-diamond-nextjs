@@ -1,7 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY_TEST || process.env.STRIPE_SECRET_KEY || '', {
+/**
+ * Validates that required Stripe credentials are present.
+ * Implements fail-fast pattern to prevent silent misconfiguration.
+ */
+function validateStripeCredentials(): string {
+  const secretKey = process.env.STRIPE_SECRET_KEY_TEST || process.env.STRIPE_SECRET_KEY;
+
+  if (!secretKey || secretKey.trim() === '') {
+    throw new Error(
+      'STRIPE_SECRET_KEY or STRIPE_SECRET_KEY_TEST is not configured. ' +
+      'Please set this environment variable. See README.md for setup instructions.'
+    );
+  }
+
+  return secretKey;
+}
+
+// Validate credentials at module load time (fail-fast)
+const stripeSecretKey = validateStripeCredentials();
+
+const stripe = new Stripe(stripeSecretKey, {
   apiVersion: '2025-10-29.clover',
 });
 

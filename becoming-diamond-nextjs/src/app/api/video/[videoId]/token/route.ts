@@ -3,9 +3,41 @@ import { auth } from '@/auth';
 import crypto from 'crypto';
 import { log } from '@/lib/axiom-logger';
 
-const BUNNY_LIBRARY_ID = process.env.BUNNY_STREAM_LIBRARY_ID!;
-const BUNNY_API_KEY = process.env.BUNNY_STREAM_API_KEY!;
-const BUNNY_CDN_HOSTNAME = process.env.BUNNY_STREAM_CDN_HOSTNAME!;
+/**
+ * Validates that required Bunny Stream credentials are present.
+ * Implements fail-fast pattern to prevent silent misconfiguration.
+ */
+function validateBunnyCredentials(): { libraryId: string; apiKey: string; cdnHostname: string } {
+  const libraryId = process.env.BUNNY_STREAM_LIBRARY_ID;
+  const apiKey = process.env.BUNNY_STREAM_API_KEY;
+  const cdnHostname = process.env.BUNNY_STREAM_CDN_HOSTNAME;
+
+  if (!libraryId || libraryId.trim() === '') {
+    throw new Error(
+      'BUNNY_STREAM_LIBRARY_ID is not configured. ' +
+      'Please set this environment variable. See README.md for setup instructions.'
+    );
+  }
+
+  if (!apiKey || apiKey.trim() === '') {
+    throw new Error(
+      'BUNNY_STREAM_API_KEY is not configured. ' +
+      'Please set this environment variable. See README.md for setup instructions.'
+    );
+  }
+
+  if (!cdnHostname || cdnHostname.trim() === '') {
+    throw new Error(
+      'BUNNY_STREAM_CDN_HOSTNAME is not configured. ' +
+      'Please set this environment variable. See README.md for setup instructions.'
+    );
+  }
+
+  return { libraryId, apiKey, cdnHostname };
+}
+
+// Validate credentials at module load time (fail-fast)
+const { libraryId: BUNNY_LIBRARY_ID, apiKey: BUNNY_API_KEY, cdnHostname: BUNNY_CDN_HOSTNAME } = validateBunnyCredentials();
 
 export async function GET(
   request: NextRequest,

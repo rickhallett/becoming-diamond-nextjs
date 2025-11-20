@@ -8,7 +8,16 @@
 import type { NextAuthConfig } from "next-auth";
 import { AUTH_CONFIG } from "@/config/features";
 
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "support@becomingdiamond.com";
+/**
+ * Get admin email from environment.
+ * Note: In edge runtime (middleware), we can't throw errors at module load,
+ * so we validate at runtime instead.
+ */
+function getAdminEmail(): string | undefined {
+  return process.env.ADMIN_EMAIL;
+}
+
+const ADMIN_EMAIL = getAdminEmail();
 
 export const authConfig = {
   pages: {
@@ -27,6 +36,11 @@ export const authConfig = {
 
       // Protect /docs-site/* routes (only admin email)
       if (isOnDocs) {
+        // If ADMIN_EMAIL not configured, deny all access to docs-site
+        if (!ADMIN_EMAIL) {
+          console.warn('ADMIN_EMAIL not configured - docs-site access denied');
+          return Response.redirect(new URL("/", nextUrl));
+        }
         if (userEmail === ADMIN_EMAIL) return true;
         // Redirect unauthorized users (including other logged-in users)
         return Response.redirect(new URL("/", nextUrl));

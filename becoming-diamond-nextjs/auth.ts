@@ -15,6 +15,77 @@ import { GMAIL_SMTP_CONFIG } from "@/lib/gmail-smtp";
 import type { Provider } from "next-auth/providers";
 import { log } from '@/lib/axiom-logger';
 
+/**
+ * Validates that required authentication credentials are present.
+ * Implements fail-fast pattern to prevent silent misconfiguration.
+ */
+function validateAuthCredentials() {
+  const gmailUser = process.env.GMAIL_USER;
+  const gmailPassword = process.env.GMAIL_APP_PASSWORD;
+  const googleId = process.env.AUTH_GOOGLE_ID;
+  const googleSecret = process.env.AUTH_GOOGLE_SECRET;
+
+  if (!gmailUser || gmailUser.trim() === '') {
+    throw new Error(
+      'GMAIL_USER is not configured for magic link authentication. ' +
+      'Please set this environment variable. See README.md for setup instructions.'
+    );
+  }
+
+  if (!gmailPassword || gmailPassword.trim() === '') {
+    throw new Error(
+      'GMAIL_APP_PASSWORD is not configured for magic link authentication. ' +
+      'Please set this environment variable. See README.md for setup instructions.'
+    );
+  }
+
+  if (!googleId || googleId.trim() === '') {
+    throw new Error(
+      'AUTH_GOOGLE_ID is not configured for Google OAuth. ' +
+      'Please set this environment variable. See README.md for setup instructions.'
+    );
+  }
+
+  if (!googleSecret || googleSecret.trim() === '') {
+    throw new Error(
+      'AUTH_GOOGLE_SECRET is not configured for Google OAuth. ' +
+      'Please set this environment variable. See README.md for setup instructions.'
+    );
+  }
+
+  // Validate GitHub credentials if GitHub auth is enabled
+  if (FEATURES.githubAuth) {
+    const githubId = process.env.AUTH_GITHUB_ID;
+    const githubSecret = process.env.AUTH_GITHUB_SECRET;
+
+    if (!githubId || githubId.trim() === '') {
+      throw new Error(
+        'AUTH_GITHUB_ID is not configured but GitHub auth is enabled. ' +
+        'Please set this environment variable or disable GitHub auth in config/features.ts.'
+      );
+    }
+
+    if (!githubSecret || githubSecret.trim() === '') {
+      throw new Error(
+        'AUTH_GITHUB_SECRET is not configured but GitHub auth is enabled. ' +
+        'Please set this environment variable or disable GitHub auth in config/features.ts.'
+      );
+    }
+  }
+
+  return {
+    gmailUser,
+    gmailPassword,
+    googleId,
+    googleSecret,
+    githubId: process.env.AUTH_GITHUB_ID,
+    githubSecret: process.env.AUTH_GITHUB_SECRET,
+  };
+}
+
+// Validate credentials at module load time (fail-fast)
+const credentials = validateAuthCredentials();
+
 const turso = getTursoClient();
 
 // Build providers array conditionally
@@ -23,15 +94,15 @@ const providers: Provider[] = [
     server: {
       ...GMAIL_SMTP_CONFIG,
       auth: {
-        user: process.env.GMAIL_USER!,
-        pass: process.env.GMAIL_APP_PASSWORD!,
+        user: credentials.gmailUser,
+        pass: credentials.gmailPassword,
       },
     },
-    from: process.env.GMAIL_USER!,
+    from: credentials.gmailUser,
   }),
   Google({
-    clientId: process.env.AUTH_GOOGLE_ID!,
-    clientSecret: process.env.AUTH_GOOGLE_SECRET!,
+    clientId: credentials.googleId,
+    clientSecret: credentials.googleSecret,
     // Disabled dangerous account linking for security
     // Users must manually link accounts through account settings
     allowDangerousEmailAccountLinking: false,
@@ -39,11 +110,11 @@ const providers: Provider[] = [
 ];
 
 // Conditionally add GitHub provider
-if (FEATURES.githubAuth) {
+if (FEATURES.githubAuth && credentials.githubId && credentials.githubSecret) {
   providers.push(
     GitHub({
-      clientId: process.env.AUTH_GITHUB_ID!,
-      clientSecret: process.env.AUTH_GITHUB_SECRET!,
+      clientId: credentials.githubId,
+      clientSecret: credentials.githubSecret,
       // Disabled dangerous account linking for security
       // Users must manually link accounts through account settings
       allowDangerousEmailAccountLinking: false,

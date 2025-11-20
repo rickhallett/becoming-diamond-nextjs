@@ -29,7 +29,8 @@
     "test:e2e:report": "playwright show-report",
     "knip": "knip",
     "cleanup:knip": "tsx scripts/cleanup-from-checklist.ts",
-    "cleanup:knip:execute": "tsx scripts/cleanup-from-checklist.ts --execute"
+    "cleanup:knip:execute": "tsx scripts/cleanup-from-checklist.ts --execute",
+    "validate:env": "tsx scripts/validate-env.ts"
   },
   "dependencies": {
     "@axiomhq/js": "^1.3.1",

@@ -1,8 +1,33 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { log } from '@/lib/logger';
 
-const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID || '';
-const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET || '';
+/**
+ * Validates that required GitHub OAuth credentials are present for CMS.
+ * Implements fail-fast pattern to prevent silent misconfiguration.
+ */
+function validateGitHubCredentials(): { clientId: string; clientSecret: string } {
+  const clientId = process.env.GITHUB_CLIENT_ID;
+  const clientSecret = process.env.GITHUB_CLIENT_SECRET;
+
+  if (!clientId || clientId.trim() === '') {
+    throw new Error(
+      'GITHUB_CLIENT_ID is not configured for CMS authentication. ' +
+      'Please set this environment variable. See README.md for setup instructions.'
+    );
+  }
+
+  if (!clientSecret || clientSecret.trim() === '') {
+    throw new Error(
+      'GITHUB_CLIENT_SECRET is not configured for CMS authentication. ' +
+      'Please set this environment variable. See README.md for setup instructions.'
+    );
+  }
+
+  return { clientId, clientSecret };
+}
+
+// Validate credentials at module load time (fail-fast)
+const { clientId: GITHUB_CLIENT_ID, clientSecret: GITHUB_CLIENT_SECRET } = validateGitHubCredentials();
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
