@@ -18,9 +18,18 @@ import { Logger } from '@axiomhq/logging';
 // Detect if we're in a browser environment
 const isBrowser = typeof window !== 'undefined';
 
+// Transport interface for type safety
+interface Transport {
+  log(...args: unknown[]): Promise<void> | void;
+  flush(): Promise<void> | void;
+}
+
 // No-op transport for browser environment
-class NoOpTransport {
+class NoOpTransport implements Transport {
   async log() {
+    // Silent - do nothing
+  }
+  async flush() {
     // Silent - do nothing
   }
 }
@@ -30,7 +39,7 @@ function createLogger() {
   // Browser environment: No-op transport (silent)
   if (isBrowser) {
     return new Logger({
-      transports: [new NoOpTransport() as any],
+      transports: [new NoOpTransport() as Transport],
     });
   }
 
@@ -61,16 +70,16 @@ function createLogger() {
       : null;
 
     // Only use Axiom transport, no console
-    const transports = axiomTransport ? [axiomTransport] : [new NoOpTransport() as any];
+    const transports = axiomTransport ? [axiomTransport] : [new NoOpTransport() as Transport];
 
     return new Logger({
-      transports: transports as [any, ...any[]],
+      transports: transports as [Transport, ...Transport[]],
       formatters: nextJsFormatters,
     });
   } catch {
     // Fallback to no-op if server imports fail
     return new Logger({
-      transports: [new NoOpTransport() as any],
+      transports: [new NoOpTransport() as Transport],
     });
   }
 }

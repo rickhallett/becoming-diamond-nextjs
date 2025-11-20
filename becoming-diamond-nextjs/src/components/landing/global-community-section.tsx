@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { motion } from "motion/react";
 import { GLOBE_CONFIG, SAMPLE_ARCS } from "@/config/landing-page";
+import { SectionHeader } from "@/components/SectionHeader";
 
 const World = dynamic(
   () => import("@/components/ui/globe").then((m) => m.World),
@@ -18,23 +19,16 @@ const World = dynamic(
 
 export function GlobalCommunitySection() {
   return (
-    <section className="w-full py-20 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-            A GLOBAL COMMUNITY
-          </h2>
-          <p className="text-lg text-neutral-300 max-w-2xl mx-auto">
-            Join thousands of individuals worldwide who are transforming their
-            lives through the Diamond methodology.
-          </p>
-        </motion.div>
+    <section className="py-24 px-6 bg-black relative">
+      <div className="max-w-7xl mx-auto w-full relative">
+        <SectionHeader
+          title={
+            <>
+              Join a Diamond Mind <span className="text-primary">Global Movement</span>
+            </>
+          }
+          subtitle="Thousands of leaders, entrepreneurs, and change-makers across six continents are turning pressure into clarity. The movement is growing. Your place is waiting."
+        />
 
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
