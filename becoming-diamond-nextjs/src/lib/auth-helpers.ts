@@ -80,7 +80,7 @@ export function getAdminEmails(): readonly string[] {
  * @param userId - User ID to check
  * @returns Promise resolving to true if user is admin
  */
-export async function isAdminUserId(userId: string): Promise<boolean> {
+export async function isAdminUserId(_userId: string): Promise<boolean> {
   // TODO: Implement when moving to role-based access control
   // Example implementation:
   // const { turso } = await import('@/lib/turso');

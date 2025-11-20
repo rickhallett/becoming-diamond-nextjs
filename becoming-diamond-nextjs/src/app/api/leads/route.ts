@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { email, consentGiven, noLiabilityAccepted } = validation.data;
+    const { email, consentGiven: _consentGiven, noLiabilityAccepted: _noLiabilityAccepted } = validation.data;
 
     // Check for duplicate within 24 hours
     // TODO: why is this 24 hours?

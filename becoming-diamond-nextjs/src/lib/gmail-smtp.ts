@@ -201,14 +201,15 @@ export async function sendWelcomeEmail(
     let result;
     try {
       result = await transporter.sendMail(emailPayload);
-    } catch (smtpError: any) {
+    } catch (smtpError) {
+      const err = smtpError as Error & { code?: string; command?: string; response?: string; responseCode?: number };
       await log.error("Gmail SMTP send failed", {
         context: "EMAIL",
-        error: smtpError.message,
-        code: smtpError.code,
-        command: smtpError.command,
-        response: smtpError.response,
-        responseCode: smtpError.responseCode,
+        error: err.message,
+        code: err.code,
+        command: err.command,
+        response: err.response,
+        responseCode: err.responseCode,
         to,
         timestamp: new Date().toISOString(),
       });

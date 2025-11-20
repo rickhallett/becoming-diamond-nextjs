@@ -11,9 +11,10 @@ vi.mock('next-auth/react', () => ({
 
 // Mock Next.js Image
 vi.mock('next/image', () => ({
-  default: ({ src, alt }: { src: string; alt: string }) => (
-    <img src={src} alt={alt} data-testid="user-image" />
-  ),
+  default: function MockImage({ src, alt }: { src: string; alt: string }) {
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img src={src} alt={alt} data-testid="user-image" />;
+  },
 }));
 
 // Mock Tabler Icons

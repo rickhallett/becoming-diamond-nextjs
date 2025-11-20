@@ -138,7 +138,7 @@ export async function PUT(request: NextRequest) {
 
     // Update profile fields (bio, location, website)
     const profileFields: string[] = [];
-    const profileValues: any[] = [];
+    const profileValues: (string | number)[] = [];
 
     if (updates.bio !== undefined) {
       profileFields.push('bio = ?');
