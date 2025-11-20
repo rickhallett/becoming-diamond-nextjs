@@ -259,7 +259,8 @@ export async function POST(req: NextRequest) {
           subscriptionId: subscription.id,
           stripeCustomerId: subscription.customer as string,
           status: subscription.status,
-          currentPeriodEnd: new Date((subscription as any).current_period_end * 1000),
+          // Stripe Subscription type doesn't expose current_period_end directly, but it's always present
+          currentPeriodEnd: new Date((subscription as unknown as { current_period_end: number }).current_period_end * 1000),
         });
 
         break;
