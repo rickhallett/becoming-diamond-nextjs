@@ -89,6 +89,10 @@ const navigation: NavItem[] = [
         title: "Deployment Environments",
         href: "/docs-site/technical/deployment-environments",
       },
+      {
+        title: "Wix Migration Estimate",
+        href: "/docs-site/technical/wix-migration",
+      },
     ],
   },
   {
