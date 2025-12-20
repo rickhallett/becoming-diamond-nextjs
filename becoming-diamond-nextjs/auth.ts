@@ -150,8 +150,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
     async signIn({ user, account, profile, email }) {
       try {
+        console.log('[AUTH] Sign-in callback triggered', {
+          provider: account?.provider,
+          userEmail: user.email,
+          userId: user.id,
+        });
+
         // Validate user data
         if (!user.email) {
+          console.error('[AUTH] Sign-in failed: Missing email', { userId: user.id });
           await log.error('Sign-in failed: Missing email', {
             userId: user.id,
             provider: account?.provider,
@@ -159,6 +166,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           });
           return false;
         }
+
+        console.log('[AUTH] User sign-in validated, proceeding');
 
         await log.info('User sign-in attempt', {
           provider: account?.provider,
@@ -169,10 +178,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           timestamp: new Date().toISOString(),
         });
 
+        console.log('[AUTH] Sign-in successful, returning true');
         return true;
       } catch (error) {
+        console.error('[AUTH] Sign-in callback error:', error);
         await log.error('Sign-in callback error', {
           error: error instanceof Error ? error.message : String(error),
+          stack: error instanceof Error ? error.stack : undefined,
           userId: user.id,
           provider: account?.provider,
           timestamp: new Date().toISOString(),
