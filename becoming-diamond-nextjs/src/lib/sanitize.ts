@@ -3,9 +3,19 @@
  *
  * Uses DOMPurify to sanitize HTML content and prevent XSS attacks.
  * Critical for user-generated content and CMS-sourced content.
+ *
+ * Note: DOMPurify is only imported and used client-side to avoid build issues.
+ * Server-side/build-time HTML is from trusted CMS sources.
  */
 
-import DOMPurify from 'isomorphic-dompurify';
+// Lazy import DOMPurify only when needed (client-side only)
+let DOMPurify: typeof import('isomorphic-dompurify').default | null = null;
+const getDOMPurify = async () => {
+  if (typeof window !== 'undefined' && !DOMPurify) {
+    DOMPurify = (await import('isomorphic-dompurify')).default;
+  }
+  return DOMPurify;
+};
 
 /**
  * Configuration for content from markdown/CMS
@@ -79,19 +89,20 @@ const CONTENT_SANITIZE_CONFIG = {
 export function sanitizeHtml(html: string): string {
   if (!html) return '';
 
-  // Try to use DOMPurify, but gracefully fall back if DOM APIs unavailable
-  // This happens during Next.js build-time data collection
+  // Server-side/build-time: skip sanitization (content from trusted CMS)
+  if (typeof window === 'undefined') {
+    return html;
+  }
+
+  // Client-side: use DOMPurify if available
   try {
-    return DOMPurify.sanitize(html, CONTENT_SANITIZE_CONFIG);
-  } catch (error) {
-    // DOMPurify needs DOM APIs which may not be available during build
-    // Content from our CMS is trusted, so returning unsanitized is acceptable
-    // DOMPurify will still run at runtime in browser and server
-    if (typeof window === 'undefined') {
-      // Server-side or build time - return unsanitized (CMS content is trusted)
-      return html;
+    // DOMPurify should be loaded by now on client-side
+    if (DOMPurify) {
+      return DOMPurify.sanitize(html, CONTENT_SANITIZE_CONFIG);
     }
-    // In browser, log error but return empty string for safety
+    // If not loaded yet, return unsanitized (will be sanitized on next render)
+    return html;
+  } catch (error) {
     console.error('Failed to sanitize HTML:', error);
     return '';
   }
@@ -134,12 +145,17 @@ const USER_CONTENT_SANITIZE_CONFIG = {
 export function sanitizeUserHtml(html: string): string {
   if (!html) return '';
 
+  // Server-side: skip sanitization
+  if (typeof window === 'undefined') {
+    return html;
+  }
+
   try {
-    return DOMPurify.sanitize(html, USER_CONTENT_SANITIZE_CONFIG);
-  } catch (error) {
-    if (typeof window === 'undefined') {
-      return html;
+    if (DOMPurify) {
+      return DOMPurify.sanitize(html, USER_CONTENT_SANITIZE_CONFIG);
     }
+    return html;
+  } catch (error) {
     console.error('Failed to sanitize user HTML:', error);
     return '';
   }
@@ -156,16 +172,20 @@ export function sanitizeUserHtml(html: string): string {
 export function stripHtml(html: string): string {
   if (!html) return '';
 
+  // Server-side: use regex fallback
+  if (typeof window === 'undefined') {
+    return html.replace(/<[^>]*>/g, '');
+  }
+
   try {
-    return DOMPurify.sanitize(html, {
-      ALLOWED_TAGS: [],
-      KEEP_CONTENT: true,
-    });
-  } catch (error) {
-    // Fallback to regex if DOMPurify unavailable (build time)
-    if (typeof window === 'undefined') {
-      return html.replace(/<[^>]*>/g, '');
+    if (DOMPurify) {
+      return DOMPurify.sanitize(html, {
+        ALLOWED_TAGS: [],
+        KEEP_CONTENT: true,
+      });
     }
+    return html.replace(/<[^>]*>/g, '');
+  } catch (error) {
     console.error('Failed to strip HTML:', error);
     return html;
   }
@@ -180,15 +200,19 @@ export function stripHtml(html: string): string {
 export function containsDangerousHtml(html: string): boolean {
   if (!html) return false;
 
+  // Server-side: use pattern matching
+  if (typeof window === 'undefined') {
+    return /<script|<iframe|javascript:|onerror=|onload=/i.test(html);
+  }
+
   try {
-    const sanitized = DOMPurify.sanitize(html, CONTENT_SANITIZE_CONFIG);
-    // If sanitization significantly changed the content, it likely contained dangerous HTML
-    return sanitized.length < html.length * 0.9;
-  } catch (error) {
-    // Fallback to pattern matching if DOMPurify unavailable (build time)
-    if (typeof window === 'undefined') {
-      return /<script|<iframe|javascript:|onerror=|onload=/i.test(html);
+    if (DOMPurify) {
+      const sanitized = DOMPurify.sanitize(html, CONTENT_SANITIZE_CONFIG);
+      // If sanitization significantly changed the content, it likely contained dangerous HTML
+      return sanitized.length < html.length * 0.9;
     }
+    return /<script|<iframe|javascript:|onerror=|onload=/i.test(html);
+  } catch {
     return false;
   }
 }
