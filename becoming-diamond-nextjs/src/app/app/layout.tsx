@@ -11,7 +11,8 @@ import {
     IconMenu2,
     IconX,
     IconSparkles,
-    IconUsers
+    IconUsers,
+    IconBook
 } from "@tabler/icons-react";
 import { SignOutButton } from "@/components/auth/SignOutButton";
 import { UserAvatar } from "@/components/auth/UserAvatar";
@@ -32,6 +33,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         { name: "30 Day Sprint", href: "/app/sprint", icon: IconRocket, feature: null, adminOnly: false },
         { name: "Profile", href: "/app/profile", icon: IconUser, feature: null, adminOnly: false },
         { name: "Lead Management", href: "/app/admin/leads", icon: IconUsers, feature: null, adminOnly: true },
+        { name: "Documentation", href: "/docs-site", icon: IconBook, feature: null, adminOnly: true },
     ];
 
     // Filter navigation items based on feature flags and admin status
