@@ -10,12 +10,6 @@
 
 // Lazy import DOMPurify only when needed (client-side only)
 let DOMPurify: typeof import('isomorphic-dompurify').default | null = null;
-const getDOMPurify = async () => {
-  if (typeof window !== 'undefined' && !DOMPurify) {
-    DOMPurify = (await import('isomorphic-dompurify')).default;
-  }
-  return DOMPurify;
-};
 
 /**
  * Configuration for content from markdown/CMS
