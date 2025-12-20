@@ -2,13 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSprintDay } from '@/lib/content';
 import { log } from '@/lib/logger';
 
-// Generate static params for all 30 days at build time
-export async function generateStaticParams() {
-  return Array.from({ length: 30 }, (_, i) => ({
-    dayNumber: String(i + 1),
-  }));
-}
-
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ dayNumber: string }> }
