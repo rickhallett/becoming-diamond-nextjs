@@ -81,6 +81,14 @@ const navigation: NavItem[] = [
         title: "Specifications",
         href: "/docs-site/technical/specs",
       },
+      {
+        title: "Stripe Discount Codes",
+        href: "/docs-site/technical/stripe-discount-codes",
+      },
+      {
+        title: "Deployment Environments",
+        href: "/docs-site/technical/deployment-environments",
+      },
     ],
   },
   {
