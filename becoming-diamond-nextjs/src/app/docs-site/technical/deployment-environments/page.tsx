@@ -11,11 +11,42 @@ export default function DeploymentEnvironmentsPage() {
       <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-4 mb-6">
         <p className="text-sm text-neutral-400 mb-2">
           <strong>Executive Summary:</strong> Three deployment options available from
-          $140-500 one-time cost, then $21/month ongoing.
+          $220-580 one-time cost, then $21/month ongoing.
+        </p>
+        <p className="text-sm text-neutral-400 mb-2">
+          <strong>Recommended:</strong> Option B - Stable Foundation ($260-340)
         </p>
         <p className="text-sm text-neutral-400">
-          <strong>Recommended:</strong> Option B - Stable Foundation ($180-260)
+          <strong>Note:</strong> First invoice includes $80 for research and documentation already completed.
         </p>
+      </div>
+
+      <div className="bg-neutral-900 border border-primary/30 rounded-lg p-4 mb-6">
+        <h3 className="text-sm font-semibold mb-2">Research & Documentation Costs (Already Incurred)</h3>
+        <table className="w-full text-sm">
+          <tbody>
+            <tr className="border-b border-neutral-800">
+              <td className="py-1">CI/CD environment options research</td>
+              <td className="text-right py-1">0.75 hours</td>
+              <td className="text-right py-1">$30</td>
+            </tr>
+            <tr className="border-b border-neutral-800">
+              <td className="py-1">Multi-environment deployment planning</td>
+              <td className="text-right py-1">0.5 hours</td>
+              <td className="text-right py-1">$20</td>
+            </tr>
+            <tr className="border-b border-neutral-800">
+              <td className="py-1">Documentation production</td>
+              <td className="text-right py-1">0.75 hours</td>
+              <td className="text-right py-1">$30</td>
+            </tr>
+            <tr className="font-semibold">
+              <td className="py-1">Total Research & Documentation</td>
+              <td className="text-right py-1">2 hours</td>
+              <td className="text-right py-1">$80</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <h2>Three Environment Setup</h2>
@@ -53,7 +84,7 @@ export default function DeploymentEnvironmentsPage() {
         <div className="border border-neutral-800 rounded-lg p-4">
           <div className="flex justify-between items-start mb-2">
             <h3 className="text-lg font-semibold">Option A: Quick Start</h3>
-            <span className="text-sm text-neutral-400">$140-180</span>
+            <span className="text-sm text-neutral-400">$220-260</span>
           </div>
           <p className="text-sm text-neutral-400 mb-2">
             Basic automated deployment using Vercel's built-in features.
@@ -68,7 +99,7 @@ export default function DeploymentEnvironmentsPage() {
         <div className="border border-primary/30 bg-neutral-900 rounded-lg p-4">
           <div className="flex justify-between items-start mb-2">
             <h3 className="text-lg font-semibold">Option B: Stable Foundation ⭐ Recommended</h3>
-            <span className="text-sm text-neutral-300">$180-260</span>
+            <span className="text-sm text-neutral-300">$260-340</span>
           </div>
           <p className="text-sm text-neutral-400 mb-2">
             Resolves technical issues and sets up automated deployment. All systems verified working.
@@ -83,7 +114,7 @@ export default function DeploymentEnvironmentsPage() {
         <div className="border border-neutral-800 rounded-lg p-4">
           <div className="flex justify-between items-start mb-2">
             <h3 className="text-lg font-semibold">Option C: Enterprise Grade</h3>
-            <span className="text-sm text-neutral-400">$340-500</span>
+            <span className="text-sm text-neutral-400">$420-580</span>
           </div>
           <p className="text-sm text-neutral-400 mb-2">
             Full automation with safety checks. Tests run automatically before deployment.
@@ -98,7 +129,7 @@ export default function DeploymentEnvironmentsPage() {
 
       <h2>Cost Breakdown</h2>
 
-      <h3>One-Time Costs</h3>
+      <h3>One-Time Implementation Costs</h3>
       <div className="overflow-x-auto my-4">
         <table className="w-full text-sm border border-neutral-800">
           <thead>
@@ -111,7 +142,13 @@ export default function DeploymentEnvironmentsPage() {
           </thead>
           <tbody>
             <tr className="border-b border-neutral-800">
-              <td className="p-2">Development hours @ $40/hr</td>
+              <td className="p-2">Research & Documentation (completed)</td>
+              <td className="text-right p-2">$80</td>
+              <td className="text-right p-2">$80</td>
+              <td className="text-right p-2">$80</td>
+            </tr>
+            <tr className="border-b border-neutral-800">
+              <td className="p-2">Implementation hours @ $40/hr</td>
               <td className="text-right p-2">$120-160</td>
               <td className="text-right p-2">$160-240</td>
               <td className="text-right p-2">$320-480</td>
@@ -124,9 +161,9 @@ export default function DeploymentEnvironmentsPage() {
             </tr>
             <tr>
               <td className="p-2 font-semibold">Total First Invoice</td>
-              <td className="text-right p-2 font-semibold">$140-180</td>
-              <td className="text-right p-2 font-semibold">$180-260</td>
-              <td className="text-right p-2 font-semibold">$340-500</td>
+              <td className="text-right p-2 font-semibold">$220-260</td>
+              <td className="text-right p-2 font-semibold">$260-340</td>
+              <td className="text-right p-2 font-semibold">$420-580</td>
             </tr>
           </tbody>
         </table>
@@ -224,7 +261,7 @@ export default function DeploymentEnvironmentsPage() {
       <h3>Choose Option A if:</h3>
       <ul>
         <li>Need staging environment immediately (this week)</li>
-        <li>Minimum budget required</li>
+        <li>Minimum budget required ($220-260)</li>
         <li>Comfortable with some risk</li>
         <li>Plan to invest in improvements later</li>
       </ul>
@@ -235,6 +272,7 @@ export default function DeploymentEnvironmentsPage() {
         <li>Can wait 1-2 days for implementation</li>
         <li>Prefer proactive issue resolution</li>
         <li>Standard business quality expectations</li>
+        <li>Best overall value ($260-340)</li>
       </ul>
 
       <h3>Choose Option C if:</h3>
@@ -242,7 +280,7 @@ export default function DeploymentEnvironmentsPage() {
         <li>Maximum quality and safety required</li>
         <li>Multiple developers on team</li>
         <li>Have compliance or audit requirements</li>
-        <li>Budget allows for premium features</li>
+        <li>Budget allows for premium features ($420-580)</li>
       </ul>
 
       <h2>Approval Requirements</h2>
@@ -250,7 +288,12 @@ export default function DeploymentEnvironmentsPage() {
       <p>To proceed with implementation:</p>
       <ol>
         <li>Select approach (A, B, or C)</li>
-        <li>Approve budget (first invoice + monthly billing)</li>
+        <li>Approve budget:
+          <ul className="ml-6 mt-1">
+            <li>First invoice: $220-580 (includes $80 research already completed)</li>
+            <li>Monthly billing: $21 (ongoing)</li>
+          </ul>
+        </li>
         <li>Provide Vercel billing information (credit card)</li>
         <li>Confirm timeline expectations</li>
       </ol>
