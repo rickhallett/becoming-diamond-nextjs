@@ -103,9 +103,9 @@ const providers: Provider[] = [
   Google({
     clientId: credentials.googleId,
     clientSecret: credentials.googleSecret,
-    // Disabled dangerous account linking for security
-    // Users must manually link accounts through account settings
-    allowDangerousEmailAccountLinking: false,
+    // IMPORTANT: Enabled to allow OAuth signin even if email exists
+    // This is safe because Google verifies email ownership
+    allowDangerousEmailAccountLinking: true,
   }),
 ];
 
@@ -115,9 +115,9 @@ if (FEATURES.githubAuth && credentials.githubId && credentials.githubSecret) {
     GitHub({
       clientId: credentials.githubId,
       clientSecret: credentials.githubSecret,
-      // Disabled dangerous account linking for security
-      // Users must manually link accounts through account settings
-      allowDangerousEmailAccountLinking: false,
+      // IMPORTANT: Enabled to allow OAuth signin even if email exists
+      // This is safe because GitHub verifies email ownership
+      allowDangerousEmailAccountLinking: true,
     })
   );
 }
