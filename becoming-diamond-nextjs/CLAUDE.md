@@ -886,6 +886,35 @@ npm run cleanup:knip:execute
    - Verify navigation item has `adminOnly: true`
    - Check session is loaded (`useSession` hook)
 
+7. **OAuth redirect loop (redirects back to signin after successful OAuth)**
+   - **Symptom**: OAuth completes successfully (Google/GitHub auth works), but user is redirected back to `/auth/signin?callbackUrl=...` instead of landing on protected page
+   - **Root Cause**: Cookie configuration mismatch between `auth.ts` and `auth.config.ts`
+   - **Why This Happens**:
+     - `auth.ts` is used by main auth (creates sessions with custom cookie names)
+     - `auth.config.ts` is used by middleware in edge runtime (checks sessions)
+     - If cookie config only exists in `auth.ts`, middleware can't find the session cookie
+   - **Solution**: Ensure BOTH files have identical cookie configuration:
+     ```typescript
+     cookies: {
+       sessionToken: {
+         name: `${process.env.NODE_ENV === 'production' ? '__Secure-' : ''}next-auth.session-token`,
+         options: {
+           httpOnly: true,
+           sameSite: 'lax',
+           path: '/',
+           secure: process.env.NODE_ENV === 'production',
+         },
+       },
+     },
+     ```
+   - **Debugging Steps**:
+     1. Check production logs for `adapter_createSession` - if present, session IS being created
+     2. Check for `adapter_getSessionAndUser` calls - if present, session IS being retrieved
+     3. Check middleware logs - if session exists but middleware returns 307 redirect, cookie names don't match
+     4. Compare cookie configuration in both `auth.ts` (line 136) and `auth.config.ts` (line 29)
+   - **Related Files**: `auth.ts`, `auth.config.ts`, `middleware.ts`
+   - **Error Messages**: "invalid compact jwe", "JWTSessionError" (indicates JWT/cookie decryption issues)
+
 **Development Server Issues:**
 - Default port: 3003 (configured in package.json)
 - Clear Turbopack cache: Delete `.next/` directory
