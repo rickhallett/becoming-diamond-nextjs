@@ -3,11 +3,16 @@
   "framework": "nextjs",
   "buildCommand": "npm run build",
   "devCommand": "npm run dev",
-  "installCommand": "npm install",
+  "installCommand": "npm ci",
   "outputDirectory": ".next",
   "git": {
     "deploymentEnabled": {
       "main": true
+    }
+  },
+  "build": {
+    "env": {
+      "ENABLE_EXPERIMENTAL_COREPACK": "0"
     }
   }
 }
