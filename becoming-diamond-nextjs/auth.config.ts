@@ -38,6 +38,10 @@ export const authConfig = {
     },
   },
 
+  session: {
+    strategy: "jwt", // Edge middleware must use JWT to avoid database calls
+  },
+
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
