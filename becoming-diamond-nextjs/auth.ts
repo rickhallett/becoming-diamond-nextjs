@@ -152,10 +152,37 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
 
   callbacks: {
-    async session({ session, user }) {
-      // Attach user ID to session
-      if (session.user) {
+    async jwt({ token, user, trigger, session: updateSession }) {
+      // Initial sign in - add user data to token
+      if (user) {
+        token.id = user.id;
+        token.email = user.email;
+        token.name = user.name;
+        token.picture = user.image;
+      }
+
+      // Handle session updates (e.g., profile changes)
+      if (trigger === "update" && updateSession) {
+        token.name = updateSession.name;
+        token.email = updateSession.email;
+        token.picture = updateSession.image;
+      }
+
+      return token;
+    },
+
+    async session({ session, user, token }) {
+      // For database sessions, user comes from database
+      // For JWT sessions (middleware), user comes from token
+      if (user) {
+        // Database session
         session.user.id = user.id;
+      } else if (token) {
+        // JWT session (middleware)
+        session.user.id = token.id as string;
+        session.user.email = token.email as string;
+        session.user.name = token.name as string;
+        session.user.image = token.picture as string;
       }
       return session;
     },
