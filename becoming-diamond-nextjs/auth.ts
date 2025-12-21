@@ -133,6 +133,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     updateAge: 24 * 60 * 60, // 24 hours
   },
 
+  cookies: {
+    sessionToken: {
+      name: `${process.env.NODE_ENV === 'production' ? '__Secure-' : ''}next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: process.env.NODE_ENV === 'production',
+      },
+    },
+  },
+
   pages: {
     signIn: "/auth/signin",
     error: "/auth/error",
@@ -228,5 +240,5 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
   },
 
-  debug: false,
+  debug: process.env.NODE_ENV === 'production', // Enable debug in production temporarily
 });
