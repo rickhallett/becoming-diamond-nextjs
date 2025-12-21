@@ -489,7 +489,7 @@ export default function WixMigrationPage() {
 
       <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-4 mt-8">
         <p className="text-sm text-neutral-400">
-          <strong>Note:</strong> All options include $80 for this research and documentation (2 hours @ $40/hr).
+          All options include initial research and scoping ($80).
         </p>
       </div>
     </DocsPage>

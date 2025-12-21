@@ -17,36 +17,8 @@ export default function DeploymentEnvironmentsPage() {
           <strong>Recommended:</strong> Option B - Stable Foundation ($260-340)
         </p>
         <p className="text-sm text-neutral-400">
-          <strong>Note:</strong> First invoice includes $80 for research and documentation already completed.
+          First invoice includes initial scoping and research ($80).
         </p>
-      </div>
-
-      <div className="bg-neutral-900 border border-primary/30 rounded-lg p-4 mb-6">
-        <h3 className="text-sm font-semibold mb-2">Research & Documentation Costs (Already Incurred)</h3>
-        <table className="w-full text-sm">
-          <tbody>
-            <tr className="border-b border-neutral-800">
-              <td className="py-1">CI/CD environment options research</td>
-              <td className="text-right py-1">0.75 hours</td>
-              <td className="text-right py-1">$30</td>
-            </tr>
-            <tr className="border-b border-neutral-800">
-              <td className="py-1">Multi-environment deployment planning</td>
-              <td className="text-right py-1">0.5 hours</td>
-              <td className="text-right py-1">$20</td>
-            </tr>
-            <tr className="border-b border-neutral-800">
-              <td className="py-1">Documentation production</td>
-              <td className="text-right py-1">0.75 hours</td>
-              <td className="text-right py-1">$30</td>
-            </tr>
-            <tr className="font-semibold">
-              <td className="py-1">Total Research & Documentation</td>
-              <td className="text-right py-1">2 hours</td>
-              <td className="text-right py-1">$80</td>
-            </tr>
-          </tbody>
-        </table>
       </div>
 
       <h2>Three Environment Setup</h2>
@@ -142,7 +114,7 @@ export default function DeploymentEnvironmentsPage() {
           </thead>
           <tbody>
             <tr className="border-b border-neutral-800">
-              <td className="p-2">Research & Documentation (completed)</td>
+              <td className="p-2">Initial scoping and research</td>
               <td className="text-right p-2">$80</td>
               <td className="text-right p-2">$80</td>
               <td className="text-right p-2">$80</td>
@@ -290,7 +262,7 @@ export default function DeploymentEnvironmentsPage() {
         <li>Select approach (A, B, or C)</li>
         <li>Approve budget:
           <ul className="ml-6 mt-1">
-            <li>First invoice: $220-580 (includes $80 research already completed)</li>
+            <li>First invoice: $220-580 (includes initial scoping and research)</li>
             <li>Monthly billing: $21 (ongoing)</li>
           </ul>
         </li>
