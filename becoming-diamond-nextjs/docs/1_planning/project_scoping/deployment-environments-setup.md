@@ -21,7 +21,7 @@ This document outlines three approaches to establish a professional deployment s
 | **Option B: Stable Foundation** | 1-2 days | $260-340 | $21 | Low |
 | **Option C: Enterprise** | 3-4 days | $420-580 | $21 | Very Low |
 
-**Note:** First invoice includes $80 for research and documentation already completed.
+First invoice includes initial scoping and research ($80).
 
 **Recommended:** Option B ($260-340 first invoice, then $21/month)
 
@@ -121,22 +121,11 @@ Full automation with safety checks. Tests run automatically before any deploymen
 
 ## Detailed Cost Breakdown
 
-### Research & Documentation Costs (Already Incurred)
-
-| Item | Hours | Cost @ $40/hr |
-|------|-------|---------------|
-| CI/CD environment options research | 0.75 hours | $30 |
-| Multi-environment deployment planning | 0.5 hours | $20 |
-| Documentation production | 0.75 hours | $30 |
-| **Total Research & Documentation** | **2 hours** | **$80** |
-
-**Note:** This cost covers the research, analysis, and creation of this scoping document.
-
 ### One-Time Implementation Costs (First Invoice)
 
 | Item | Option A | Option B | Option C |
 |------|----------|----------|----------|
-| Research & Documentation (above) | $80 | $80 | $80 |
+| Initial scoping and research | $80 | $80 | $80 |
 | Implementation hours @ $40/hr | $120-160 | $160-240 | $320-480 |
 | Vercel reimbursement (1 month) | $20 | $20 | $20 |
 | **Total First Invoice** | **$220-260** | **$260-340** | **$420-580** |

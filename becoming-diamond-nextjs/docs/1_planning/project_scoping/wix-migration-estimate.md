@@ -240,7 +240,7 @@ Legend: ✅ Full | ⚠️ Partial | ❌ None
 | **Monthly** | $27 | $52-112 | $57-112 | $100-205 |
 | **vs. Current ($21)** | +$6 (1.3x) | +$31-91 (2.5-5.3x) | +$36-91 (2.7-5.3x) | +$79-184 (4.8-9.8x) |
 
-**Note:** All options include $80 for this research and documentation (2 hours @ $40/hr).
+All options include initial research and scoping ($80).
 
 ---
 
