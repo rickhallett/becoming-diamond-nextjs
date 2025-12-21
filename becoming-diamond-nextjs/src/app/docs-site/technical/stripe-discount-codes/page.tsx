@@ -17,31 +17,8 @@ export default function StripeDiscountCodesPage() {
           <strong>Setup time:</strong> 5 minutes
         </p>
         <p className="text-sm text-neutral-400">
-          <strong>Research & Documentation Cost:</strong> $40 (1 hour @ $40/hr)
+          Includes research and documentation ($40).
         </p>
-      </div>
-
-      <div className="bg-neutral-900 border border-primary/30 rounded-lg p-4 mb-6">
-        <h3 className="text-sm font-semibold mb-2">Documentation Cost Breakdown</h3>
-        <table className="w-full text-sm">
-          <tbody>
-            <tr className="border-b border-neutral-800">
-              <td className="py-1">Stripe promotion codes research</td>
-              <td className="text-right py-1">0.5 hours</td>
-              <td className="text-right py-1">$20</td>
-            </tr>
-            <tr className="border-b border-neutral-800">
-              <td className="py-1">Documentation production</td>
-              <td className="text-right py-1">0.5 hours</td>
-              <td className="text-right py-1">$20</td>
-            </tr>
-            <tr className="font-semibold">
-              <td className="py-1">Total</td>
-              <td className="text-right py-1">1 hour</td>
-              <td className="text-right py-1">$40</td>
-            </tr>
-          </tbody>
-        </table>
       </div>
 
       <h2>Current Implementation</h2>

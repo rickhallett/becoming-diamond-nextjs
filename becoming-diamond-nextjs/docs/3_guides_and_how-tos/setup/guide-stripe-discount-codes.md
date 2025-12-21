@@ -3,19 +3,8 @@
 **Last Updated:** December 20, 2024
 **Stripe API Version:** 2025-10-29
 **Status:** Production Ready
-**Research & Documentation Cost:** $40 (1 hour @ $40/hr)
 
----
-
-## Documentation Cost Breakdown
-
-| Item | Hours | Cost @ $40/hr |
-|------|-------|---------------|
-| Stripe promotion codes research | 0.5 hours | $20 |
-| Documentation production | 0.5 hours | $20 |
-| **Total** | **1 hour** | **$40** |
-
-**Note:** This cost covers researching Stripe's promotion code system, verifying integration with existing checkout, and creating this comprehensive guide with examples and best practices.
+Includes research and documentation ($40).
 
 ---
 
@@ -559,13 +548,6 @@ A: Yes. View promotion code in Dashboard → Click code → View sessions/custom
 2. Create test coupon and code
 3. Test checkout flow
 4. Create live codes when ready
-
----
-
-**Cost Information:**
-- Research & Documentation: $40 (1 hour @ $40/hr)
-- Implementation: Already complete (no additional cost)
-- Total: $40
 
 ---
 
