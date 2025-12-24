@@ -1,17 +1,17 @@
 ---
 day: 4
-title: "Run the Brain, Don't Let It Run You"
+title: The Third Blade: Run The Brain
 subtitle: "Your brain is the third blade. And it's not always your friend."
 published: true
 duration: "20 minutes"
 difficulty: "Beginner"
-video: "c5a735ac-9c1e-45d0-a19c-80028e59da35"
+video: 3749d405-889e-4ddf-b993-025f8969ef7e
 ---
 
-# Run the Brain, Don't Let It Run You
+# The Third Blade: Run The Brain
 
 Your brain is the third blade. And it's not always your friend.
 
-{{video:c5a735ac-9c1e-45d0-a19c-80028e59da35}}
+{{video:3749d405-889e-4ddf-b993-025f8969ef7e}}
 
 Thought loops, survival programming, dopamine addiction — you'll learn how to direct your attention, question your default story, and install a new thought circuit before old patterns hijack you.

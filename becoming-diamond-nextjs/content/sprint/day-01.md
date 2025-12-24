@@ -1,17 +1,17 @@
 ---
 day: 1
-title: Set Your Baseline
+title: Understanding Your Baseline
 subtitle: If your baseline doesn't change… nothing does.
 published: true
 duration: 15 minutes
 difficulty: Beginner
-video: 4a151e6b-7911-41b9-b1ef-c6fa00bafaa5
+video: 9ae33582-29f9-4afc-9786-64c969eaa112
 ---
 
-# Set Your Baseline
+# Understanding Your Baseline
 
 If your baseline doesn't change… nothing does.
 
-{{video:4a151e6b-7911-41b9-b1ef-c6fa00bafaa5}}
+{{video:9ae33582-29f9-4afc-9786-64c969eaa112}}
 
 This is the starting point. We unpack why your life always drifts back to your emotional frequency — unless you reset the signal. You'll learn the power of consistency, the science of identity, and why doing the thing your ego resists is exactly how you change your life.

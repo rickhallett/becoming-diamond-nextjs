@@ -1,17 +1,17 @@
 ---
 day: 8
-title: "Meet The Boss"
+title: Meet The Boss
 subtitle: "Your ego runs on fear. The Boss runs on clarity."
 published: true
 duration: "20 minutes"
 difficulty: "Intermediate"
-video: "bb119231-068b-485a-9104-1a7603e4d8f5"
+video: ae487c5e-7c94-4602-a74a-447e3ecec3ea
 ---
 
-# Meet The Boss
+# Day 8 Your Diamond Identity
 
 Your ego runs on fear. The Boss runs on clarity.
 
-{{video:bb119231-068b-485a-9104-1a7603e4d8f5}}
+{{video:ae487c5e-7c94-4602-a74a-447e3ecec3ea}}
 
 We introduce "The Boss" — the upgraded you who leads, not reacts. You'll see how to shift out of survival and start building from sovereignty.

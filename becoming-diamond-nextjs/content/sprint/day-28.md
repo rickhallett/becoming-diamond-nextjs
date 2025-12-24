@@ -1,17 +1,17 @@
 ---
 day: 28
-title: "Shine Recap"
+title: Shine Recap
 subtitle: "You're not practicing presence anymore. You are presence."
 published: true
 duration: "30 minutes"
 difficulty: "Advanced"
-video: "0d15ba62-88fe-45ff-af61-d445053217c7"
+video: 6d81ba5d-6766-45d2-99e5-1a6bd8ba0d2e
 ---
 
-# Shine Recap
+# Teach What You Know
 
 You're not practicing presence anymore. You are presence.
 
-{{video:0d15ba62-88fe-45ff-af61-d445053217c7}}
+{{video:6d81ba5d-6766-45d2-99e5-1a6bd8ba0d2e}}
 
 Today, we reflect on the difference between trying and becoming. You'll see how your frequency has shifted — and how others are responding to it.

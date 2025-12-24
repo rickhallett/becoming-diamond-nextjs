@@ -1,17 +1,17 @@
 ---
 day: 14
-title: "Shift Recap"
+title: Shift Recap
 subtitle: "You're not who you were 7 days ago. And that matters."
 published: true
 duration: "15 minutes"
 difficulty: "Beginner"
-video: "2fa0592e-cc84-489f-818a-1897ebcbb5aa"
+video: 608d53e0-5075-434d-992f-3b635df915de
 ---
 
-# Shift Recap
+# Micro Interactions Matter
 
 You're not who you were 7 days ago. And that matters.
 
-{{video:2fa0592e-cc84-489f-818a-1897ebcbb5aa}}
+{{video:608d53e0-5075-434d-992f-3b635df915de}}
 
 Pause. Reflect. Reconnect. This day helps you see what you're no longer carrying — and what you're ready to lead with.

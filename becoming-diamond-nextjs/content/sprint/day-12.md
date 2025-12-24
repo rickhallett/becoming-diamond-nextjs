@@ -1,17 +1,17 @@
 ---
 day: 12
-title: "Break the Loop"
+title: Break the Loop
 subtitle: "If you don't change the script, the ending stays the same."
 published: true
 duration: "19 minutes"
 difficulty: "Intermediate"
-video: "fe8c2939-7e6c-4863-8538-d98ec5d9fdc0"
+video: 3ab2c7a1-0b46-41a8-91ad-d55ed93781a4
 ---
 
-# Break the Loop
+# Conscious Choices
 
 If you don't change the script, the ending stays the same.
 
-{{video:fe8c2939-7e6c-4863-8538-d98ec5d9fdc0}}
+{{video:3ab2c7a1-0b46-41a8-91ad-d55ed93781a4}}
 
 You'll spot your default loops — the ones that sneak in when you're tired, hungry, or afraid — and break them with conscious choice and presence.

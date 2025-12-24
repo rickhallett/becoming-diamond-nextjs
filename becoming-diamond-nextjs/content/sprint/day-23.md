@@ -1,17 +1,17 @@
 ---
 day: 23
-title: "The LIFE Code"
+title: The LIFE Code
 subtitle: "Love. Integrate. Flow. Evolve."
 published: true
 duration: "22 minutes"
 difficulty: "Advanced"
-video: "e070abb1-5e20-48b9-919f-01c402f7335d"
+video: 54f75f9f-f2f8-49e8-87ad-2fcca4e2b236
 ---
 
-# The LIFE Code
+# The LIFE Code Love
 
 Love. Integrate. Flow. Evolve.
 
-{{video:e070abb1-5e20-48b9-919f-01c402f7335d}}
+{{video:54f75f9f-f2f8-49e8-87ad-2fcca4e2b236}}
 
 You'll learn to live your transformation through the LIFE Code — a four-part flow for maintaining high-frequency growth that doesn't burn you out.
