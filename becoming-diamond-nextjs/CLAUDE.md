@@ -560,7 +560,7 @@ const article = await getContentBySlug('blog', slug);
 
 **File Naming**: Components (PascalCase), utilities (camelCase), pages/routes (lowercase)
 **Component Patterns**: Functional components, TypeScript, props interface `[Name]Props`
-**Code Style**: NEVER use emojis in code/UI/errors - keep text professional
+**Code Style**: NEVER use emojis in code/UI/errors/scripts/CLI output - keep text professional. Exception: ✅ and ❌ are acceptable for success/error status indicators only.
 **Imports**: React → Next.js → third-party → UI components → local → utilities → types
 **Git Commits**: Use conventional commits (`feat:`, `fix:`, `docs:`, etc.)
 
@@ -576,17 +576,18 @@ const article = await getContentBySlug('blog', slug);
 
 ### Video Integration (Bunny Stream)
 
-**Status**: ✅ Implemented
+**Status**: ✅ Implemented (including thumbnails)
 
 **Platform**: Bunny Stream with HLS and token-based authentication
 
 **Implementation**:
-- **API Route**: `/api/video/[videoId]/token/route.ts` - Generates signed tokens for video access
-- **Video Player**: HLS.js integration for adaptive streaming
+- **API Route**: `/api/video/[videoId]/token/route.ts` - Generates signed tokens for video access and thumbnails
+- **Video Player**: HLS.js integration for adaptive streaming with automatic thumbnail poster images
 - **Dependencies**: `hls.js` (v1.6.13) installed
 - **Security**: Token-based auth prevents unauthorized access
+- **Thumbnails**: Automatically fetched from Bunny metadata and displayed as poster images before playback
 
-**Workflow**: Upload to Bunny → Copy video GUID → Add to sprint markdown → Video renders with auth
+**Workflow**: Upload to Bunny → Copy video GUID → Add to sprint markdown → Video renders with auth and thumbnail
 
 **Configuration** (Environment Variables):
 ```bash
@@ -596,14 +597,31 @@ BUNNY_STREAM_CDN_HOSTNAME=vz-xxxxxxx-xxx.b-cdn.net
 BUNNY_STREAM_PULL_ZONE=vz-xxxxxxx-xxx
 ```
 
+**Security Settings** (Bunny Dashboard):
+- Direct Link Token Authentication: Disabled (for thumbnail access)
+- HLS streaming: Token-protected
+- Thumbnails: Publicly accessible via signed URLs
+
 **Usage Example**:
 ```typescript
-// Fetch video token
+// Fetch video token and thumbnail
 const response = await fetch(`/api/video/${videoId}/token`);
-const { token } = await response.json();
+const { streamUrl, thumbnailUrl } = await response.json();
 
-// Use token with Bunny Stream CDN
-const videoUrl = `https://${CDN_HOSTNAME}/${videoId}/playlist.m3u8?token=${token}`;
+// VideoPlayer component automatically uses thumbnailUrl as poster
+<VideoPlayer videoId={videoId} />
 ```
 
-**Docs**: `/docs/specs/video-integration-simplified.md`
+**API Response**:
+```typescript
+{
+  streamUrl: string;        // HLS playlist URL with token
+  thumbnailUrl?: string;    // Thumbnail image URL with token (if available)
+  token: string;            // Signed authentication token
+  expiresAt: string;        // ISO timestamp for token expiration
+}
+```
+
+**Docs**:
+- `/docs/specs/video-integration-simplified.md`
+- `/docs/bunny-stream-thumbnail-investigation.md`
