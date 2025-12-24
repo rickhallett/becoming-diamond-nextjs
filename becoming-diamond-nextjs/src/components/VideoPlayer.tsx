@@ -19,6 +19,7 @@ export function VideoPlayer({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [thumbnailUrl, setThumbnailUrl] = useState<string | undefined>(poster);
 
   useEffect(() => {
     let hls: Hls | null = null;
@@ -26,11 +27,17 @@ export function VideoPlayer({
 
     async function initPlayer() {
       try {
-        // Fetch signed stream URL (authentication is handled server-side via NextAuth session)
+        // Fetch signed stream URL and thumbnail (authentication is handled server-side via NextAuth session)
         const response = await fetch(`/api/video/${videoId}/token`);
         if (!response.ok) throw new Error('Failed to load video');
 
-        const { streamUrl } = await response.json();
+        const { streamUrl, thumbnailUrl } = await response.json();
+
+        // Set thumbnail URL if available and no custom poster provided
+        if (thumbnailUrl && !poster) {
+          setThumbnailUrl(thumbnailUrl);
+        }
+
         const video = videoRef.current;
         if (!video) return;
 
@@ -71,7 +78,7 @@ export function VideoPlayer({
         cleanup();
       }
     };
-  }, [videoId, autoplay]);
+  }, [videoId, autoplay, poster]);
 
   // Track progress
   useEffect(() => {
@@ -107,7 +114,7 @@ export function VideoPlayer({
         className="w-full h-full"
         controls
         playsInline
-        poster={poster}
+        poster={thumbnailUrl}
       />
     </div>
   );
