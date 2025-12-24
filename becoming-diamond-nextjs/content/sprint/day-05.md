@@ -1,7 +1,7 @@
 ---
 day: 5
 title: Heart Coherence
-subtitle: Change your pattern, change your trajectory.
+subtitle: 'Change your pattern, change your trajectory.'
 published: true
 duration: 15 minutes
 difficulty: Beginner
@@ -13,5 +13,8 @@ video: bebdfdd3-8fb3-4ed4-b0bd-63dfd114ea18
 Change your pattern, change your trajectory.
 
 {{video:bebdfdd3-8fb3-4ed4-b0bd-63dfd114ea18}}
+You'll discover that your heart is an intelligent organ sending 40 times more signals to your brain than your brain sends to it. By tapping into heart-brain coherence, you access faster, wiser decision-making.
 
-Pressure triggers habits. Most of yours were installed before you had a say. Today, we reveal the "micro interrupt" — a 5-second move that can redirect the next five hours (or five years) of your life.
+You'll learn the heart-focused breathing technique: breathe in for 5 seconds while imagining your heart, then out for 5 seconds while thinking of someone you love. Practice for 1-2 minutes to achieve coherence.
+
+When you're in coherence, others around you naturally entrain to your frequency. Your mission today is to practice this breathing technique throughout the day—use it when you don't need it so you'll remember it when you do.

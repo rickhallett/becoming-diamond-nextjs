@@ -13,5 +13,8 @@ video: 9ae33582-29f9-4afc-9786-64c969eaa112
 If your baseline doesn't change… nothing does.
 
 {{video:9ae33582-29f9-4afc-9786-64c969eaa112}}
+Week one focuses on stabilizing your nervous system so you can handle pressure without reverting to old patterns. The goal isn't perfection—it's recovering faster from stress and staying more in control when life hits hard.
 
-This is the starting point. We unpack why your life always drifts back to your emotional frequency — unless you reset the signal. You'll learn the power of consistency, the science of identity, and why doing the thing your ego resists is exactly how you change your life.
+Today, you'll capture three stressful moments as they happen. For each, write down what happened (facts only), what you felt (name the emotion), and how you reacted—like a fragile snowflake or a grounded diamond.
+
+Tonight, review your notes and ask: "If I were already my diamond self, how would I handle these situations tomorrow?" This awareness is your foundation for transformation.

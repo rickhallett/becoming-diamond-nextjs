@@ -73,10 +73,11 @@ ${transcript}
 
 Please generate a concise summary that:
 1. Is LESS THAN 100 words (strict limit)
-2. Captures the key message and main action items
-3. Is written in second person ("you will learn", "you'll discover")
-4. Maintains the motivational tone of the original
-5. Focuses on what the viewer will gain or do
+2. Is formatted as 2-3 short paragraphs for better readability (use blank lines between paragraphs)
+3. Captures the key message and main action items
+4. Is written in second person ("you will learn", "you'll discover")
+5. Maintains the motivational tone of the original
+6. Focuses on what the viewer will gain or do
 
 Do not add any preamble or introduction. Start directly with the summary text.`;
 
