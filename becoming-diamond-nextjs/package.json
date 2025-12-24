@@ -36,9 +36,11 @@
     "version-sprint-videos": "tsx scripts/version-sprint-videos.ts",
     "backup-videos": "tsx scripts/backup-video-metadata.ts",
     "restore-videos": "tsx scripts/restore-video-metadata.ts",
-    "verify-video-mapping": "tsx scripts/verify-video-mapping.ts"
+    "verify-video-mapping": "tsx scripts/verify-video-mapping.ts",
+    "generate-transcripts": "tsx scripts/generate-video-transcripts.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.71.2",
     "@axiomhq/js": "^1.3.1",
     "@axiomhq/logging": "^0.1.6",
     "@axiomhq/nextjs": "^0.1.6",
