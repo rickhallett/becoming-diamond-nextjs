@@ -1,10 +1,10 @@
 ---
 day: 5
-title: Interrupt the Pattern
-subtitle: "Change your pattern, change your trajectory."
+title: Heart Coherence
+subtitle: Change your pattern, change your trajectory.
 published: true
-duration: "15 minutes"
-difficulty: "Beginner"
+duration: 15 minutes
+difficulty: Beginner
 video: bebdfdd3-8fb3-4ed4-b0bd-63dfd114ea18
 ---
 

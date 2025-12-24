@@ -1,10 +1,10 @@
 ---
 day: 8
-title: Meet The Boss
-subtitle: "Your ego runs on fear. The Boss runs on clarity."
+title: Your Diamond Identity
+subtitle: Your ego runs on fear. The Boss runs on clarity.
 published: true
-duration: "20 minutes"
-difficulty: "Intermediate"
+duration: 20 minutes
+difficulty: Intermediate
 video: ae487c5e-7c94-4602-a74a-447e3ecec3ea
 ---
 

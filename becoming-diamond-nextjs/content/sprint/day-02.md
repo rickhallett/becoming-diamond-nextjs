@@ -1,10 +1,10 @@
 ---
 day: 2
-title: The First Blade: The Body Check
-subtitle: "Your body is the first blade of the Swiss Army Knife."
+title: "The First Blade: The Body Check"
+subtitle: Your body is the first blade of the Swiss Army Knife.
 published: true
-duration: "20 minutes"
-difficulty: "Beginner"
+duration: 20 minutes
+difficulty: Beginner
 video: 2bf807d4-37a8-4365-a1cb-3dd47a0161d7
 ---
 

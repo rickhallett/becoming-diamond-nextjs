@@ -1,10 +1,10 @@
 ---
 day: 19
-title: Rewire With Breath + Presence
-subtitle: "You chew, you swallow. You breathe in, you breathe out."
+title: Elevate The Energy Of The Room
+subtitle: You chew, you swallow. You breathe in, you breathe out.
 published: true
-duration: "19 minutes"
-difficulty: "Intermediate"
+duration: 19 minutes
+difficulty: Intermediate
 video: 34296b19-3ebc-4cf9-adba-73b85a9cfee8
 ---
 

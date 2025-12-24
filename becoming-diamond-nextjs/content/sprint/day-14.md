@@ -1,10 +1,10 @@
 ---
 day: 14
-title: Shift Recap
-subtitle: "You're not who you were 7 days ago. And that matters."
+title: Micro Interactions Matter
+subtitle: You're not who you were 7 days ago. And that matters.
 published: true
-duration: "15 minutes"
-difficulty: "Beginner"
+duration: 15 minutes
+difficulty: Beginner
 video: 608d53e0-5075-434d-992f-3b635df915de
 ---
 

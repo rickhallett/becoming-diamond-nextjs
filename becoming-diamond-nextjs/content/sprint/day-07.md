@@ -1,10 +1,10 @@
 ---
 day: 7
-title: Stabilize Recap + Reset
-subtitle: "Your first win isn't perfection. It's presence."
+title: ART Squared
+subtitle: Your first win isn't perfection. It's presence.
 published: true
-duration: "25 minutes"
-difficulty: "Beginner"
+duration: 25 minutes
+difficulty: Beginner
 video: 347dcfae-0046-497f-9169-1e1b045b255d
 ---
 

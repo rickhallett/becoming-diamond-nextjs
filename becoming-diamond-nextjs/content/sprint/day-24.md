@@ -1,10 +1,10 @@
 ---
 day: 24
-title: Broadcast vs React
-subtitle: "Are you broadcasting your truth — or reacting to someone else's frequency?"
+title: Integration Begins
+subtitle: Are you broadcasting your truth — or reacting to someone else's frequency?
 published: true
-duration: "20 minutes"
-difficulty: "Advanced"
+duration: 20 minutes
+difficulty: Advanced
 video: 136b57be-2891-4f6c-93e3-c305060030b4
 ---
 

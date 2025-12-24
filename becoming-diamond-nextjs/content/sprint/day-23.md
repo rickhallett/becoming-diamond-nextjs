@@ -1,10 +1,10 @@
 ---
 day: 23
-title: The LIFE Code
-subtitle: "Love. Integrate. Flow. Evolve."
+title: The LIFE Code Love
+subtitle: Love. Integrate. Flow. Evolve.
 published: true
-duration: "22 minutes"
-difficulty: "Advanced"
+duration: 22 minutes
+difficulty: Advanced
 video: 54f75f9f-f2f8-49e8-87ad-2fcca4e2b236
 ---
 

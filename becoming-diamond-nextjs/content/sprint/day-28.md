@@ -1,10 +1,10 @@
 ---
 day: 28
-title: Shine Recap
-subtitle: "You're not practicing presence anymore. You are presence."
+title: Teach What You Know
+subtitle: You're not practicing presence anymore. You are presence.
 published: true
-duration: "30 minutes"
-difficulty: "Advanced"
+duration: 30 minutes
+difficulty: Advanced
 video: 6d81ba5d-6766-45d2-99e5-1a6bd8ba0d2e
 ---
 

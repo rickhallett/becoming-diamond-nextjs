@@ -1,10 +1,10 @@
 ---
 day: 22
-title: Proximity Prime
-subtitle: "I'm not in here with you. You're in here with me."
+title: ACE Life
+subtitle: I'm not in here with you. You're in here with me.
 published: true
-duration: "20 minutes"
-difficulty: "Advanced"
+duration: 20 minutes
+difficulty: Advanced
 video: 23028f9d-5d90-401c-ac4a-590f4e20c65a
 ---
 

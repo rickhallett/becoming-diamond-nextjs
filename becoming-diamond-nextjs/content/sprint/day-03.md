@@ -1,10 +1,10 @@
 ---
 day: 3
-title: The Second Blade: Breathe Before You Break
-subtitle: "Your breath is your remote control."
+title: "The Second Blade: Breathe Before You Break"
+subtitle: Your breath is your remote control.
 published: true
-duration: "15 minutes"
-difficulty: "Beginner"
+duration: 15 minutes
+difficulty: Beginner
 video: bb194ce7-00b2-45c1-a10f-969a630f8625
 ---
 

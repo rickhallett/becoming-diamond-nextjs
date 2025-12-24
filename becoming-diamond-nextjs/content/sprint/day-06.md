@@ -1,10 +1,10 @@
 ---
 day: 6
-title: Ground Into the Now
-subtitle: "You can't be present if you're not in your body."
+title: The ART Protocol
+subtitle: You can't be present if you're not in your body.
 published: true
-duration: "20 minutes"
-difficulty: "Beginner"
+duration: 20 minutes
+difficulty: Beginner
 video: 7fbc888e-8fd6-4799-bbd9-2ff58b6ee806
 ---
 

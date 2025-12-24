@@ -1,10 +1,10 @@
 ---
 day: 13
-title: Run Your Breath, Run Your Life
-subtitle: "Your breath is a direct line to your consciousness."
+title: Presence As Communication
+subtitle: Your breath is a direct line to your consciousness.
 published: true
-duration: "16 minutes"
-difficulty: "Beginner"
+duration: 16 minutes
+difficulty: Beginner
 video: 8424b6fd-6cee-40aa-a55f-4d3f60da75a9
 ---
 

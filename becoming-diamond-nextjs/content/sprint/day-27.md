@@ -1,10 +1,10 @@
 ---
 day: 27
-title: The Ripple Effect
-subtitle: "What you embody gives permission to others."
+title: Automatic Deployment
+subtitle: What you embody gives permission to others.
 published: true
-duration: "20 minutes"
-difficulty: "Advanced"
+duration: 20 minutes
+difficulty: Advanced
 video: c71fd85c-86e8-4cd6-b0e5-4a9c3ed5fdc0
 ---
 

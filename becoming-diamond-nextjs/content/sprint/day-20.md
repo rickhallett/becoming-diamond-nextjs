@@ -1,10 +1,10 @@
 ---
 day: 20
-title: Upgrade Your Capacity
-subtitle: "A Diamond can handle what glass would shatter under."
+title: Hold Your Frequency
+subtitle: A Diamond can handle what glass would shatter under.
 published: true
-duration: "23 minutes"
-difficulty: "Advanced"
+duration: 23 minutes
+difficulty: Advanced
 video: bcbb1e60-e622-43c2-b20c-93f34a553a93
 ---
 

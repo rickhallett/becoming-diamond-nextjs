@@ -1,10 +1,10 @@
 ---
 day: 25
-title: Build the Diamond Field
-subtitle: "Create the energetic signature that enters the room before you do."
+title: Flow
+subtitle: Create the energetic signature that enters the room before you do.
 published: true
-duration: "23 minutes"
-difficulty: "Advanced"
+duration: 23 minutes
+difficulty: Advanced
 video: 0e1399ef-f31c-481a-80fc-550a2db37e67
 ---
 

@@ -1,10 +1,10 @@
 ---
 day: 9
-title: I AM: Identity Writing
-subtitle: "You don't need to find yourself. You write yourself."
+title: The Reflection
+subtitle: You don't need to find yourself. You write yourself.
 published: true
-duration: "18 minutes"
-difficulty: "Intermediate"
+duration: 18 minutes
+difficulty: Intermediate
 video: 2b258a9f-be8d-4be3-92b3-66af02d1bbec
 ---
 

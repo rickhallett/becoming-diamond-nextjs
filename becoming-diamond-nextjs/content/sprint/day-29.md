@@ -1,10 +1,10 @@
 ---
 day: 29
-title: Write Your Diamond Manifesto
-subtitle: "You've lived it. Now you claim it."
+title: The Diamond Manifesto
+subtitle: You've lived it. Now you claim it.
 published: true
-duration: "45 minutes"
-difficulty: "Advanced"
+duration: 45 minutes
+difficulty: Advanced
 video: af3aa97d-7841-458b-bb5b-d4aaf25c3cd8
 ---
 

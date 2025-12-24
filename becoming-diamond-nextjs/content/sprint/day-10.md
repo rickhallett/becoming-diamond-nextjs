@@ -1,10 +1,10 @@
 ---
 day: 10
-title: The ART Protocol
-subtitle: "Accept. Release. Transform."
+title: The Boss
+subtitle: Accept. Release. Transform.
 published: true
-duration: "20 minutes"
-difficulty: "Intermediate"
+duration: 20 minutes
+difficulty: Intermediate
 video: a4fc1ef2-9ad2-4597-bd9d-ab5afcb96374
 ---
 

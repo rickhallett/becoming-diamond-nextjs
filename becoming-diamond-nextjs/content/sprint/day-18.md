@@ -1,10 +1,10 @@
 ---
 day: 18
-title: Calm is Currency
-subtitle: "Calm is magnetic. Focus is rare. You become both."
+title: Proximity Prime
+subtitle: Calm is magnetic. Focus is rare. You become both.
 published: true
-duration: "20 minutes"
-difficulty: "Intermediate"
+duration: 20 minutes
+difficulty: Intermediate
 video: cf757872-ccec-40cd-a4b3-12affecc2e84
 ---
 

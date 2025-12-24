@@ -1,10 +1,10 @@
 ---
 day: 15
-title: Enter the Pressure Room
-subtitle: "Pressure isn't your enemy. It's your training ground."
+title: Alignment Under Pressure
+subtitle: Pressure isn't your enemy. It's your training ground.
 published: true
-duration: "18 minutes"
-difficulty: "Intermediate"
+duration: 18 minutes
+difficulty: Intermediate
 video: a4ecb218-2775-4dd4-acfa-0e45caac62a7
 ---
 

@@ -1,10 +1,10 @@
 ---
 day: 11
-title: Triggers Are Teachers
-subtitle: "What if every trigger was just a teacher in disguise?"
+title: Eliminating Energy Drains
+subtitle: What if every trigger was just a teacher in disguise?
 published: true
-duration: "17 minutes"
-difficulty: "Intermediate"
+duration: 17 minutes
+difficulty: Intermediate
 video: 7d93e8c6-3772-4941-85d5-05190293340b
 ---
 

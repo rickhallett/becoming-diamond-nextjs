@@ -1,10 +1,10 @@
 ---
 day: 30
-title: Define Your Legacy Signal
-subtitle: "Your transformation doesn't end here — it radiates forward."
+title: Congratulations 30 Day Diamond Sprint
+subtitle: Your transformation doesn't end here — it radiates forward.
 published: true
-duration: "35 minutes"
-difficulty: "Advanced"
+duration: 35 minutes
+difficulty: Advanced
 video: cbcb782f-0f85-40d5-8c64-f83c8c5b3cd3
 ---
 
