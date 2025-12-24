@@ -124,6 +124,7 @@ async function updateDayFile(dayNumber: number, summary: string): Promise<void> 
     // Stop after the video embed line
     if (line.trim().startsWith('{{video:')) {
       preservedLines.push(''); // Add blank line after video
+      preservedLines.push(''); // Add extra whitespace
       break;
     }
   }
