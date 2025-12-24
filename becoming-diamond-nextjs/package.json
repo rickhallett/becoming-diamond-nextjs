@@ -37,7 +37,8 @@
     "backup-videos": "tsx scripts/backup-video-metadata.ts",
     "restore-videos": "tsx scripts/restore-video-metadata.ts",
     "verify-video-mapping": "tsx scripts/verify-video-mapping.ts",
-    "generate-transcripts": "tsx scripts/generate-video-transcripts.ts"
+    "generate-transcripts": "tsx scripts/generate-video-transcripts.ts",
+    "generate-summaries": "tsx scripts/generate-sprint-summaries.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.2",
