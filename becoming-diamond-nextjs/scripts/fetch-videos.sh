@@ -1,0 +1,7 @@
+#!/bin/bash
+# Fetch videos from /api/videos with authentication
+# Usage: ./scripts/fetch-videos.sh | jq '.'
+
+curl -s 'http://localhost:3003/api/videos' \
+  -H 'Accept: application/json' \
+  -b 'authjs.session-token=dc78e3d7-6dd8-4ef4-af86-068d574b4ac9; authjs.csrf-token=5ec4728075fb1e4932000efe1ffdd44d3af517f3029de0306b370ea1c6363d7a%7C794176dc408ebb470ae2c598c0dc8085a38358ba02b1744db711fb114e2e436d; authjs.callback-url=http%3A%2F%2Flocalhost%3A3003; next-auth.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiLVZxc1dBOWt0THhNRkpDVUVJZ0RmcjRmNG81R3N3Qzg0d0FsWmk0TlJfNlI4OTJOU1F6WEFkNDVRdGp4MDlMc2VOSEdyTzNBeEo2LXM5VXpkWmdSQXcifQ..S-F-yjTw3nGUxK6DmoqWjw.SulWCBrVHP4RTDS8FWh22pu1FHvDPwqrXxN5eDuH2wydQnHQAqM6megxxVZiwp0B8nUCqtC2-b6GwAilcVAJPLfHUoPrNHyhAtMqnppCO6vRV_TX2XCRcAMwbRcDcw93INOPeHwUkvac8teXNKPb9J5T6xXdPHgWDyoZmGh-sX9rP3SJqbAfs4P4NjrMkqIxQBHitPs4gf0Oq4jqWRebRkizoMLg86VIVqzt2_XobC9sUf8qUcuNe-iCz7iFWw9XnOJUjVlL5040Nyr5e4hs8ZChSplSpxsp8ysV62ac-8YiYhxxnZeDquaz_0CmrIGqmKWRJkEiG7Avd2N3P-MSGdKcwJloH2gICSvn1eNXfIH45_ZkOSwagaxGgV9RtJ1-7b-Ui4YhzaeQJvlfCueONYNXiD3b7pwQEi8T2GyOsZ_Z3AFjMpU9DMnObD0QCvABGo2U8g2MBacmw3ZGgTXB0g.BEhcBSkNRM2rK0Zh_9nyJz0WQ12RcFswkS8VPau93m4'
