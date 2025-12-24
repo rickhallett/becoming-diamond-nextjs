@@ -272,3 +272,8 @@ html {
     transform: none;
   }
 }
+
+/* Video player spacing */
+.video-placeholder {
+  margin-bottom: 2rem;
+}
