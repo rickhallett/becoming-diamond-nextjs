@@ -13,6 +13,7 @@
     "db:migrate": "tsx scripts/migrate-db.ts",
     "test:auth": "tsx scripts/test-auth-setup.ts",
     "test:gmail": "tsx scripts/test-gmail-smtp.ts",
+    "test:thumbnails": "tsx scripts/test-bunny-thumbnails.ts",
     "monitor:email": "tsx scripts/monitor-email-stability.ts",
     "monitor:email:fast": "MONITOR_INTERVAL=60000 tsx scripts/monitor-email-stability.ts",
     "dev:restart": "nodemon --exec 'bun dev' --watch package.json --ext js,ts,tsx,jsx",
@@ -30,7 +31,12 @@
     "knip": "knip",
     "cleanup:knip": "tsx scripts/cleanup-from-checklist.ts",
     "cleanup:knip:execute": "tsx scripts/cleanup-from-checklist.ts --execute",
-    "validate:env": "tsx scripts/validate-env.ts"
+    "validate:env": "tsx scripts/validate-env.ts",
+    "standardize-videos": "tsx scripts/standardize-video-titles.ts",
+    "version-sprint-videos": "tsx scripts/version-sprint-videos.ts",
+    "backup-videos": "tsx scripts/backup-video-metadata.ts",
+    "restore-videos": "tsx scripts/restore-video-metadata.ts",
+    "verify-video-mapping": "tsx scripts/verify-video-mapping.ts"
   },
   "dependencies": {
     "@axiomhq/js": "^1.3.1",
@@ -89,6 +95,7 @@
     "@vitejs/plugin-react": "^5.1.0",
     "@vitest/coverage-v8": "^4.0.6",
     "@vitest/ui": "^4.0.6",
+    "baseline-browser-mapping": "^2.9.11",
     "eslint": "^9",
     "eslint-config-next": "15.5.3",
     "jsdom": "^27.1.0",
