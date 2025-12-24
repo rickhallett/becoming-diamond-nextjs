@@ -558,7 +558,7 @@ const article = await getContentBySlug('blog', slug);
 
 ### Conventions
 
-**File Naming**: Components (PascalCase), utilities (camelCase), pages/routes (lowercase)
+**File Naming**: Components (PascalCase), utilities (camelCase), pages/routes (lowercase), **all markdown files (lowercase with hyphens)** - Exceptions: root README.md and CLAUDE.md only
 **Component Patterns**: Functional components, TypeScript, props interface `[Name]Props`
 **Code Style**: NEVER use emojis in code/UI/errors/scripts/CLI output - keep text professional. Exception: ✅ and ❌ are acceptable for success/error status indicators only.
 **Imports**: React → Next.js → third-party → UI components → local → utilities → types
