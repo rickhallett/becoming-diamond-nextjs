@@ -23,8 +23,16 @@ export function middleware(request: NextRequest) {
   const isProtected = isOnMemberPortal || isOnDocsPage;
   const shouldBlock = isProtected && !hasSession;
 
+  // Phase 3: Member Portal Protection
+  if (isOnMemberPortal && !hasSession) {
+    const signInUrl = new URL('/auth/signin', request.url);
+    signInUrl.searchParams.set('callbackUrl', pathname);
+    console.log('[Phase 3] Redirecting to signin:', pathname, '→ /auth/signin?callbackUrl=' + pathname);
+    return NextResponse.redirect(signInUrl);
+  }
+
   // Log route classification
-  console.log('[Phase 2] path:', pathname, 'protected:', isProtected, 'shouldBlock:', shouldBlock, 'hasSession:', hasSession);
+  console.log('[Phase 3] path:', pathname, 'protected:', isProtected, 'allowed:', hasSession || !isProtected);
 
   return NextResponse.next();
 }
