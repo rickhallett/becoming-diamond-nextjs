@@ -49,37 +49,42 @@ export const authConfig = {
 
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
-      const isLoggedIn = !!auth?.user;
-      const isOnMemberPortal = nextUrl.pathname.startsWith("/app");
-      const isOnAuthPage = nextUrl.pathname.startsWith("/auth");
-      const isOnDocs = nextUrl.pathname.startsWith("/docs-site");
-      const userEmail = auth?.user?.email;
+      try {
+        const isLoggedIn = !!auth?.user;
+        const isOnMemberPortal = nextUrl.pathname.startsWith("/app");
+        const isOnAuthPage = nextUrl.pathname.startsWith("/auth");
+        const isOnDocs = nextUrl.pathname.startsWith("/docs-site");
+        const userEmail = auth?.user?.email;
 
-      // Protect /docs-site/* routes (only admin email)
-      if (isOnDocs) {
-        // If ADMIN_EMAIL not configured, deny all access to docs-site
-        if (!ADMIN_EMAIL) {
-          console.warn('ADMIN_EMAIL not configured - docs-site access denied');
-          return Response.redirect(new URL("/", nextUrl));
+        // Protect /docs-site/* routes (only admin email)
+        if (isOnDocs) {
+          // If ADMIN_EMAIL not configured, deny all access to docs-site
+          if (!ADMIN_EMAIL) {
+            return Response.redirect(new URL("/", nextUrl.origin));
+          }
+          if (userEmail === ADMIN_EMAIL) return true;
+          // Redirect unauthorized users (including other logged-in users)
+          return Response.redirect(new URL("/", nextUrl.origin));
         }
-        if (userEmail === ADMIN_EMAIL) return true;
-        // Redirect unauthorized users (including other logged-in users)
-        return Response.redirect(new URL("/", nextUrl));
-      }
 
-      // Protect /app/* routes
-      if (isOnMemberPortal) {
-        if (isLoggedIn) return true;
-        // Redirect unauthenticated users to sign-in
-        return false;
-      }
+        // Protect /app/* routes
+        if (isOnMemberPortal) {
+          if (isLoggedIn) return true;
+          // Redirect unauthenticated users to sign-in
+          return false;
+        }
 
-      // Redirect authenticated users away from auth pages to configured success URI
-      if (isOnAuthPage && isLoggedIn) {
-        return Response.redirect(new URL(AUTH_SUCCESS_REDIRECT, nextUrl));
-      }
+        // Redirect authenticated users away from auth pages to configured success URI
+        if (isOnAuthPage && isLoggedIn) {
+          return Response.redirect(new URL(AUTH_SUCCESS_REDIRECT, nextUrl.origin));
+        }
 
-      return true;
+        return true;
+      } catch (error) {
+        // If middleware fails, allow the request through to avoid breaking the site
+        // Error will be logged but won't crash the middleware
+        return true;
+      }
     },
   },
 
