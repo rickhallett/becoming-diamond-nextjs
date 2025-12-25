@@ -13,6 +13,7 @@ video: 347dcfae-0046-497f-9169-1e1b045b255d
 Your first win isn't perfection. It's presence.
 
 {{video:347dcfae-0046-497f-9169-1e1b045b255d}}
+
 You'll discover ART Squared: Accept Responsibility, Transform. The core message is powerful—at any moment, you're either responsible or a victim. When you take responsibility, you instantly gain power and transform.
 
 Your practice today is to identify something draining you or a past resentment, then ask yourself: "How can I be responsible for this?" This perspective shift loosens rigid thinking and creates empowerment.

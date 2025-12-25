@@ -13,6 +13,7 @@ video: 34296b19-3ebc-4cf9-adba-73b85a9cfee8
 You chew, you swallow. You breathe in, you breathe out.
 
 {{video:34296b19-3ebc-4cf9-adba-73b85a9cfee8}}
+
 You'll learn to elevate the energy of any room you enter by leading through example, not title. Physical movement changes emotional state—getting people to move, even briefly, shifts the entire atmosphere upward.
 
 Your mission is to "plus them": make three people feel genuinely better through real compliments or acknowledgments. Notice their effort, attitude, or wins—you're lifting, not flattering.

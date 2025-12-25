@@ -13,6 +13,7 @@ video: c71fd85c-86e8-4cd6-b0e5-4a9c3ed5fdc0
 What you embody gives permission to others.
 
 {{video:c71fd85c-86e8-4cd6-b0e5-4a9c3ed5fdc0}}
+
 You'll discover the fourth stage of consciousness: automatic deployment, where your new tools and identities fire without conscious thought. Like a highly trained athlete, your diamond operating system begins running automatically in pressure, conflict, and opportunity—freeing you to create consciously.
 
 Your mission is to notice when your tools deploy on their own—when you pause instead of react, flow instead of resist. Acknowledge these moments to reinforce the wiring. Give transformative principles 90 days to three years to fully integrate.

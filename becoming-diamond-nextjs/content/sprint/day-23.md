@@ -13,6 +13,7 @@ video: 54f75f9f-f2f8-49e8-87ad-2fcca4e2b236
 Love. Integrate. Flow. Evolve.
 
 {{video:54f75f9f-f2f8-49e8-87ad-2fcca4e2b236}}
+
 You'll discover Day 23 of the LIFE Code, focusing on LOVE as the creative energy of the universe. LOVE means acceptance over resistance and connection over separation—it's about stopping your war with reality long enough to learn from it.
 
 You'll learn that LOVE starts with accepting yourself: the version still learning, still scared, still triggered. It's not about agreeing with everything or letting people walk over you.

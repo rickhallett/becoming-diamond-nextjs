@@ -13,6 +13,7 @@ video: 9ae33582-29f9-4afc-9786-64c969eaa112
 If your baseline doesn't change… nothing does.
 
 {{video:9ae33582-29f9-4afc-9786-64c969eaa112}}
+
 Week one focuses on stabilizing your nervous system so you can handle pressure without reverting to old patterns. The goal isn't perfection—it's recovering faster from stress and staying more in control when life hits hard.
 
 Today, you'll capture three stressful moments as they happen. For each, write down what happened (facts only), what you felt (name the emotion), and how you reacted—like a fragile snowflake or a grounded diamond.

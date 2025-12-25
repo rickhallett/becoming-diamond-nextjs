@@ -13,6 +13,7 @@ video: af3aa97d-7841-458b-bb5b-d4aaf25c3cd8
 You've lived it. Now you claim it.
 
 {{video:af3aa97d-7841-458b-bb5b-d4aaf25c3cd8}}
+
 You'll create your Diamond Manifesto—a living document that reinforces your diamond identity through daily repetition. Inspired by the power of reading passages for 90 days, this manifesto reminds you who you've decided to be under pressure.
 
 Your mission is to print or write out the provided manifesto, customize it to reflect your truth, and read it aloud daily for at least 90 days. This practice imprints your diamond identity into your being, moving you toward automatic deployment of your highest self.
