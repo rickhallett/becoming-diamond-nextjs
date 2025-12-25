@@ -24,12 +24,12 @@ export default function DayCard({
   index,
 }: DayCardProps) {
   const cardClassName = `
-    group relative bg-secondary/30 border rounded-lg overflow-hidden transition-all
+    group relative bg-secondary/30 rounded-lg transition-all
     ${isAccessible
-      ? 'border-white/10 hover:border-primary/30 cursor-pointer'
-      : 'border-white/5 cursor-not-allowed opacity-60'
+      ? 'hover:bg-secondary/40 cursor-pointer'
+      : 'cursor-not-allowed opacity-60'
     }
-    ${isCompleted ? 'border-primary/30' : ''}
+    ${isCompleted ? 'ring-1 ring-primary/30' : ''}
   `;
 
   const cardContent = (

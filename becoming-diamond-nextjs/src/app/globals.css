@@ -153,6 +153,13 @@
   }
 }
 
+/* Sprint content typography overrides */
+.prose p {
+  font-size: 0.875rem !important; /* 14px - smaller, readable size */
+  line-height: 1.6 !important;
+  font-weight: 300;
+}
+
 @keyframes spotlight {
   0% {
     opacity: 0;

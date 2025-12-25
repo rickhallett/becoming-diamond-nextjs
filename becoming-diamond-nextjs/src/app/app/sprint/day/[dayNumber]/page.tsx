@@ -201,7 +201,7 @@ export default function SprintDayPage() {
       >
         <ContentRenderer
           html={day.content}
-          className="prose prose-xs md:prose-sm prose-invert prose-primary max-w-none mb-10 leading-relaxed"
+          className="prose prose-xs prose-invert prose-primary max-w-none mb-10 leading-relaxed [&_p]:!text-base [&_p]:!leading-relaxed"
         />
       </motion.div>
 
