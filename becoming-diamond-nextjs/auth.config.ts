@@ -6,7 +6,12 @@
  */
 
 import type { NextAuthConfig } from "next-auth";
-import { AUTH_CONFIG } from "@/config/features";
+
+/**
+ * Auth configuration constants
+ * Inlined here to avoid importing non-edge-compatible modules
+ */
+const AUTH_SUCCESS_REDIRECT = '/app/profile';
 
 /**
  * Get admin email from environment.
@@ -71,7 +76,7 @@ export const authConfig = {
 
       // Redirect authenticated users away from auth pages to configured success URI
       if (isOnAuthPage && isLoggedIn) {
-        return Response.redirect(new URL(AUTH_CONFIG.successRedirectUri, nextUrl));
+        return Response.redirect(new URL(AUTH_SUCCESS_REDIRECT, nextUrl));
       }
 
       return true;
