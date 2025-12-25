@@ -32,23 +32,25 @@ export function middleware(request: NextRequest) {
   }
 
   // Phase 4: Admin Route Protection (Simplified)
-  // Full JWT-based email check deferred to Phase 7
   if (isOnDocsPage) {
-    // For now, just require authentication
-    // Phase 7 will add full NextAuth integration with email verification
     if (!hasSession) {
       const signInUrl = new URL('/auth/signin', request.url);
       signInUrl.searchParams.set('callbackUrl', pathname);
       console.log('[Phase 4] Docs page requires auth, redirecting:', pathname);
       return NextResponse.redirect(signInUrl);
     }
-
-    // NOTE: Email-based admin check will be added in Phase 7 via NextAuth authorized callback
     console.log('[Phase 4] Authenticated user accessing docs:', pathname);
   }
 
+  // Phase 5: Auth Page Redirect
+  // Redirect authenticated users away from auth pages
+  if (isOnAuthPage && hasSession) {
+    console.log('[Phase 5] Authenticated user on auth page, redirecting to profile:', pathname);
+    return NextResponse.redirect(new URL('/app/profile', request.url));
+  }
+
   // Log route classification
-  console.log('[Phase 4] path:', pathname, 'protected:', isProtected, 'allowed');
+  console.log('[Phase 5] path:', pathname, 'allowed');
 
   return NextResponse.next();
 }
