@@ -1,13 +1,12 @@
 /**
- * Phase 4: Admin Route Protection
- * Protects /docs-site/* with JWT-based admin check
+ * Phase 4: Admin Route Protection (Simplified)
+ * Protects /docs-site/* (email check deferred to Phase 7)
  */
 
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { decode } from 'next-auth/jwt';
 
-export async function middleware(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
   // Detect session cookie
@@ -32,45 +31,20 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(signInUrl);
   }
 
-  // Phase 4: Admin Route Protection
+  // Phase 4: Admin Route Protection (Simplified)
+  // Full JWT-based email check deferred to Phase 7
   if (isOnDocsPage) {
-    // Get admin email from env
-    const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
-
-    // If no admin email configured, block all access
-    if (!ADMIN_EMAIL) {
-      console.log('[Phase 4] No ADMIN_EMAIL configured, blocking:', pathname);
-      return NextResponse.redirect(new URL('/', request.url));
-    }
-
-    // If no session, redirect to signin
+    // For now, just require authentication
+    // Phase 7 will add full NextAuth integration with email verification
     if (!hasSession) {
       const signInUrl = new URL('/auth/signin', request.url);
       signInUrl.searchParams.set('callbackUrl', pathname);
-      console.log('[Phase 4] No session, redirecting:', pathname);
+      console.log('[Phase 4] Docs page requires auth, redirecting:', pathname);
       return NextResponse.redirect(signInUrl);
     }
 
-    // Decode JWT to check admin status
-    const sessionCookie = prodCookie || devCookie;
-    if (sessionCookie) {
-      try {
-        const token = await decode({
-          token: sessionCookie.value,
-          secret: process.env.AUTH_SECRET!,
-        });
-
-        if (token?.email !== ADMIN_EMAIL) {
-          console.log('[Phase 4] Non-admin blocked:', token?.email, '→', pathname);
-          return NextResponse.redirect(new URL('/', request.url));
-        }
-
-        console.log('[Phase 4] Admin allowed:', ADMIN_EMAIL, '→', pathname);
-      } catch (error) {
-        console.log('[Phase 4] Token decode error, blocking:', pathname);
-        return NextResponse.redirect(new URL('/', request.url));
-      }
-    }
+    // NOTE: Email-based admin check will be added in Phase 7 via NextAuth authorized callback
+    console.log('[Phase 4] Authenticated user accessing docs:', pathname);
   }
 
   // Log route classification
