@@ -9,14 +9,13 @@ import type { NextRequest } from 'next/server';
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
-  // Detect session cookie
-  const sessionCookie = request.cookies.get(
-    process.env.NODE_ENV === 'production'
-      ? '__Secure-next-auth.session-token'
-      : 'next-auth.session-token'
-  );
+  // Detect session cookie (try both production and development cookie names)
+  const prodCookie = request.cookies.get('__Secure-next-auth.session-token');
+  const devCookie = request.cookies.get('next-auth.session-token');
+  const hasSession = !!(prodCookie || devCookie);
 
-  console.log('[Phase 1]', { path: pathname, hasSession: !!sessionCookie });
+  // Log to Vercel Functions (string concatenation safer than object in edge)
+  console.log('[Phase 1] path:', pathname, 'hasSession:', hasSession);
 
   return NextResponse.next();
 }
