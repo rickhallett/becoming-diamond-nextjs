@@ -78,6 +78,10 @@ const navigation: NavItem[] = [
         href: "/docs-site/technical/reports",
       },
       {
+        title: "Invoicing",
+        href: "/docs-site/technical/invoicing",
+      },
+      {
         title: "Specifications",
         href: "/docs-site/technical/specs",
       },
