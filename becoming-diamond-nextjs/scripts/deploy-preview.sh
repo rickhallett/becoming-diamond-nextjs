@@ -70,8 +70,8 @@ print_header "Deploying to Vercel Preview"
 # Deploy to Vercel preview (not production)
 print_info "Starting deployment..."
 
-# Change to parent directory to avoid nested directory issue
-cd /home/mrkai/code/becoming-diamond-nextjs
+# Ensure we're in the project directory (where vercel.json is located)
+cd /home/mrkai/code/becoming-diamond-nextjs/becoming-diamond-nextjs
 
 # Deploy and capture output
 DEPLOYMENT_OUTPUT=$(vercel --yes 2>&1)
@@ -89,7 +89,7 @@ print_success "Deployment complete"
 print_info "Preview URL: $PREVIEW_URL"
 
 # Save URL to file for test script
-echo "$PREVIEW_URL" > becoming-diamond-nextjs/.vercel-preview-url
+echo "$PREVIEW_URL" > .vercel-preview-url
 
 print_header "Next Steps"
 echo "1. Run automated tests:"
