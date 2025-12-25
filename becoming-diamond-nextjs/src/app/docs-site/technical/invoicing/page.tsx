@@ -56,6 +56,42 @@ export default function InvoicingPage() {
         </div>
       </div>
 
+      <h2>December 2024</h2>
+      <div className="space-y-4">
+        <div className="border border-neutral-800 rounded-lg p-5 bg-neutral-900/50">
+          <h3 className="text-lg font-semibold text-white mb-2">
+            <Link
+              href={`${GITHUB_BASE}/executive-summary-2024-12-20.md`}
+              className="text-primary hover:underline"
+              target="_blank"
+            >
+              Technical Research & Planning - December 20-21, 2024
+            </Link>
+          </h3>
+          <p className="text-sm text-neutral-400 mb-3">
+            Development Hours: 2 hours
+          </p>
+          <div className="text-sm text-neutral-300 space-y-2">
+            <p className="font-medium text-white">Work Completed:</p>
+            <ul className="list-disc list-inside space-y-1 ml-2">
+              <li>Stripe discount codes research and setup guide</li>
+              <li>Deployment environments (CI/CD) project scoping</li>
+              <li>Wix migration feasibility analysis</li>
+            </ul>
+            <p className="font-medium text-white mt-4">Technical Deliverables:</p>
+            <ul className="list-disc list-inside space-y-1 ml-2">
+              <li>Comprehensive Stripe promotion code documentation</li>
+              <li>Three-tier deployment environment cost estimates</li>
+              <li>Four-tier Wix migration options analysis</li>
+              <li>Documentation site pages for all research projects</li>
+            </ul>
+            <p className="text-xs text-neutral-500 mt-3 italic">
+              Note: Research and planning deliverables only - no implementation work performed
+            </p>
+          </div>
+        </div>
+      </div>
+
       <h2>Automation & Future Work</h2>
       <p>
         Video management has been streamlined with automated discovery and versioning
