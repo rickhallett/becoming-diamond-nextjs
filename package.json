@@ -39,7 +39,11 @@
     "restore-videos": "tsx scripts/restore-video-metadata.ts",
     "verify-video-mapping": "tsx scripts/verify-video-mapping.ts",
     "generate-transcripts": "tsx scripts/generate-video-transcripts.ts",
-    "generate-summaries": "tsx scripts/generate-sprint-summaries.ts"
+    "generate-summaries": "tsx scripts/generate-sprint-summaries.ts",
+    "deploy:preview": "bash scripts/deploy-preview.sh",
+    "test:preview": "bash scripts/test-preview.sh",
+    "deploy:cycle": "bash scripts/deploy-test-cycle.sh",
+    "test:e2e:preview": "BASE_URL=$(cat .vercel-preview-url) NO_SERVER=true npm run test:e2e"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.2",
