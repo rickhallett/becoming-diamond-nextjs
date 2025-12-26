@@ -71,7 +71,9 @@ print_header "Deploying to Vercel Preview"
 print_info "Starting deployment..."
 
 # Ensure we're in the project directory (where vercel.json is located)
-cd /home/mrkai/code/becoming-diamond-nextjs/becoming-diamond-nextjs
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+cd "$PROJECT_ROOT"
 
 # Deploy and capture output
 DEPLOYMENT_OUTPUT=$(vercel --yes 2>&1)

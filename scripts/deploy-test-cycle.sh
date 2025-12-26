@@ -36,7 +36,9 @@ PHASE=${1:-"unknown"}
 print_header "Middleware Phase $PHASE - Full Test Cycle"
 
 # Change to project root
-cd /home/mrkai/code/becoming-diamond-nextjs/becoming-diamond-nextjs
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+cd "$PROJECT_ROOT"
 
 # Step 1: Deploy
 print_info "Step 1: Deploying to preview..."
