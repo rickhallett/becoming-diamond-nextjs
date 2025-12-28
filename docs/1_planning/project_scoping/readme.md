@@ -14,12 +14,31 @@ These documents are written for **non-technical stakeholders** (project managers
 
 ## Current Documents
 
-### deployment-environments-setup.md
-Scoping document for establishing localhost, staging, and production deployment environments.
+### Deployment Infrastructure Project
+
+**1. deployment-environments-setup.md** (Scope Estimate)
+- Scoping document for establishing localhost, staging, and production deployment environments
 - **Status:** Awaiting approval
-- **Options:** 3 approaches from $120-480 development cost
+- **Options:** 3 approaches from $220-580 first invoice
 - **Timeline:** Half day to 4 days depending on option
-- **Audience:** Project managers, business stakeholders
+- **Audience:** Project managers, business stakeholders, finance
+
+**2. deployment-project-summary.md** (Executive Summary)
+- Quick-reference overview of Option B (Stable Foundation)
+- **Cost:** $260-340 first invoice + $21/month ongoing
+- **Timeline:** 1-2 days implementation
+- **Deliverables:** Staging environment, automated deployment, documentation, training
+- **Audience:** Executives, decision-makers
+
+**3. deployment-implementation-plan-option-b.md** (Technical Plan)
+- Detailed phase-by-phase implementation plan for Option B
+- **Phases:** 7 phases from technical resolution to training
+- **Duration:** 12-16 hours over 2 days
+- **Includes:** Task breakdown, success criteria, risk management, testing procedures
+- **Audience:** Development team, project managers
+
+### wix-migration-estimate.md
+- Legacy scoping document for Wix to Next.js migration (historical reference)
 
 ## Document Format
 
