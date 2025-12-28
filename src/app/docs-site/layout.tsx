@@ -1,7 +1,6 @@
 "use client";
 
 import { DocsNav } from "@/components/docs/docs-nav";
-import { BackgroundBeams } from "@/components/ui/background-beams";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { IconSparkles, IconMenu2, IconX } from "@tabler/icons-react";
@@ -16,15 +15,15 @@ export default function DocsLayout({
 
   return (
     <div className="flex min-h-screen bg-black text-white relative overflow-hidden">
-      {/* Background Effects */}
-      <BackgroundBeams className="opacity-30" />
+      {/* Subtle Grid Pattern */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:32px_32px]" />
 
       {/* Mobile Header */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-neutral-800/50">
         <div className="flex items-center justify-between px-4 py-3">
           <Link href="/docs-site" className="flex items-center gap-2">
             <IconSparkles className="h-5 w-5 text-primary" />
-            <span className="text-base font-bold bg-gradient-to-r from-primary via-blue-400 to-cyan-400 bg-clip-text text-transparent">
+            <span className="text-base font-medium text-white">
               Becoming Diamond
             </span>
           </Link>
@@ -81,8 +80,8 @@ export default function DocsLayout({
             onClick={() => setMobileMenuOpen(false)}
           >
             <div className="flex items-center gap-2">
-              <IconSparkles className="h-5 w-5 text-primary group-hover:rotate-180 transition-transform duration-500" />
-              <h2 className="text-xl font-bold bg-gradient-to-r from-primary via-blue-400 to-cyan-400 bg-clip-text text-transparent">
+              <IconSparkles className="h-5 w-5 text-primary/70 group-hover:text-primary transition-colors" />
+              <h2 className="text-xl font-light text-white">
                 Becoming Diamond
               </h2>
             </div>
@@ -107,7 +106,7 @@ export default function DocsLayout({
           transition={{ duration: 0.5, delay: 0.4 }}
           className="mt-8 pt-6 border-t border-neutral-800/50"
         >
-          <div className="bg-gradient-to-br from-primary/10 to-transparent p-3 rounded-lg border border-primary/20">
+          <div className="bg-primary/5 p-3 rounded-lg border border-primary/20">
             <p className="text-xs text-neutral-400 font-medium">
               Protected Documentation
             </p>

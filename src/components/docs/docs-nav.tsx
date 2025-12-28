@@ -124,9 +124,9 @@ function NavItemComponent({
       <div className="mb-2">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="flex w-full items-center gap-2 px-3 py-2 text-sm font-semibold text-neutral-300 hover:text-white transition-all duration-200 rounded-lg hover:bg-neutral-900/30 group"
+          className="flex w-full items-center gap-2 px-3 py-2 text-sm font-medium text-neutral-300 hover:text-white transition-colors rounded-lg hover:bg-neutral-900/30 group"
         >
-          <div className="text-primary transition-transform group-hover:scale-110">
+          <div className="text-primary transition-colors">
             {isOpen ? (
               <IconChevronDown className="h-4 w-4" />
             ) : (
@@ -155,16 +155,13 @@ function NavItemComponent({
     <Link
       href={item.href || "#"}
       onClick={onNavigate}
-      className={`block px-3 py-2 text-sm rounded-lg transition-all duration-200 group relative ${
+      className={`block px-3 py-2 text-sm rounded-lg transition-colors ${
         isActive
-          ? "bg-gradient-to-r from-primary/20 to-cyan-500/10 text-primary font-medium border-l-2 border-primary"
-          : "text-neutral-400 hover:text-white hover:bg-neutral-900/50 hover:translate-x-1"
+          ? "bg-primary/10 text-primary border-l-2 border-primary font-medium"
+          : "text-neutral-400 hover:text-white hover:bg-neutral-900/50"
       }`}
     >
-      <span className="relative z-10">{item.title}</span>
-      {!isActive && (
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 rounded-lg transition-opacity" />
-      )}
+      {item.title}
     </Link>
   );
 }
