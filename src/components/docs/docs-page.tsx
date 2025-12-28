@@ -2,14 +2,21 @@
 
 import { ReactNode } from "react";
 import { motion } from "framer-motion";
+import { Breadcrumbs } from "./breadcrumbs";
+
+interface BreadcrumbItem {
+  label: string;
+  href?: string;
+}
 
 interface DocsPageProps {
   title: string;
   description?: string;
+  breadcrumbs?: BreadcrumbItem[];
   children: ReactNode;
 }
 
-export function DocsPage({ title, description, children }: DocsPageProps) {
+export function DocsPage({ title, description, breadcrumbs, children }: DocsPageProps) {
   return (
     <div className="max-w-4xl w-full">
       <motion.div
@@ -18,6 +25,9 @@ export function DocsPage({ title, description, children }: DocsPageProps) {
         transition={{ duration: 0.6 }}
         className="mb-8 md:mb-12"
       >
+        {breadcrumbs && breadcrumbs.length > 0 && (
+          <Breadcrumbs items={breadcrumbs} />
+        )}
         <h1 className="text-4xl md:text-5xl font-extralight mb-3 md:mb-4 text-white tracking-tight">
           {title}
         </h1>
