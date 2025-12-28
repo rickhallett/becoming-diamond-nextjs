@@ -1,11 +1,34 @@
 "use client";
 
 import { DocsNav } from "@/components/docs/docs-nav";
-import { BackgroundBeams } from "@/components/ui/background-beams";
+import { DocsSearch } from "@/components/docs/search";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { IconSparkles, IconMenu2, IconX } from "@tabler/icons-react";
 import { useState } from "react";
+
+// Documentation pages for search
+const docsPages = [
+  { title: "Getting Started", href: "/docs-site", description: "Welcome to the Becoming Diamond documentation", category: "Overview" },
+  { title: "Platform Overview", href: "/docs-site/overview", description: "Learn about core features and platform architecture", category: "Overview" },
+  { title: "User Guide - Getting Started", href: "/docs-site/user/getting-started", description: "Navigate the platform and get started", category: "User Guide" },
+  { title: "User Guide - Sprint Program", href: "/docs-site/user/sprint-program", description: "Access and complete the 30-day sprint", category: "User Guide" },
+  { title: "User Guide - Profile Management", href: "/docs-site/user/profile", description: "Manage your account and preferences", category: "User Guide" },
+  { title: "Admin Guide - CMS Overview", href: "/docs-site/admin/cms-overview", description: "Content management system guide", category: "Admin Guide" },
+  { title: "Admin Guide - Sprint Management", href: "/docs-site/admin/sprint-management", description: "Manage sprint content and videos", category: "Admin Guide" },
+  { title: "Admin Guide - Blog Management", href: "/docs-site/admin/blog-management", description: "Create and publish blog posts", category: "Admin Guide" },
+  { title: "Admin Guide - Book Sales", href: "/docs-site/admin/book-sales", description: "Manage digital book sales and Stripe", category: "Admin Guide" },
+  { title: "Admin Guide - Lead Management", href: "/docs-site/admin/lead-management", description: "Export and manage email leads", category: "Admin Guide" },
+  { title: "Admin Guide - Rollback Procedures", href: "/docs-site/admin/rollback", description: "Rollback changes and restore content", category: "Admin Guide" },
+  { title: "Technical - Architecture", href: "/docs-site/technical/architecture", description: "Platform architecture and technical overview", category: "Technical" },
+  { title: "Technical - Reports", href: "/docs-site/technical/reports", description: "Development reports and implementation docs", category: "Technical" },
+  { title: "Technical - Invoicing", href: "/docs-site/technical/invoicing", description: "Invoicing system and Stripe integration", category: "Technical" },
+  { title: "Technical - Specifications", href: "/docs-site/technical/specs", description: "Technical specifications and PRDs", category: "Technical" },
+  { title: "Technical - Stripe Discount Codes", href: "/docs-site/technical/stripe-discount-codes", description: "Manage Stripe discount codes", category: "Technical" },
+  { title: "Technical - Deployment Environments", href: "/docs-site/technical/deployment-environments", description: "Development, staging, and production environments", category: "Technical" },
+  { title: "Technical - Wix Migration", href: "/docs-site/technical/wix-migration", description: "Wix to Next.js migration estimate", category: "Technical" },
+  { title: "Support", href: "/docs-site/support", description: "Get help and contact support", category: "Support" },
+];
 
 export default function DocsLayout({
   children,
@@ -16,15 +39,15 @@ export default function DocsLayout({
 
   return (
     <div className="flex min-h-screen bg-black text-white relative overflow-hidden">
-      {/* Background Effects */}
-      <BackgroundBeams className="opacity-30" />
+      {/* Subtle Grid Pattern */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:32px_32px]" />
 
       {/* Mobile Header */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-neutral-800/50">
         <div className="flex items-center justify-between px-4 py-3">
           <Link href="/docs-site" className="flex items-center gap-2">
             <IconSparkles className="h-5 w-5 text-primary" />
-            <span className="text-base font-bold bg-gradient-to-r from-primary via-blue-400 to-cyan-400 bg-clip-text text-transparent">
+            <span className="text-base font-medium text-white">
               Becoming Diamond
             </span>
           </Link>
@@ -81,13 +104,22 @@ export default function DocsLayout({
             onClick={() => setMobileMenuOpen(false)}
           >
             <div className="flex items-center gap-2">
-              <IconSparkles className="h-5 w-5 text-primary group-hover:rotate-180 transition-transform duration-500" />
-              <h2 className="text-xl font-bold bg-gradient-to-r from-primary via-blue-400 to-cyan-400 bg-clip-text text-transparent">
+              <IconSparkles className="h-5 w-5 text-primary/70 group-hover:text-primary transition-colors" />
+              <h2 className="text-xl font-light text-white">
                 Becoming Diamond
               </h2>
             </div>
             <p className="text-xs text-neutral-500 mt-1 ml-7">Documentation</p>
           </Link>
+        </motion.div>
+
+        {/* Search */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.15 }}
+        >
+          <DocsSearch pages={docsPages} />
         </motion.div>
 
         {/* Navigation */}
@@ -107,7 +139,7 @@ export default function DocsLayout({
           transition={{ duration: 0.5, delay: 0.4 }}
           className="mt-8 pt-6 border-t border-neutral-800/50"
         >
-          <div className="bg-gradient-to-br from-primary/10 to-transparent p-3 rounded-lg border border-primary/20">
+          <div className="bg-primary/5 p-3 rounded-lg border border-primary/20">
             <p className="text-xs text-neutral-400 font-medium">
               Protected Documentation
             </p>
