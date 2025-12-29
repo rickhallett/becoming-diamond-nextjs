@@ -328,10 +328,15 @@ AUTH_SECRET=your_random_secret_key_here
 # Email Authentication (Resend)
 AUTH_RESEND_KEY=re_xxxxxxxxxxxxxxxxx
 
-# Google OAuth
-# Get credentials: https://console.cloud.google.com/apis/credentials
+# Google OAuth (Environment-Specific Clients - December 2025)
+# Project: becoming-diamond-master (307181021676)
+# Get credentials: https://console.cloud.google.com/apis/credentials?project=becoming-diamond-master
 # Authorized redirect URIs: {NEXTAUTH_URL}/api/auth/callback/google
-AUTH_GOOGLE_ID=your_google_client_id.apps.googleusercontent.com
+#
+# Production:   307181021676-m8l4b0dudkk59sn5ffej4s74ckse80sd
+# Staging:      307181021676-jpq6a199e39po5uaomqbqqa81dhit4rt
+# Development:  307181021676-e9ig7opv0hf20ohutre91cga8462i1bi
+AUTH_GOOGLE_ID=307181021676-e9ig7opv0hf20ohutre91cga8462i1bi.apps.googleusercontent.com
 AUTH_GOOGLE_SECRET=GOCSPX-xxxxxxxxxxxxxxxxxxxxx
 
 # GitHub OAuth (for member authentication)
@@ -408,12 +413,24 @@ ANTHROPIC_API_KEY=sk-ant-xxxxxxxxxxxxxxxxxxxxx
 openssl rand -base64 32
 ```
 
-**Google OAuth** ([Setup Guide](https://console.cloud.google.com/apis/credentials)):
-1. Create OAuth 2.0 Client ID
-2. Add Authorized redirect URIs:
-   - Development: `http://localhost:3003/api/auth/callback/google`
-   - Production: `https://www.becomingdiamond.com/api/auth/callback/google`
-3. Copy Client ID and Secret to `AUTH_GOOGLE_ID` and `AUTH_GOOGLE_SECRET`
+**Google OAuth** ([Setup Guide](https://console.cloud.google.com/apis/credentials?project=becoming-diamond-master)):
+
+**IMPORTANT (December 2025)**: We use environment-specific OAuth clients from the `becoming-diamond-master` project (307181021676). Each environment has its own client with an exact redirect URI.
+
+**For Local Development** (default in .env.example):
+- Client ID: `307181021676-e9ig7opv0hf20ohutre91cga8462i1bi`
+- Redirect URI: `http://localhost:3003/api/auth/callback/google`
+- Copy secret to `AUTH_GOOGLE_SECRET` (get from team lead)
+
+**For Staging** (.env.staging):
+- Client ID: `307181021676-jpq6a199e39po5uaomqbqqa81dhit4rt`
+- Redirect URI: `https://staging.becomingdiamond.com/api/auth/callback/google`
+
+**For Production** (.env.production):
+- Client ID: `307181021676-m8l4b0dudkk59sn5ffej4s74ckse80sd`
+- Redirect URI: `https://www.becomingdiamond.com/api/auth/callback/google`
+
+All clients are managed in the Google Cloud Console under project `becoming-diamond-master`.
 
 **GitHub OAuth for Members** ([Setup Guide](https://github.com/settings/developers)):
 1. Create OAuth App (for member authentication)
