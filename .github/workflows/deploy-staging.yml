@@ -25,15 +25,14 @@ jobs:
         run: npm install --legacy-peer-deps
 
       - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v25
+        uses: vercel/actions/deploy@v0.1
         id: deploy
         with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
-          alias-domains: staging.becomingdiamond.com
-          scope: ${{ secrets.VERCEL_ORG_ID }}
+          token: ${{ secrets.VERCEL_TOKEN }}
+          org-id: ${{ secrets.VERCEL_ORG_ID }}
+          project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          production: true
+          alias: staging.becomingdiamond.com
 
       - name: Comment on PR
         if: github.event_name == 'pull_request'
