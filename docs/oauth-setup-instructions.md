@@ -203,7 +203,12 @@ git push origin main
 
 ## Notes
 
-- Project number: `307181021676` (will be prefix for all client IDs)
-- All OAuth clients should start with: `307181021676-`
+- Project number: `307181021676` (prefix for all client IDs)
+- All OAuth clients start with: `307181021676-`
 - This is separate from the old project (596915529062)
-- Old OAuth client (917577831263) can be deprecated once new ones are working
+- **Migration Status (December 29, 2025)**: COMPLETE
+  - All three environments successfully migrated to new OAuth clients
+  - Production verified: `307181021676-m8l4b0dudkk59sn5ffej4s74ckse80sd`
+  - Staging verified: `307181021676-jpq6a199e39po5uaomqbqqa81dhit4rt`
+  - Development verified: `307181021676-e9ig7opv0hf20ohutre91cga8462i1bi`
+  - Old OAuth client (917577831263) can now be safely disabled

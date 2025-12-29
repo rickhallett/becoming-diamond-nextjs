@@ -134,6 +134,21 @@ Check that `NEXTAUTH_URL` matches the deployment URL:
 - Staging: `https://staging.becomingdiamond.com`
 - Production: `https://www.becomingdiamond.com`
 
+Verify correct environment-specific OAuth client (December 2025):
+- Google Cloud project: `becoming-diamond-master` (307181021676)
+- Production: `307181021676-m8l4b0dudkk59sn5ffej4s74ckse80sd`
+- Staging: `307181021676-jpq6a199e39po5uaomqbqqa81dhit4rt`
+- Development: `307181021676-e9ig7opv0hf20ohutre91cga8462i1bi`
+
+Check database connection in Vercel environment variables:
+- `TURSO_DATABASE_URL` must point to correct environment database
+- `TURSO_AUTH_TOKEN` must be valid and not expired
+
+Verify all required environment variables are set:
+- `ADMIN_EMAIL` - Required for admin access control
+- `GMAIL_USER` / `GMAIL_APP_PASSWORD` - Required for magic link auth
+- `NEXTAUTH_SECRET` - Required for NextAuth encryption
+
 ### Build Errors
 
 Ensure you're using `--legacy-peer-deps`:

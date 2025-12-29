@@ -166,7 +166,16 @@ import { auth } from '@/auth'  // Root-level auth.ts (NOT in src/)
   - Turso adapter: Persistent user/account data, verification tokens, account linking
 - **Edge Compatible**: Middleware decodes JWT directly, users/accounts fetched only when needed
 
-**Authentication Flow (GitHub OAuth)**:
+**Middleware Implementation** (December 2025):
+- **File**: `middleware.ts` (root level)
+- **Protection**: All `/app/*` routes require authentication
+- **Exceptions**: `/api/*`, `/auth/*`, `/admin/*`, `/_next/*`, `/favicon.ico`
+- **Admin Check**: Email-based (`support@becomingdiamond.com`)
+- **Edge Runtime**: Compatible with Vercel edge functions
+- **Session Validation**: JWT token decoded directly, no database calls
+- **Restoration History**: 7-phase migration from database sessions to JWT (see `docs/specs/middleware-restoration-complete.md`)
+
+**Authentication Flow (Google OAuth)**:
 
 **OAuth 2.0** with popup window and postMessage communication
 
@@ -177,7 +186,11 @@ import { auth } from '@/auth'  // Root-level auth.ts (NOT in src/)
 
 **Environment Variables**:
 - `GITHUB_CLIENT_ID/SECRET` - Decap CMS OAuth
-- `AUTH_GITHUB_ID/SECRET` - Member authentication (separate OAuth app)
+- `AUTH_GOOGLE_ID/SECRET` - Google OAuth (environment-specific clients, see OAuth Configuration section)
+- `ADMIN_EMAIL` - Admin user email for access control (`support@becomingdiamond.com`)
+- `GMAIL_USER/GMAIL_APP_PASSWORD` - Gmail SMTP for magic link authentication
+- `NEXTAUTH_URL` - Base URL for NextAuth (environment-specific)
+- `NEXTAUTH_SECRET` - NextAuth encryption secret
 
 ### Member Portal Architecture
 
@@ -413,12 +426,14 @@ if (isFeatureEnabled('leadGen')) {
 - **Video Token Auth** - Bunny Stream token-based authentication (`/api/video/[videoId]/token`)
 - **Sprint Progress API** - Database-backed progress tracking (`/api/sprint/progress/*`)
 - **Axiom Logging** - Production monitoring integrated throughout app
+- **OAuth Migration** - Successfully migrated to new Google Cloud project with environment-specific OAuth clients (December 2025)
+- **CI/CD Pipeline** - Vercel native Git integration with automatic deployments (December 2025)
+- **Middleware Restoration** - Full NextAuth middleware protection for all routes (December 2025)
 
 **Current Priorities**:
-1. **Sprint Progress Migration Verification** (High) - Confirm localStorage → Turso migration complete
+1. **Sprint Progress Migration Verification** (Medium) - Confirm localStorage → Turso migration complete
 2. **Performance** (Medium) - Replace `<img>` with `next/image`, ISR for blog
-3. **Admin Enhancement** (Medium) - Database roles, middleware protection, audit logging
-4. **Production OAuth Debugging** (High) - Resolve Google OAuth production issues using Chrome DevTools MCP
+3. **Admin Enhancement** (Low) - Database roles, audit logging (middleware protection complete)
 
 ## Development Notes
 
@@ -427,6 +442,25 @@ if (isFeatureEnabled('leadGen')) {
 - **Tailwind CSS 4**: Inline `@theme` in `globals.css`
 - **Aceternity UI**: 90+ components in `src/components/ui/` - do not modify
 - **Sprint Content**: `content/sprint/day-01.md` through `day-30.md`
+
+### OAuth Configuration (December 2025)
+
+**Google Cloud Project**: `becoming-diamond-master` (Project ID: 307181021676)
+
+**Environment-Specific OAuth Clients**:
+- **Production**: `307181021676-m8l4b0dudkk59sn5ffej4s74ckse80sd`
+  - Redirect URI: `https://www.becomingdiamond.com/api/auth/callback/google`
+- **Staging**: `307181021676-jpq6a199e39po5uaomqbqqa81dhit4rt`
+  - Redirect URI: `https://staging.becomingdiamond.com/api/auth/callback/google`
+- **Development**: `307181021676-e9ig7opv0hf20ohutre91cga8462i1bi`
+  - Redirect URI: `http://localhost:3003/api/auth/callback/google`
+
+**Migration Notes**:
+- Migrated from old OAuth client (917577831263) to new project (December 29, 2025)
+- All environments now use environment-specific OAuth clients for better security
+- Old OAuth client can be disabled after verification
+
+**Setup Documentation**: See `docs/oauth-setup-instructions.md` and `OAUTH-SETUP-COMPLETE.md`
 
 ### Vercel Deployment Configuration
 
@@ -517,6 +551,12 @@ const article = await getContentBySlug('blog', slug);
 - `/src/app/globals.css` - Tailwind CSS 4 config
 - `/public/admin/config.yml` - Decap CMS configuration
 - `/docs/chrome-devtools-mcp-setup.md` - Browser debugging setup
+- `/DEPLOYMENT-SUCCESS.md` - OAuth deployment verification report
+- `/OAUTH-SETUP-COMPLETE.md` - OAuth migration documentation
+- `/ENVIRONMENT-TESTING-SUMMARY.md` - Environment configuration testing results
+- `/docs/oauth-setup-instructions.md` - OAuth setup guide
+- `/docs/cicd-pipeline.md` - CI/CD deployment documentation
+- `/docs/specs/middleware-restoration-complete.md` - Middleware migration history
 
 ### Debugging Tips
 
@@ -529,9 +569,14 @@ const article = await getContentBySlug('blog', slug);
 **Production OAuth Issues**:
 - Use Chrome DevTools MCP to inspect network requests and cookies
 - Check `NEXTAUTH_URL` matches production domain exactly (no typos)
-- Verify OAuth redirect URIs in Google/GitHub console
+- Verify OAuth redirect URIs in Google Cloud Console (project: `becoming-diamond-master`)
+- Environment-specific OAuth clients (see OAuth Configuration section):
+  - Production: `307181021676-m8l4b0dudkk59sn5ffej4s74ckse80sd`
+  - Staging: `307181021676-jpq6a199e39po5uaomqbqqa81dhit4rt`
+  - Development: `307181021676-e9ig7opv0hf20ohutre91cga8462i1bi`
 - Monitor session cookies: `__Secure-authjs.session-token`
 - Check Axiom logs for authentication flow errors
+- Verify database connection: Check `TURSO_DATABASE_URL` points to correct environment database
 
 **Logging & Monitoring**:
 - Check Axiom dashboard for production errors

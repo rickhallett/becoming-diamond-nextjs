@@ -1,8 +1,21 @@
 # CI/CD Pipeline Documentation
 
+## Current Status (December 2025)
+
+**Active Deployment Method**: Vercel Native Git Integration (Primary)
+- Production deploys automatically from `main` branch
+- Staging deploys automatically from `staging` branch
+- All deployments successful and verified
+- Fast deployment times (~1 minute)
+
+**GitHub Actions Status**: Experimental (CI workflows work, deployment workflows have issues)
+- CI workflow (linting/testing): Active and working
+- Deployment workflows: Disabled due to Vercel CLI authentication issues
+- Note: Vercel native Git integration is the recommended and working method
+
 ## Overview
 
-This project uses a fully automated CI/CD pipeline with three environments:
+This project uses Vercel native Git integration for automated deployments with three environments:
 
 - **Local Development** (`http://localhost:3003`)
 - **Staging** (`https://staging.becomingdiamond.com`)
@@ -302,6 +315,15 @@ Verify `NEXTAUTH_URL` matches deployment URL exactly:
 - Staging: `https://staging.becomingdiamond.com`
 - Production: `https://www.becomingdiamond.com`
 
+Verify correct environment-specific OAuth client is configured (Google Cloud project: `becoming-diamond-master`):
+- Production: `AUTH_GOOGLE_ID=307181021676-m8l4b0dudkk59sn5ffej4s74ckse80sd`
+- Staging: `AUTH_GOOGLE_ID=307181021676-jpq6a199e39po5uaomqbqqa81dhit4rt`
+- Development: `AUTH_GOOGLE_ID=307181021676-e9ig7opv0hf20ohutre91cga8462i1bi`
+
+Verify database connection:
+- Staging: `TURSO_DATABASE_URL=libsql://becoming-diamond-staging-diamond-dev0.aws-eu-west-1.turso.io`
+- Production: Check production database URL in Vercel environment variables
+
 ### Environment variables not updating
 
 1. Update `.env.staging` or `.env.production`
@@ -342,7 +364,10 @@ Check:
 
 1. **Never commit** `.env.staging`, `.env.production`, `.env.local`, or `.env.agent`
 2. **Rotate secrets** regularly (every 90 days)
-3. **Use environment-specific OAuth apps** for staging and production
+3. **Use environment-specific OAuth apps** for staging and production (IMPLEMENTED December 2025):
+   - Google Cloud project: `becoming-diamond-master` (307181021676)
+   - Three separate OAuth clients for production/staging/development
+   - Each client has exact redirect URI matching its environment
 4. **Review Vercel access logs** monthly
 5. **Enable 2FA** on all service accounts (Vercel, GitHub, Turso)
 
