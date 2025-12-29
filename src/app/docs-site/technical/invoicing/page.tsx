@@ -21,10 +21,71 @@ export default function InvoicingPage() {
         </p>
       </div>
 
-      <h2>December 2025</h2>
+      <h2>Current Invoice - December 20-29, 2025</h2>
+      <div className="space-y-4 mb-8">
+        <div className="border border-primary/50 rounded-lg p-6 bg-primary/5">
+          <h3 className="text-xl font-semibold text-white mb-2">
+            <Link
+              href={`${GITHUB_BASE}/invoice-2025-12-29.md`}
+              className="text-primary hover:underline"
+              target="_blank"
+            >
+              Invoice INV-2025-12-29
+            </Link>
+          </h3>
+          <p className="text-sm text-neutral-400 mb-4">
+            Total Development Hours: 14.5 hours | Total Amount: $640.00
+          </p>
+          <div className="text-sm text-neutral-300 space-y-3">
+            <p className="font-medium text-white">Development Services Breakdown:</p>
+            <div className="space-y-3 ml-2">
+              <div>
+                <p className="font-semibold text-primary">December 29, 2025 (3.0 hours - $140.00)</p>
+                <ul className="list-disc list-inside space-y-1 ml-4 text-neutral-400">
+                  <li>CI/CD Infrastructure Setup - Automated deployment pipeline with GitHub Actions</li>
+                  <li>OAuth Investigation - Client ID mismatch analysis and troubleshooting</li>
+                </ul>
+              </div>
+              <div>
+                <p className="font-semibold text-primary">December 25-28, 2025 (5.5 hours - $220.00)</p>
+                <ul className="list-disc list-inside space-y-1 ml-4 text-neutral-400">
+                  <li>Documentation Site Enhancement - Professional redesign with search and navigation</li>
+                  <li>Middleware Restoration - Seven-phase security implementation</li>
+                  <li>Repository Maintenance - Structure optimization and deployment fixes</li>
+                </ul>
+              </div>
+              <div>
+                <p className="font-semibold text-primary">December 24, 2025 (4.0 hours - $160.00)</p>
+                <ul className="list-disc list-inside space-y-1 ml-4 text-neutral-400">
+                  <li>Video Platform Updates - 30 sprint videos updated with thumbnails and transcripts</li>
+                  <li>Automated video management pipeline with 6 utility scripts</li>
+                </ul>
+              </div>
+              <div>
+                <p className="font-semibold text-primary">December 20-21, 2024 (2.0 hours - $80.00)</p>
+                <ul className="list-disc list-inside space-y-1 ml-4 text-neutral-400">
+                  <li>Technical Research & Planning - Stripe, CI/CD scoping, Wix migration analysis</li>
+                </ul>
+              </div>
+            </div>
+            <p className="font-medium text-white mt-4">Infrastructure Services:</p>
+            <ul className="list-disc list-inside space-y-1 ml-2 text-neutral-400">
+              <li>Vercel Pro Subscription - December 2025 ($30.00)</li>
+              <li>Vercel Pro Subscription - November 2025 ($30.00)</li>
+            </ul>
+            <div className="mt-4 pt-4 border-t border-neutral-700">
+              <p className="font-bold text-white text-lg">Total Due: $640.00</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h2>Individual Work Summaries</h2>
+
+      <h3 className="text-xl mt-8 mb-4">December 2025</h3>
       <div className="space-y-4">
         <div className="border border-neutral-800 rounded-lg p-5 bg-neutral-900/50">
-          <h3 className="text-lg font-semibold text-white mb-2">
+          <h4 className="text-lg font-semibold text-white mb-2">
             <Link
               href={`${GITHUB_BASE}/executive-summary-2025-12-24.md`}
               className="text-primary hover:underline"
@@ -32,7 +93,7 @@ export default function InvoicingPage() {
             >
               Video Platform Updates - December 24, 2025
             </Link>
-          </h3>
+          </h4>
           <p className="text-sm text-neutral-400 mb-3">
             Development Hours: 4 hours
           </p>
