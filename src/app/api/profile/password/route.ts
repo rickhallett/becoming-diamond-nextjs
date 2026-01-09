@@ -38,18 +38,20 @@ export async function GET() {
 
     const hasPassword = !!result.rows[0].password_hash;
 
-    await log.info('Password status checked', {
+    // Non-blocking log - don't let logging failures crash the request
+    log.info('Password status checked', {
       userId,
       hasPassword,
       timestamp: new Date().toISOString(),
-    });
+    }).catch(() => {});
 
     return NextResponse.json({ hasPassword });
   } catch (error) {
-    await log.error('Error checking password status', {
+    // Non-blocking log
+    log.error('Error checking password status', {
       error: error instanceof Error ? error.message : String(error),
       timestamp: new Date().toISOString(),
-    });
+    }).catch(() => {});
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -109,20 +111,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    await log.info('Password set successfully', {
+    // Non-blocking log
+    log.info('Password set successfully', {
       userId,
       timestamp: new Date().toISOString(),
-    });
+    }).catch(() => {});
 
     return NextResponse.json({
       success: true,
       message: 'Password set successfully',
     });
   } catch (error) {
-    await log.error('Error setting password', {
+    // Non-blocking log
+    log.error('Error setting password', {
       error: error instanceof Error ? error.message : String(error),
       timestamp: new Date().toISOString(),
-    });
+    }).catch(() => {});
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
