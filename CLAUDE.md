@@ -2,6 +2,22 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Critical Warnings
+
+### NEVER Use `echo` for Environment Variables
+
+**CRITICAL:** When adding environment variables via Vercel CLI, ALWAYS use `printf` instead of `echo`. Using `echo` adds a trailing newline (`\n`) that gets stored as a literal character, breaking OAuth and other secrets.
+
+```bash
+# WRONG - adds \n to value, breaks OAuth
+echo "value" | vercel env add VAR_NAME production
+
+# CORRECT - no trailing newline
+printf '%s' 'value' | vercel env add VAR_NAME production
+```
+
+This has caused production outages multiple times. The `\n` is invisible when viewing env vars but causes `invalid_client` and similar cryptic errors.
+
 ## Development Commands
 
 ### Development Server

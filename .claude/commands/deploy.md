@@ -51,15 +51,18 @@ vercel env pull .env.preview-temp --environment=preview && cat .env.preview-temp
 ```
 
 ### Add Environment Variable
+
+**CRITICAL: Always use `printf`, never `echo`** - echo adds a trailing `\n` that breaks OAuth and other secrets.
+
 ```bash
 # Add to production
-echo "value" | vercel env add VAR_NAME production
+printf '%s' 'value' | vercel env add VAR_NAME production
 
 # Add to preview
-echo "value" | vercel env add VAR_NAME preview
+printf '%s' 'value' | vercel env add VAR_NAME preview
 
 # Add to all environments
-echo "value" | vercel env add VAR_NAME production preview development
+printf '%s' 'value' | vercel env add VAR_NAME production preview development
 ```
 
 ### Remove Environment Variable
