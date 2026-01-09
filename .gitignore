@@ -51,3 +51,4 @@ cleanup-log.txt
 # temporary files and caches
 tmp/
 backups/
+._.env.agent
