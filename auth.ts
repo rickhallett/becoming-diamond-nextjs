@@ -9,9 +9,11 @@ import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import GitHub from "next-auth/providers/github";
 import Nodemailer from "next-auth/providers/nodemailer";
+import Credentials from "next-auth/providers/credentials";
 import { TursoAdapter, getTursoClient } from "@/lib/turso-adapter";
 import { FEATURES } from "@/config/features";
 import { GMAIL_SMTP_CONFIG } from "@/lib/gmail-smtp";
+import { verifyPassword } from "@/lib/password";
 import type { Provider } from "next-auth/providers";
 import { log } from '@/lib/axiom-logger';
 
@@ -106,6 +108,84 @@ const providers: Provider[] = [
     // IMPORTANT: Enabled to allow OAuth signin even if email exists
     // This is safe because Google verifies email ownership
     allowDangerousEmailAccountLinking: true,
+  }),
+  // Password authentication for home screen app users
+  // Users must first authenticate via magic link or OAuth, then set a password in their profile
+  Credentials({
+    id: "credentials",
+    name: "Password",
+    credentials: {
+      email: { label: "Email", type: "email" },
+      password: { label: "Password", type: "password" },
+    },
+    async authorize(credentials) {
+      if (!credentials?.email || !credentials?.password) {
+        await log.warn('Credentials auth: Missing email or password', {
+          timestamp: new Date().toISOString(),
+        });
+        return null;
+      }
+
+      const email = credentials.email as string;
+      const password = credentials.password as string;
+
+      try {
+        // Look up user by email
+        const result = await turso.execute({
+          sql: `SELECT id, email, name, image, password_hash FROM users WHERE email = ?`,
+          args: [email],
+        });
+
+        if (!result.rows[0]) {
+          await log.info('Credentials auth: User not found', {
+            email: email.split('@')[1], // Only log domain for privacy
+            timestamp: new Date().toISOString(),
+          });
+          return null;
+        }
+
+        const user = result.rows[0];
+        const passwordHash = user.password_hash as string | null;
+
+        // Check if user has a password set
+        if (!passwordHash) {
+          await log.info('Credentials auth: No password set for user', {
+            userId: user.id as string,
+            timestamp: new Date().toISOString(),
+          });
+          return null;
+        }
+
+        // Verify password
+        const isValid = await verifyPassword(password, passwordHash);
+
+        if (!isValid) {
+          await log.warn('Credentials auth: Invalid password', {
+            userId: user.id as string,
+            timestamp: new Date().toISOString(),
+          });
+          return null;
+        }
+
+        await log.info('Credentials auth: Successful login', {
+          userId: user.id as string,
+          timestamp: new Date().toISOString(),
+        });
+
+        return {
+          id: user.id as string,
+          email: user.email as string,
+          name: user.name as string | null,
+          image: user.image as string | null,
+        };
+      } catch (error) {
+        await log.error('Credentials auth: Database error', {
+          error: error instanceof Error ? error.message : String(error),
+          timestamp: new Date().toISOString(),
+        });
+        return null;
+      }
+    },
   }),
 ];
 

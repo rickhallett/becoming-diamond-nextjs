@@ -5,12 +5,18 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Spotlight } from "@/components/ui/spotlight";
-import { IconBrandGoogle, IconBrandGithub, IconMail } from "@tabler/icons-react";
+import { IconBrandGoogle, IconBrandGithub, IconMail, IconLock, IconEye, IconEyeOff } from "@tabler/icons-react";
 import { AUTH_CONFIG } from "@/config/features";
 import { logSync as log } from '@/lib/logger';
 
+type AuthMode = "magic-link" | "password";
+
 export default function SignInPage() {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
+  const [authMode, setAuthMode] = useState<AuthMode>("magic-link");
   const [isLoading, setIsLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -38,6 +44,39 @@ export default function SignInPage() {
     } catch (error) {
       setError("An unexpected error occurred. Please try again.");
       log.error("Sign-in error:", 'App', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handlePasswordSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+        callbackUrl: AUTH_CONFIG.successRedirectUri,
+      });
+
+      if (result?.ok) {
+        // Successful login - redirect to member portal
+        window.location.href = AUTH_CONFIG.successRedirectUri;
+      } else if (result?.error) {
+        // Handle specific error cases
+        if (result.error === "CredentialsSignin") {
+          setError("Invalid email or password. If you haven't set a password yet, use magic link to sign in.");
+        } else {
+          setError("An error occurred. Please try again.");
+        }
+        log.error("Password sign-in failed:", 'App', result.error);
+      }
+    } catch (error) {
+      setError("An unexpected error occurred. Please try again.");
+      log.error("Password sign-in error:", 'App', error);
     } finally {
       setIsLoading(false);
     }
@@ -104,31 +143,113 @@ export default function SignInPage() {
             <p className="text-gray-400">Sign in to access your member portal</p>
           </div>
 
-          {/* Email Sign-In Form */}
-          <form onSubmit={handleEmailSignIn} className="mb-6">
-            <label htmlFor="email" className="block text-sm text-gray-300 mb-2">
-              Email Address
-            </label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
-              required
-              disabled={isLoading}
-              className="w-full px-4 py-3 bg-secondary/50 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-primary/50 transition-colors disabled:opacity-50"
-            />
+          {/* Auth Mode Toggle */}
+          <div className="flex rounded-lg bg-secondary/50 p-1 mb-6">
+            <button
+              type="button"
+              onClick={() => setAuthMode("magic-link")}
+              className={`flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-md text-sm font-medium transition-all ${
+                authMode === "magic-link"
+                  ? "bg-primary text-black"
+                  : "text-gray-400 hover:text-white"
+              }`}
+            >
+              <IconMail className="w-4 h-4" />
+              Magic Link
+            </button>
+            <button
+              type="button"
+              onClick={() => setAuthMode("password")}
+              className={`flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-md text-sm font-medium transition-all ${
+                authMode === "password"
+                  ? "bg-primary text-black"
+                  : "text-gray-400 hover:text-white"
+              }`}
+            >
+              <IconLock className="w-4 h-4" />
+              Password
+            </button>
+          </div>
+
+          {/* Sign-In Form */}
+          <form onSubmit={authMode === "magic-link" ? handleEmailSignIn : handlePasswordSignIn} className="mb-6">
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="email" className="block text-sm text-gray-300 mb-2">
+                  Email Address
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  required
+                  disabled={isLoading}
+                  className="w-full px-4 py-3 bg-secondary/50 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-primary/50 transition-colors disabled:opacity-50"
+                />
+              </div>
+
+              {authMode === "password" && (
+                <div>
+                  <label htmlFor="password" className="block text-sm text-gray-300 mb-2">
+                    Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="Enter your password"
+                      required
+                      disabled={isLoading}
+                      className="w-full px-4 py-3 pr-12 bg-secondary/50 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-primary/50 transition-colors disabled:opacity-50"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                    >
+                      {showPassword ? <IconEyeOff className="w-5 h-5" /> : <IconEye className="w-5 h-5" />}
+                    </button>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-2">
+                    No password? Use Magic Link to sign in, then set a password in your profile.
+                  </p>
+
+                  {/* Remember Me Checkbox */}
+                  <label className="flex items-center gap-3 mt-4 cursor-pointer select-none">
+                    <div className="relative">
+                      <input
+                        type="checkbox"
+                        checked={rememberMe}
+                        onChange={(e) => setRememberMe(e.target.checked)}
+                        className="sr-only peer"
+                      />
+                      <div className="w-5 h-5 border border-white/20 rounded bg-secondary/50 peer-checked:bg-primary peer-checked:border-primary transition-all flex items-center justify-center">
+                        {rememberMe && (
+                          <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </div>
+                    </div>
+                    <span className="text-sm text-gray-300">Remember me</span>
+                  </label>
+                </div>
+              )}
+            </div>
 
             {error && (
-              <div className="mt-3 p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-sm">
+              <div className="mt-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-sm">
                 {error}
               </div>
             )}
 
             <button
               type="submit"
-              disabled={isLoading || !email}
+              disabled={isLoading || !email || (authMode === "password" && !password)}
               className="w-full mt-4 bg-primary hover:bg-primary/90 text-black font-medium py-3 px-6 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {isLoading ? (
@@ -137,12 +258,21 @@ export default function SignInPage() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  Sending magic link...
+                  {authMode === "magic-link" ? "Sending magic link..." : "Signing in..."}
                 </>
               ) : (
                 <>
-                  <IconMail className="w-5 h-5" />
-                  Continue with Email
+                  {authMode === "magic-link" ? (
+                    <>
+                      <IconMail className="w-5 h-5" />
+                      Send Magic Link
+                    </>
+                  ) : (
+                    <>
+                      <IconLock className="w-5 h-5" />
+                      Sign In
+                    </>
+                  )}
                 </>
               )}
             </button>
