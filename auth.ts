@@ -119,8 +119,17 @@ const providers: Provider[] = [
       password: { label: "Password", type: "password" },
     },
     async authorize(credentials) {
+      // Helper for non-blocking logging (don't let Axiom failures crash auth)
+      const safeLog = async (level: 'info' | 'warn' | 'error', message: string, data: Record<string, unknown>) => {
+        try {
+          await log[level](message, data);
+        } catch {
+          // Ignore logging errors
+        }
+      };
+
       if (!credentials?.email || !credentials?.password) {
-        await log.warn('Credentials auth: Missing email or password', {
+        await safeLog('warn', 'Credentials auth: Missing email or password', {
           timestamp: new Date().toISOString(),
         });
         return null;
@@ -137,7 +146,7 @@ const providers: Provider[] = [
         });
 
         if (!result.rows[0]) {
-          await log.info('Credentials auth: User not found', {
+          await safeLog('info', 'Credentials auth: User not found', {
             email: email.split('@')[1], // Only log domain for privacy
             timestamp: new Date().toISOString(),
           });
@@ -149,7 +158,7 @@ const providers: Provider[] = [
 
         // Check if user has a password set
         if (!passwordHash) {
-          await log.info('Credentials auth: No password set for user', {
+          await safeLog('info', 'Credentials auth: No password set for user', {
             userId: user.id as string,
             timestamp: new Date().toISOString(),
           });
@@ -160,14 +169,14 @@ const providers: Provider[] = [
         const isValid = await verifyPassword(password, passwordHash);
 
         if (!isValid) {
-          await log.warn('Credentials auth: Invalid password', {
+          await safeLog('warn', 'Credentials auth: Invalid password', {
             userId: user.id as string,
             timestamp: new Date().toISOString(),
           });
           return null;
         }
 
-        await log.info('Credentials auth: Successful login', {
+        await safeLog('info', 'Credentials auth: Successful login', {
           userId: user.id as string,
           timestamp: new Date().toISOString(),
         });
@@ -179,7 +188,7 @@ const providers: Provider[] = [
           image: user.image as string | null,
         };
       } catch (error) {
-        await log.error('Credentials auth: Database error', {
+        await safeLog('error', 'Credentials auth: Database error', {
           error: error instanceof Error ? error.message : String(error),
           timestamp: new Date().toISOString(),
         });
