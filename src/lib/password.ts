@@ -5,7 +5,7 @@
  * bcryptjs is a pure JavaScript implementation that works in all environments.
  */
 
-import bcrypt from 'bcryptjs';
+import * as bcrypt from 'bcryptjs';
 
 // Cost factor for bcrypt (12 is a good balance of security and performance)
 const SALT_ROUNDS = 12;
