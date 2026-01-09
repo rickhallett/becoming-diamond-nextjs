@@ -38,8 +38,8 @@ async function runMigration() {
       await turso.execute(statement);
       console.log(`✓ [${i + 1}/${statements.length}] ${statement.substring(0, 60)}...`);
     } catch (error: any) {
-      // Table already exists is OK
-      if (error.message?.includes('already exists')) {
+      // Table/column/index already exists is OK
+      if (error.message?.includes('already exists') || error.message?.includes('duplicate column')) {
         console.log(`⚠ [${i + 1}/${statements.length}] Already exists: ${statement.substring(0, 60)}...`);
       } else {
         console.error(`✗ [${i + 1}/${statements.length}] Failed: ${statement.substring(0, 60)}...`);
