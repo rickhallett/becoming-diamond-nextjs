@@ -52,3 +52,4 @@ cleanup-log.txt
 tmp/
 backups/
 ._.env.agent
+logs_result.json

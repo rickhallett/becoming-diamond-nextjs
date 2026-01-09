@@ -119,52 +119,39 @@ const providers: Provider[] = [
       password: { label: "Password", type: "password" },
     },
     async authorize(credentials) {
-      console.log('[CREDENTIALS] authorize called');
-
       if (!credentials?.email || !credentials?.password) {
-        console.log('[CREDENTIALS] Missing email or password');
         return null;
       }
 
       const email = credentials.email as string;
       const password = credentials.password as string;
-      console.log('[CREDENTIALS] Email:', email);
 
       try {
-        console.log('[CREDENTIALS] Querying database...');
         // Look up user by email
         const result = await turso.execute({
           sql: `SELECT id, email, name, image, password_hash FROM users WHERE email = ?`,
           args: [email],
         });
-        console.log('[CREDENTIALS] Query result rows:', result.rows.length);
 
         if (!result.rows[0]) {
-          console.log('[CREDENTIALS] User not found');
           return null;
         }
 
         const user = result.rows[0];
         const passwordHash = user.password_hash as string | null;
-        console.log('[CREDENTIALS] User found, has password_hash:', !!passwordHash);
 
         // Check if user has a password set
         if (!passwordHash) {
-          console.log('[CREDENTIALS] No password set for user');
           return null;
         }
 
         // Verify password
-        console.log('[CREDENTIALS] Verifying password...');
         const isValid = await verifyPassword(password, passwordHash);
-        console.log('[CREDENTIALS] Password valid:', isValid);
 
         if (!isValid) {
-          console.log('[CREDENTIALS] Invalid password');
           return null;
         }
 
-        console.log('[CREDENTIALS] Login successful for user:', user.id);
         return {
           id: user.id as string,
           email: user.email as string,
@@ -172,7 +159,7 @@ const providers: Provider[] = [
           image: user.image as string | null,
         };
       } catch (error) {
-        console.error('[CREDENTIALS] Database error:', error);
+        console.error('[Credentials] Auth error:', error instanceof Error ? error.message : error);
         return null;
       }
     },
