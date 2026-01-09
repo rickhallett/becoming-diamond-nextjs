@@ -330,7 +330,7 @@ export default function ProfilePage() {
                         {/* Feature explanation for new password option */}
                         {!hasPassword && (
                             <div className="mb-6 p-4 bg-primary/10 border border-primary/20 rounded-lg">
-                                <p className="text-sm text-neutral-300 leading-relaxed">
+                                <p className="text-sm text-gray-400">
                                     <span className="font-medium text-white">New: Password Login</span>
                                     {" "}- Set a password to sign in directly, especially useful if you access the site from your home screen.
                                     Magic link and Google sign-in remain available as alternatives.
