@@ -327,6 +327,16 @@ export default function ProfilePage() {
 
                     {/* Password Settings */}
                     <div className="bg-secondary/30 border border-white/10 rounded-xl p-6 mt-6">
+                        {/* Feature explanation for new password option */}
+                        {!hasPassword && (
+                            <div className="mb-6 p-4 bg-primary/10 border border-primary/20 rounded-lg">
+                                <p className="text-sm text-neutral-300 leading-relaxed">
+                                    <span className="font-medium text-white">New: Password Login</span>
+                                    {" "}- Set a password to sign in directly, especially useful if you access the site from your home screen.
+                                    Magic link and Google sign-in remain available as alternatives.
+                                </p>
+                            </div>
+                        )}
                         <div className="flex items-center justify-between mb-6">
                             <div className="flex items-center gap-3">
                                 <IconLock className="w-5 h-5 text-primary" />
