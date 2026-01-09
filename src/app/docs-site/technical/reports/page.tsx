@@ -1,7 +1,7 @@
 import { DocsPage } from "@/components/docs/docs-page";
 import Link from "next/link";
 
-const GITHUB_BASE = "https://github.com/rickhallett/becoming-diamond-nextjs/blob/main/becoming-diamond-nextjs/docs/reports";
+const GITHUB_BASE = "https://github.com/rickhallett/becoming-diamond-nextjs/blob/main/docs/reports";
 
 export default function TechnicalReportsPage() {
   return (
@@ -245,7 +245,7 @@ export default function TechnicalReportsPage() {
         <p className="text-sm text-neutral-400">
           <strong>Browse all reports:</strong>{" "}
           <Link
-            href="https://github.com/rickhallett/becoming-diamond-nextjs/tree/main/becoming-diamond-nextjs/docs/reports"
+            href="https://github.com/rickhallett/becoming-diamond-nextjs/tree/main/docs/reports"
             className="text-primary hover:underline"
             target="_blank"
           >

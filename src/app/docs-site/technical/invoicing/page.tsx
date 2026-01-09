@@ -1,7 +1,7 @@
 import { DocsPage } from "@/components/docs/docs-page";
 import Link from "next/link";
 
-const GITHUB_BASE = "https://github.com/rickhallett/becoming-diamond-nextjs/blob/main/becoming-diamond-nextjs/docs/invoicing";
+const GITHUB_BASE = "https://github.com/rickhallett/becoming-diamond-nextjs/blob/main/docs/invoicing";
 
 export default function InvoicingPage() {
   return (
