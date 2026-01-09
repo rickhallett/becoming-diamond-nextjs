@@ -329,12 +329,10 @@ export default function ProfilePage() {
                     <div className="bg-secondary/30 border border-white/10 rounded-xl p-6 mt-6">
                         {/* Feature explanation for new password option */}
                         {!hasPassword && (
-                            <div className="mb-6 p-4 bg-primary/10 border border-primary/20 rounded-lg">
-                                <p className="text-sm text-gray-400">
-                                    <span className="font-medium text-white">New: Password Login</span>
-                                    {" "}- Set a password to sign in directly, especially useful if you access the site from your home screen.
-                                    Magic link and Google sign-in remain available as alternatives.
-                                </p>
+                            <div className="mb-6 p-4 bg-primary/10 border border-primary/20 rounded-lg text-sm text-gray-400">
+                                <span className="font-medium text-white">New: Password Login</span>
+                                {" "}- Set a password to sign in directly, especially useful if you access the site from your home screen.
+                                Magic link and Google sign-in remain available as alternatives.
                             </div>
                         )}
                         <div className="flex items-center justify-between mb-6">
@@ -370,11 +368,11 @@ export default function ProfilePage() {
                                         <span>Password is set. You can sign in with email and password.</span>
                                     </div>
                                 ) : (
-                                    <div>
-                                        <p className="mb-2">No password set.</p>
-                                        <p className="text-gray-500">
+                                    <div className="text-sm space-y-2">
+                                        <span className="block">No password set.</span>
+                                        <span className="block text-gray-500">
                                             Set a password to sign in directly from home screen shortcuts or when magic links are inconvenient.
-                                        </p>
+                                        </span>
                                     </div>
                                 )}
                             </div>
