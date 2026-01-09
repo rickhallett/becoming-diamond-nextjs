@@ -39,19 +39,27 @@ export async function GET() {
     const hasPassword = !!result.rows[0].password_hash;
 
     // Non-blocking log - don't let logging failures crash the request
-    log.info('Password status checked', {
-      userId,
-      hasPassword,
-      timestamp: new Date().toISOString(),
-    }).catch(() => {});
+    try {
+      log.info('Password status checked', {
+        userId,
+        hasPassword,
+        timestamp: new Date().toISOString(),
+      });
+    } catch {
+      // Ignore logging errors
+    }
 
     return NextResponse.json({ hasPassword });
   } catch (error) {
     // Non-blocking log
-    log.error('Error checking password status', {
-      error: error instanceof Error ? error.message : String(error),
-      timestamp: new Date().toISOString(),
-    }).catch(() => {});
+    try {
+      log.error('Error checking password status', {
+        error: error instanceof Error ? error.message : String(error),
+        timestamp: new Date().toISOString(),
+      });
+    } catch {
+      // Ignore logging errors
+    }
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -112,10 +120,14 @@ export async function POST(request: NextRequest) {
     }
 
     // Non-blocking log
-    log.info('Password set successfully', {
-      userId,
-      timestamp: new Date().toISOString(),
-    }).catch(() => {});
+    try {
+      log.info('Password set successfully', {
+        userId,
+        timestamp: new Date().toISOString(),
+      });
+    } catch {
+      // Ignore logging errors
+    }
 
     return NextResponse.json({
       success: true,
@@ -123,10 +135,14 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     // Non-blocking log
-    log.error('Error setting password', {
-      error: error instanceof Error ? error.message : String(error),
-      timestamp: new Date().toISOString(),
-    }).catch(() => {});
+    try {
+      log.error('Error setting password', {
+        error: error instanceof Error ? error.message : String(error),
+        timestamp: new Date().toISOString(),
+      });
+    } catch {
+      // Ignore logging errors
+    }
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
