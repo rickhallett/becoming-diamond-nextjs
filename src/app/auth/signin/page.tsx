@@ -15,6 +15,7 @@ export default function SignInPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
   const [authMode, setAuthMode] = useState<AuthMode>("magic-link");
   const [isLoading, setIsLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
@@ -216,6 +217,26 @@ export default function SignInPage() {
                   <p className="text-xs text-gray-500 mt-2">
                     No password? Use Magic Link to sign in, then set a password in your profile.
                   </p>
+
+                  {/* Remember Me Checkbox */}
+                  <label className="flex items-center gap-3 mt-4 cursor-pointer select-none">
+                    <div className="relative">
+                      <input
+                        type="checkbox"
+                        checked={rememberMe}
+                        onChange={(e) => setRememberMe(e.target.checked)}
+                        className="sr-only peer"
+                      />
+                      <div className="w-5 h-5 border border-white/20 rounded bg-secondary/50 peer-checked:bg-primary peer-checked:border-primary transition-all flex items-center justify-center">
+                        {rememberMe && (
+                          <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </div>
+                    </div>
+                    <span className="text-sm text-gray-300">Remember me</span>
+                  </label>
                 </div>
               )}
             </div>
