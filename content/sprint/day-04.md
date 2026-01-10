@@ -5,14 +5,14 @@ subtitle: Your brain is the third blade. And it's not always your friend.
 published: true
 duration: 20 minutes
 difficulty: Beginner
-video: 3749d405-889e-4ddf-b993-025f8969ef7e
+video: ee82355d-761e-4816-9141-05145405e464
 ---
 
 # The Third Blade: Run The Brain
 
 Your brain is the third blade. And it's not always your friend.
 
-{{video:3749d405-889e-4ddf-b993-025f8969ef7e}}
+{{video:ee82355d-761e-4816-9141-05145405e464}}
 
 You'll learn to control your nervous system through intentional breathing. When pressure hits, shallow breathing signals danger to your brain—but purposeful breathing flips that signal, telling your body you're safe and in control.
 
