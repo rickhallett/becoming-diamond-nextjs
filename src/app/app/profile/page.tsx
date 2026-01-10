@@ -168,19 +168,19 @@ export default function ProfilePage() {
     return (
         <div className="max-w-5xl mx-auto">
             {/* Page Header */}
-            <div className="mb-8">
-                <h1 className="text-3xl md:text-4xl font-light mb-2">
+            <div className="mb-6">
+                <h1 className="text-3xl md:text-4xl font-light mb-1">
                     My <span className="text-primary">Profile</span>
                 </h1>
-                <p className="text-gray-400">Manage your personal information and track your progress</p>
+                <p className="text-gray-400 text-sm">Manage your personal information and track your progress</p>
             </div>
 
-            <div className="grid lg:grid-cols-3 gap-6 lg:items-stretch">
+            <div className="grid lg:grid-cols-3 gap-4 lg:gap-5 lg:items-start">
                 {/* Profile Card */}
-                <div className="lg:col-span-1">
-                    <div className="bg-secondary/30 border border-white/10 rounded-xl p-6 h-full flex flex-col">
+                <div className="lg:col-span-1 lg:sticky lg:top-4">
+                    <div className="bg-secondary/30 border border-white/10 rounded-xl p-4 lg:p-5 flex flex-col">
                         {/* Avatar */}
-                        <div className="relative w-32 h-32 mx-auto mb-4 group cursor-pointer">
+                        <div className="relative w-24 h-24 lg:w-28 lg:h-28 mx-auto mb-3 group cursor-pointer">
                             <Image
                                 src={user.avatar && !imageError ? user.avatar : '/profile-placeholder-2.webp'}
                                 alt={user.name}
@@ -193,11 +193,11 @@ export default function ProfilePage() {
                             </div>
                         </div>
 
-                        <h2 className="text-2xl font-light text-center mb-1">{user.name}</h2>
-                        <p className="text-sm text-gray-400 text-center mb-4">{user.level}</p>
+                        <h2 className="text-xl lg:text-2xl font-light text-center mb-1">{user.name}</h2>
+                        <p className="text-xs lg:text-sm text-gray-400 text-center mb-3">{user.level}</p>
 
                         {/* Quick Stats */}
-                        <div className="space-y-3 pt-4 border-t border-white/10">
+                        <div className="space-y-2 pt-3 border-t border-white/10">
                             <div className="flex items-center justify-between text-sm">
                                 <span className="text-gray-400">Current Pressure Room</span>
                                 <span className="text-primary font-medium">PR{user.currentPR}</span>
@@ -215,10 +215,10 @@ export default function ProfilePage() {
                 </div>
 
                 {/* Profile Details */}
-                <div className="lg:col-span-2">
+                <div className="lg:col-span-2 space-y-4">
                     {/* Personal Information */}
-                    <div className="bg-secondary/30 border border-white/10 rounded-xl p-6 h-full">
-                        <div className="flex items-center justify-between mb-6">
+                    <div className="bg-secondary/30 border border-white/10 rounded-xl p-4 lg:p-5">
+                        <div className="flex items-center justify-between mb-4">
                             <h3 className="text-lg font-light">Personal Information</h3>
                             {!isEditing ? (
                                 <button
@@ -248,9 +248,9 @@ export default function ProfilePage() {
                             )}
                         </div>
 
-                        <div className="grid md:grid-cols-2 gap-6">
+                        <div className="grid md:grid-cols-2 gap-x-4 gap-y-3">
                             <div>
-                                <Label htmlFor="name" className="text-gray-400 text-sm mb-2 block">Full Name</Label>
+                                <Label htmlFor="name" className="text-gray-400 text-xs mb-1 block">Full Name</Label>
                                 {isEditing ? (
                                     <Input
                                         id="name"
@@ -266,15 +266,15 @@ export default function ProfilePage() {
                             </div>
 
                             <div>
-                                <Label htmlFor="email" className="text-gray-400 text-sm mb-2 block">Email Address</Label>
+                                <Label htmlFor="email" className="text-gray-400 text-xs mb-1 block">Email Address</Label>
                                 <div className="flex items-center gap-2 text-white text-sm">
                                     <IconMail className="w-4 h-4 text-gray-400" />
                                     {user.email || 'Not set'}
                                 </div>
                             </div>
 
-                            <div className="md:col-span-2">
-                                <Label htmlFor="location" className="text-gray-400 text-sm mb-2 block">Location</Label>
+                            <div>
+                                <Label htmlFor="location" className="text-gray-400 text-xs mb-1 block">Location</Label>
                                 {isEditing ? (
                                     <Input
                                         id="location"
@@ -290,8 +290,8 @@ export default function ProfilePage() {
                                 )}
                             </div>
 
-                            <div className="md:col-span-2">
-                                <Label htmlFor="website" className="text-gray-400 text-sm mb-2 block">Website</Label>
+                            <div>
+                                <Label htmlFor="website" className="text-gray-400 text-xs mb-1 block">Website</Label>
                                 {isEditing ? (
                                     <Input
                                         id="website"
@@ -308,14 +308,14 @@ export default function ProfilePage() {
                             </div>
 
                             <div className="md:col-span-2">
-                                <Label htmlFor="bio" className="text-gray-400 text-sm mb-2 block">Bio</Label>
+                                <Label htmlFor="bio" className="text-gray-400 text-xs mb-1 block">Bio</Label>
                                 {isEditing ? (
                                     <textarea
                                         id="bio"
                                         value={formData.bio}
                                         onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                                        rows={3}
-                                        className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-500 focus:border-primary focus:outline-none transition-colors"
+                                        rows={2}
+                                        className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-primary focus:outline-none transition-colors"
                                         placeholder="Tell us about yourself..."
                                     />
                                 ) : (
@@ -326,19 +326,19 @@ export default function ProfilePage() {
                     </div>
 
                     {/* Password Settings */}
-                    <div className="bg-secondary/30 border border-white/10 rounded-xl p-6 mt-6">
+                    <div className="bg-secondary/30 border border-white/10 rounded-xl p-4 lg:p-5">
                         {/* Feature explanation for new password option */}
                         {!hasPassword && (
-                            <div className="mb-6 p-4 bg-primary/10 border border-primary/20 rounded-lg text-sm text-gray-400">
+                            <div className="mb-4 p-3 bg-primary/10 border border-primary/20 rounded-lg text-sm text-gray-400">
                                 <span className="font-medium text-white">New: Password Login</span>
                                 {" "}- Set a password to sign in directly, especially useful if you access the site from your home screen.
                                 Magic link and Google sign-in remain available as alternatives.
                             </div>
                         )}
-                        <div className="flex items-center justify-between mb-6">
-                            <div className="flex items-center gap-3">
-                                <IconLock className="w-5 h-5 text-primary" />
-                                <h3 className="text-lg font-light">Password Settings</h3>
+                        <div className="flex items-center justify-between mb-4">
+                            <div className="flex items-center gap-2">
+                                <IconLock className="w-4 h-4 text-primary" />
+                                <h3 className="text-base lg:text-lg font-light">Password Settings</h3>
                             </div>
                             {!isSettingPassword && (
                                 <button
@@ -368,16 +368,16 @@ export default function ProfilePage() {
                                         <span>Password is set. You can sign in with email and password.</span>
                                     </div>
                                 ) : (
-                                    <div className="text-sm space-y-2">
+                                    <div className="text-sm space-y-1">
                                         <span className="block">No password set.</span>
-                                        <span className="block text-gray-500">
+                                        <span className="block text-gray-500 text-xs">
                                             Set a password to sign in directly from home screen shortcuts or when magic links are inconvenient.
                                         </span>
                                     </div>
                                 )}
                             </div>
                         ) : (
-                            <form onSubmit={handleSetPassword} className="space-y-4">
+                            <form onSubmit={handleSetPassword} className="space-y-3">
                                 {passwordError && (
                                     <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-sm">
                                         {passwordError}
@@ -385,7 +385,7 @@ export default function ProfilePage() {
                                 )}
 
                                 <div>
-                                    <Label htmlFor="password" className="text-gray-400 text-sm mb-2 block">
+                                    <Label htmlFor="password" className="text-gray-400 text-xs mb-1 block">
                                         {hasPassword ? 'New Password' : 'Password'}
                                     </Label>
                                     <div className="relative">
@@ -407,13 +407,13 @@ export default function ProfilePage() {
                                             {showPassword ? <IconEyeOff className="w-4 h-4" /> : <IconEye className="w-4 h-4" />}
                                         </button>
                                     </div>
-                                    <p className="text-xs text-gray-500 mt-1">
+                                    <p className="text-xs text-gray-500 mt-0.5">
                                         Must contain at least one letter and one number
                                     </p>
                                 </div>
 
                                 <div>
-                                    <Label htmlFor="confirmPassword" className="text-gray-400 text-sm mb-2 block">
+                                    <Label htmlFor="confirmPassword" className="text-gray-400 text-xs mb-1 block">
                                         Confirm Password
                                     </Label>
                                     <div className="relative">
@@ -437,7 +437,7 @@ export default function ProfilePage() {
                                     </div>
                                 </div>
 
-                                <div className="flex gap-3 pt-2">
+                                <div className="flex gap-2 pt-1">
                                     <button
                                         type="submit"
                                         disabled={isPasswordLoading || !passwordForm.password || !passwordForm.confirmPassword}
