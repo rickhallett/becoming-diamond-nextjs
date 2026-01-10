@@ -21,9 +21,43 @@ export default function InvoicingPage() {
         </p>
       </div>
 
-      <h2>Current Invoice - January 9, 2026</h2>
+      <h2>Current Invoice - January 10, 2026</h2>
       <div className="space-y-4 mb-8">
         <div className="border border-primary/50 rounded-lg p-6 bg-primary/5">
+          <h3 className="text-xl font-semibold text-white mb-2">
+            <Link
+              href={`${GITHUB_BASE}/invoice-2026-01-10.md`}
+              className="text-primary hover:underline"
+              target="_blank"
+            >
+              Invoice INV-2026-01-10
+            </Link>
+          </h3>
+          <p className="text-sm text-neutral-400 mb-4">
+            Total Development Hours: 1.0 hours | Total Amount: $40.00
+          </p>
+          <div className="text-sm text-neutral-300 space-y-3">
+            <p className="font-medium text-white">Development Services:</p>
+            <div className="space-y-3 ml-2">
+              <div>
+                <p className="font-semibold text-primary">January 10, 2026 (1.0 hours - $40.00)</p>
+                <ul className="list-disc list-inside space-y-1 ml-4 text-neutral-400">
+                  <li>Sprint Video Fix - Updated Day 4 to correct Bunny Stream video</li>
+                  <li>Profile Page Layout Redesign - Reduced whitespace, 2-column form layout</li>
+                  <li>Mobile-responsive adjustments and production deployment</li>
+                </ul>
+              </div>
+            </div>
+            <div className="mt-4 pt-4 border-t border-neutral-700">
+              <p className="font-bold text-white text-lg">Total Due: $40.00</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h2>Previous Invoice - January 9, 2026</h2>
+      <div className="space-y-4 mb-8">
+        <div className="border border-neutral-800 rounded-lg p-6 bg-neutral-900/50">
           <h3 className="text-xl font-semibold text-white mb-2">
             <Link
               href={`${GITHUB_BASE}/invoice-2026-01-09.md`}
