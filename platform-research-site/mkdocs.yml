@@ -1,0 +1,58 @@
+site_name: "Becoming Diamond"
+site_description: "Platform evaluation for becomingdiamond.com: 8 platforms compared for course development, ease of use, pricing, and migration."
+site_author: "Becoming Diamond"
+
+theme:
+  name: material
+  palette:
+    scheme: slate
+    primary: black
+    accent: grey
+  font:
+    text: Inter
+    code: JetBrains Mono
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - toc.integrate
+    - search.suggest
+    - content.tabs.link
+
+extra_css:
+  - assets/extra.css
+
+markdown_extensions:
+  - tables
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Recommendation:
+    - Final Recommendation: analysis/recommendation.md
+  - Platform Profiles:
+    - Go High Level: platforms/go-high-level.md
+    - Kajabi: platforms/kajabi.md
+    - ClickFunnels: platforms/clickfunnels.md
+    - Kartra: platforms/kartra.md
+    - Systeme.io: platforms/systeme-io.md
+    - Skool: platforms/skool.md
+    - Teachable: platforms/teachable.md
+    - WordPress: platforms/wordpress.md
+  - Analysis:
+    - Feature Comparison: analysis/comparison-matrix.md
+    - Pricing Comparison: analysis/pricing.md
+    - Market Sentiment: analysis/sentiment.md
+    - Research Methodology: analysis/methodology.md

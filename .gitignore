@@ -53,3 +53,6 @@ tmp/
 backups/
 ._.env.agent
 logs_result.json
+
+# mkdocs build output
+platform-research-site/site/
